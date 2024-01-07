@@ -1,8 +1,7 @@
 from typing import Literal
 
-import rev
 import wpilib
-from rev._rev import CANSparkMax, REVLibError
+from rev import CANSparkMax, REVLibError
 
 IdleMode = Literal["brake", "coast"]
 

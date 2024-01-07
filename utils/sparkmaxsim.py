@@ -1,5 +1,4 @@
-import rev
-from rev._rev import CANSparkMax
+from rev import CANSparkMax
 from wpilib.simulation import SimDeviceSim
 
 

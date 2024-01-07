@@ -16,16 +16,13 @@ class DriveDistance(SafeCommand):
     def __init__(self, drivetrain: Drivetrain, goal: Pose2d, speed: float):
         super().__init__()
         self.drivetrain = drivetrain
+        self.addRequirements(drivetrain)
 
         self.goal_x = goal.x
         self.goal_y = goal.y
         self.speed = speed
         self.error_x = math.inf
         self.error_y = math.inf
-
-
-        self.addRequirements(drivetrain)
-
         self.initial_position = Pose2d()
 
     def initialize(self):

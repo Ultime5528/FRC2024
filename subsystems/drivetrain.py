@@ -1,8 +1,7 @@
 import math
-from typing import Literal, Callable
+from typing import Literal, Type, TypeVar
 
 import wpilib
-import wpiutil
 from wpilib import RobotBase, RobotController
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.filter import SlewRateLimiter
@@ -10,18 +9,14 @@ from wpimath.geometry import Pose2d, Translation2d, Rotation2d
 from wpimath.kinematics import (
     ChassisSpeeds,
     SwerveDrive4Kinematics,
-    SwerveDrive4Odometry,
     SwerveModuleState,
 )
 
 import ports
-from gyro import ADIS16448, ADIS16470, ADXRS, Empty, NavX
+from gyro import ADIS16448, ADIS16470, ADXRS, Empty, NavX, Gyro
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.swervemodule import SwerveModule
-from utils.swerveutils import wrapAngle, stepTowardsCircular, angleDifference
-
-select_gyro: Literal["navx", "adis16448", "adis16470", "adxrs", "empty"] = "adis16470"
+from utils.swerve import SwerveModule, wrapAngle, stepTowardsCircular, angleDifference
 
 
 class Drivetrain(SafeSubsystem):
@@ -51,42 +46,36 @@ class Drivetrain(SafeSubsystem):
         self.motor_bl_loc = Translation2d(-self.width / 2, self.length / 2)
         self.motor_br_loc = Translation2d(-self.width / 2, -self.length / 2)
 
-        wait_time = 4 #if RobotBase.isReal() else 0.0
-
         self.swerve_module_fl = SwerveModule(
             ports.drivetrain_motor_driving_fl,
             ports.drivetrain_motor_turning_fl,
             self.angular_offset_fl,
         )
-        wpilib.wait(wait_time)
+
         self.swerve_module_fr = SwerveModule(
             ports.drivetrain_motor_driving_fr,
             ports.drivetrain_motor_turning_fr,
             self.angular_offset_fr,
         )
-        wpilib.wait(wait_time)
+
         self.swerve_module_bl = SwerveModule(
             ports.drivetrain_motor_driving_bl,
             ports.drivetrain_motor_turning_bl,
             self.angular_offset_bl,
         )
-        wpilib.wait(wait_time)
+
         self.swerve_module_br = SwerveModule(
             ports.drivetrain_motor_driving_br,
             ports.drivetrain_motor_turning_br,
             self.angular_offset_br,
         )
-        wpilib.wait(wait_time)
 
         # Gyro
-        self._gyro = {
-            "navx": NavX,
-            "adis16448": ADIS16448,
-            "adis16470": ADIS16470,
-            "adxrs": ADXRS,
-            "empty": Empty,
-        }[select_gyro]()
-
+        """
+        Possibilités : NavX, ADIS16448, ADIS16470, ADXRS, Empty
+        """
+        self._gyro = ADIS16470()
+        # TODO Assert _gyro is subclass of abstract class Gyro
         self.addChild("Gyro", self._gyro)
 
         self._field = wpilib.Field2d()

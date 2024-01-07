@@ -1,9 +1,8 @@
+import inspect
 from dataclasses import dataclass
 from enum import Enum
-import inspect
 from typing import Optional, Union, Callable
 
-from ntcore import NetworkTableInstance
 from ntcore.util import ntproperty as _old_ntproperty
 
 
