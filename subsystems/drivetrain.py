@@ -1,5 +1,4 @@
 import math
-from typing import Literal, Type, TypeVar
 
 import wpilib
 from wpilib import RobotBase, RobotController
@@ -13,7 +12,7 @@ from wpimath.kinematics import (
 )
 
 import ports
-from gyro import ADIS16448, ADIS16470, ADXRS, Empty, NavX, Gyro
+from gyro import ADIS16470
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.swerve import SwerveModule, wrapAngle, stepTowardsCircular, angleDifference
@@ -277,7 +276,7 @@ class Drivetrain(SafeSubsystem):
             self.swerve_module_bl.getState(),
             self.swerve_module_br.getState(),
         )
-        chassis_speed = self.swervedrive_kinematics.toChassisSpeeds(*module_states)
+        chassis_speed = self.swervedrive_kinematics.toChassisSpeeds(module_states)
         chassis_rotation_speed = chassis_speed.omega
         self.sim_yaw += chassis_rotation_speed * self.period_seconds
         self._gyro.setSimAngle(-math.degrees(self.sim_yaw))

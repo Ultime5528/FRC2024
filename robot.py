@@ -18,7 +18,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Autonomous
         """
-        self.auto_command: Optional[commands2.CommandBase] = None
+        self.auto_command: Optional[commands2.Command] = None
         self.auto_chooser = wpilib.SendableChooser()
 
         """
@@ -46,6 +46,18 @@ class Robot(commands2.TimedCommandRobot):
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
+
+    def setupButtons(self):
+        """
+        Bind commands to buttons on controllers and joysticks
+        """
+        pass
+
+    def setupDashboard(self):
+        """
+        Send commands to dashboard to
+        """
+        pass
           
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
