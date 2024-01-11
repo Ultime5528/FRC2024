@@ -4,6 +4,7 @@ from typing import Optional
 import commands2.button
 import wpilib
 
+from commands.auto.drivesquares import DriveSquares
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
