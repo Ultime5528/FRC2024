@@ -5,6 +5,7 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
+from commands.auto.drivesquarespauses import DriveSquaresPauses
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
@@ -53,7 +54,6 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         pass
-
     def setupDashboard(self):
         """
         Send commands to dashboard to
