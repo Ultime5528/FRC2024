@@ -3,7 +3,6 @@ import wpilib
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 from subsystems.drivetrain import Drivetrain
-from commands.drive import Drive
 
 
 class DriveSquares(SafeCommand):
