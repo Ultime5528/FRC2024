@@ -1,0 +1,250 @@
+[
+  {
+    "name": "/Properties/ADIS16470/pitch_offset",
+    "type": "double",
+    "value": 4.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/max_speed",
+    "type": "double",
+    "value": 15.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_P",
+    "type": "double",
+    "value": 0.04,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_I",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_D",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_feedforward",
+    "type": "double",
+    "value": 0.0016823989756014307,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/turning_PID_P",
+    "type": "double",
+    "value": 0.4,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/turning_PID_I",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/turning_PID_D",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/turning_PID_feedforward",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_output_min",
+    "type": "double",
+    "value": -1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_output_max",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/turning_PID_output_min",
+    "type": "double",
+    "value": -1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/turning_PID_output_max",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/width",
+    "type": "double",
+    "value": 0.68,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/length",
+    "type": "double",
+    "value": 0.68,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/max_angular_speed",
+    "type": "double",
+    "value": 25.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/mag_slew_rate",
+    "type": "double",
+    "value": 30.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/rotation_slew_rate",
+    "type": "double",
+    "value": 30.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/direction_slew_rate",
+    "type": "double",
+    "value": 30.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/angular_offset_fl",
+    "type": "double",
+    "value": -1.5707963267948966,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/angular_offset_fr",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/angular_offset_bl",
+    "type": "double",
+    "value": 3.141592653589793,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/angular_offset_br",
+    "type": "double",
+    "value": 1.5707963267948966,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/acceptable_wheel_rotation",
+    "type": "double",
+    "value": 0.51,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/wheel_flip_rotation",
+    "type": "double",
+    "value": 0.85,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquares/line_duration",
+    "type": "int",
+    "value": 1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquares/speed",
+    "type": "double",
+    "value": 0.6,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/is_field_relative",
+    "type": "boolean",
+    "value": true,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/has_rate_limiter",
+    "type": "boolean",
+    "value": false,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/deadzone",
+    "type": "double",
+    "value": 0.1,
+    "properties": {
+      "persistent": true
+    }
+  }
+]

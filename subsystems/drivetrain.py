@@ -32,7 +32,7 @@ class Drivetrain(SafeSubsystem):
     angular_offset_bl = autoproperty(3.141592653589793)
     angular_offset_br = autoproperty(1.5707963267948966)
 
-    acceptable_wheel_rotation = autoproperty(0.45) # is radians. Tolerance in which the wheel can be in
+    acceptable_wheel_rotation = autoproperty(0.51) # is radians. Tolerance in which the wheel can be in
     wheel_flip_rotation = autoproperty(0.85) # wheel will lock and flip
 
     def __init__(self, period: float) -> None:
