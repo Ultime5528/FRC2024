@@ -5,6 +5,9 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
+from commands.auto.drivesquarespauses import DriveSquaresPauses
+from commands.auto.dspauserotate import DriveSquaresPausesRotate
+from commands.auto.dsquarerotate import DriveSquaresRotate
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
