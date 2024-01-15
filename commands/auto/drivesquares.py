@@ -6,7 +6,7 @@ from subsystems.drivetrain import Drivetrain
 
 
 class DriveSquares(SafeCommand):
-    line_duration = autoproperty(1.0)
+    line_duration = autoproperty(3)
     speed = autoproperty(0.25)
 
     def __init__(self, drivetrain: Drivetrain):

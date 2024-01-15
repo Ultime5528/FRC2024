@@ -27,6 +27,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
 
+
         """
         Subsystems
         """
@@ -52,8 +53,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.is
-        pass
+        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
 
     def setupDashboard(self):
         """
