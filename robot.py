@@ -6,6 +6,7 @@ import wpilib
 
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
+from subsystems.shooter import Shooter
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -30,7 +31,7 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
-
+        self.shooter = Shooter()
         """
         Default subsystem commands
         """
@@ -51,7 +52,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
 
     def setupDashboard(self):
         """
