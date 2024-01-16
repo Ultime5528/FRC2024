@@ -6,6 +6,7 @@ import wpilib
 
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
+from subsystems.intake import Intake
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -30,6 +31,7 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
+        self.intake = Intake()
 
         """
         Default subsystem commands

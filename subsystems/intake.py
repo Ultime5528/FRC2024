@@ -1,22 +1,24 @@
 
-import ports
-from utils import safesubsystem
-from utils.property import autoproperty
 import rev
 
+import ports
+from utils.property import autoproperty
+from utils.safesubsystem import SafeSubsystem
 
-class Intake(safesubsystem):
-    intake_speed = autoproperty(0.3)
-    intake_reverse_speed = autoproperty((intake_speed/-1.3))
+
+class Intake(SafeSubsystem):
+    speed_in = autoproperty(0.3)
+    speed_out = autoproperty(-0.17)
+
     def __init__(self):
         super().__init__()
-        motor = rev.CANSparkMax(ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless)
+        self.motor = rev.CANSparkMax(ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless)
 
-    def activate(self):
-        self.motor.set(self.intake_speed)
+    def takeIn(self):
+        self.motor.set(self.speed_in)
 
     def stop(self):
-        self.motor.stop()
+        self.motor.stopMotor()
 
-    def reject(self):
-        self.motor.set(self.intake_reverse_speed)
+    def takeIn(self):
+        self.motor.set(self.speed_out)
