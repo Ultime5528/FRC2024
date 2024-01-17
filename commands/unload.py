@@ -4,7 +4,7 @@ from subsystems.intake import Intake
 from utils.property import autoproperty
 
 
-class Load(SafeCommand):
+class Unload(SafeCommand):
     intake_time = autoproperty(1)
 
     def __init__(self, intake: Intake):
@@ -21,7 +21,7 @@ class Load(SafeCommand):
         self.intake.takeOut()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= self.open_time
+        return self.timer.get() >= self.intake_time
 
     def end(self, interrupted: bool) -> None:
         self.timer.stop()

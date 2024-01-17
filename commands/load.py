@@ -5,7 +5,7 @@ from utils.property import autoproperty
 
 
 class Load(SafeCommand):
-    intake_time = autoproperty(1)
+    intake_time = autoproperty(1.0)
 
     def __init__(self, intake: Intake):
         super().__init__()
@@ -21,7 +21,7 @@ class Load(SafeCommand):
         self.intake.takeIn()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= self.open_time
+        return self.timer.get() >= self.intake_time
 
     def end(self, interrupted: bool) -> None:
         self.timer.stop()

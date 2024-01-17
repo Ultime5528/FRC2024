@@ -5,6 +5,7 @@ import commands2.button
 import wpilib
 
 from commands.drive import Drive
+from commands.load import Load
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 
@@ -44,6 +45,7 @@ class Robot(commands2.TimedCommandRobot):
         self.setupAuto()
         self.setupButtons()
         self.setupDashboard()
+        putCommandOnDashboard("Load", Load(self.intake))
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
