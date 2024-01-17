@@ -14,11 +14,11 @@ class Intake(SafeSubsystem):
         super().__init__()
         self.motor = rev.CANSparkMax(ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless)
 
-    def takeIn(self):
+    def load(self):
         self.motor.set(self.speed_in)
 
     def stop(self):
         self.motor.stopMotor()
 
-    def takeOut(self):
+    def unload(self):
         self.motor.set(self.speed_out)
