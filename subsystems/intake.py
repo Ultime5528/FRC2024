@@ -20,5 +20,5 @@ class Intake(SafeSubsystem):
     def stop(self):
         self.motor.stopMotor()
 
-    def takeIn(self):
+    def takeOut(self):
         self.motor.set(self.speed_out)
