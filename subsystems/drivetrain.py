@@ -206,6 +206,12 @@ class Drivetrain(SafeSubsystem):
     def getPitch(self):
         return self._gyro.getPitch()
 
+    def getAngle(self):
+        """
+        Wrapped between -180 and 180
+        """
+        return self._gyro.getAngle()
+
     def resetGyro(self):
         self._gyro.reset()
 
