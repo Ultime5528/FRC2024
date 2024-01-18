@@ -30,12 +30,12 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
-        self.drivetrain = Drivetrain(self.getPeriod())
+        # self.drivetrain = Drivetrain(self.getPeriod())
         self.shooter = Shooter()
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        # self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -67,7 +67,6 @@ class Robot(commands2.TimedCommandRobot):
     def teleopInit(self):
         if self.auto_command:
             self.auto_command.cancel()
-
 
 def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str = None) -> commands2.CommandBase:
     if sub_table:
