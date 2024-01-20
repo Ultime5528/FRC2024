@@ -5,9 +5,6 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
-from commands.auto.drivesquarespauses import DriveSquaresPauses
-from commands.auto.dspauserotate import DriveSquaresPausesRotate
-from commands.auto.dsquarerotate import DriveSquaresRotate
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
@@ -29,7 +26,6 @@ class Robot(commands2.TimedCommandRobot):
         Joysticks
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
-
 
         """
         Subsystems
@@ -63,7 +59,7 @@ class Robot(commands2.TimedCommandRobot):
         Send commands to dashboard to
         """
         pass
-          
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:

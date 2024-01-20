@@ -14,27 +14,15 @@ from wpimath.system.plant import DCMotor, LinearSystemId
 from utils.property import autoproperty
 from utils.sparkmaxsim import SparkMaxSim
 
-module_max_angular_velocity = math.pi / 2  # 1/2 radian per second
-module_max_angular_acceleration = 2 * math.pi  # radians per second squared
-encoder_resolution = 4096
-
-wheel_radius = 0.0762  # meters
-
-turn_motor_gear_ratio = 12.8  # //12 to 1
-turn_encoder_conversion_factor = 2 * math.pi / encoder_resolution
-turn_encoder_distance_per_pulse = (2 * math.pi) / (
-    encoder_resolution * turn_motor_gear_ratio
-)
-
 # 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
 drive_motor_pinion_teeth = 13
 drive_motor_gear_ratio = (45.0 * 22) / (drive_motor_pinion_teeth * 15)
 
+wheel_radius = 0.0762  # meters
 drive_encoder_position_conversion_factor = math.pi * wheel_radius / drive_motor_gear_ratio  # meters
 drive_encoder_velocity_conversion_factor = drive_encoder_position_conversion_factor / 60  # meters per second
 drive_motor_free_rps = 5676 / 60  # Neo motor max free RPM into rotations per second
 drive_wheel_free_rps = drive_motor_free_rps * (2 * math.pi)
-driving_PID_feedforward = 1 / drive_wheel_free_rps
 
 turning_encoder_position_conversion_factor = math.pi * 2  # radians
 turning_encoder_velocity_conversion_factor = math.pi * 2 / 60  # radians per second
@@ -50,22 +38,21 @@ class SwerveModule:
     driving_PID_I = autoproperty(0.0)
     driving_PID_D = autoproperty(0.0)
     driving_PID_feedforward = autoproperty(0.0016823989756014307)
+    driving_PID_output_min = autoproperty(-1.0)
+    driving_PID_output_max = autoproperty(1.0)
 
     turning_PID_P = autoproperty(0.4)
     turning_PID_I = autoproperty(0.0)
     turning_PID_D = autoproperty(0.0)
     turning_PID_feedforward = autoproperty(0.0)
-
-    driving_PID_output_min = autoproperty(-1.0)
-    driving_PID_output_max = autoproperty(1.0)
     turning_PID_output_min = autoproperty(-1.0)
     turning_PID_output_max = autoproperty(1.0)
 
     def __init__(
-        self,
-        drive_motor_port,
-        turning_motor_port,
-        chassis_angular_offset: float,
+            self,
+            drive_motor_port,
+            turning_motor_port,
+            chassis_angular_offset: float,
     ):
         self._drive_motor = CANSparkMax(
             drive_motor_port, CANSparkMax.MotorType.kBrushless
@@ -137,9 +124,7 @@ class SwerveModule:
         self._drive_motor.burnFlash()
         self._turning_motor.burnFlash()
 
-        self._desired_state = SwerveModuleState(0.0, Rotation2d())
         self._chassis_angular_offset = chassis_angular_offset
-        self._desired_state.angle = Rotation2d(self._turning_encoder.getPosition())
         self._drive_encoder.setPosition(0)
 
         if RobotBase.isSimulation():
@@ -147,14 +132,14 @@ class SwerveModule:
             self.sim_drive_encoder = SparkMaxSim(self._drive_motor)
             self.sim_turn_encoder = SparkMaxSim(self._turning_motor)
 
-            self.drive_output: float = 0.0
-            self.turn_output: float = 0.0
             self.sim_turn_encoder_distance: float = 0.0
             self.sim_drive_encoder_distance: float = 0.0
 
             # Flywheels allow simulation of a more physically realistic rendering of swerve module properties
             # Magical values for sim pulled from :
             # https://github.com/4201VitruvianBots/2021SwerveSim/blob/main/Swerve2021/src/main/java/frc/robot/subsystems/SwerveModule.java
+            turn_motor_gear_ratio = 12.8  # //12 to 1
+
             self.sim_turn_motor = FlywheelSim(
                 LinearSystemId.identifyVelocitySystemMeters(0.16, 0.0348),
                 DCMotor.NEO550(1),
@@ -211,9 +196,13 @@ class SwerveModule:
             optimized_desired_state.angle.radians(), CANSparkMax.ControlType.kPosition
         )
 
-        self._desired_state = desired_state
+    def stop(self):
+        self._drive_motor.setVoltage(0.0)
+        self._turning_motor.setVoltage(0.0)
 
     def simulationUpdate(self, period: float):
+        module_max_angular_acceleration = 2 * math.pi  # radians per second squared
+
         self.sim_turn_motor.setInputVoltage(
             self.sim_turn_encoder.getVelocity()
             / module_max_angular_acceleration
@@ -227,51 +216,14 @@ class SwerveModule:
         self.sim_turn_motor.update(period)
 
         self.sim_turn_encoder_distance += (
-            self.sim_turn_motor.getAngularVelocity() * period
+                self.sim_turn_motor.getAngularVelocity() * period
         )
 
         self.sim_turn_encoder.setPosition(self.sim_turn_encoder_distance)
         self.sim_turn_encoder.setVelocity(self.sim_turn_motor.getAngularVelocity())
 
         self.sim_drive_encoder_distance += (
-            self.sim_drive_motor.getAngularVelocity() * period
+                self.sim_drive_motor.getAngularVelocity() * period
         )
         self.sim_drive_encoder.setPosition(self.sim_drive_encoder_distance)
         self.sim_drive_encoder.setVelocity(self.sim_drive_motor.getAngularVelocity())
-
-
-def wrapAngle(angle):
-    two_pi = 2 * math.pi
-
-    if angle == two_pi:
-        return 0.0
-    elif angle > two_pi:
-        return angle - two_pi * math.floor(angle / two_pi)
-    elif angle < 0.0:
-        return angle + two_pi * (math.floor(-angle / two_pi) + 1)
-    else:
-        return angle
-
-
-def stepTowardsCircular(current, target, step_size):
-    current = wrapAngle(current)
-    target = wrapAngle(target)
-
-    step_direction = math.copysign(1, target - current)
-    difference = abs(current - target)
-
-    if difference <= step_size:
-        return target
-    elif difference > math.pi:
-        # Handle the special case where you can reach the target in one step while also wrapping
-        if current + 2 * math.pi - target < step_size or target + 2 * math.pi - current < step_size:
-            return target
-        else:
-            return wrapAngle(current - step_direction * step_size)
-    else:
-        return current + step_direction * step_size
-
-
-def angleDifference(angleA, angleB):
-    difference = abs(angleA - angleB)
-    return (2 * math.pi) - difference if difference > math.pi else difference
