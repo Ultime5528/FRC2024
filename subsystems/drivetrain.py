@@ -15,7 +15,7 @@ import ports
 from gyro import ADIS16470
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.swerve import SwerveModule, wrapAngle, stepTowardsCircular, angleDifference
+from utils.swerve import SwerveModule
 
 
 class Drivetrain(SafeSubsystem):
@@ -23,14 +23,10 @@ class Drivetrain(SafeSubsystem):
     length = autoproperty(0.68)
     max_angular_speed = autoproperty(25.0)
 
-    mag_slew_rate = autoproperty(30.0)
-    rotation_slew_rate = autoproperty(30.0)
-    direction_slew_rate = autoproperty(30.0)
-
-    angular_offset_fl = autoproperty(-1.5707963267948966)
+    angular_offset_fl = autoproperty(-1.57)
     angular_offset_fr = autoproperty(0.0)
-    angular_offset_bl = autoproperty(3.141592653589793)
-    angular_offset_br = autoproperty(1.5707963267948966)
+    angular_offset_bl = autoproperty(3.14)
+    angular_offset_br = autoproperty(1.57)
 
     acceptable_wheel_rotation = autoproperty(0.51)  # is radians. Tolerance in which the wheel can be in
     wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip

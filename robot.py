@@ -5,7 +5,7 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
-from commands.drive import Drive
+from commands.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 
 
@@ -35,7 +35,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -58,6 +58,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
+        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller), "DriveField")
+        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller), "Drive")
         pass
 
     def autonomousInit(self):
@@ -66,6 +68,7 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
+        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
