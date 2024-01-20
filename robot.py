@@ -4,6 +4,10 @@ from typing import Optional
 import commands2.button
 import wpilib
 
+from commands.auto.drivesquares import DriveSquares
+from commands.auto.drivesquarespauses import DriveSquaresPauses
+from commands.auto.dspauserotate import DriveSquaresPausesRotate
+from commands.auto.dsquarerotate import DriveSquaresRotate
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
@@ -25,6 +29,7 @@ class Robot(commands2.TimedCommandRobot):
         Joysticks
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
+
 
         """
         Subsystems
@@ -51,7 +56,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
+        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
 
     def setupDashboard(self):
         """
@@ -69,7 +74,7 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str = None) -> commands2.CommandBase:
+def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:

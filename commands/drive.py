@@ -1,3 +1,5 @@
+import math
+
 import commands2.button
 from wpimath.filter import SlewRateLimiter
 
@@ -24,7 +26,8 @@ class Drive(SafeCommand):
 
         self.m_xspeedLimiter = SlewRateLimiter(3)
         self.m_yspeedLimiter = SlewRateLimiter(3)
-        self.m_rotLimiter = SlewRateLimiter(3)
+        self.m_rotLimiter_x = SlewRateLimiter(3)
+        self.m_rotLimiter_y = SlewRateLimiter(3)
 
     def apply_deadzone(self, value):
         if abs(value) < self.deadzone:
@@ -41,12 +44,17 @@ class Drive(SafeCommand):
             self.m_yspeedLimiter.calculate(self.xbox_remote.getLeftX())
             * -1
         )
-        rot = self.apply_deadzone(
-            self.m_rotLimiter.calculate(self.xbox_remote.getRightX())
-            * -1
+        rot_x = self.apply_deadzone(
+            self.m_rotLimiter_x.calculate(self.xbox_remote.getRightX())
         )
-        
-        self.drivetrain.drive(x_speed, y_speed, rot, self.is_field_relative, self.has_rate_limiter)
+        rot_y = self.apply_deadzone(
+            self.m_rotLimiter_y.calculate(self.xbox_remote.getRightY())
+        )
+        # TODO Vers lavant cest 0 degres. Lorsquon revien a neutre
+        # cest le plus recent angle
+        rot = math.atan2(rot_y, rot_x)
+        print(f"{rot_x:.2f} {rot_y:.2f} {math.degrees(rot):.2f}")
+        self.drivetrain.drive(x_speed, y_speed, rot_x, self.is_field_relative, self.has_rate_limiter)
 
     def end(self, interrupted: bool) -> None:
         self.drivetrain.drive(0.0, 0.0, 0.0, is_field_relative=False, rate_limiter=False)

@@ -4,7 +4,7 @@ import wpilib
 from wpilib import RobotBase, RobotController
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.filter import SlewRateLimiter
-from wpimath.geometry import Pose2d, Translation2d, Rotation2d
+from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
     ChassisSpeeds,
     SwerveDrive4Kinematics,
@@ -32,8 +32,8 @@ class Drivetrain(SafeSubsystem):
     angular_offset_bl = autoproperty(3.141592653589793)
     angular_offset_br = autoproperty(1.5707963267948966)
 
-    acceptable_wheel_rotation = autoproperty(0.45) # is radians. Tolerance in which the wheel can be in
-    wheel_flip_rotation = autoproperty(0.85) # wheel will lock and flip
+    acceptable_wheel_rotation = autoproperty(0.51)  # is radians. Tolerance in which the wheel can be in
+    wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
 
     def __init__(self, period: float) -> None:
         super().__init__()
@@ -109,12 +109,12 @@ class Drivetrain(SafeSubsystem):
             self.sim_yaw = 0
 
     def drive(
-        self,
-        x_speed_input: float,
-        y_speed_input: float,
-        rot_speed: float,
-        is_field_relative: bool = True,
-        rate_limiter: bool = True,
+            self,
+            x_speed_input: float,
+            y_speed_input: float,
+            rot_speed: float,
+            is_field_relative: bool = True,
+            rate_limiter: bool = True,
     ):
         if rate_limiter:
             # Convert XY to polar for rate limiting
@@ -147,7 +147,7 @@ class Drivetrain(SafeSubsystem):
                 )
             elif angle_diff > self.wheel_flip_rotation * math.pi:
                 if (
-                    self.current_translation_mag > 1e-4
+                        self.current_translation_mag > 1e-4
                 ):  # small number to avoid floating point errors
                     self.current_translation_mag = self.mag_limiter.calculate(0.0)
                 else:
@@ -182,12 +182,14 @@ class Drivetrain(SafeSubsystem):
         y_speed *= self.swerve_module_fr.max_speed
         rot_speed = self.current_rotation * self.max_angular_speed
 
+        base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(x_speed, y_speed, rot_speed,
+                                                                   self._gyro.getRotation2d()) \
+            if is_field_relative else ChassisSpeeds(x_speed, y_speed, rot_speed)
+
+        corrected_chassis_speed = self.correctForDynamics(base_chassis_speed)
+
         swerve_module_states = self.swervedrive_kinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(
-                x_speed, y_speed, rot_speed, self._gyro.getRotation2d()
-            )
-            if is_field_relative
-            else ChassisSpeeds(x_speed, y_speed, rot_speed)
+            corrected_chassis_speed
         )
 
         SwerveDrive4Kinematics.desaturateWheelSpeeds(
@@ -226,6 +228,20 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_br.setDesiredState(
             SwerveModuleState(0, Rotation2d.fromDegrees(45))
         )
+
+    def correctForDynamics(self, original_chassis_speeds: ChassisSpeeds) -> ChassisSpeeds:
+        next_robot_pose: Pose2d = Pose2d(
+            original_chassis_speeds.vx * self.period_seconds,
+            original_chassis_speeds.vy * self.period_seconds,
+            Rotation2d(original_chassis_speeds.omega * self.period_seconds)
+        )
+        pose_twist: Twist2d = Pose2d().log(next_robot_pose)
+        updated_speeds: ChassisSpeeds = ChassisSpeeds(
+            pose_twist.dx / self.period_seconds,
+            pose_twist.dy / self.period_seconds,
+            pose_twist.dtheta / self.period_seconds
+        )
+        return updated_speeds
 
     def periodic(self):
         self.swerve_estimator.update(

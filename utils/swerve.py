@@ -46,12 +46,12 @@ turning_encoder_position_PID_max_input = turning_encoder_position_conversion_fac
 class SwerveModule:
     max_speed = autoproperty(15.0)
 
-    driving_PID_P = autoproperty(0.02)
+    driving_PID_P = autoproperty(0.04)
     driving_PID_I = autoproperty(0.0)
     driving_PID_D = autoproperty(0.0)
     driving_PID_feedforward = autoproperty(0.0016823989756014307)
 
-    turning_PID_P = autoproperty(0.02)
+    turning_PID_P = autoproperty(0.4)
     turning_PID_I = autoproperty(0.0)
     turning_PID_D = autoproperty(0.0)
     turning_PID_feedforward = autoproperty(0.0)
@@ -168,7 +168,6 @@ class SwerveModule:
         else:
             wpilib.wait(4.0)
 
-
     def getVelocity(self) -> float:
         return self._drive_encoder.getVelocity()
 
@@ -197,10 +196,14 @@ class SwerveModule:
         corrected_desired_state = SwerveModuleState()
         corrected_desired_state.speed = desired_state.speed
         corrected_desired_state.angle = desired_state.angle.rotateBy(Rotation2d(self._chassis_angular_offset))
+        current_rotation = Rotation2d(self._turning_encoder.getPosition())
 
         optimized_desired_state = SwerveModuleState.optimize(
-            corrected_desired_state, Rotation2d(self._turning_encoder.getPosition())
+            corrected_desired_state, current_rotation
         )
+
+        optimized_desired_state.speed *= (current_rotation - optimized_desired_state.angle).cos()
+
         self._drive_PIDController.setReference(
             optimized_desired_state.speed, CANSparkMax.ControlType.kVelocity
         )
