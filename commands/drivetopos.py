@@ -1,3 +1,5 @@
+import math
+
 from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d, Rotation2d
 
@@ -5,6 +7,9 @@ from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
+
+def clamp(x, mini, maxi):
+    return max(mini, min(x, maxi))
 
 class DriveToPos(SafeCommand):
     xy_p = autoproperty(0.5)
@@ -18,6 +23,8 @@ class DriveToPos(SafeCommand):
     rot_d = autoproperty(0.5)
     rot_tol_pos = autoproperty(0.5)
     rot_tol_vel = autoproperty(0.5)
+
+    max_speed = autoproperty(0.5)
 
     def __init__(self, drivetrain: Drivetrain, goal: Pose2d, goalAngle: Rotation2d):
         super().__init__()
@@ -43,8 +50,20 @@ class DriveToPos(SafeCommand):
     def execute(self):
         current_pos = self.drivetrain.getPose()
 
-        self.drivetrain.drive(self.pid_x.calculate(current_pos.x),
-                              self.pid_y.calculate(current_pos.y),
+        vel_x = self.pid_x.calculate(current_pos.x)
+        vel_y = self.pid_y.calculate(current_pos.y)
+
+        speed = math.sqrt(vel_x*vel_x + vel_y*vel_y)
+        clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
+
+        if clamped_speed >= 0.001:
+            scale_factor = clamped_speed/speed
+
+            new_vel_x = scale_factor*vel_x
+            new_vel_y = scale_factor*vel_y
+
+        self.drivetrain.drive(,
+                              ,
                               -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
                               True
         )
