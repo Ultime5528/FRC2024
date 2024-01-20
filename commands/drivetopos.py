@@ -8,23 +8,23 @@ from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
 
-def clamp(x, mini, maxi):
-    return max(mini, min(x, maxi))
+def clamp(x, minimum, maximum):
+  return max(minimum, min(x, maximum))
 
 class DriveToPos(SafeCommand):
-    xy_p = autoproperty(0.5)
-    xy_i = autoproperty(0.5)
-    xy_d = autoproperty(0.5)
-    xy_tol_pos = autoproperty(0.5)
-    xy_tol_vel = autoproperty(0.5)
+    xy_p = autoproperty(0.35)
+    xy_i = autoproperty(0.0)
+    xy_d = autoproperty(0.0)
+    xy_tol_pos = autoproperty(0.04)
+    xy_tol_vel = autoproperty(0.04)
 
-    rot_p = autoproperty(0.5)
-    rot_i = autoproperty(0.5)
-    rot_d = autoproperty(0.5)
-    rot_tol_pos = autoproperty(0.5)
-    rot_tol_vel = autoproperty(0.5)
+    rot_p = autoproperty(0.0065)
+    rot_i = autoproperty(0.0)
+    rot_d = autoproperty(0.0)
+    rot_tol_pos = autoproperty(0.047)
+    rot_tol_vel = autoproperty(0.047)
 
-    max_speed = autoproperty(0.5)
+    max_speed = autoproperty(1.0)
 
     def __init__(self, drivetrain: Drivetrain, goal: Pose2d, goalAngle: Rotation2d):
         super().__init__()
@@ -53,20 +53,20 @@ class DriveToPos(SafeCommand):
         vel_x = self.pid_x.calculate(current_pos.x)
         vel_y = self.pid_y.calculate(current_pos.y)
 
-        speed = math.sqrt(vel_x*vel_x + vel_y*vel_y)
+        speed = math.sqrt(vel_x*vel_x+vel_y*vel_y)
         clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
 
-        if clamped_speed >= 0.001:
-            scale_factor = clamped_speed/speed
+        if not math.isclose(speed, 0):
+            speed_factor = clamped_speed/speed
 
-            new_vel_x = scale_factor*vel_x
-            new_vel_y = scale_factor*vel_y
+            new_vel_x = vel_x*speed_factor
+            new_vel_y = vel_y*speed_factor
 
-        self.drivetrain.drive(,
-                              ,
-                              -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
-                              True
-        )
+            self.drivetrain.drive(new_vel_x,
+                                  new_vel_y,
+                                  -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                                  True
+            )
 
     def end(self, interrupted):
         self.drivetrain.drive(0, 0, 0, False)
