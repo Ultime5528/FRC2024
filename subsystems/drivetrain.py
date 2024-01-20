@@ -15,7 +15,7 @@ import ports
 from gyro import ADIS16470
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.swerve import SwerveModule, wrapAngle, stepTowardsCircular, angleDifference
+from utils.swerve import SwerveModule
 
 
 class Drivetrain(SafeSubsystem):
