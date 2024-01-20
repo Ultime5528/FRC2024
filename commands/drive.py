@@ -5,8 +5,8 @@ from wpimath.filter import SlewRateLimiter
 from wpimath.geometry import Rotation2d
 
 from subsystems.drivetrain import Drivetrain
-from utils.safecommand import SafeCommand
 from utils.property import autoproperty
+from utils.safecommand import SafeCommand
 
 
 def apply_center_distance_deadzone(x_dist, y_dist, deadzone):
