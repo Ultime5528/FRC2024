@@ -5,6 +5,7 @@ import commands2.button
 import wpilib
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
+from commands.auto.drivesquares import DriveSquares
 from commands.drive import Drive
 from commands.drivetopos import DriveToPos
 from subsystems.drivetrain import Drivetrain
@@ -54,7 +55,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
+        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
 
     def setupDashboard(self):
         """
@@ -75,7 +76,7 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str = None) -> commands2.CommandBase:
+def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:
