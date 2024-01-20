@@ -1,0 +1,56 @@
+from wpimath.controller import PIDController
+from wpimath.geometry import Pose2d, Rotation2d
+
+from subsystems.drivetrain import Drivetrain
+from utils.property import autoproperty
+from utils.safecommand import SafeCommand
+
+
+class DriveToPos(SafeCommand):
+    xy_p = autoproperty(0.5)
+    xy_i = autoproperty(0.5)
+    xy_d = autoproperty(0.5)
+    xy_tol_pos = autoproperty(0.5)
+    xy_tol_vel = autoproperty(0.5)
+
+    rot_p = autoproperty(0.5)
+    rot_i = autoproperty(0.5)
+    rot_d = autoproperty(0.5)
+    rot_tol_pos = autoproperty(0.5)
+    rot_tol_vel = autoproperty(0.5)
+
+    def __init__(self, drivetrain: Drivetrain, goal: Pose2d, goalAngle: Rotation2d):
+        super().__init__()
+        self.addRequirements(drivetrain)
+        self.drivetrain = drivetrain
+        self.goal = goal
+        self.angle = goalAngle
+
+    def initialize(self):
+        self.pid_x = PIDController(self.xy_p, self.xy_i, self.xy_d)
+        self.pid_x.setTolerance(self.xy_tol_pos, self.xy_tol_vel)
+        self.pid_x.setSetpoint(self.goal.x)
+
+        self.pid_y = PIDController(self.xy_p, self.xy_i, self.xy_d)
+        self.pid_y.setTolerance(self.xy_tol_pos, self.xy_tol_vel)
+        self.pid_y.setSetpoint(self.goal.y)
+
+        self.pid_rot = PIDController(self.rot_p, self.rot_i, self.rot_d)
+        self.pid_rot.setTolerance(self.rot_tol_pos, self.rot_tol_vel)
+        self.pid_rot.enableContinuousInput(-180, 180)
+        self.pid_rot.setSetpoint(self.angle.degrees())
+
+    def execute(self):
+        current_pos = self.drivetrain.getPose()
+
+        self.drivetrain.drive(self.pid_x.calculate(current_pos.x),
+                              self.pid_y.calculate(current_pos.y),
+                              -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                              True
+        )
+
+    def end(self, interrupted):
+        self.drivetrain.drive(0, 0, 0, False)
+
+    def isFinished(self):
+        return self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint()

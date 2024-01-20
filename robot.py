@@ -3,8 +3,10 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
 from commands.drive import Drive
+from commands.drivetopos import DriveToPos
 from subsystems.drivetrain import Drivetrain
 
 
@@ -43,6 +45,7 @@ class Robot(commands2.TimedCommandRobot):
         self.setupButtons()
         self.setupDashboard()
 
+
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
@@ -57,8 +60,11 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        pass
-          
+        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
+                                                       Pose2d(5,5,0), Rotation2d.fromDegrees(50)), "test drive to pos")
+        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
+                                                       Pose2d(0,0, 0), Rotation2d.fromDegrees(0)), name="return")
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
