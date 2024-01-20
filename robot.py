@@ -5,10 +5,7 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
-from commands.auto.drivesquarespauses import DriveSquaresPauses
-from commands.auto.dspauserotate import DriveSquaresPausesRotate
-from commands.auto.dsquarerotate import DriveSquaresRotate
-from commands.drive import Drive
+from commands.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 
 
@@ -30,7 +27,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
 
-
         """
         Subsystems
         """
@@ -39,7 +35,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -62,14 +58,16 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        pass
-          
+        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
             self.auto_command.schedule()
 
     def teleopInit(self):
+        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
