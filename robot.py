@@ -58,8 +58,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller), "DriveField")
-        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller), "Drive")
+        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
         pass
 
     def autonomousInit(self):
