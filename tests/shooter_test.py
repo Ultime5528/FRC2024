@@ -6,7 +6,7 @@ from utils.sparkmaxsim import SparkMaxSim
 from subsystems.shooter import Shooter
 
 
-def test_shootHigh(control, robot):
+def test_ShootHigh(control, robot):
 
     with control.run_robot():
         robot.shooter.shootHigh()
@@ -15,7 +15,7 @@ def test_shootHigh(control, robot):
         assert -1*robot.shooter.shooter_high_speed == pytest.approx(robot.shooter.right_motor_sim.getVelocity(), rel=0.01)
 
 
-def test_shootLow(control, robot):
+def test_ShootLow(control, robot):
 
     with control.run_robot():
         robot.shooter.shootLow()
@@ -24,5 +24,17 @@ def test_shootLow(control, robot):
         assert -1*robot.shooter.shooter_low_speed == pytest.approx(robot.shooter.right_motor_sim.getVelocity(), rel=0.01)
 
 
+# def test_AngleUp(control, robot):
+
+#     with control.run_robot():
+#         robot.shooter.AngleUp()
+#         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+#         assert robot.shooter.shooter_angle_up_speed == pytest.approx(robot.shooter.pivot_motor_sim.getVelocity(), rel=0.01)#
 
 
+# def test_AngleDown(control, robot):
+
+#     with control.run_robot():
+#         robot.shooter.AngleDown()
+#         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+#         assert robot.shooter.shooter_angle_down_speed == pytest.approx(robot.shooter.pivot_motor_sim.getVelocity(), rel=0.01)

@@ -22,6 +22,7 @@ drivetrain_motor_driving_br: Final = 2
 drivetrain_motor_turning_br: Final = 1
 shooter_motor_left: Final = 11
 shooter_motor_right: Final = 12
+shooter_pivot_motor: Final = 13
 
 # PWM
 
