@@ -4,7 +4,8 @@ from typing import Optional
 import commands2.button
 import wpilib
 
-from commands.drive import Drive
+from commands.auto.drivesquares import DriveSquares
+from commands.drive import DriveField, Drive
 from commands.load import Load
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
@@ -37,7 +38,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -54,12 +55,14 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
+        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
 
     def setupDashboard(self):
         """
         Send commands to dashboard to
         """
+        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Intake", Load(self.intake))
 
     def autonomousInit(self):
@@ -68,11 +71,12 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
+        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str = None) -> commands2.CommandBase:
+def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:
