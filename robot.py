@@ -5,7 +5,6 @@ import commands2.button
 import wpilib
 
 from commands.drive import Drive
-from subsystems.drivetrain import Drivetrain
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -29,7 +28,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
-        self.drivetrain = Drivetrain(self.getPeriod())
+
+        #self.drivetrain = Drivetrain(self.getPeriod())
 
         """
         Default subsystem commands
