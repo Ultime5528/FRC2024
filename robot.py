@@ -31,13 +31,13 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
-        self.drivetrain = Drivetrain(self.getPeriod())
+        # self.drivetrain = Drivetrain(self.getPeriod())
         self.intake = Intake()
 
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        # self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -45,7 +45,6 @@ class Robot(commands2.TimedCommandRobot):
         self.setupAuto()
         self.setupButtons()
         self.setupDashboard()
-        putCommandOnDashboard("Load", Load(self.intake))
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
@@ -61,8 +60,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        pass
-          
+        putCommandOnDashboard("Intake", Load(self.intake))
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:

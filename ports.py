@@ -28,6 +28,7 @@ catapult_servo: Final = 0
 
 # DIO
 catapult_limitswitch: Final = 0
+intake_sensor: Final = 0
 
 # PCM
 catapult_solenoid_forward: Final = 1
