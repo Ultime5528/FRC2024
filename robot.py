@@ -31,13 +31,13 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
-        # self.drivetrain = Drivetrain(self.getPeriod())
+        self.drivetrain = Drivetrain(self.getPeriod())
         self.intake = Intake()
 
         """
         Default subsystem commands
         """
-        # self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
 
         """
         Setups
