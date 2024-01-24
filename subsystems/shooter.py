@@ -10,8 +10,8 @@ from utils.property import autoproperty
 
 
 class Shooter(SafeSubsystem):
-    shooter_high_speed = autoproperty(0.5)
-    shooter_low_speed = autoproperty(0.25)
+    high_speed = autoproperty(0.5)
+    low_speed = autoproperty(0.25)
 
     def __init__(self):
         super().__init__()

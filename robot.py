@@ -31,7 +31,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
-        # self.drivetrain = Drivetrain(self.getPeriod())
+        self.drivetrain = Drivetrain(self.getPeriod())
         self.shooter = Shooter()
         """
         Default subsystem commands
