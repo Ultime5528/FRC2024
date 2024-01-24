@@ -27,10 +27,10 @@ class Shooter(SafeSubsystem):
             self.right_motor_sim = SparkMaxSim(self.right_motor)
 
     def shootHigh(self):
-        self.left_motor.set(self.shooter_high_speed)
+        self.left_motor.set(self.high_speed)
 
     def shootLow(self):
-        self.left_motor.set(self.shooter_low_speed)
+        self.left_motor.set(self.low_speed)
 
     def simulationPeriodic(self):
         self.left_motor_sim.setVelocity(self.left_motor.get())
