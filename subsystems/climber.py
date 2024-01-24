@@ -41,3 +41,6 @@ class Climber(SafeSubsystem):
     def stopRight(self):
         self.motor_right.set(0)
 
+    def simulationPeriodic(self) -> None:
+        self.motor_left_sim.setVelocity(self.motor_left.get())
+        self.motor_right_sim.setVelocity(self.motor_right.get())
