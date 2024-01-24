@@ -50,5 +50,5 @@ class SafeMixin:
         self.setName(self.__class__.__name__)
 
 
-class SafeCommand(SafeMixin, commands2.CommandBase, metaclass=SafeCommandMetaclass):
+class SafeCommand(SafeMixin, commands2.Command, metaclass=SafeCommandMetaclass):
     pass
