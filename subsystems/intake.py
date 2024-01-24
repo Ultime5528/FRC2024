@@ -30,6 +30,9 @@ class Intake(SafeSubsystem):
     def stop(self):
         self.motor.stopMotor()
 
+    def hasNote(self):
+        return self.sensor.get()
+
     def simulationPeriodic(self) -> None:
         self.sim_motor.setVelocity(self.motor.get())
         self.sim_motor.setPosition(self.sim_motor.getPosition() + self.motor.get())

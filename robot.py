@@ -7,6 +7,7 @@ import wpilib
 from commands.auto.drivesquares import DriveSquares
 from commands.drive import DriveField, Drive
 from commands.load import Load
+from commands.unload import Unload
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 
@@ -63,6 +64,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Outtake", Unload(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
     def autonomousInit(self):

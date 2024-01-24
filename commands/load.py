@@ -1,5 +1,8 @@
+import wpilib
+
 from subsystems.intake import Intake
 from utils.safecommand import SafeCommand
+import ports
 
 
 class Load(SafeCommand):
@@ -12,7 +15,7 @@ class Load(SafeCommand):
         self.intake.load()
 
     def isFinished(self) -> bool:
-        return False
+        return self.intake.hasNote()
 
     def end(self, interrupted: bool) -> None:
         self.intake.stop()
