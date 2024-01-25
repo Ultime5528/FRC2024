@@ -21,10 +21,10 @@ class Intake(SafeSubsystem):
         if RobotBase.isSimulation():
             self.sim_motor = SparkMaxSim(self.motor)
 
-    def load(self):
+    def pickUp(self):
         self.motor.set(self.speed_in)
 
-    def unload(self):
+    def drop(self):
         self.motor.set(self.speed_out)
 
     def stop(self):
