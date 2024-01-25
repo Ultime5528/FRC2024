@@ -3,8 +3,14 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from commands2 import CommandScheduler
 
+import ports
 from commands.drive import Drive
+from subsystems.drivetrain import Drivetrain
+from subsystems.climber import Climber
+from commands.extendclimber import ExtendClimber
+from commands.retractclimber import RetractClimber
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -28,8 +34,20 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
+        self.drivetrain = Drivetrain(self.getPeriod())
+        self.climber_left = Climber(
+            ports.climber_motor_left,
+            ports.limitswitch_up_left,
+            ports.limitswitch_down_left
+        )
+        # self.climber_right = Climber(
+        #     ports.climber_motor_right,
+        #     ports.limitswitch_up_right,
+        #     ports.limitswitch_down_right
+        # )
 
-        #self.drivetrain = Drivetrain(self.getPeriod())
+
+
 
         """
         Default subsystem commands
@@ -51,14 +69,16 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
+        self.xbox_controller.button(1).onTrue(ExtendClimber(self.climber_left))
+
+        # self.xbox_controller.button(2).whileTrue(RetractClimber(self.climber_left))
 
     def setupDashboard(self):
         """
         Send commands to dashboard to
         """
-        pass
-          
+        CommandScheduler.getInstance().onCommandInitialize(lambda cmd: "Init " + cmd.getName())
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
@@ -69,7 +89,7 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str = None) -> commands2.CommandBase:
+def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.CommandBase:
     if sub_table:
         sub_table += "/"
     else:

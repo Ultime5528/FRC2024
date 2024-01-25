@@ -12,32 +12,37 @@ class Climber(SafeSubsystem):
     climber_speed_up = autoproperty(0.25)
     climber_speed_down = autoproperty(-0.25)
 
-    def __init__(self):
+    def __init__(self, port_motor, portswitchup, portswitchdown):
         super().__init__()
-        self.motor_left = rev.CANSparkMax(ports.climber_motor_left,
-                                    rev.CANSparkMax.MotorType.kBrushless)
-        self.motor_right = rev.CANSparkMax(ports.climber_motor_right,
-                                    rev.CANSparkMax.MotorType.kBrushless)
+        self.motor = rev.CANSparkMax(port_motor,
+                                     rev.CANSparkMax.MotorType.kBrushless)
+
+        self.switch_up = wpilib.DigitalInput(portswitchup)
+        self.switch_down = wpilib.DigitalInput(portswitchdown)
 
         if RobotBase.isSimulation():
-            self.motor_right_sim = SparkMaxSim(self.motor_right)
-            self.motor_left_sim = SparkMaxSim(self.motor_left)
+            self.motor_sim = SparkMaxSim(self.motor)
 
-    def extendLeft(self):
-        self.motor_left.set(self.climber_speed_up)
+    def extend(self):
+        if not self.isUp():
+            self.motor.set(self.climber_speed_up)
+        else:
+            self.stop()
 
-    def retractLeft(self):
-        self.motor_left.set(self.climber_speed_down)
+    def retract(self):
+        if not self.isDown():
+            self.motor.set(self.climber_speed_down)
+        else:
+            self.stop()
 
-    def stopLeft(self):
-        self.motor_left.set(0)
+    def stop(self):
+        self.motor.set(0)
 
-    def extendRight(self):
-        self.motor_right.set(self.climber_speed_up)
+    def isUp(self):
+        return self.switch_up.get()
 
-    def retractRight(self):
-        self.motor_right.set(self.climber_speed_down)
+    def isDown(self):
+        return self.switch_down.get()
 
-    def stopRight(self):
-        self.motor_right.set(0)
-
+    def simulationPeriodic(self) -> None:
+        self.motor_sim.setVelocity(self.motor.get())
