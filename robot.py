@@ -7,7 +7,7 @@ from commands2 import CommandScheduler
 
 import ports
 from commands.auto.drivesquares import DriveSquares
-from commands.drive import DriveField, Drive
+from commands.drivetrain.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 from subsystems.climber import Climber
 from commands.extendclimber import ExtendClimber
