@@ -39,14 +39,10 @@ class Climber(SafeSubsystem):
         self.motor.set(0)
 
     def isUp(self):
-        return self.switch_up.get()
+        return not self.switch_up.get()
 
     def isDown(self):
-        return self.switch_down.get()
+        return not self.switch_down.get()
 
     def simulationPeriodic(self) -> None:
         self.motor_sim.setVelocity(self.motor.get())
-
-    def simulationPeriodic(self) -> None:
-        self.motor_left_sim.setVelocity(self.motor_left.get())
-        self.motor_right_sim.setVelocity(self.motor_right.get())
