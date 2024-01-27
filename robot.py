@@ -6,7 +6,8 @@ import wpilib
 from commands2 import CommandScheduler
 
 import ports
-from commands.drive import Drive
+from commands.auto.drivesquares import DriveSquares
+from commands.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 from subsystems.climber import Climber
 from commands.extendclimber import ExtendClimber
@@ -17,7 +18,6 @@ class Robot(commands2.TimedCommandRobot):
     def __init__(self):
         super().__init__()
         wpilib.LiveWindow.enableAllTelemetry()
-        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
         """
@@ -52,7 +52,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -77,7 +77,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        CommandScheduler.getInstance().onCommandInitialize(lambda cmd: "Init " + cmd.getName())
+        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -85,11 +86,12 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
+        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.CommandBase:
+def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:
