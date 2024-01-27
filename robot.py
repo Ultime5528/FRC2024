@@ -13,7 +13,6 @@ class Robot(commands2.TimedCommandRobot):
     def __init__(self):
         super().__init__()
         wpilib.LiveWindow.enableAllTelemetry()
-        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
         """
