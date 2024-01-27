@@ -8,6 +8,7 @@ from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from commands.auto.drivesquares import DriveSquares
 from commands.drive import Drive
 from commands.drivetopos import DriveToPos
+from commands.drivetoposes import DriveToPoses
 from subsystems.drivetrain import Drivetrain
 
 
@@ -61,10 +62,11 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
+        putCommandOnDashboard("Drivetrain", DriveToPoses(self.drivetrain, [Pose2d(1,1,Rotation2d.fromDegrees(45)), Pose2d(5,6,Rotation2d.fromDegrees(180))]))
         putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
-                                                       Pose2d(5,5,0), Rotation2d.fromDegrees(50)), "test drive to pos")
+                                                       Pose2d(7, 7, Rotation2d.fromDegrees(-179))), "test drive to pos")
         putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
-                                                       Pose2d(0,0, 0), Rotation2d.fromDegrees(0)), name="return")
+                                                       Pose2d(0, 0, 0)), name="return")
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
