@@ -12,8 +12,8 @@ class Pivot(SafeSubsystem):
     def __init__(self):
         super().__init__()
 
-        self.high_limitswitch = wpilib.DigitalInput(ports.pivot_high_limitswitch)
-        self.low_limitswitch = wpilib.DigitalInput(ports.pivot_low_limitswitch)
+        self.high_limitswitch = wpilib.DigitalInput(ports.pivot_limitswitch_high)
+        self.low_limitswitch = wpilib.DigitalInput(ports.pivot_limitswitch_low)
 
         self.motor = phoenix5.WPI_VictorSPX(ports.pivot_motor)
         self.encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)

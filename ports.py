@@ -27,8 +27,8 @@ pivot_motor: Final = 13
 # PWM
 
 # DIO
-pivot_high_limitswitch: Final = 4
-pivot_low_limitswitch: Final = 5
+pivot_limitswitch_high: Final = 4
+pivot_limitswitch_low: Final = 5
 pivot_encoder_a: Final = 6
 pivot_encoder_b: Final = 7
 
