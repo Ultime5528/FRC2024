@@ -38,11 +38,11 @@ class Robot(commands2.TimedCommandRobot):
             ports.limitswitch_up_left,
             ports.limitswitch_down_left
         )
-        # self.climber_right = Climber(
-        #     ports.climber_motor_right,
-        #     ports.limitswitch_up_right,
-        #     ports.limitswitch_down_right
-        # )
+        self.climber_right = Climber(
+             ports.climber_motor_right,
+             ports.limitswitch_up_right,
+             ports.limitswitch_down_right
+        )
 
 
 
@@ -67,10 +67,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.button(1).onTrue(ExtendClimber(self.climber_left))
-
-        self.xbox_controller.button(2).whileTrue(RetractClimber(self.climber_left))
-
+        pass
+    
     def setupDashboard(self):
         """
         Send commands to dashboard to
