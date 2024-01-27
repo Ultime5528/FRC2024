@@ -27,10 +27,10 @@ climber_motor_right = 9
 
 
 # DIO
-limitswitch_up_left = 0
-limitswitch_up_right = 1
-limitswitch_down_left = 2
-limitswitch_down_right = 3
+climber_limitswitch_up_left = 0
+climber_limitswitch_up_right = 1
+climber_limitswitch_down_left = 2
+climber_limitswitch_down_right = 3
 
 # PCM
 
