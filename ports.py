@@ -20,9 +20,16 @@ drivetrain_motor_driving_bl: Final = 4
 drivetrain_motor_turning_bl: Final = 3
 drivetrain_motor_driving_br: Final = 2
 drivetrain_motor_turning_br: Final = 1
+shooter_motor_left: Final = 11
+shooter_motor_right: Final = 12
+pivot_motor: Final = 13
 
 # PWM
 
 # DIO
+pivot_high_limitswitch: Final = 4
+pivot_low_limitswitch: Final = 5
+pivot_encoder_a: Final = 6
+pivot_encoder_b: Final = 7
 
 # PCM
