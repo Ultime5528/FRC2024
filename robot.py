@@ -5,7 +5,7 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
-from commands.drive import DriveField, Drive
+from commands.drivetrain.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 
 
