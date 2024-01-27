@@ -82,8 +82,8 @@ def autoproperty(
     else:  # PropertyMode.Dashboard, default False (keep saved)
         write = write if write is not None else False
 
-    print(curframe)
-    print(calframe)
+    print("curframe", repr(curframe))
+    print("calframe", repr(calframe))
     registry.append(AutopropertyCall(full_key, calframe.filename, calframe.positions.lineno - 1, calframe.positions.col_offset))
 
     return _old_ntproperty(full_key, default_value, writeDefault=write, persistent=True)
