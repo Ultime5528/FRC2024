@@ -15,7 +15,8 @@ def clamp(x, minimum, maximum):
 
 class DriveToPoses(SafeCommand):
     xy_p = autoproperty(0.35)
-    xy_i = autoproperty(0.0)
+    xy_i = autoproperty(1.0)
+    xy_i_last = autoproperty(0.0)
     xy_d = autoproperty(0.0)
     xy_tol_pos = autoproperty(2.0)
     xy_tol_vel = autoproperty(2.0)
@@ -82,6 +83,8 @@ class DriveToPoses(SafeCommand):
                 print(len(self.goals)-1, self.currGoal)
                 if self.currGoal == len(self.goals)-1:
                     print("last")
+                    self.pid_x.setI(self.xy_i_last)
+                    self.pid_y.setI(self.xy_i_last)
                     self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
                     self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
                     self.pid_rot.setTolerance(self.rot_tol_pos_last, self.rot_tol_vel_last)
