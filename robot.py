@@ -7,6 +7,8 @@ import wpilib
 from commands.auto.drivesquares import DriveSquares
 from commands.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
+from subsystems.shooter import Shooter
+from subsystems.pivot import Pivot
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -30,7 +32,8 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
-
+        self.shooter = Shooter()
+        self.pivot = Pivot()
         """
         Default subsystem commands
         """
