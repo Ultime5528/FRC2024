@@ -2,6 +2,8 @@ import rev
 import wpilib
 
 from wpilib import RobotBase
+from wpilib.simulation import DIOSim
+
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
@@ -22,6 +24,9 @@ class Climber(SafeSubsystem):
 
         if RobotBase.isSimulation():
             self.motor_sim = SparkMaxSim(self.motor)
+            self.sim_switch_up = DIOSim(self.switch_up)
+            self.sim_switch_down = DIOSim(self.switch_down)
+
 
     def extend(self):
         if not self.isUp():
@@ -46,3 +51,4 @@ class Climber(SafeSubsystem):
 
     def simulationPeriodic(self) -> None:
         self.motor_sim.setVelocity(self.motor.get())
+

@@ -3,15 +3,13 @@ from typing import Optional
 
 import commands2.button
 import wpilib
-from commands2 import CommandScheduler
 
 import ports
-from commands.auto.drivesquares import DriveSquares
 from commands.drivetrain.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 from subsystems.climber import Climber
-from commands.extendclimber import ExtendClimber
-from commands.retractclimber import RetractClimber
+from commands.climber.extendclimber import ExtendClimber
+from commands.climber.retractclimber import RetractClimber
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -71,7 +69,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.xbox_controller.button(1).onTrue(ExtendClimber(self.climber_left))
 
-        # self.xbox_controller.button(2).whileTrue(RetractClimber(self.climber_left))
+        self.xbox_controller.button(2).whileTrue(RetractClimber(self.climber_left))
 
     def setupDashboard(self):
         """

@@ -1,27 +1,30 @@
 import pytest
+import pyfrc.test_support.controller
+
+from commands.climber.extendclimber import ExtendClimber
+from commands.climber.retractclimber import RetractClimber
+from robot import Robot
 
 
-def test_extend(control, robot):
-
+def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
-        robot.climber_left.extend()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.climber_speed_up == pytest.approx(
-            robot.climber_left.motor_sim.getVelocity(), rel=0.01)
+        cmd = ExtendClimber(robot.climber_left)
+        cmd.schedule()
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.climber_left.climber_speed_up == pytest.approx(robot.climber_left.motor.get(), rel=0.01)
+        robot.climber_left.sim_switch_up.setValue(False)
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert not cmd.isScheduled()
 
 
-def test_retract(control, robot):
-
+def test_retract(control:  "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
-        robot.climber_left.retract()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.climber_speed_down == pytest.approx(
-                    robot.climber_left.motor_sim.getVelocity(), rel=0.01)
-
-
-def test_stop(control, robot):
-
-    with control.run_robot():
-        robot.climber_left.stop()
+        cmd = RetractClimber(robot.climber_left)
+        cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert 0 == pytest.approx(robot.climber_left.motor_sim.getVelocity())
+        assert robot.climber_left.climber_speed_down == pytest.approx(robot.climber_left.motor.get(), rel=0.01)
+        robot.climber_left.sim_switch_down.setValue(False)
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert not cmd.isScheduled()
