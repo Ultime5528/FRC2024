@@ -14,6 +14,5 @@ class Drop(SafeCommand):
     def isFinished(self) -> bool:
         return False
 
-
     def end(self, interrupted: bool) -> None:
         self.intake.stop()
