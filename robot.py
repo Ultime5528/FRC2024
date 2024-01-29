@@ -6,8 +6,8 @@ import wpilib
 
 from commands.auto.drivesquares import DriveSquares
 from commands.drive import DriveField, Drive
-from commands.pickup import PickUp
-from commands.drop import Drop
+from commands.intake.pickup import PickUp
+from commands.intake.drop import Drop
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 
