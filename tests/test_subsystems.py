@@ -9,7 +9,7 @@ from utils.safesubsystem import SafeSubsystem
 def get_subsystems():
     subsystems = []
     for file in Path("../subsystems").rglob("*.py"):
-        module = __import__(str(file).replace("..\\", "").replace("\\", ".").replace(".py", ""), fromlist=[""])
+        module = __import__(str(file).replace("..\\", "").replace("\\", ".").replace(".py", "").replace("/", "."), fromlist=[""])
         for name, obj in inspect.getmembers(module, inspect.isclass):
             if issubclass(obj, Subsystem) and obj.__name__ != "SafeSubsystem":
                 subsystems.append(obj)

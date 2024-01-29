@@ -2,14 +2,16 @@ import inspect
 from pathlib import Path
 import ast
 from textwrap import dedent
+from typing import List
+
 from commands2 import Command, Subsystem
 
 from utils.safecommand import SafeMixin
 
-def transform_path_into_python_import(file):
-    return str(file).replace("..\\", "").replace("\\", ".").replace(".py", "")
+def transform_path_into_python_import(file: Path) -> str:
+    return str(file).replace("..\\", "").replace("\\", ".").replace(".py", "").replace("/", ".")
 
-def get_commands():
+def get_commands() -> List[Command]:
     commands = []
     for file in Path("../commands").rglob("*.py"):
         module = __import__(transform_path_into_python_import(file), fromlist=[""])
@@ -19,7 +21,7 @@ def get_commands():
     return commands
 
 
-def get_arguments(command):
+def get_arguments(command: Command):
     return inspect.signature(command.__init__).parameters
 
 
