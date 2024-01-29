@@ -12,10 +12,11 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         cmd = ExtendClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.climber_speed_up == pytest.approx(robot.climber_left.motor.get(), rel=0.01)
+        assert robot.climber_left.speed_up == pytest.approx(robot.climber_left._motor.get(), rel=0.01)
         robot.climber_left.sim_switch_up.setValue(False)
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
+        assert 0 == robot.climber_left._motor.get()
 
 
 def test_retract(control:  "pyfrc.test_support.controller.TestController", robot: Robot):
@@ -24,7 +25,8 @@ def test_retract(control:  "pyfrc.test_support.controller.TestController", robot
         cmd = RetractClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.climber_speed_down == pytest.approx(robot.climber_left.motor.get(), rel=0.01)
+        assert robot.climber_left.speed_down == pytest.approx(robot.climber_left._motor.get(), rel=0.01)
         robot.climber_left.sim_switch_down.setValue(False)
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
+        assert 0 == robot.climber_right._motor.get()

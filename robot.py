@@ -35,13 +35,13 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain = Drivetrain(self.getPeriod())
         self.climber_left = Climber(
             ports.climber_motor_left,
-            ports.climber_limitswitch_up_left,
-            ports.climber_limitswitch_down_left
+            ports.climber_switch_up_left,
+            ports.climber_switch_down_left
         )
         self.climber_right = Climber(
              ports.climber_motor_right,
-             ports.climber_limitswitch_up_right,
-             ports.climber_limitswitch_down_right
+             ports.climber_switch_up_right,
+             ports.climber_switch_down_right
         )
 
 
@@ -75,6 +75,12 @@ class Robot(commands2.TimedCommandRobot):
         """
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Climber", ExtendClimber(self.climber_left), "ExtendClimber.left")
+        putCommandOnDashboard("Climber", RetractClimber(self.climber_left), "RetractClimber.left")
+        putCommandOnDashboard("Climber", ExtendClimber(self.climber_right), "ExtendClimber.right")
+        putCommandOnDashboard("Climber", RetractClimber(self.climber_right), "RetractClimber.right")
+
+
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
