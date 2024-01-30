@@ -15,24 +15,24 @@ class Intake(SafeSubsystem):
 
     def __init__(self):
         super().__init__()
-        self.motor = rev.CANSparkMax(ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless)
-        self.sensor = wpilib.DigitalInput(ports.intake_sensor)
+        self._motor = rev.CANSparkMax(ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless)
+        self._sensor = wpilib.DigitalInput(ports.intake_sensor)
 
         if RobotBase.isSimulation():
-            self.sim_motor = SparkMaxSim(self.motor)
+            self.sim_motor = SparkMaxSim(self._motor)
 
     def pickUp(self):
-        self.motor.set(self.speed_in)
+        self._motor.set(self.speed_in)
 
     def drop(self):
-        self.motor.set(self.speed_out)
+        self._motor.set(self.speed_out)
 
     def stop(self):
-        self.motor.stopMotor()
+        self._motor.stopMotor()
 
     def hasNote(self):
-        return self.sensor.get()
+        return self._sensor.get()
 
     def simulationPeriodic(self) -> None:
-        self.sim_motor.setVelocity(self.motor.get())
-        self.sim_motor.setPosition(self.sim_motor.getPosition() + self.motor.get())
+        self.sim_motor.setVelocity(self._motor.get())
+        self.sim_motor.setPosition(self.sim_motor.getPosition() + self._motor.get())

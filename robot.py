@@ -56,7 +56,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
+        pass
 
     def setupDashboard(self):
         """
@@ -64,7 +64,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
-        putCommandOnDashboard("Outtake", Drop(self.intake))
+        putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
 
     def autonomousInit(self):

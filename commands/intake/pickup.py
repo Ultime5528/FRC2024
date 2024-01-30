@@ -7,7 +7,7 @@ import ports
 
 
 class PickUp(SafeCommand):
-    delay_time = autoproperty(1.0)
+    delay_time = autoproperty(1.00)
 
     def __init__(self, intake: Intake):
         super().__init__()
@@ -22,9 +22,11 @@ class PickUp(SafeCommand):
         self.intake.pickUp()
         if self.intake.hasNote():
             self.timer.start()
+            print(self.intake.hasNote())
 
     def isFinished(self) -> bool:
         return self.timer.get() >= self.delay_time
 
     def end(self, interrupted: bool) -> None:
+        self.timer.stop()
         self.intake.stop()
