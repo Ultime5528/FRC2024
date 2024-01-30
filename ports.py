@@ -20,9 +20,17 @@ drivetrain_motor_driving_bl: Final = 4
 drivetrain_motor_turning_bl: Final = 3
 drivetrain_motor_driving_br: Final = 2
 drivetrain_motor_turning_br: Final = 1
+climber_motor_left = 10
+climber_motor_right = 9
 
 # PWM
 
+
 # DIO
+climber_switch_up_left = 0
+climber_switch_up_right = 1
+climber_switch_down_left = 2
+climber_switch_down_right = 3
 
 # PCM
+
