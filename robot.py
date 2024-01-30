@@ -10,8 +10,7 @@ from subsystems.drivetrain import Drivetrain
 
 
 class Robot(commands2.TimedCommandRobot):
-    def __init__(self):
-        super().__init__()
+    def robotInit(self):
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 

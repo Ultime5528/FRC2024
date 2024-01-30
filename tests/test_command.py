@@ -1,24 +1,69 @@
-import inspect
-from pathlib import Path
 import ast
+import importlib
+import inspect
+import pkgutil
+import types
 from textwrap import dedent
-from typing import List
+from typing import List, Dict
 
 from commands2 import Command, Subsystem
 
 from utils.safecommand import SafeMixin
 
-def transform_path_into_python_import(file: Path) -> str:
-    return str(file).replace("..\\", "").replace("\\", ".").replace(".py", "").replace("/", ".")
+
+def import_submodules(package, recursive=True) -> Dict[str, types.ModuleType]:
+    """ Import all submodules of a module, recursively, including subpackages
+
+    :param package: package (name or actual module)
+    :type package: str | module
+    :rtype: dict[str, types.ModuleType]
+    """
+    if isinstance(package, str):
+        package = importlib.import_module(package)
+    results = {}
+    for loader, name, is_pkg in pkgutil.walk_packages(package.__path__):
+        full_name = package.__name__ + '.' + name
+        try:
+            results[full_name] = importlib.import_module(full_name)
+        except ModuleNotFoundError:
+            continue
+        if recursive and is_pkg:
+            results.update(import_submodules(full_name))
+    return results
 
 def get_commands() -> List[Command]:
-    commands = []
-    for file in Path("../commands").rglob("*.py"):
-        module = __import__(transform_path_into_python_import(file), fromlist=[""])
-        for name, obj in inspect.getmembers(module, inspect.isclass):
-            if issubclass(obj, Command) and obj.__name__ != "SafeCommand":
-                commands.append(obj)
-    return commands
+    import commands
+
+    results = import_submodules(commands)
+    cmds = []
+
+    for mod in results.values():
+        for _, cls in inspect.getmembers(mod, inspect.isclass):
+            if issubclass(cls, Command) and cls.__name__ != "SafeCommand":
+                cmds.append(cls)
+
+    # package = commands
+    # cmds = []
+    #
+    # for loader, name, is_pkg in pkgutil.iter_modules(package.__path__):
+    #     full_name = package.__name__ + "." + name
+    #     try:
+    #         module = importlib.import_module(full_name)
+    #
+    #
+    #     except ModuleNotFoundError:
+    #         print("Not found:", full_name)
+    #         continue
+
+    return cmds
+
+
+    # for file in Path("../commands").rglob("*.py"):
+    #     module = __import__(transform_path_into_python_import(file), fromlist=[""])
+    #     for name, obj in inspect.getmembers(module, inspect.isclass):
+    #         if issubclass(obj, Command) and obj.__name__ != "SafeCommand":
+    #             commands.append(obj)
+    # return commands
 
 
 def get_arguments(command: Command):
