@@ -32,7 +32,7 @@ def import_submodules(package, recursive=True) -> Dict[str, types.ModuleType]:
     return results
 
 
-def get_commands() -> List[Command]:
+def get_commands() -> List[Command or None]:
     import commands
 
     results = import_submodules(commands)

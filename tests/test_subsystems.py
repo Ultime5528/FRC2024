@@ -14,6 +14,7 @@ def import_submodules(package, recursive=True) -> Dict[str, ModuleType]:
 
     :param package: package (name or actual module)
     :type package: str | module
+    :type recursive: bool
     :rtype: dict[str, types.ModuleType]
     """
     if isinstance(package, str):
@@ -30,18 +31,19 @@ def import_submodules(package, recursive=True) -> Dict[str, ModuleType]:
     return results
 
 
-def get_subsystems() -> List[Subsystem]:
+def get_subsystems() -> List[Subsystem or None]:
     import subsystems
 
     results = import_submodules(subsystems)
-    cmds = []
+    subs = []
 
     for mod in results.values():
         for _, cls in inspect.getmembers(mod, inspect.isclass):
             if issubclass(cls, Subsystem) and cls.__name__ != "SafeSubsystem":
-                cmds.append(cls)
+                subs.append(cls)
 
-    return cmds
+    return subs
+
 
 def test_inheritance():
     for obj in get_subsystems():
