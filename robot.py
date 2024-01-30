@@ -5,7 +5,7 @@ import commands2.button
 import wpilib
 
 from commands.auto.drivesquares import DriveSquares
-from commands.drive import DriveField, Drive
+from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.pickup import PickUp
 from commands.intake.drop import Drop
 from subsystems.drivetrain import Drivetrain
@@ -16,7 +16,6 @@ class Robot(commands2.TimedCommandRobot):
     def __init__(self):
         super().__init__()
         wpilib.LiveWindow.enableAllTelemetry()
-        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
         """
