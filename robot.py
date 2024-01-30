@@ -85,7 +85,3 @@ def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = No
     wpilib.SmartDashboard.putData(sub_table + name, cmd)
 
     return cmd
-
-
-if __name__ == "__main__":
-    wpilib.run(Robot)
