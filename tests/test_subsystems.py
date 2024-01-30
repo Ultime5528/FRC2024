@@ -1,19 +1,47 @@
+import importlib
 import inspect
-from pathlib import Path
+import pkgutil
+from types import ModuleType
+from typing import List, Dict
 
 from commands2 import Subsystem
 
 from utils.safesubsystem import SafeSubsystem
 
 
-def get_subsystems():
-    subsystems = []
-    for file in Path("../subsystems").rglob("*.py"):
-        module = __import__(str(file).replace("..\\", "").replace("\\", ".").replace(".py", "").replace("/", "."), fromlist=[""])
-        for name, obj in inspect.getmembers(module, inspect.isclass):
-            if issubclass(obj, Subsystem) and obj.__name__ != "SafeSubsystem":
-                subsystems.append(obj)
-    return subsystems
+def import_submodules(package, recursive=True) -> Dict[str, ModuleType]:
+    """ Import all submodules of a module, recursively, including subpackages
+
+    :param package: package (name or actual module)
+    :type package: str | module
+    :rtype: dict[str, types.ModuleType]
+    """
+    if isinstance(package, str):
+        package = importlib.import_module(package)
+    results = {}
+    for loader, name, is_pkg in pkgutil.walk_packages(package.__path__):
+        full_name = package.__name__ + '.' + name
+        try:
+            results[full_name] = importlib.import_module(full_name)
+        except ModuleNotFoundError:
+            continue
+        if recursive and is_pkg:
+            results.update(import_submodules(full_name))
+    return results
+
+
+def get_subsystems() -> List[Subsystem]:
+    import subsystems
+
+    results = import_submodules(subsystems)
+    cmds = []
+
+    for mod in results.values():
+        for _, cls in inspect.getmembers(mod, inspect.isclass):
+            if issubclass(cls, Subsystem) and cls.__name__ != "SafeSubsystem":
+                cmds.append(cls)
+
+    return cmds
 
 def test_inheritance():
     for obj in get_subsystems():

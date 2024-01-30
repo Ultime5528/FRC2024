@@ -31,6 +31,7 @@ def import_submodules(package, recursive=True) -> Dict[str, types.ModuleType]:
             results.update(import_submodules(full_name))
     return results
 
+
 def get_commands() -> List[Command]:
     import commands
 
@@ -42,28 +43,7 @@ def get_commands() -> List[Command]:
             if issubclass(cls, Command) and cls.__name__ != "SafeCommand":
                 cmds.append(cls)
 
-    # package = commands
-    # cmds = []
-    #
-    # for loader, name, is_pkg in pkgutil.iter_modules(package.__path__):
-    #     full_name = package.__name__ + "." + name
-    #     try:
-    #         module = importlib.import_module(full_name)
-    #
-    #
-    #     except ModuleNotFoundError:
-    #         print("Not found:", full_name)
-    #         continue
-
     return cmds
-
-
-    # for file in Path("../commands").rglob("*.py"):
-    #     module = __import__(transform_path_into_python_import(file), fromlist=[""])
-    #     for name, obj in inspect.getmembers(module, inspect.isclass):
-    #         if issubclass(obj, Command) and obj.__name__ != "SafeCommand":
-    #             commands.append(obj)
-    # return commands
 
 
 def get_arguments(command: Command):
