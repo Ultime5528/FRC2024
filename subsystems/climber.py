@@ -13,7 +13,7 @@ from utils.sparkmaxsim import SparkMaxSim
 class Climber(SafeSubsystem):
     speed_up = autoproperty(0.25)
     speed_down = autoproperty(-0.25)
-    sim_max_height = autoproperty(100)
+    _sim_max_height = 100
 
     def __init__(self, port_motor, port_switch_up, port_switch_down):
         super().__init__()
@@ -24,19 +24,9 @@ class Climber(SafeSubsystem):
         self._switch_down = wpilib.DigitalInput(port_switch_down)
 
         if RobotBase.isSimulation():
-            self.motor_sim = SparkMaxSim(self._motor)
+            self.sim_motor = SparkMaxSim(self._motor)
             self.sim_switch_up = DIOSim(self._switch_up)
             self.sim_switch_down = DIOSim(self._switch_down)
-
-            if self.motor_sim.getPosition() <= 0:
-                self.sim_switch_down.setValue(True)
-            else:
-                self.sim_switch_down.setValue(False)
-
-            if self.motor_sim.getPosition() <= self.sim_max_height:
-                self.sim_switch_up.setValue(True)
-            else:
-                self.sim_switch_up.setValue(False)
 
     def extend(self):
         if not self.isUp():
@@ -60,5 +50,15 @@ class Climber(SafeSubsystem):
         return not self._switch_down.get()
 
     def simulationPeriodic(self) -> None:
-        self.motor_sim.setVelocity(self._motor.get())
+        self.sim_motor.setVelocity(self._motor.get())
+        self.sim_motor.setPosition(self.sim_motor.getPosition() + self._motor.get())
 
+        if self.sim_motor.getPosition() >= 0:
+            self.sim_switch_down.setValue(True)
+        else:
+            self.sim_switch_down.setValue(False)
+
+        if self.sim_motor.getPosition() <= self._sim_max_height:
+            self.sim_switch_up.setValue(True)
+        else:
+            self.sim_switch_up.setValue(False)
