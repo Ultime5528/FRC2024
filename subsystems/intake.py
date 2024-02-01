@@ -19,7 +19,7 @@ class Intake(SafeSubsystem):
         self._sensor = wpilib.DigitalInput(ports.intake_sensor)
 
         if RobotBase.isSimulation():
-            self.sim_motor = SparkMaxSim(self._motor)
+            self._sim_motor = SparkMaxSim(self._motor)
 
     def pickUp(self):
         self._motor.set(self.speed_in)
@@ -34,5 +34,5 @@ class Intake(SafeSubsystem):
         return self._sensor.get()
 
     def simulationPeriodic(self) -> None:
-        self.sim_motor.setVelocity(self._motor.get())
-        self.sim_motor.setPosition(self.sim_motor.getPosition() + self._motor.get())
+        self._sim_motor.setVelocity(self._motor.get())
+        self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
