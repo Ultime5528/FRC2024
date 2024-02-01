@@ -7,6 +7,9 @@ import wpilib
 from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
+from subsystems.led import LEDController
+from commands.lightall import Lightall
+
 
 class Robot(commands2.TimedCommandRobot):
     def __init__(self):
@@ -30,6 +33,7 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
+        self.led = LEDController()
 
         """
         Default subsystem commands
@@ -57,8 +61,9 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        pass
-          
+        #putCommandOnDashboard("led", Lightall(self.led))
+        #putCommandOnDashboard("led", Lightall())
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:

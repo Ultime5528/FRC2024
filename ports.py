@@ -24,6 +24,7 @@ catapult_motor: Final = 9
 
 # PWM
 catapult_servo: Final = 0
+led_strip = 1
 
 # DIO
 catapult_limitswitch: Final = 0
