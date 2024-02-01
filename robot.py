@@ -4,7 +4,8 @@ from typing import Optional
 import commands2.button
 import wpilib
 
-from commands.drive import Drive
+from commands.auto.drivesquares import DriveSquares
+from commands.drivetrain.drive import DriveField, Drive
 from subsystems.drivetrain import Drivetrain
 
 from subsystems.led import LEDController
@@ -15,7 +16,6 @@ class Robot(commands2.TimedCommandRobot):
     def __init__(self):
         super().__init__()
         wpilib.LiveWindow.enableAllTelemetry()
-        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
         """
@@ -38,7 +38,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(Drive(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
 
         """
         Setups
@@ -55,26 +55,28 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
+        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
 
     def setupDashboard(self):
         """
         Send commands to dashboard to
         """
-        #putCommandOnDashboard("led", Lightall(self.led))
-        #putCommandOnDashboard("led", Lightall())
-
+        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("led", Lightall(self.led))
+        
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
             self.auto_command.schedule()
 
     def teleopInit(self):
+        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str = None) -> commands2.CommandBase:
+def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:
@@ -88,7 +90,3 @@ def putCommandOnDashboard(sub_table: str, cmd: commands2.CommandBase, name: str 
     wpilib.SmartDashboard.putData(sub_table + name, cmd)
 
     return cmd
-
-
-if __name__ == "__main__":
-    wpilib.run(Robot)

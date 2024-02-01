@@ -17,6 +17,8 @@ def clear():
     It is dangerous to run this in Robot.robotInit(): if another branch's code is ru2n on the robot where
     new autoproperties do not exist yet, they will be deleted and set values will be lost.
     """
+    print("Connecting to robot...")
+
     inst = NetworkTableInstance.getDefault()
     inst.stopLocal()
     inst.startClient4("clear")
@@ -28,9 +30,13 @@ def clear():
 
     topics = NetworkTableInstance.getDefault().getTopics()
     registry_keys = list(map(lambda x: x.key, registry))
+
+    print("Found", len(registry_keys), "properties")
+
     for topic in topics:
         name = topic.getName()
         if name.startswith("/Properties/"):
+            print(name)
             if name not in registry_keys:
                 topic.setPersistent(False)
                 print("Deleted unused persistent property:", name)
