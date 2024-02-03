@@ -47,11 +47,8 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
         assert robot.climber_right._switch_down.getChannel() == 3
 
 
-def test_invariants(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+def test_settings(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
-        # left
-        assert not robot.climber_left._motor.getInverted()
-        assert robot.climber_left._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
-        # right
-        assert not robot.climber_right._motor.getInverted()
-        assert robot.climber_right._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
+        for climber in (robot.climber_left, robot.climber_right):
+            assert not climber._motor.getInverted()
+            assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
