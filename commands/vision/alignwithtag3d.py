@@ -1,5 +1,3 @@
-import math
-
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 from wpimath.geometry import Transform3d, Pose2d
 

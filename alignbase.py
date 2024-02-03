@@ -1,4 +1,5 @@
 import math
+from abc import abstractmethod
 
 from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d
@@ -33,8 +34,8 @@ class AlignBase(SafeCommand):
         self.addRequirements(drivetrain)
         self.update_goal = update_goal
 
-    def computeGoal(self) -> Pose2d:
-        pass
+    @abstractmethod
+    def computeGoal(self) -> Pose2d: ...
 
     def initialize(self):
         self.goal = self.computeGoal()

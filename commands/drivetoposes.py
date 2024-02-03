@@ -2,7 +2,7 @@ import math
 from typing import List
 
 from wpimath.controller import PIDController
-from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
