@@ -44,9 +44,6 @@ class Robot(commands2.TimedCommandRobot):
              ports.climber_right_switch_down
         )
 
-
-
-
         """
         Default subsystem commands
         """
