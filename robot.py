@@ -6,7 +6,10 @@ import wpilib
 
 from commands.auto.drivesquares import DriveSquares
 from commands.drivetrain.drive import DriveField, Drive
+from commands.intake.pickup import PickUp
+from commands.intake.drop import Drop
 from subsystems.drivetrain import Drivetrain
+from subsystems.intake import Intake
 
 from subsystems.led import LEDController
 from commands.lightall import Lightall
@@ -33,6 +36,7 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
+        self.intake = Intake()
         self.led = LEDController()
 
         """
@@ -55,7 +59,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
+        pass
 
     def setupDashboard(self):
         """
@@ -63,6 +67,9 @@ class Robot(commands2.TimedCommandRobot):
         """
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Intake", Drop(self.intake))
+        putCommandOnDashboard("Intake", PickUp(self.intake))
+
         putCommandOnDashboard("led", Lightall(self.led))
         
     def autonomousInit(self):

@@ -20,10 +20,13 @@ drivetrain_motor_driving_bl: Final = 4
 drivetrain_motor_turning_bl: Final = 3
 drivetrain_motor_driving_br: Final = 2
 drivetrain_motor_turning_br: Final = 1
+intake_motor: Final = 10
 
 # PWM
 led_strip = 0
 
 # DIO
+intake_sensor: Final = 0
 
 # PCM
+
