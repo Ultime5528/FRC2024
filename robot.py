@@ -3,10 +3,10 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
 from commands.auto.drivesquares import DriveSquares
-from commands.drive import DriveField, Drive
-from commands.vision.alignwithtag3d import AlignWithTag3D
+from commands.drive import Drive
 from subsystems.drivetrain import Drivetrain
 
 
@@ -46,6 +46,7 @@ class Robot(commands2.TimedCommandRobot):
         self.setupButtons()
         self.setupDashboard()
 
+
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
@@ -60,9 +61,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
-        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
-        putCommandOnDashboard("AlignTag3D", AlignWithTag3D(self.drivetrain, 4, 1))
+        pass
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
