@@ -2,11 +2,16 @@ from typing import Literal, Optional
 
 import wpilib
 from rev import CANSparkMax, REVLibError
+from wpilib import RobotBase
 
 IdleMode = Literal["brake", "coast"]
 
-__all__ = ["configureLeader", "configureFollower"]
+__all__ = ["configureLeader", "configureFollower", "waitForCAN"]
 
+
+def waitForCAN(time_seconds: float):
+    if not RobotBase.isSimulation():
+        wpilib.wait(time_seconds)
 
 def configureLeader(motor: CANSparkMax, mode: IdleMode, inverted: bool = False, stallLimit: Optional[int] = None, freeLimit: Optional[int] = None):
     _handleCanError(motor.restoreFactoryDefaults(), "restoreFactoryDefaults", motor)
@@ -33,7 +38,7 @@ def _configureMotor(motor: CANSparkMax, mode: IdleMode, stallLimit: Optional[int
     elif (stallLimit is None) != (freeLimit is None):
         raise ValueError(f"stallLimit ({stallLimit}) and freeLimit ({freeLimit}) should both have a value.")
 
-    wpilib.wait(1.0)
+    waitForCAN(1.0)
 
 
 def _idleModeToEnum(mode: IdleMode):

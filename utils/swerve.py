@@ -13,6 +13,7 @@ from wpimath.system.plant import DCMotor, LinearSystemId
 
 from utils.property import autoproperty
 from utils.sparkmaxsim import SparkMaxSim
+from utils.sparkmaxutils import waitForCAN
 
 # 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
 drive_motor_pinion_teeth = 13
@@ -127,6 +128,8 @@ class SwerveModule:
         self._chassis_angular_offset = chassis_angular_offset
         self._drive_encoder.setPosition(0)
 
+        waitForCAN(4.0)
+
         if RobotBase.isSimulation():
             # Simulation things
             self.sim_drive_encoder = SparkMaxSim(self._drive_motor)
@@ -150,8 +153,6 @@ class SwerveModule:
                 DCMotor.NEO550(1),
                 drive_motor_gear_ratio,
             )
-        else:
-            wpilib.wait(4.0)
 
     def getVelocity(self) -> float:
         return self._drive_encoder.getVelocity()
