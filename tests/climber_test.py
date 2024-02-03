@@ -52,3 +52,4 @@ def test_settings(control: "pyfrc.test_support.controller.TestController", robot
         for climber in (robot.climber_left, robot.climber_right):
             assert not climber._motor.getInverted()
             assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
+            assert climber._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
