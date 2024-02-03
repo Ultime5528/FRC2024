@@ -19,7 +19,12 @@ class AlignWithTag3D(AlignBase):
     align_speed = autoproperty(0.2)
     align_threshold = autoproperty(0.1)
 
-    def __init__(self, drivetrain: Drivetrain, tag_id: int, goal_tag_offset: Pose2d = Pose2d(0, 2, 0)):
+    def __init__(
+        self,
+        drivetrain: Drivetrain,
+        tag_id: int,
+        goal_tag_offset: Pose2d = Pose2d(0, 2, 0),
+    ):
         super().__init__(True, drivetrain)
         self.goal = None
         self.has_tag = False
@@ -36,8 +41,10 @@ class AlignWithTag3D(AlignBase):
             self.has_tag = True
             pos = self.drivetrain.getPose()
             camera_to_target: Transform3d = target.getBestCameraToTarget()
-            tag_offset = Pose2d(camera_to_target.translation().toTranslation2d(),
-                                camera_to_target.rotation().toRotation2d())
+            tag_offset = Pose2d(
+                camera_to_target.translation().toTranslation2d(),
+                camera_to_target.rotation().toRotation2d(),
+            )
             goal = pos + tag_offset - self.pos_to_tag
             self.goal = goal
             return goal

@@ -6,7 +6,7 @@ import wpilib
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
 from commands.auto.drivesquares import DriveSquares
-from commands.drive import Drive
+from commands.drive import Drive, DriveField
 from subsystems.drivetrain import Drivetrain
 
 
@@ -36,7 +36,9 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(
+            DriveField(self.drivetrain, self.xbox_controller)
+        )
 
         """
         Setups
@@ -44,7 +46,6 @@ class Robot(commands2.TimedCommandRobot):
         self.setupAuto()
         self.setupButtons()
         self.setupDashboard()
-
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
@@ -60,7 +61,9 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard(
+            "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -73,7 +76,9 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
+def putCommandOnDashboard(
+    sub_table: str, cmd: commands2.Command, name: str = None
+) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:

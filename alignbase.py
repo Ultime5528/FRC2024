@@ -1,6 +1,6 @@
 import math
 
-from wpimath._controls._controls.controller import PIDController
+from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
@@ -71,14 +71,19 @@ class AlignBase(SafeCommand):
             new_vel_x = vel_x * speed_factor
             new_vel_y = vel_y * speed_factor
 
-            self.drivetrain.drive(new_vel_x,
-                                  new_vel_y,
-                                  -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
-                                  True
-                                  )
+            self.drivetrain.drive(
+                new_vel_x,
+                new_vel_y,
+                -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                True,
+            )
 
     def isFinished(self) -> bool:
-        return self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint()
+        return (
+            self.pid_x.atSetpoint()
+            and self.pid_y.atSetpoint()
+            and self.pid_rot.atSetpoint()
+        )
 
     def end(self, interrupted):
         self.drivetrain.stop()

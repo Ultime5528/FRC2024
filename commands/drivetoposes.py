@@ -62,32 +62,39 @@ class DriveToPoses(SafeCommand):
         vel_x = self.pid_x.calculate(current_pos.x)
         vel_y = self.pid_y.calculate(current_pos.y)
 
-        speed = math.sqrt(vel_x*vel_x+vel_y*vel_y)
+        speed = math.sqrt(vel_x * vel_x + vel_y * vel_y)
         clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
 
         if not math.isclose(speed, 0):
-            speed_factor = clamped_speed/speed
+            speed_factor = clamped_speed / speed
 
-            new_vel_x = vel_x*speed_factor
-            new_vel_y = vel_y*speed_factor
+            new_vel_x = vel_x * speed_factor
+            new_vel_y = vel_y * speed_factor
 
-            self.drivetrain.drive(new_vel_x,
-                                  new_vel_y,
-                                  -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
-                                  True
+            self.drivetrain.drive(
+                new_vel_x,
+                new_vel_y,
+                -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                True,
             )
 
-        if self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint():
+        if (
+            self.pid_x.atSetpoint()
+            and self.pid_y.atSetpoint()
+            and self.pid_rot.atSetpoint()
+        ):
             self.currGoal += 1
             if self.currGoal != len(self.goals):
-                print(len(self.goals)-1, self.currGoal)
-                if self.currGoal == len(self.goals)-1:
+                print(len(self.goals) - 1, self.currGoal)
+                if self.currGoal == len(self.goals) - 1:
                     print("last")
                     self.pid_x.setI(self.xy_i_last)
                     self.pid_y.setI(self.xy_i_last)
                     self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
                     self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-                    self.pid_rot.setTolerance(self.rot_tol_pos_last, self.rot_tol_vel_last)
+                    self.pid_rot.setTolerance(
+                        self.rot_tol_pos_last, self.rot_tol_vel_last
+                    )
 
                 currentGoal = self.goals[self.currGoal]
                 self.pid_x.setSetpoint(currentGoal.x)
