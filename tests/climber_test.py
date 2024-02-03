@@ -1,8 +1,9 @@
-import pytest
+from unittest import mock
+
 import pyfrc.test_support.controller
+import pytest
 import rev
 
-import ports
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
@@ -47,9 +48,13 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
         assert robot.climber_right._switch_down.getChannel() == 3
 
 
-def test_settings(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+@mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
+@mock.patch("rev.CANSparkMax.setSmartCurrentLimit")
+def test_settings(_, __, control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         for climber in (robot.climber_left, robot.climber_right):
             assert not climber._motor.getInverted()
             assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
             assert climber._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
+            climber._motor.restoreFactoryDefaults.assert_called_with()
+            climber._motor.setSmartCurrentLimit.assert_called_with(15, 30)
