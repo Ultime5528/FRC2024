@@ -29,6 +29,5 @@ def test_retract(control:  "pyfrc.test_support.controller.TestController", robot
         assert robot.climber_left.speed_down == pytest.approx(robot.climber_left._motor.get())
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
-        assert robot.climber_left._sim_motor.getPosition() == pytest.approx(0, rel=0.1)
+        assert robot.climber_left._sim_motor.getPosition() == pytest.approx(0.0, rel=0.1)
         assert 0.0 == robot.climber_left._motor.get()
-
