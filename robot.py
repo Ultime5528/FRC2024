@@ -35,13 +35,13 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain = Drivetrain(self.getPeriod())
         self.climber_left = Climber(
             ports.climber_motor_left,
-            ports.climber_switch_up_left,
-            ports.climber_switch_down_left
+            ports.climber_left_switch_up,
+            ports.climber_left_switch_down
         )
         self.climber_right = Climber(
              ports.climber_motor_right,
-             ports.climber_switch_up_right,
-             ports.climber_switch_down_right
+             ports.climber_right_switch_up,
+             ports.climber_right_switch_down
         )
 
 
