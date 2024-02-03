@@ -22,13 +22,13 @@ drivetrain_motor_driving_br: Final = 2
 drivetrain_motor_turning_br: Final = 1
 shooter_motor_left: Final = 11
 shooter_motor_right: Final = 12
-pivot_motor: Final = 13
 
 # PWM
+pivot_motor: Final = 0
 
 # DIO
-pivot_limitswitch_high: Final = 4
-pivot_limitswitch_low: Final = 5
+pivot_switch_up: Final = 4
+pivot_switch_down: Final = 5
 pivot_encoder_a: Final = 6
 pivot_encoder_b: Final = 7
 

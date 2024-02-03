@@ -6,9 +6,10 @@ import wpilib
 
 from commands.auto.drivesquares import DriveSquares
 from commands.drive import DriveField, Drive
+from commands.pivot.movepivot import MovePivot
 from subsystems.drivetrain import Drivetrain
-from subsystems.shooter import Shooter
 from subsystems.pivot import Pivot
+from utils.switch import Switch
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -32,8 +33,9 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
-        self.shooter = Shooter()
+        #self.shooter = Shooter()
         self.pivot = Pivot()
+
         """
         Default subsystem commands
         """
@@ -62,6 +64,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Pivot", MovePivot(self.pivot, self.xbox_controller))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
