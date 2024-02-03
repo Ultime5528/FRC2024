@@ -6,7 +6,12 @@ import wpilib
 
 import ports
 from commands.drivetrain.drive import DriveField, Drive
+from commands.auto.drivesquares import DriveSquares
+from commands.drive import DriveField, Drive
+from commands.pivot.movepivot import MovePivot
 from subsystems.drivetrain import Drivetrain
+from subsystems.pivot import Pivot
+from utils.switch import Switch
 from subsystems.climber import Climber
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.retractclimber import RetractClimber
@@ -32,6 +37,8 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
+        #self.shooter = Shooter()
+        self.pivot = Pivot()
         self.climber_left = Climber(
             ports.climber_motor_left,
             ports.climber_left_switch_up,
@@ -71,6 +78,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard("Pivot", MovePivot(self.pivot, self.xbox_controller))
         putCommandOnDashboard("Climber", ExtendClimber(self.climber_left), "ExtendClimber.left")
         putCommandOnDashboard("Climber", RetractClimber(self.climber_left), "RetractClimber.left")
         putCommandOnDashboard("Climber", ExtendClimber(self.climber_right), "ExtendClimber.right")

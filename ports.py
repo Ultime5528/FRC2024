@@ -22,8 +22,11 @@ drivetrain_motor_turning_fr: Final = 7
 drivetrain_motor_driving_fr: Final = 8
 climber_motor_right = 9
 climber_motor_left = 10
+shooter_motor_right: Final = 12
+shooter_motor_left: Final = 11
 
 # PWM
+pivot_motor: Final = 0
 
 
 # DIO
@@ -31,3 +34,7 @@ climber_left_switch_up = 0
 climber_right_switch_up = 1
 climber_left_switch_down = 2
 climber_right_switch_down = 3
+pivot_switch_up: Final = 4
+pivot_switch_down: Final = 5
+pivot_encoder_a: Final = 6
+pivot_encoder_b: Final = 7
