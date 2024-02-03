@@ -25,8 +25,7 @@ Color = Union[np.ndarray, Tuple[int, int, int], List[int]]
 
 class ModeLED(Enum):
     NONE = "none"
-    CONE = "cone"
-    CUBE = "cube"
+    NOTE = "note"
 
 
 class LEDController(SafeSubsystem):
@@ -177,25 +176,23 @@ class LEDController(SafeSubsystem):
 
     def getAllianceColor(self):
         alliance = wpilib.DriverStation.getAlliance()
-        if alliance == wpilib.DriverStation.Alliance.kInvalid:
-            color = self.black
+        if alliance == wpilib.DriverStation.Alliance.kBlue:
+            color = self.blue_rgb
         elif alliance == wpilib.DriverStation.Alliance.kRed:
             color = self.red_rgb
         else:  # kBlue
-            color = self.blue_rgb
+            color = self.black
         return color
 
     def getModeColor(self):
-        if self.mode == ModeLED.CUBE:
-            return self.purple_rgb
-        elif self.mode == ModeLED.CONE:
-            return self.yellow_rgb
+        if self.mode == ModeLED.NOTE:
+            return self.orange_rgb
         else:
             return self.getAllianceColor()
 
     def teleop(self):
         brightness = max(min(100, self.brightness), 0) / 100
-        a = 1 / (1 - math.cos(math.pi * self.white_length / self.color_period))
+        a = 0.5 / (1 - math.cos(math.pi * self.white_length / self.color_period))
         k = 1 - a
 
         i_values = np.arange(self.led_number)
