@@ -8,17 +8,21 @@ import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
+from utils.sparkmaxutils import configureLeader
 
 
 class Climber(SafeSubsystem):
     speed_up = autoproperty(0.25)
     speed_down = autoproperty(-0.25)
+    stall_limit = autoproperty(15)
+    free_limit = autoproperty(30)
     sim_max_height = 100
 
     def __init__(self, port_motor, port_switch_up, port_switch_down):
         super().__init__()
         self._motor = rev.CANSparkMax(port_motor,
                                       rev.CANSparkMax.MotorType.kBrushless)
+        configureLeader(self._motor, "brake", stallLimit=self.stall_limit, freeLimit=self.free_limit)
 
         self._switch_up = wpilib.DigitalInput(port_switch_up)
         self._switch_down = wpilib.DigitalInput(port_switch_down)
