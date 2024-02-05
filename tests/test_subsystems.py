@@ -23,4 +23,6 @@ def get_subsystems() -> List[Subsystem or None]:
 
 def test_inheritance():
     for obj in get_subsystems():
-        assert issubclass(obj, SafeSubsystem), f"{obj.__name__} is not a subclass of SafeSubsystem"
+        assert issubclass(
+            obj, SafeSubsystem
+        ), f"{obj.__name__} is not a subclass of SafeSubsystem"
