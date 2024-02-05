@@ -39,3 +39,12 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
             0.0, rel=0.1
         )
         assert 0.0 == robot.climber_left._motor.get()
+
+
+def test_requirements(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+    with control.run_robot():
+        for climber in (robot.climber_right, robot.climber_left):
+            cmd = ExtendClimber(climber)
+            assert cmd.hasRequirement(climber)
+            cmd = RetractClimber(climber)
+            assert cmd.hasRequirement(climber)
