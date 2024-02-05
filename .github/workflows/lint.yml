@@ -1,4 +1,4 @@
-name: Python lint
+name: Lint with Black
 
 on: [push, pull_request]
 
