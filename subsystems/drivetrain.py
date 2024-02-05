@@ -1,15 +1,24 @@
 import math
 
 import wpilib
+from photonlibpy.photonCamera import PhotonCamera
+from photonlibpy.photonPoseEstimator import PhotonPoseEstimator, PoseStrategy
+from robotpy_apriltag import loadAprilTagLayoutField, AprilTagField
 from wpilib import RobotBase
 from wpimath.estimator import SwerveDrive4PoseEstimator
-from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
+from wpimath.geometry import (
+    Pose2d,
+    Translation2d,
+    Rotation2d,
+    Twist2d,
+    Transform3d,
+    Rotation3d,
+)
 from wpimath.kinematics import (
     ChassisSpeeds,
     SwerveDrive4Kinematics,
     SwerveModuleState,
 )
-
 import ports
 from gyro import ADIS16470
 from utils.property import autoproperty
@@ -18,6 +27,8 @@ from utils.swerve import SwerveModule
 
 
 class Drivetrain(SafeSubsystem):
+    use_vision = autoproperty(True)
+
     width = autoproperty(0.68)
     length = autoproperty(0.68)
     max_angular_speed = autoproperty(25.0)
@@ -27,7 +38,9 @@ class Drivetrain(SafeSubsystem):
     angular_offset_bl = autoproperty(3.14)
     angular_offset_br = autoproperty(1.57)
 
-    acceptable_wheel_rotation = autoproperty(0.51)  # is radians. Tolerance in which the wheel can be in
+    acceptable_wheel_rotation = autoproperty(
+        0.51
+    )  # is radians. Tolerance in which the wheel can be in
     wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
 
     def __init__(self, period: float) -> None:
@@ -91,15 +104,26 @@ class Drivetrain(SafeSubsystem):
             Pose2d(0, 0, 0),
         )
 
+        self.cam = PhotonCamera("mainCamera")
+        robot_to_camera = Transform3d(
+            0.5, 0, 0.5, Rotation3d(0, 0, 0)
+        )  # Camera is 0.5 m forward, 0.5 m up from robot center
+        self.vision_estimator = PhotonPoseEstimator(
+            loadAprilTagLayoutField(AprilTagField.k2024Crescendo),
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            self.cam,
+            robot_to_camera,
+        )
+
         if RobotBase.isSimulation():
             self.sim_yaw = 0
 
     def drive(
-            self,
-            x_speed_input: float,
-            y_speed_input: float,
-            rot_speed: float,
-            is_field_relative: bool,
+        self,
+        x_speed_input: float,
+        y_speed_input: float,
+        rot_speed: float,
+        is_field_relative: bool,
     ):
         x_speed = x_speed_input * self.swerve_module_fr.max_speed
         y_speed = y_speed_input * self.swerve_module_fr.max_speed
@@ -167,17 +191,19 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_bl.stop()
         self.swerve_module_br.stop()
 
-    def correctForDynamics(self, original_chassis_speeds: ChassisSpeeds) -> ChassisSpeeds:
+    def correctForDynamics(
+        self, original_chassis_speeds: ChassisSpeeds
+    ) -> ChassisSpeeds:
         next_robot_pose: Pose2d = Pose2d(
             original_chassis_speeds.vx * self.period_seconds,
             original_chassis_speeds.vy * self.period_seconds,
-            Rotation2d(original_chassis_speeds.omega * self.period_seconds)
+            Rotation2d(original_chassis_speeds.omega * self.period_seconds),
         )
         pose_twist: Twist2d = Pose2d().log(next_robot_pose)
         updated_speeds: ChassisSpeeds = ChassisSpeeds(
             pose_twist.dx / self.period_seconds,
             pose_twist.dy / self.period_seconds,
-            pose_twist.dtheta / self.period_seconds
+            pose_twist.dtheta / self.period_seconds,
         )
         return updated_speeds
 
@@ -192,6 +218,10 @@ class Drivetrain(SafeSubsystem):
             ),
         )
 
+        estimated_vision_pose = self.vision_estimator.update(self.cam.getLatestResult())
+        self.swerve_estimator.addVisionMeasurement(
+            estimated_vision_pose.estimatedPose, estimated_vision_pose.timestampSeconds
+        )
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
 
     def simulationPeriodic(self):
