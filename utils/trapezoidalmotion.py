@@ -37,11 +37,21 @@ class TrapezoidalMotion:
         if min_speed is None:
             assert start_speed is not None and end_speed is not None
         else:
-            assert start_speed is None and end_speed is None, "If min_speed is specfied, start_speed and end_speed cannot be specified"
+            assert (
+                start_speed is None and end_speed is None
+            ), "If min_speed is specfied, start_speed and end_speed cannot be specified"
             start_speed = min_speed
             end_speed = min_speed
 
-        self._initial_config = MotionConfig(start_position, end_position, displacement, start_speed, end_speed, max_speed, accel)
+        self._initial_config = MotionConfig(
+            start_position,
+            end_position,
+            displacement,
+            start_speed,
+            end_speed,
+            max_speed,
+            accel,
+        )
         self._real_config: Optional[MotionConfig] = None
         self._position = None
         self._inverted = False
@@ -81,7 +91,9 @@ class TrapezoidalMotion:
         self._compute()
 
     def _compute(self):
-        assert self._initial_config.start_position is not None, "'start_position' is not set."
+        assert (
+            self._initial_config.start_position is not None
+        ), "'start_position' is not set."
         assert self._initial_config.start_speed is not None, "'start_speed' is not set."
         assert self._initial_config.end_speed is not None, "'end_speed' is not set."
         assert self._initial_config.max_speed is not None, "'max_speed' is not set."
@@ -114,13 +126,27 @@ class TrapezoidalMotion:
         assert self._real_config.start_speed <= self._real_config.max_speed
         assert self._real_config.end_speed <= self._real_config.max_speed
 
-        self._start_accel_window = (self._real_config.max_speed - self._real_config.start_speed) / self._real_config.accel
-        self._end_accel_window = (self._real_config.max_speed - self._real_config.end_speed) / self._real_config.accel
+        self._start_accel_window = (
+            self._real_config.max_speed - self._real_config.start_speed
+        ) / self._real_config.accel
+        self._end_accel_window = (
+            self._real_config.max_speed - self._real_config.end_speed
+        ) / self._real_config.accel
 
-        if self._start_accel_window + self._end_accel_window > self._real_config.displacement:
-            self._start_accel_window = self._real_config.displacement / 2 + (self._real_config.end_speed - self._real_config.start_speed) / (2 * self._real_config.accel)
-            self._end_accel_window = self._real_config.displacement - self._start_accel_window
-            self._real_config.max_speed = self._real_config.start_speed + self._real_config.accel * self._start_accel_window
+        if (
+            self._start_accel_window + self._end_accel_window
+            > self._real_config.displacement
+        ):
+            self._start_accel_window = self._real_config.displacement / 2 + (
+                self._real_config.end_speed - self._real_config.start_speed
+            ) / (2 * self._real_config.accel)
+            self._end_accel_window = (
+                self._real_config.displacement - self._start_accel_window
+            )
+            self._real_config.max_speed = (
+                self._real_config.start_speed
+                + self._real_config.accel * self._start_accel_window
+            )
 
     def setPosition(self, position: float):
         assert (
@@ -142,16 +168,18 @@ class TrapezoidalMotion:
             v = self._real_config.start_speed
         elif s < self._start_accel_window:
             v = math.sqrt(
-                self._real_config.start_speed ** 2
-                + (s / self._start_accel_window) * (self._real_config.max_speed ** 2 - self._real_config.start_speed ** 2)
+                self._real_config.start_speed**2
+                + (s / self._start_accel_window)
+                * (self._real_config.max_speed**2 - self._real_config.start_speed**2)
             )
         elif s < self._real_config.displacement - self._end_accel_window:
             v = self._real_config.max_speed
         elif s < self._real_config.displacement:
             v = math.sqrt(
-                self._real_config.end_speed ** 2
-                + (self._real_config.displacement - s) / self._end_accel_window
-                * (self._real_config.max_speed ** 2 - self._real_config.end_speed ** 2)
+                self._real_config.end_speed**2
+                + (self._real_config.displacement - s)
+                / self._end_accel_window
+                * (self._real_config.max_speed**2 - self._real_config.end_speed**2)
             )
         else:
             v = self._real_config.end_speed
