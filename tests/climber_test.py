@@ -42,7 +42,7 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
 
 
 def test_requirements(
-        control: "pyfrc.test_support.controller.TestController", robot: Robot
+    control: "pyfrc.test_support.controller.TestController", robot: Robot
 ):
     with control.run_robot():
         for climber in (robot.climber_right, robot.climber_left):
