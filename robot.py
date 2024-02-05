@@ -35,18 +35,20 @@ class Robot(commands2.TimedCommandRobot):
         self.climber_left = Climber(
             ports.climber_motor_left,
             ports.climber_left_switch_up,
-            ports.climber_left_switch_down
+            ports.climber_left_switch_down,
         )
         self.climber_right = Climber(
-             ports.climber_motor_right,
-             ports.climber_right_switch_up,
-             ports.climber_right_switch_down
+            ports.climber_motor_right,
+            ports.climber_right_switch_up,
+            ports.climber_right_switch_down,
         )
 
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(
+            DriveField(self.drivetrain, self.xbox_controller)
+        )
 
         """
         Setups
@@ -69,14 +71,24 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
-        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
-        putCommandOnDashboard("Climber", ExtendClimber(self.climber_left), "ExtendClimber.left")
-        putCommandOnDashboard("Climber", RetractClimber(self.climber_left), "RetractClimber.left")
-        putCommandOnDashboard("Climber", ExtendClimber(self.climber_right), "ExtendClimber.right")
-        putCommandOnDashboard("Climber", RetractClimber(self.climber_right), "RetractClimber.right")
-
-
+        putCommandOnDashboard(
+            "Drivetrain", DriveField(self.drivetrain, self.xbox_controller)
+        )
+        putCommandOnDashboard(
+            "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
+        )
+        putCommandOnDashboard(
+            "Climber", ExtendClimber(self.climber_left), "ExtendClimber.left"
+        )
+        putCommandOnDashboard(
+            "Climber", RetractClimber(self.climber_left), "RetractClimber.left"
+        )
+        putCommandOnDashboard(
+            "Climber", ExtendClimber(self.climber_right), "ExtendClimber.right"
+        )
+        putCommandOnDashboard(
+            "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -89,7 +101,9 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
+def putCommandOnDashboard(
+    sub_table: str, cmd: commands2.Command, name: str = None
+) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:

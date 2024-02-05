@@ -27,9 +27,9 @@ class Drive(SafeCommand):
     x_rotation_deadzone = autoproperty(0.1)
 
     def __init__(
-            self,
-            drivetrain: Drivetrain,
-            xbox_remote: commands2.button.CommandXboxController,
+        self,
+        drivetrain: Drivetrain,
+        xbox_remote: commands2.button.CommandXboxController,
     ):
         super().__init__()
         self.rot: float = 0.0
@@ -42,13 +42,18 @@ class Drive(SafeCommand):
         self.m_rotLimiter_x = SlewRateLimiter(3)
 
     def execute(self):
-        x_speed, y_speed = apply_center_distance_deadzone(self.xbox_remote.getLeftY() * -1,
-                                                          self.xbox_remote.getLeftX() * -1, properties.moving_deadzone)
+        x_speed, y_speed = apply_center_distance_deadzone(
+            self.xbox_remote.getLeftY() * -1,
+            self.xbox_remote.getLeftX() * -1,
+            properties.moving_deadzone,
+        )
         x_speed = self.m_xspeedLimiter.calculate(x_speed)
         y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
         rot = self.m_rotLimiter_x.calculate(
-            apply_linear_deadzone(self.xbox_remote.getRightX() * -1, self.x_rotation_deadzone)
+            apply_linear_deadzone(
+                self.xbox_remote.getRightX() * -1, self.x_rotation_deadzone
+            )
         )
 
         self.drivetrain.drive(x_speed, y_speed, rot, False)
@@ -62,9 +67,9 @@ class DriveField(SafeCommand):
     rotate_speed = autoproperty(-0.03)
 
     def __init__(
-            self,
-            drivetrain: Drivetrain,
-            xbox_remote: commands2.button.CommandXboxController,
+        self,
+        drivetrain: Drivetrain,
+        xbox_remote: commands2.button.CommandXboxController,
     ):
         super().__init__()
         self.rot: float = 0.0
@@ -81,18 +86,26 @@ class DriveField(SafeCommand):
         self.rot = self.drivetrain.getAngle()
 
     def execute(self):
-        x_speed, y_speed = apply_center_distance_deadzone(self.xbox_remote.getLeftY() * -1,
-                                                          self.xbox_remote.getLeftX() * -1, properties.moving_deadzone)
+        x_speed, y_speed = apply_center_distance_deadzone(
+            self.xbox_remote.getLeftY() * -1,
+            self.xbox_remote.getLeftX() * -1,
+            properties.moving_deadzone,
+        )
         x_speed = self.m_xspeedLimiter.calculate(x_speed)
         y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
-        rot_x, rot_y = apply_center_distance_deadzone(self.xbox_remote.getRightX(), -1 * self.xbox_remote.getRightY(),
-                                                      self.rotation_deadzone)
+        rot_x, rot_y = apply_center_distance_deadzone(
+            self.xbox_remote.getRightX(),
+            -1 * self.xbox_remote.getRightY(),
+            self.rotation_deadzone,
+        )
 
         if not (rot_x == 0 and rot_y == 0):
             self.rot = math.degrees(math.atan2(rot_x, rot_y)) * -1
 
-        rot_speed = (self.drivetrain.getRotation() - Rotation2d.fromDegrees(self.rot)).degrees() * self.rotate_speed
+        rot_speed = (
+            self.drivetrain.getRotation() - Rotation2d.fromDegrees(self.rot)
+        ).degrees() * self.rotate_speed
 
         self.drivetrain.drive(x_speed, y_speed, rot_speed, True)
 
