@@ -1,5 +1,4 @@
 import wpilib
-import phoenix5
 from wpilib import RobotBase
 from wpilib.simulation import DIOSim
 from utils.switch import Switch
