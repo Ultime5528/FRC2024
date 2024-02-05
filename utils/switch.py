@@ -49,3 +49,6 @@ class Switch:
             self._sim_input.setValue(False)
         elif self._type == Switch.Type.NormallyClosed:
             self._sim_input.setValue(True)
+
+    def getChannel(self):
+        return self._input.getChannel()
