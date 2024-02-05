@@ -31,7 +31,6 @@ class DriveToPos(SafeCommand):
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.goal = goal
-        self.angle = goal.rotation()
 
     def initialize(self):
         self.pid_x = PIDController(self.xy_p, self.xy_i, self.xy_d)
@@ -45,7 +44,7 @@ class DriveToPos(SafeCommand):
         self.pid_rot = PIDController(self.rot_p, self.rot_i, self.rot_d)
         self.pid_rot.setTolerance(self.rot_tol_pos, self.rot_tol_vel)
         self.pid_rot.enableContinuousInput(-180, 180)
-        self.pid_rot.setSetpoint(self.angle.degrees())
+        self.pid_rot.setSetpoint(self.goal.rotation().degrees())
 
     def execute(self):
         current_pos = self.drivetrain.getPose()

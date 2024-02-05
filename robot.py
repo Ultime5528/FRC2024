@@ -62,7 +62,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", DriveToPoses(self.drivetrain, [Pose2d(1,1,Rotation2d.fromDegrees(45)), Pose2d(5,6,Rotation2d.fromDegrees(180))]))
+        putCommandOnDashboard("Drivetrain", DriveToPoses(self.drivetrain, [Pose2d(2.82, 2.13, Rotation2d.fromDegrees(90)), Pose2d(3.10, 6.47, 0), Pose2d(15.36, 6.70, Rotation2d.fromDegrees(-90)), Pose2d(15.01, 1.303, Rotation2d.fromDegrees(180))]))
         putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
                                                        Pose2d(7, 7, Rotation2d.fromDegrees(-179))), "test drive to pos")
         putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,

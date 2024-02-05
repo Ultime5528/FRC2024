@@ -2,100 +2,102 @@ import math
 from typing import List
 
 from wpimath.controller import PIDController
-from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
+def distance(p1: Pose2d, p2: Pose2d):
+    delta = p1 - p2
+    return math.sqrt(delta.x * delta.x + delta.y * delta.y)
+
+def distance2(p1: Pose2d, p2: Pose2d):
+    delta = p1 - p2
+    return delta.x * delta.x + delta.y * delta.y
 
 def clamp(x, minimum, maximum):
     return max(minimum, min(x, maximum))
 
-
 class DriveToPoses(SafeCommand):
-    xy_p = autoproperty(0.35)
-    xy_i = autoproperty(1.0)
-    xy_i_last = autoproperty(0.0)
-    xy_d = autoproperty(0.0)
-    xy_tol_pos = autoproperty(2.0)
-    xy_tol_vel = autoproperty(2.0)
-    xy_tol_pos_last = autoproperty(0.04)
-    xy_tol_vel_last = autoproperty(0.04)
-
+    pose_p = autoproperty(0.35)
     rot_p = autoproperty(0.0065)
-    rot_i = autoproperty(0.0)
-    rot_d = autoproperty(0.0)
-    rot_tol_pos = autoproperty(2.0)
-    rot_tol_vel = autoproperty(2.0)
-    rot_tol_pos_last = autoproperty(0.047)
-    rot_tol_vel_last = autoproperty(0.047)
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
+    spoof_distance = autoproperty(5.0)
+
+    spoof_radius = autoproperty(1.0)
+    spoof_point_radius = autoproperty(0.04)
+
+    last_point_radius = autoproperty(0.04)
+
+    def __init__(self, drivetrain: Drivetrain, waypoints: List[Pose2d]):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.goals = goals
+        self.waypoints = waypoints
+        if len(waypoints) <= 1:
+            raise
 
     def initialize(self):
-        self.currGoal = 0
-        currentGoal = self.goals[self.currGoal]
+        self.target_waypoint = 0
 
-        self.pid_x = PIDController(self.xy_p, self.xy_i, self.xy_d)
-        self.pid_x.setTolerance(self.xy_tol_pos, self.xy_tol_vel)
-        self.pid_x.setSetpoint(currentGoal.x)
-
-        self.pid_y = PIDController(self.xy_p, self.xy_i, self.xy_d)
-        self.pid_y.setTolerance(self.xy_tol_pos, self.xy_tol_vel)
-        self.pid_y.setSetpoint(currentGoal.y)
-
-        self.pid_rot = PIDController(self.rot_p, self.rot_i, self.rot_d)
-        self.pid_rot.setTolerance(self.rot_tol_pos, self.rot_tol_vel)
+        self.pid_x = PIDController(self.pose_p, 0, 0)
+        self.pid_y = PIDController(self.pose_p, 0, 0)
+        self.pid_rot = PIDController(self.rot_p, 0, 0)
         self.pid_rot.enableContinuousInput(-180, 180)
-        self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
 
     def execute(self):
-        current_pos = self.drivetrain.getPose()
+        currRobotPose = self.drivetrain.getPose()
+        target = self.waypoints[self.target_waypoint]
 
-        vel_x = self.pid_x.calculate(current_pos.x)
-        vel_y = self.pid_y.calculate(current_pos.y)
+        self.pid_x.setSetpoint(target.x)
+        self.pid_y.setSetpoint(target.y)
+        self.pid_rot.setSetpoint(target.rotation().degrees())
+        if self.target_waypoint == len(self.waypoints)-1:
+            self.pid_x.setTolerance(self.last_point_radius)
+            self.pid_y.setTolerance(self.last_point_radius)
+            self.pid_rot.setTolerance(self.last_point_radius)
 
-        speed = math.sqrt(vel_x*vel_x+vel_y*vel_y)
+            if self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint(): # is last
+                self.target_waypoint += 1
+        elif distance2(currRobotPose, target) < self.spoof_point_radius*self.spoof_point_radius:
+            self.target_waypoint += 1
+        elif distance2(currRobotPose, target) < self.spoof_radius*self.spoof_radius: # is in gaslight radius
+            # Calculate Gaslight because under gaslight radius
+            deltaX = target.x - currRobotPose.x
+            deltaY = target.y - currRobotPose.y
+
+            c = math.sqrt(deltaX*deltaX + deltaY*deltaY) # hypothenuse
+            scale_factor = c + self.spoof_distance
+
+            gaslightedX = scale_factor * deltaX + currRobotPose.x
+            gaslightedY = scale_factor * deltaY + currRobotPose.y
+
+            self.pid_x.setSetpoint(gaslightedX)
+            self.pid_y.setSetpoint(gaslightedY)
+
+        vel_x = self.pid_x.calculate(currRobotPose.x)
+        vel_y = self.pid_y.calculate(currRobotPose.y)
+
+        speed = math.sqrt(vel_x * vel_x + vel_y * vel_y)
         clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
 
         if not math.isclose(speed, 0):
-            speed_factor = clamped_speed/speed
+            speed_factor = clamped_speed / speed
 
-            new_vel_x = vel_x*speed_factor
-            new_vel_y = vel_y*speed_factor
+            new_vel_x = vel_x * speed_factor
+            new_vel_y = vel_y * speed_factor
 
             self.drivetrain.drive(new_vel_x,
                                   new_vel_y,
-                                  -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                                  -self.pid_rot.calculate(currRobotPose.rotation().degrees()),
                                   True
-            )
+                                  )
 
-        if self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint():
-            self.currGoal += 1
-            if self.currGoal != len(self.goals):
-                print(len(self.goals)-1, self.currGoal)
-                if self.currGoal == len(self.goals)-1:
-                    print("last")
-                    self.pid_x.setI(self.xy_i_last)
-                    self.pid_y.setI(self.xy_i_last)
-                    self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-                    self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-                    self.pid_rot.setTolerance(self.rot_tol_pos_last, self.rot_tol_vel_last)
+    def isFinished(self) -> bool:
+        return self.target_waypoint == len(self.waypoints)
 
-                currentGoal = self.goals[self.currGoal]
-                self.pid_x.setSetpoint(currentGoal.x)
-                self.pid_y.setSetpoint(currentGoal.y)
-                self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
-
-    def end(self, interrupted):
-        self.drivetrain.drive(0, 0, 0, False)
-
-    def isFinished(self):
-        return self.currGoal == len(self.goals)
+    def end(self, interrupted: bool) -> None:
+        self.drivetrain.drive(0, 0, 0, True)
