@@ -84,4 +84,12 @@ def autoproperty(
 
     registry.append(AutopropertyCall(full_key, calframe.filename, calframe.positions.lineno - 1, calframe.positions.col_offset))
 
-    return _old_ntproperty(full_key, default_value, writeDefault=write, persistent=True)
+    prop = _old_ntproperty(full_key, default_value, writeDefault=write, persistent=True)
+
+    def fget(_):
+        val = prop.fget(_)
+        if val is None:
+            return default_value
+        return val
+
+    return property(fget, fset=prop.fset)

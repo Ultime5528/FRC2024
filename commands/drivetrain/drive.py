@@ -5,8 +5,8 @@ from wpimath.filter import SlewRateLimiter
 from wpimath.geometry import Rotation2d
 
 from subsystems.drivetrain import Drivetrain
-from utils.safecommand import SafeCommand
 from utils.property import autoproperty
+from utils.safecommand import SafeCommand
 
 
 def apply_center_distance_deadzone(x_dist, y_dist, deadzone):
@@ -17,13 +17,15 @@ def apply_center_distance_deadzone(x_dist, y_dist, deadzone):
 
 
 def apply_linear_deadzone(_input, deadzone):
-    if _input <= deadzone:
+    if abs(_input) <= deadzone:
         return 0.0
     else:
         return _input
 
 
 class Drive(SafeCommand):
+    x_rotation_deadzone = autoproperty(0.1)
+
     def __init__(
             self,
             drivetrain: Drivetrain,
@@ -43,9 +45,11 @@ class Drive(SafeCommand):
         x_speed, y_speed = apply_center_distance_deadzone(self.xbox_remote.getLeftY() * -1,
                                                           self.xbox_remote.getLeftX() * -1, properties.moving_deadzone)
         x_speed = self.m_xspeedLimiter.calculate(x_speed)
-        y_speed = self.m_xspeedLimiter.calculate(y_speed)
+        y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
-        rot = self.m_rotLimiter_x.calculate(apply_linear_deadzone(self.xbox_remote.getRightX(), properties.x_rotation_deadzone))
+        rot = self.m_rotLimiter_x.calculate(
+            apply_linear_deadzone(self.xbox_remote.getRightX() * -1, self.x_rotation_deadzone)
+        )
 
         self.drivetrain.drive(x_speed, y_speed, rot, False)
 
@@ -55,7 +59,7 @@ class Drive(SafeCommand):
 
 class DriveField(SafeCommand):
     rotation_deadzone = autoproperty(0.8)
-    rotate_speed = autoproperty(0.5)
+    rotate_speed = autoproperty(-0.03)
 
     def __init__(
             self,
@@ -72,20 +76,15 @@ class DriveField(SafeCommand):
         self.m_yspeedLimiter = SlewRateLimiter(3)
         self.m_rotLimiter_x = SlewRateLimiter(3)
         self.m_rotLimiter_y = SlewRateLimiter(3)
-        self.last_angle = 0
+
+    def initialize(self):
+        self.rot = self.drivetrain.getAngle()
 
     def execute(self):
-        x_speed = self.apply_deadzone(
-            self.m_xspeedLimiter.calculate(self.xbox_remote.getLeftY())
-            * -1,
-            properties.moving_deadzone
-        )
-
-        y_speed = self.apply_deadzone(
-            self.m_yspeedLimiter.calculate(self.xbox_remote.getLeftX())
-            * -1,
-            properties.moving_deadzone
-        )
+        x_speed, y_speed = apply_center_distance_deadzone(self.xbox_remote.getLeftY() * -1,
+                                                          self.xbox_remote.getLeftX() * -1, properties.moving_deadzone)
+        x_speed = self.m_xspeedLimiter.calculate(x_speed)
+        y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
         rot_x, rot_y = apply_center_distance_deadzone(self.xbox_remote.getRightX(), -1 * self.xbox_remote.getRightY(),
                                                       self.rotation_deadzone)
@@ -103,7 +102,6 @@ class DriveField(SafeCommand):
 
 class _Properties:
     moving_deadzone = autoproperty(0.1, subtable=Drive.__name__)
-    x_rotation_deadzone = autoproperty(0.1, subtable=Drive.__name__)
 
 
 properties = _Properties()

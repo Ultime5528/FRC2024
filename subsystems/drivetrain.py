@@ -1,9 +1,8 @@
 import math
 
 import wpilib
-from wpilib import RobotBase, RobotController
+from wpilib import RobotBase
 from wpimath.estimator import SwerveDrive4PoseEstimator
-from wpimath.filter import SlewRateLimiter
 from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
     ChassisSpeeds,
@@ -23,14 +22,10 @@ class Drivetrain(SafeSubsystem):
     length = autoproperty(0.68)
     max_angular_speed = autoproperty(25.0)
 
-    mag_slew_rate = autoproperty(30.0)
-    rotation_slew_rate = autoproperty(30.0)
-    direction_slew_rate = autoproperty(30.0)
-
-    angular_offset_fl = autoproperty(-1.5707963267948966)
+    angular_offset_fl = autoproperty(-1.57)
     angular_offset_fr = autoproperty(0.0)
-    angular_offset_bl = autoproperty(3.141592653589793)
-    angular_offset_br = autoproperty(1.5707963267948966)
+    angular_offset_bl = autoproperty(3.14)
+    angular_offset_br = autoproperty(1.57)
 
     acceptable_wheel_rotation = autoproperty(0.51)  # is radians. Tolerance in which the wheel can be in
     wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
@@ -110,9 +105,12 @@ class Drivetrain(SafeSubsystem):
         y_speed = y_speed_input * self.swerve_module_fr.max_speed
         rot_speed = rot_speed * self.max_angular_speed
 
-        base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(x_speed, y_speed, rot_speed,
-                                                                   self._gyro.getRotation2d()) \
-            if is_field_relative else ChassisSpeeds(x_speed, y_speed, rot_speed)
+        if is_field_relative:
+            base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(
+                x_speed, y_speed, rot_speed, self._gyro.getRotation2d()
+            )
+        else:
+            base_chassis_speed = ChassisSpeeds(x_speed, y_speed, rot_speed)
 
         corrected_chassis_speed = self.correctForDynamics(base_chassis_speed)
 

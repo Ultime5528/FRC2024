@@ -48,6 +48,22 @@
     }
   },
   {
+    "name": "/Properties/SwerveModule/driving_PID_output_min",
+    "type": "double",
+    "value": -1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/SwerveModule/driving_PID_output_max",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/SwerveModule/turning_PID_P",
     "type": "double",
     "value": 0.4,
@@ -75,22 +91,6 @@
     "name": "/Properties/SwerveModule/turning_PID_feedforward",
     "type": "double",
     "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/SwerveModule/driving_PID_output_min",
-    "type": "double",
-    "value": -1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/SwerveModule/driving_PID_output_max",
-    "type": "double",
-    "value": 1.0,
     "properties": {
       "persistent": true
     }
@@ -131,30 +131,6 @@
     "name": "/Properties/Drivetrain/max_angular_speed",
     "type": "double",
     "value": 25.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Drivetrain/mag_slew_rate",
-    "type": "double",
-    "value": 30.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Drivetrain/rotation_slew_rate",
-    "type": "double",
-    "value": 30.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Drivetrain/direction_slew_rate",
-    "type": "double",
-    "value": 30.0,
     "properties": {
       "persistent": true
     }
@@ -209,8 +185,8 @@
   },
   {
     "name": "/Properties/DriveSquares/line_duration",
-    "type": "int",
-    "value": 1,
+    "type": "double",
+    "value": 1.0,
     "properties": {
       "persistent": true
     }
@@ -218,7 +194,63 @@
   {
     "name": "/Properties/DriveSquares/speed",
     "type": "double",
-    "value": 0.6,
+    "value": 0.2,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/x_rotation_deadzone",
+    "type": "double",
+    "value": 0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveField/rotation_deadzone",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveField/rotate_speed",
+    "type": "double",
+    "value": -0.03,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/moving_deadzone",
+    "type": "double",
+    "value": 0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/mag_slew_rate",
+    "type": "double",
+    "value": 30.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/rotation_slew_rate",
+    "type": "double",
+    "value": 30.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/direction_slew_rate",
+    "type": "double",
+    "value": 30.0,
     "properties": {
       "persistent": true
     }
@@ -235,6 +267,102 @@
     "name": "/Properties/Drive/has_rate_limiter",
     "type": "boolean",
     "value": false,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/rotation_deadzone",
+    "type": "double",
+    "value": 0.6,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drive/rotate_speed",
+    "type": "double",
+    "value": -0.03,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPauses/line_duration",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPauses/speed",
+    "type": "double",
+    "value": 0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPauses/pause",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPausesRotate/line_duration",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPausesRotate/speed",
+    "type": "double",
+    "value": 0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPausesRotate/pause",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresPausesRotate/rotate_speed",
+    "type": "double",
+    "value": 0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresRotate/line_duration",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresRotate/speed",
+    "type": "double",
+    "value": 0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquaresRotate/rotate_speed",
+    "type": "double",
+    "value": 0.25,
     "properties": {
       "persistent": true
     }
