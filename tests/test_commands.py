@@ -27,7 +27,9 @@ def get_arguments(command: Command):
 
 def test_inheritance():
     for obj in get_commands():
-        assert issubclass(obj, SafeMixin), f"{obj.__name__} is not a subclass of SafeCommand"
+        assert issubclass(
+            obj, SafeMixin
+        ), f"{obj.__name__} is not a subclass of SafeCommand"
 
 
 def test_arguments():
@@ -35,7 +37,9 @@ def test_arguments():
         for name, arg in get_arguments(obj).items():
             if name == "self":
                 continue
-            assert arg.annotation is not arg.empty, f"Argument {name} of {obj.__name__} has no type annotation"
+            assert (
+                arg.annotation is not arg.empty
+            ), f"Argument {name} of {obj.__name__} has no type annotation"
 
 
 def test_duplicates():
@@ -52,11 +56,15 @@ def test_requirements():
             if isinstance(c, ast.Call):
                 if isinstance(c.func, ast.Attribute):
                     if c.func.attr == "addRequirements":
-                        assert addReqs is None, f"{obj.__name__} calls addRequirements() multiple times"
+                        assert (
+                            addReqs is None
+                        ), f"{obj.__name__} calls addRequirements() multiple times"
                         addReqs = c
                 elif isinstance(c.func, ast.Name):
                     if c.func.id == "addRequirements":
-                        assert addReqs is None, f"{obj.__name__} calls addRequirements() multiple times"
+                        assert (
+                            addReqs is None
+                        ), f"{obj.__name__} calls addRequirements() multiple times"
                         addReqs = c
         assert addReqs is not None, f"{obj.__name__} does not call addRequirements()"
 
@@ -73,4 +81,6 @@ def test_requirements():
                 actual_required_subsystems.append(arg.id)
 
         for sub_arg in subsystem_args.keys():
-            assert sub_arg in actual_required_subsystems, f"{obj.__name__} does not require {sub_arg}"
+            assert (
+                sub_arg in actual_required_subsystems
+            ), f"{obj.__name__} does not require {sub_arg}"

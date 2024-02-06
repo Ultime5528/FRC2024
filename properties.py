@@ -49,7 +49,9 @@ def save_loop():
 
 
 def save_once():
-    print(f"[{datetime.now().time().replace(microsecond=0).isoformat()}] Connecting to robot...")
+    print(
+        f"[{datetime.now().time().replace(microsecond=0).isoformat()}] Connecting to robot..."
+    )
     proc = subprocess.run(
         "scp -o StrictHostKeyChecking=no -o ConnectTimeout=3 lvuser@10.55.28.2:/home/lvuser/networktables.ini robot_networktables.json"
     )
@@ -68,7 +70,9 @@ def update_files():
         data = json.load(f)
 
     for entry in data:
-        matched_prop = next((prop for prop in registry if prop.key == entry["name"]), None)
+        matched_prop = next(
+            (prop for prop in registry if prop.key == entry["name"]), None
+        )
 
         if matched_prop:
             print("Updating", entry["name"])
@@ -99,35 +103,37 @@ def update_files():
                 f.writelines(lines)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(required=True, help="Enter the command to be executed.")
+    subparsers = parser.add_subparsers(
+        required=True, help="Enter the command to be executed."
+    )
 
     # Clean
     parser_clear = subparsers.add_parser(
         "clear",
-        help="Clear real robot's NetworkTables of persistent properties that no longer exist."
+        help="Clear real robot's NetworkTables of persistent properties that no longer exist.",
     )
     parser_clear.set_defaults(func=clear)
 
     # Save once
     parser_save_once = subparsers.add_parser(
         "saveonce",
-        help="Save once real robot's NetworkTables properties to local file."
+        help="Save once real robot's NetworkTables properties to local file.",
     )
     parser_save_once.set_defaults(func=save_once)
 
     # Save loop
     parser_save_loop = subparsers.add_parser(
         "saveloop",
-        help="Save periodically real robot's NetworkTables properties to local file."
+        help="Save periodically real robot's NetworkTables properties to local file.",
     )
     parser_save_loop.set_defaults(func=save_loop)
 
     # Update files
     parser_update_files = subparsers.add_parser(
         "updatefiles",
-        help="Update files autoproperties values with robot_networktables.json values."
+        help="Update files autoproperties values with robot_networktables.json values.",
     )
     parser_update_files.set_defaults(func=update_files)
 

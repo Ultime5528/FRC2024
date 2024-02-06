@@ -39,12 +39,12 @@ def defaultSetter(value):
 
 
 def autoproperty(
-        default_value,
-        key: Optional[str] = None,
-        table: Optional[str] = None,
-        subtable: Optional[str] = _DEFAULT_CLASS_NAME,
-        full_key: Optional[str] = None,
-        write: Optional[bool] = None
+    default_value,
+    key: Optional[str] = None,
+    table: Optional[str] = None,
+    subtable: Optional[str] = _DEFAULT_CLASS_NAME,
+    full_key: Optional[str] = None,
+    write: Optional[bool] = None,
 ):
     if mode == PropertyMode.LocalOnly:
         return property(lambda: default_value)
@@ -82,7 +82,14 @@ def autoproperty(
     else:  # PropertyMode.Dashboard, default False (keep saved)
         write = write if write is not None else False
 
-    registry.append(AutopropertyCall(full_key, calframe.filename, calframe.positions.lineno - 1, calframe.positions.col_offset))
+    registry.append(
+        AutopropertyCall(
+            full_key,
+            calframe.filename,
+            calframe.positions.lineno - 1,
+            calframe.positions.col_offset,
+        )
+    )
 
     prop = _old_ntproperty(full_key, default_value, writeDefault=write, persistent=True)
 

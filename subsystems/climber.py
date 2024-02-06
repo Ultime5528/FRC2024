@@ -20,9 +20,10 @@ class Climber(SafeSubsystem):
 
     def __init__(self, port_motor, port_switch_up, port_switch_down):
         super().__init__()
-        self._motor = rev.CANSparkMax(port_motor,
-                                      rev.CANSparkMax.MotorType.kBrushless)
-        configureLeader(self._motor, "brake", stallLimit=self.stall_limit, freeLimit=self.free_limit)
+        self._motor = rev.CANSparkMax(port_motor, rev.CANSparkMax.MotorType.kBrushless)
+        configureLeader(
+            self._motor, "brake", stallLimit=self.stall_limit, freeLimit=self.free_limit
+        )
 
         self._switch_up = wpilib.DigitalInput(port_switch_up)
         self._switch_down = wpilib.DigitalInput(port_switch_down)
