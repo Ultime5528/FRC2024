@@ -222,7 +222,8 @@ class Drivetrain(SafeSubsystem):
         estimated_vision_pose = self.vision_estimator.update(self.cam.getLatestResult())
         if estimated_vision_pose is EstimatedRobotPose:
             self.swerve_estimator.addVisionMeasurement(
-                estimated_vision_pose.estimatedPose, estimated_vision_pose.timestampSeconds
+                estimated_vision_pose.estimatedPose,
+                estimated_vision_pose.timestampSeconds,
             )
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
 
