@@ -63,3 +63,14 @@ def test_settings(
             assert climber._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
             climber._motor.restoreFactoryDefaults.assert_called_with()
             climber._motor.setSmartCurrentLimit.assert_called_with(15, 30)
+
+
+def test_requirements(
+    control: "pyfrc.test_support.controller.TestController", robot: Robot
+):
+    with control.run_robot():
+        for climber in (robot.climber_right, robot.climber_left):
+            cmd = ExtendClimber(climber)
+            assert cmd.hasRequirement(climber)
+            cmd = RetractClimber(climber)
+            assert cmd.hasRequirement(climber)
