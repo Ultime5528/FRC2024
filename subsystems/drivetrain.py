@@ -1,6 +1,7 @@
 import math
 
 import wpilib
+from photonlibpy.estimatedRobotPose import EstimatedRobotPose
 from photonlibpy.photonCamera import PhotonCamera
 from photonlibpy.photonPoseEstimator import PhotonPoseEstimator, PoseStrategy
 from robotpy_apriltag import loadAprilTagLayoutField, AprilTagField
@@ -219,9 +220,10 @@ class Drivetrain(SafeSubsystem):
         )
 
         estimated_vision_pose = self.vision_estimator.update(self.cam.getLatestResult())
-        self.swerve_estimator.addVisionMeasurement(
-            estimated_vision_pose.estimatedPose, estimated_vision_pose.timestampSeconds
-        )
+        if estimated_vision_pose is EstimatedRobotPose:
+            self.swerve_estimator.addVisionMeasurement(
+                estimated_vision_pose.estimatedPose, estimated_vision_pose.timestampSeconds
+            )
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
 
     def simulationPeriodic(self):
