@@ -1,7 +1,7 @@
 from unittest import mock
 
 import pyfrc.test_support.controller
-import pytest
+from pytest import approx
 import rev
 
 from commands.climber.extendclimber import ExtendClimber
@@ -15,13 +15,12 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         cmd = ExtendClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.speed_up == pytest.approx(
-            robot.climber_left._motor.get()
-        )
+        assert robot.climber_left.speed_up == approx(robot.climber_left._motor.get())
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
-        assert 0.0 == robot.climber_left._motor.get()
-        assert robot.climber_left.sim_max_height == pytest.approx(
-            robot.climber_left._sim_motor.getPosition(), rel=0.1
+        # If simulationPeriodic works, switch stopped climber from going over max
+        assert robot.climber_left._motor.get() == approx(0.0)
+        assert robot.climber_left._sim_motor.getPosition() == approx(
+            robot.climber_left.sim_max_height
         )
         assert not cmd.isScheduled()
 
@@ -33,15 +32,11 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         cmd = RetractClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.speed_down == pytest.approx(
-            robot.climber_left._motor.get()
-        )
+        assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
-        assert robot.climber_left._sim_motor.getPosition() == pytest.approx(
-            0.0, rel=0.1
-        )
-        assert 0.0 == robot.climber_left._motor.get()
+        assert robot.climber_left._sim_motor.getPosition() == approx(0.0)
+        assert robot.climber_left._motor.get() == approx(0.0)
 
 
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
