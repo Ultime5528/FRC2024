@@ -44,7 +44,6 @@ class Drivetrain(SafeSubsystem):
     )  # is radians. Tolerance in which the wheel can be in
     wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
 
-
     def __init__(self, period: float) -> None:
         super().__init__()
         self.period_seconds = period
