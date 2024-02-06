@@ -15,9 +15,7 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         cmd = ExtendClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.speed_up == approx(
-            robot.climber_left._motor.get()
-        )
+        assert robot.climber_left.speed_up == approx(robot.climber_left._motor.get())
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
         # If simulationPeriodic works, switch stopped climber from going over max
         assert robot.climber_left._motor.get() == approx(0.0)
@@ -34,9 +32,7 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         cmd = RetractClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left._motor.get() == approx(
-            robot.climber_left.speed_down
-        )
+        assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
         assert robot.climber_left._sim_motor.getPosition() == approx(0.0)
