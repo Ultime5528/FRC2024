@@ -32,14 +32,14 @@ class DriveDistance(SafeCommand):
             max_speed=self.speed,
             accel=self.accel,
             start_position=self.initial_position.x,
-            end_position=self.goal_x
+            end_position=self.goal_x,
         )
         self.motion_y = TrapezoidalMotion(
             min_speed=self.min_speed,
             max_speed=self.speed,
             accel=self.accel,
             start_position=self.initial_position.y,
-            end_position=self.goal_y
+            end_position=self.goal_y,
         )
 
     def execute(self):
