@@ -58,7 +58,9 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
 
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
 @mock.patch("rev.CANSparkMax.setSmartCurrentLimit")
-def test_settings(_, __, control: "pyfrc.test_support.controller.TestController", robot: Robot):
+def test_settings(
+    _, __, control: "pyfrc.test_support.controller.TestController", robot: Robot
+):
     with control.run_robot():
         for climber in (robot.climber_left, robot.climber_right):
             assert not climber._motor.getInverted()

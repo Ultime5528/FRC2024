@@ -36,7 +36,9 @@ class Switch:
 
     def setSimPressed(self):
         if not RobotBase.isSimulation():
-            raise RuntimeError("The method setSimPressed should only be called in simulation")
+            raise RuntimeError(
+                "The method setSimPressed should only be called in simulation"
+            )
         if self._type == Switch.Type.NormallyOpen:
             self._sim_input.setValue(True)
         elif self._type == Switch.Type.NormallyClosed:
@@ -44,7 +46,9 @@ class Switch:
 
     def setSimUnpressed(self):
         if not RobotBase.isSimulation():
-            raise RuntimeError("The method setSimUnpressed should only be called in simulation")
+            raise RuntimeError(
+                "The method setSimUnpressed should only be called in simulation"
+            )
         if self._type == Switch.Type.NormallyOpen:
             self._sim_input.setValue(False)
         elif self._type == Switch.Type.NormallyClosed:
