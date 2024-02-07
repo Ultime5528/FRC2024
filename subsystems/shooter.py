@@ -16,10 +16,14 @@ class Shooter(SafeSubsystem):
     def __init__(self):
         super().__init__()
 
-        self.left_motor = rev.CANSparkMax(ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless)
+        self.left_motor = rev.CANSparkMax(
+            ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless
+        )
         configureLeader(self.left_motor, "coast")
 
-        self.right_motor = rev.CANSparkMax(ports.shooter_motor_right, rev.CANSparkMax.MotorType.kBrushless)
+        self.right_motor = rev.CANSparkMax(
+            ports.shooter_motor_right, rev.CANSparkMax.MotorType.kBrushless
+        )
         configureFollower(self.right_motor, self.left_motor, "coast", inverted=True)
 
         if RobotBase.isSimulation():
