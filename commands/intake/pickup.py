@@ -3,11 +3,10 @@ import wpilib
 from subsystems.intake import Intake
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-import ports
 
 
 class PickUp(SafeCommand):
-    delay_time = autoproperty(1.0)
+    delay = autoproperty(1.0)
 
     def __init__(self, intake: Intake):
         super().__init__()
@@ -24,7 +23,7 @@ class PickUp(SafeCommand):
             self.timer.start()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= self.delay_time
+        return self.timer.get() >= self.delay
 
     def end(self, interrupted: bool) -> None:
         self.timer.stop()

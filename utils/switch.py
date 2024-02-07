@@ -1,5 +1,3 @@
-from typing import Type
-import commands2
 from enum import Enum, auto
 from wpilib import DigitalInput, RobotBase
 from wpilib.simulation import DIOSim

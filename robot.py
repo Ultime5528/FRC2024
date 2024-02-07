@@ -8,6 +8,7 @@ import ports
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.pickup import PickUp
 from commands.intake.drop import Drop
+from commands.intake.load import Load
 from subsystems.drivetrain import Drivetrain
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.extendclimber import ExtendClimber
@@ -95,6 +96,7 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
+        putCommandOnDashboard("Intake", Load(self.intake))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
