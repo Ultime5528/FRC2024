@@ -34,6 +34,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.drivetrain = Drivetrain(self.getPeriod())
         self.shooter = Shooter()
+        self.climber_left = Climber(ports.climber_motor_left, ports.climber_left_switch_up, ports.climber_left_switch_down)
+        self.climber_right = Climber(ports.climber_motor_right, ports.climber_right_switch_up, ports.climber_right_switch_down)
         """
         Default subsystem commands
         """
