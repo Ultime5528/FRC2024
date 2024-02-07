@@ -8,6 +8,7 @@ import numpy as np
 
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
+from subsystems.intake import Intake
 
 
 def interpolate(t, color1, color2):
@@ -26,6 +27,7 @@ Color = Union[np.ndarray, Tuple[int, int, int], List[int]]
 class ModeLED(Enum):
     NONE = "none"
     NOTE = "note"
+    TAKING = "TAKING"
 
 
 class LEDController(SafeSubsystem):
@@ -36,7 +38,7 @@ class LEDController(SafeSubsystem):
     purple_rgb = np.array([108, 0, 250])
     violet_rgb = np.array([205, 0, 255])
     yellow_rgb = np.array([255, 255, 0])
-    orange_rgb = np.array([255, 100, 0])
+    orange_rgb = np.array([255, 150, 50])
     black = np.array([0, 0, 0])
     white = np.array([255, 255, 255])
     beige_rgb = np.array([225, 198, 153])
@@ -50,7 +52,7 @@ class LEDController(SafeSubsystem):
 
     last = 0
 
-    def __init__(self):
+    def __init__(self, intake: Intake):
         super().__init__()
         self.led_strip = wpilib.AddressableLED(ports.led_strip)
         self.buffer = [wpilib.AddressableLED.LEDData() for _ in range(self.led_number)]
@@ -59,6 +61,8 @@ class LEDController(SafeSubsystem):
         self.explosiveness = 0.0
         self.led_strip.start()
         self.mode = ModeLED.NONE
+
+        self.intake = intake
 
     def setRGB(self, i: int, color: Color):
         brightness = max(min(100, self.brightness), 0) / 100
@@ -107,8 +111,16 @@ class LEDController(SafeSubsystem):
         for i in range(self.led_number):
             self.buffer[i].setRGB(r, g, b)
 
-    def gradient(self):
-        brightness = max(min(100, self.brightness), 0) / 100
+    def auto(self):
+        if self.brightness >= 100:
+            brightness = 100
+        elif self.brightness <= 0:
+            brightness = 0
+        else:
+            brightness = self.brightness
+
+        brightness = brightness / 100
+
         color = self.getAllianceColor()
 
         i_values = np.arange(self.led_number)
@@ -187,8 +199,18 @@ class LEDController(SafeSubsystem):
     def getModeColor(self):
         if self.mode == ModeLED.NOTE:
             return self.orange_rgb
+        elif self.mode == ModeLED.TAKING:
+            return self.white
         else:
             return self.getAllianceColor()
+
+    def getModeSecondaryColor(self):
+        if self.mode == ModeLED.NOTE:
+            return self.getAllianceColor()
+        elif self.mode == ModeLED.TAKING:
+            return self.orange_rgb
+        else:
+            return self.white
 
     def teleop(self):
         brightness = max(min(100, self.brightness), 0) / 100
@@ -198,7 +220,7 @@ class LEDController(SafeSubsystem):
         i_values = np.arange(self.led_number)
         y_values = a * np.sin(2 * math.pi / self.color_period * (i_values - self.speed * self.time)) + k
         y_values = np.maximum(y_values, 0)
-        y_values = numpy_interpolation(y_values, self.getModeColor(), self.white)
+        y_values = numpy_interpolation(y_values, self.getModeColor(), self.getModeSecondaryColor())
         y_values = (y_values * brightness).astype(int)
         for i, y in enumerate(y_values):
             self.buffer[i].setRGB(*y)
@@ -230,8 +252,13 @@ class LEDController(SafeSubsystem):
             self.explode(self.getAllianceColor())
         else:
             if wpilib.DriverStation.isAutonomousEnabled():  # auto
-                self.gradient()
+                self.auto()
             elif wpilib.DriverStation.isTeleopEnabled():  # teleop
+                if (self.intake.hasNote()) and (self.mode is not ModeLED.TAKING):
+                    self.setMode(ModeLED.NOTE)
+                elif self.mode is not ModeLED.TAKING:
+                    self.setMode(ModeLED.NONE)
+
                 if wpilib.DriverStation.getMatchTime() == -1.0 or wpilib.DriverStation.getMatchTime() > 30:
                     self.teleop()
                 elif wpilib.DriverStation.getMatchTime() > 25:
