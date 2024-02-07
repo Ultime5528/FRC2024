@@ -1,5 +1,13 @@
 # FRC2024
 
+## Execution
+
+* Simulation : `python -m robotpy sim`
+* Deployment : `python -m robotpy deploy`
+* Run tests : `python -m robotpy test`
+* Sync dependencies : `python -m robotpy sync`
+* Format code with black `python -m black .`
+
 
 ## Environment setup
 * Download the latest Miniconda version on your computer with the following link (https://docs.conda.io/en/latest/miniconda.html)
@@ -22,13 +30,8 @@
   python -m robotpy sync
 ```
 
-(In a new[README.md](..%2FFRC2023%2FREADME.md) project, execute `python -m robotpy init` instead.)
+(In a new project, execute `python -m robotpy init` instead.)
 
-## Execution
-
-* Simulation : `python -m robotpy sim`
-* Deployment : `python -m robotpy deploy`
-* Run tests : `python -m robotpy test`
 
 ## Writing Conventions 
 * All code must be written in the English language

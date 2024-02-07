@@ -27,8 +27,11 @@ class Drivetrain(SafeSubsystem):
     angular_offset_bl = autoproperty(3.14)
     angular_offset_br = autoproperty(1.57)
 
-    acceptable_wheel_rotation = autoproperty(0.51)  # is radians. Tolerance in which the wheel can be in
-    wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
+    # In radians. Tolerance in which the wheel can be in
+    acceptable_wheel_rotation = autoproperty(0.51)
+
+    # wheel will lock and flip
+    wheel_flip_rotation = autoproperty(0.85)
 
     def __init__(self, period: float) -> None:
         super().__init__()
@@ -95,11 +98,11 @@ class Drivetrain(SafeSubsystem):
             self.sim_yaw = 0
 
     def drive(
-            self,
-            x_speed_input: float,
-            y_speed_input: float,
-            rot_speed: float,
-            is_field_relative: bool,
+        self,
+        x_speed_input: float,
+        y_speed_input: float,
+        rot_speed: float,
+        is_field_relative: bool,
     ):
         x_speed = x_speed_input * self.swerve_module_fr.max_speed
         y_speed = y_speed_input * self.swerve_module_fr.max_speed
@@ -167,17 +170,19 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_bl.stop()
         self.swerve_module_br.stop()
 
-    def correctForDynamics(self, original_chassis_speeds: ChassisSpeeds) -> ChassisSpeeds:
+    def correctForDynamics(
+        self, original_chassis_speeds: ChassisSpeeds
+    ) -> ChassisSpeeds:
         next_robot_pose: Pose2d = Pose2d(
             original_chassis_speeds.vx * self.period_seconds,
             original_chassis_speeds.vy * self.period_seconds,
-            Rotation2d(original_chassis_speeds.omega * self.period_seconds)
+            Rotation2d(original_chassis_speeds.omega * self.period_seconds),
         )
         pose_twist: Twist2d = Pose2d().log(next_robot_pose)
         updated_speeds: ChassisSpeeds = ChassisSpeeds(
             pose_twist.dx / self.period_seconds,
             pose_twist.dy / self.period_seconds,
-            pose_twist.dtheta / self.period_seconds
+            pose_twist.dtheta / self.period_seconds,
         )
         return updated_speeds
 
