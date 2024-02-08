@@ -1,12 +1,11 @@
 import wpilib
 
-from utils.safecommand import SafeCommand
 from subsystems.intake import Intake
 from utils.property import autoproperty
+from utils.safecommand import SafeCommand
 
 
 class Load(SafeCommand):
-
     delay = autoproperty(1.0)
 
     def __init__(self, intake: Intake):

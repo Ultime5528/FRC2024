@@ -1,5 +1,4 @@
 import rev
-import wpilib
 from wpilib import RobotBase
 
 import ports
