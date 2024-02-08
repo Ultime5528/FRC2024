@@ -55,17 +55,19 @@ class DriveToPos(SafeCommand):
         speed = math.sqrt(vel_x*vel_x+vel_y*vel_y)
         clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
 
+        new_vel_x = 0
+        new_vel_y = 0
         if not math.isclose(speed, 0):
             speed_factor = clamped_speed/speed
 
             new_vel_x = vel_x*speed_factor
             new_vel_y = vel_y*speed_factor
 
-            self.drivetrain.drive(new_vel_x,
-                                  new_vel_y,
-                                  -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
-                                  True
-            )
+        self.drivetrain.drive(new_vel_x,
+                              new_vel_y,
+                              -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                              True
+        )
 
     def end(self, interrupted):
         self.drivetrain.drive(0, 0, 0, False)

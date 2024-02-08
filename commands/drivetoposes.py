@@ -8,16 +8,20 @@ from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
+
 def distance(p1: Pose2d, p2: Pose2d):
     delta = p1 - p2
     return math.sqrt(delta.x * delta.x + delta.y * delta.y)
+
 
 def distance2(p1: Pose2d, p2: Pose2d):
     delta = p1 - p2
     return delta.x * delta.x + delta.y * delta.y
 
+
 def clamp(x, minimum, maximum):
     return max(minimum, min(x, maximum))
+
 
 class DriveToPoses(SafeCommand):
     pose_p = autoproperty(0.35)
@@ -27,7 +31,6 @@ class DriveToPoses(SafeCommand):
 
     spoof_distance = autoproperty(5.0)
 
-    spoof_radius = autoproperty(1.0)
     spoof_point_radius = autoproperty(0.04)
 
     last_point_radius = autoproperty(0.04)
@@ -37,7 +40,7 @@ class DriveToPoses(SafeCommand):
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.waypoints = waypoints
-        if len(waypoints) <= 1:
+        if len(waypoints) < 1:
             raise
 
     def initialize(self):
@@ -52,31 +55,35 @@ class DriveToPoses(SafeCommand):
         currRobotPose = self.drivetrain.getPose()
         target = self.waypoints[self.target_waypoint]
 
-        self.pid_x.setSetpoint(target.x)
-        self.pid_y.setSetpoint(target.y)
+        deltaX = target.x - currRobotPose.x
+        deltaY = target.y - currRobotPose.y
+
+        c = math.sqrt(deltaX * deltaX + deltaY * deltaY)  # hypothenuse
+        scale_factor = (c + self.spoof_distance) / c
+
+        gaslightedX = scale_factor * deltaX + currRobotPose.x
+        gaslightedY = scale_factor * deltaY + currRobotPose.y
+
+        self.pid_x.setSetpoint(gaslightedX)
+        self.pid_y.setSetpoint(gaslightedY)
         self.pid_rot.setSetpoint(target.rotation().degrees())
-        if self.target_waypoint == len(self.waypoints)-1:
+        if self.target_waypoint == len(self.waypoints) - 1:  # is last
             self.pid_x.setTolerance(self.last_point_radius)
             self.pid_y.setTolerance(self.last_point_radius)
             self.pid_rot.setTolerance(self.last_point_radius)
 
-            if self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint(): # is last
+            self.pid_x.setSetpoint(target.x)
+            self.pid_y.setSetpoint(target.y)
+            self.pid_rot.setSetpoint(target.rotation().degrees())
+
+            if self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint():
                 self.target_waypoint += 1
-        elif distance2(currRobotPose, target) < self.spoof_point_radius*self.spoof_point_radius:
+        elif distance2(currRobotPose, target) < self.spoof_point_radius * self.spoof_point_radius:
             self.target_waypoint += 1
-        elif distance2(currRobotPose, target) < self.spoof_radius*self.spoof_radius: # is in gaslight radius
-            # Calculate Gaslight because under gaslight radius
-            deltaX = target.x - currRobotPose.x
-            deltaY = target.y - currRobotPose.y
 
-            c = math.sqrt(deltaX*deltaX + deltaY*deltaY) # hypothenuse
-            scale_factor = c + self.spoof_distance
-
-            gaslightedX = scale_factor * deltaX + currRobotPose.x
-            gaslightedY = scale_factor * deltaY + currRobotPose.y
-
-            self.pid_x.setSetpoint(gaslightedX)
-            self.pid_y.setSetpoint(gaslightedY)
+            self.pid_x.setSetpoint(target.x)
+            self.pid_y.setSetpoint(target.y)
+            self.pid_rot.setSetpoint(target.rotation().degrees())
 
         vel_x = self.pid_x.calculate(currRobotPose.x)
         vel_y = self.pid_y.calculate(currRobotPose.y)
@@ -84,17 +91,19 @@ class DriveToPoses(SafeCommand):
         speed = math.sqrt(vel_x * vel_x + vel_y * vel_y)
         clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
 
+        new_vel_x = 0
+        new_vel_y = 0
         if not math.isclose(speed, 0):
             speed_factor = clamped_speed / speed
 
             new_vel_x = vel_x * speed_factor
             new_vel_y = vel_y * speed_factor
 
-            self.drivetrain.drive(new_vel_x,
-                                  new_vel_y,
-                                  -self.pid_rot.calculate(currRobotPose.rotation().degrees()),
-                                  True
-                                  )
+        self.drivetrain.drive(new_vel_x,
+                              new_vel_y,
+                              -self.pid_rot.calculate(currRobotPose.rotation().degrees()),
+                              True
+                              )
 
     def isFinished(self) -> bool:
         return self.target_waypoint == len(self.waypoints)
