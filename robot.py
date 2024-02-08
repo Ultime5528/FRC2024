@@ -3,17 +3,20 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
-from commands.auto.drivesquares import DriveSquares
-from commands.drive import DriveField, Drive
+import ports
+from commands.drivetrain.drive import DriveField, Drive
+
 from subsystems.drivetrain import Drivetrain
+from subsystems.climber import Climber
+from commands.climber.extendclimber import ExtendClimber
+from commands.climber.retractclimber import RetractClimber
 
 
 class Robot(commands2.TimedCommandRobot):
-    def __init__(self):
-        super().__init__()
+    def robotInit(self):
         wpilib.LiveWindow.enableAllTelemetry()
-        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
         """
@@ -31,11 +34,23 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
+        self.climber_left = Climber(
+            ports.climber_motor_left,
+            ports.climber_left_switch_up,
+            ports.climber_left_switch_down,
+        )
+        self.climber_right = Climber(
+            ports.climber_motor_right,
+            ports.climber_right_switch_up,
+            ports.climber_right_switch_down,
+        )
 
         """
         Default subsystem commands
         """
-        self.drivetrain.setDefaultCommand(DriveField(self.drivetrain, self.xbox_controller))
+        self.drivetrain.setDefaultCommand(
+            DriveField(self.drivetrain, self.xbox_controller)
+        )
 
         """
         Setups
@@ -52,14 +67,30 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.button(1).onTrue(DriveSquares(self.drivetrain))
+        pass
 
     def setupDashboard(self):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
-        putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
+        putCommandOnDashboard(
+            "Drivetrain", DriveField(self.drivetrain, self.xbox_controller)
+        )
+        putCommandOnDashboard(
+            "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
+        )
+        putCommandOnDashboard(
+            "Climber", ExtendClimber(self.climber_left), "ExtendClimber.left"
+        )
+        putCommandOnDashboard(
+            "Climber", RetractClimber(self.climber_left), "RetractClimber.left"
+        )
+        putCommandOnDashboard(
+            "Climber", ExtendClimber(self.climber_right), "ExtendClimber.right"
+        )
+        putCommandOnDashboard(
+            "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -72,7 +103,9 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.cancel()
 
 
-def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = None) -> commands2.Command:
+def putCommandOnDashboard(
+    sub_table: str, cmd: commands2.Command, name: str = None
+) -> commands2.Command:
     if sub_table:
         sub_table += "/"
     else:
@@ -86,7 +119,3 @@ def putCommandOnDashboard(sub_table: str, cmd: commands2.Command, name: str = No
     wpilib.SmartDashboard.putData(sub_table + name, cmd)
 
     return cmd
-
-
-if __name__ == "__main__":
-    wpilib.run(Robot)

@@ -23,7 +23,9 @@ def wrapNone(f, name):
             wrapped._exception_count = 0
         except Exception as e:
             if not fms:
-                raise CommandException(f"Exception in command {name}.{f.__name__}()") from e
+                raise CommandException(
+                    f"Exception in command {name}.{f.__name__}()"
+                ) from e
             else:
                 print(f"Exception in command {name}.{f.__name__}():\n", e, sep="")
                 wrapped._exception_count += 1
