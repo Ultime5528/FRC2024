@@ -5,11 +5,15 @@ import commands2.button
 import wpilib
 
 import ports
-from commands.drivetrain.drive import DriveField, Drive
-from subsystems.drivetrain import Drivetrain
-from subsystems.climber import Climber
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.retractclimber import RetractClimber
+from commands.drivetrain.drive import DriveField, Drive
+from commands.intake.drop import Drop
+from commands.intake.load import Load
+from commands.intake.pickup import PickUp
+from subsystems.climber import Climber
+from subsystems.drivetrain import Drivetrain
+from subsystems.intake import Intake
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -42,6 +46,7 @@ class Robot(commands2.TimedCommandRobot):
             ports.climber_right_switch_up,
             ports.climber_right_switch_down,
         )
+        self.intake = Intake()
 
         """
         Default subsystem commands
@@ -89,6 +94,9 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
         )
+        putCommandOnDashboard("Intake", Drop(self.intake))
+        putCommandOnDashboard("Intake", PickUp(self.intake))
+        putCommandOnDashboard("Intake", Load(self.intake))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
