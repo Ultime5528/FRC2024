@@ -68,7 +68,9 @@ def test_requirements():
                         addReqs = c
         super_classes = obj.__bases__
         for super_class in super_classes:
-            for c in ast.walk(ast.parse(dedent(inspect.getsource(super_class.__init__)))):
+            for c in ast.walk(
+                ast.parse(dedent(inspect.getsource(super_class.__init__)))
+            ):
                 if isinstance(c, ast.Call):
                     if isinstance(c.func, ast.Attribute):
                         if c.func.attr == "addRequirements":
@@ -86,7 +88,9 @@ def test_requirements():
 
         subsystem_args = {}
         for name, arg in get_arguments(obj).items():
-            if isinstance(arg.annotation, type) and issubclass(arg.annotation, Subsystem): # if is a class and is subsystem
+            if isinstance(arg.annotation, type) and issubclass(
+                arg.annotation, Subsystem
+            ):  # if is a class and is subsystem
                 subsystem_args[name] = arg
 
         actual_required_subsystems = []
