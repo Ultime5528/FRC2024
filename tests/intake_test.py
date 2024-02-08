@@ -17,9 +17,7 @@ def test_drop(control, robot: Robot):
         assert robot.intake._motor.get() == approx(robot.intake.speed_out)
 
         robot.intake._sensor.setSimUnpressed()
-        control.step_timing(
-            seconds=cmd.delay - 0.2, autonomous=False, enabled=True
-        )
+        control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(robot.intake.speed_out)
 
         control.step_timing(seconds=0.4, autonomous=False, enabled=True)
