@@ -31,7 +31,9 @@ class Drivetrain(SafeSubsystem):
 
     use_vision = autoproperty(True)
 
-    acceptable_wheel_rotation = autoproperty(0.51)  # is radians. Tolerance in which the wheel can be in
+    acceptable_wheel_rotation = autoproperty(
+        0.51
+    )  # is radians. Tolerance in which the wheel can be in
     wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
 
     # wheel will lock and flip
