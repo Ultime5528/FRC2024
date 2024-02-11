@@ -2,7 +2,7 @@ from subsystems.pivot import Pivot
 from utils.safecommand import SafeCommand
 
 
-class ResetPivot(SafeCommand):
+class ResetPivotDown(SafeCommand):
     def __init__(self, pivot: Pivot):
         super().__init__()
         self.pivot = pivot
