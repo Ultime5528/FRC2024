@@ -19,8 +19,9 @@ from subsystems.pivot import Pivot
 
 
 class Robot(commands2.TimedCommandRobot):
-    def __init__(self):
-        super().__init__()
+    def robotInit(self):
+        # robotInit fonctionne mieux avec les tests que __init__.
+
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
