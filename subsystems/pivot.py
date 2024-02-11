@@ -11,18 +11,17 @@ from utils.switch import Switch
 class Pivot(SafeSubsystem):
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
-    height_max = autoproperty(255.0)
     height_min = 0.0
+    height_max = autoproperty(255.0)
 
     def __init__(self):
         super().__init__()
-
         self._switch_up = Switch(ports.pivot_switch_up, Switch.Type.NormallyClosed)
         self._switch_down = Switch(ports.pivot_switch_down, Switch.Type.NormallyClosed)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
         self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
 
-        self.offset = 0.0
+        self._offset = 0.0
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
@@ -34,12 +33,12 @@ class Pivot(SafeSubsystem):
 
     def periodic(self) -> None:
         if self._prev_is_down and not self._switch_down.isPressed():
-            self.offset = self.height_min - self._encoder.getDistance()
+            self._offset = self.height_min - self._encoder.getDistance()
             self._has_reset = True
         self._prev_is_down = self._switch_down.isPressed()
 
         if self._prev_is_up and not self._switch_up.isPressed():
-            self.offset = self.height_max - self._encoder.getDistance()
+            self._offset = self.height_max - self._encoder.getDistance()
             self._has_reset = True
         self._prev_is_up = self._switch_up.isPressed()
 
@@ -47,7 +46,7 @@ class Pivot(SafeSubsystem):
         assert not (
             self.isUp() and self.isDown()
         ), "Both switches are on at the same time which doesn't make any sense"
-        # self._sim_encoder.setRate(self._motor.getSpeed())
+
         self._sim_encoder.setDistance(
             self._sim_encoder.getDistance() + self._motor.get()
         )
@@ -92,7 +91,7 @@ class Pivot(SafeSubsystem):
         self._motor.stopMotor()
 
     def getHeight(self):
-        return self._encoder.getDistance() + self.offset
+        return self._encoder.getDistance() + self._offset
 
     def getMotorInput(self):
         return self._motor.get()

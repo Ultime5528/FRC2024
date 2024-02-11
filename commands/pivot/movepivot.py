@@ -39,10 +39,10 @@ class MovePivot(SafeCommand):
         self.motion = TrapezoidalMotion(
             start_position=self.pivot.getHeight(),
             end_position=self.end_position_getter(),
-            start_speed=max(properties.min_speed, abs(self.pivot.getMotorInput())),
-            end_speed=properties.min_speed,
-            max_speed=properties.max_speed,
-            accel=properties.acceleration,
+            start_speed=max(properties.speed_min, abs(self.pivot.getMotorInput())),
+            end_speed=properties.speed_min,
+            max_speed=properties.speed_max,
+            accel=properties.accel,
         )
 
     def execute(self):
@@ -62,11 +62,11 @@ class _ClassProperties:
     position_amp = autoproperty(70.0, subtable=MovePivot.__name__)
     position_speaker_far = autoproperty(155.0, subtable=MovePivot.__name__)
     position_speaker_close = autoproperty(232.0, subtable=MovePivot.__name__)
-    position_loading = autoproperty(100, subtable=MovePivot.__name__)
+    position_loading = autoproperty(100.0, subtable=MovePivot.__name__)
 
-    min_speed = autoproperty(0.1, subtable=MovePivot.__name__)
-    max_speed = autoproperty(0.95, subtable=MovePivot.__name__)
-    acceleration = autoproperty(0.035, subtable=MovePivot.__name__)
+    speed_min = autoproperty(0.1, subtable=MovePivot.__name__)
+    speed_max = autoproperty(0.95, subtable=MovePivot.__name__)
+    accel = autoproperty(0.035, subtable=MovePivot.__name__)
 
 
 properties = _ClassProperties()

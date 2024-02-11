@@ -19,7 +19,8 @@ from subsystems.pivot import Pivot
 
 
 class Robot(commands2.TimedCommandRobot):
-    def robotInit(self):
+    def __init__(self):
+        super().__init__()
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
@@ -102,26 +103,10 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toAmp(self.pivot)),
-            "MovePivotToAmp",
-        )
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toSpeakerFar(self.pivot)),
-            "MovePivotToSpeakerFar",
-        )
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toSpeakerClose(self.pivot)),
-            "MovePivotToSpeakerClose",
-        )
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toLoading(self.pivot)),
-            "MovePivotToLoading",
-        )
+        putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toLoading(self.pivot))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()

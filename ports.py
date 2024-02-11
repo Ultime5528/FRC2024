@@ -25,7 +25,7 @@ climber_motor_left: Final = 10
 intake_motor: Final = 11
 
 # PWM
-pivot_motor: Final = 12
+pivot_motor: Final = 0
 
 # DIO
 climber_left_switch_up = 0
