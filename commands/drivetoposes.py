@@ -53,6 +53,7 @@ class DriveToPoses(SafeCommand):
 
     def execute(self):
         currRobotPose = self.drivetrain.getPose()
+        currRobotRot = self.drivetrain.getAngle()
         target = self.waypoints[self.target_waypoint]
 
         deltaX = target.x - currRobotPose.x
@@ -101,7 +102,7 @@ class DriveToPoses(SafeCommand):
 
         self.drivetrain.drive(new_vel_x,
                               new_vel_y,
-                              -self.pid_rot.calculate(currRobotPose.rotation().degrees()),
+                              -self.pid_rot.calculate(currRobotRot),
                               True
                               )
 

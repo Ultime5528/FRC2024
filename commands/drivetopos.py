@@ -48,6 +48,7 @@ class DriveToPos(SafeCommand):
 
     def execute(self):
         current_pos = self.drivetrain.getPose()
+        current_rot = self.drivetrain.getAngle()
 
         vel_x = self.pid_x.calculate(current_pos.x)
         vel_y = self.pid_y.calculate(current_pos.y)
@@ -65,7 +66,7 @@ class DriveToPos(SafeCommand):
 
         self.drivetrain.drive(new_vel_x,
                               new_vel_y,
-                              -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                              -self.pid_rot.calculate(current_rot),
                               True
         )
 
