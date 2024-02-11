@@ -95,7 +95,6 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
         )
-        putCommandOnDashboard("Climber", ForceResetClimber.toMax(self.climber_left), "Forceresetclimber tomax")
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
