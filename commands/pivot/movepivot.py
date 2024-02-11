@@ -42,7 +42,7 @@ class MovePivot(SafeCommand):
             start_speed=max(properties.min_speed, abs(self.pivot.getMotorInput())),
             end_speed=properties.min_speed,
             max_speed=properties.max_speed,
-            accel=properties.acceleration
+            accel=properties.acceleration,
         )
 
     def execute(self):

@@ -9,8 +9,10 @@ from robot import Robot
 def test_movePivot_from_swich_down(control, robot: Robot):
     with control.run_robot():
 
+        # Set encoder to the minimum value so switch_down is pressed
+        robot.pivot._sim_encoder.setDistance(-0.05)
+
         # Enable robot and schedule command
-        robot.pivot._sim_encoder.setDistance(-0.05)  # Set encoder to the minimum value so switch_down is pressed
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert robot.pivot.isDown()
 
