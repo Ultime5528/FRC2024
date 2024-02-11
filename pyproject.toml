@@ -13,11 +13,11 @@ robotpy_version = "2024.2.1.1"
 robotpy_extras = [
     # "all"
      "apriltag",
-     "commands2",
+    # "commands2",
      "cscore",
     # "navx"
     # "pathplannerlib"
-    "phoenix5",
+    # "phoenix5"
     # "phoenix6"
     # "playingwithfusion"
      "rev",
@@ -28,5 +28,7 @@ robotpy_extras = [
 
 # Other pip packages to install
 requires = [
-     "numpy"
+     "numpy",
+     "robotpy-commands-v2~=2024.2.2",
+     "black==24.1.1; platform_machine != 'roborio'"
 ]
