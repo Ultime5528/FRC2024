@@ -6,6 +6,7 @@
 * Deployment : `python -m robotpy deploy`
 * Run tests : `python -m robotpy test`
 * Sync dependencies : `python -m robotpy sync`
+* Format code with black `python -m black .`
 
 
 ## Environment setup

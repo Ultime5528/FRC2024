@@ -16,4 +16,3 @@ class RetractClimber(SafeCommand):
 
     def end(self, interrupted: bool):
         self.climber.stop()
-

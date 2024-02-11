@@ -20,8 +20,12 @@ drive_motor_pinion_teeth = 13
 drive_motor_gear_ratio = (45.0 * 22) / (drive_motor_pinion_teeth * 15)
 
 wheel_radius = 0.0762  # meters
-drive_encoder_position_conversion_factor = math.pi * wheel_radius / drive_motor_gear_ratio  # meters
-drive_encoder_velocity_conversion_factor = drive_encoder_position_conversion_factor / 60  # meters per second
+drive_encoder_position_conversion_factor = (
+    math.pi * wheel_radius / drive_motor_gear_ratio
+)  # meters
+drive_encoder_velocity_conversion_factor = (
+    drive_encoder_position_conversion_factor / 60
+)  # meters per second
 drive_motor_free_rps = 5676 / 60  # Neo motor max free RPM into rotations per second
 drive_wheel_free_rps = drive_motor_free_rps * (2 * math.pi)
 
@@ -50,10 +54,10 @@ class SwerveModule:
     turning_PID_output_max = autoproperty(1.0)
 
     def __init__(
-            self,
-            drive_motor_port,
-            turning_motor_port,
-            chassis_angular_offset: float,
+        self,
+        drive_motor_port,
+        turning_motor_port,
+        chassis_angular_offset: float,
     ):
         self._drive_motor = CANSparkMax(
             drive_motor_port, CANSparkMax.MotorType.kBrushless
@@ -181,14 +185,18 @@ class SwerveModule:
     def setDesiredState(self, desired_state: SwerveModuleState):
         corrected_desired_state = SwerveModuleState()
         corrected_desired_state.speed = desired_state.speed
-        corrected_desired_state.angle = desired_state.angle.rotateBy(Rotation2d(self._chassis_angular_offset))
+        corrected_desired_state.angle = desired_state.angle.rotateBy(
+            Rotation2d(self._chassis_angular_offset)
+        )
         current_rotation = Rotation2d(self._turning_encoder.getPosition())
 
         optimized_desired_state = SwerveModuleState.optimize(
             corrected_desired_state, current_rotation
         )
 
-        optimized_desired_state.speed *= (current_rotation - optimized_desired_state.angle).cos()
+        optimized_desired_state.speed *= (
+            current_rotation - optimized_desired_state.angle
+        ).cos()
 
         self._drive_PIDController.setReference(
             optimized_desired_state.speed, CANSparkMax.ControlType.kVelocity
@@ -210,21 +218,23 @@ class SwerveModule:
             * RobotController.getBatteryVoltage()
         )
         self.sim_drive_motor.setInputVoltage(
-            self.sim_drive_encoder.getVelocity() / self.max_speed * RobotController.getBatteryVoltage()
+            self.sim_drive_encoder.getVelocity()
+            / self.max_speed
+            * RobotController.getBatteryVoltage()
         )
 
         self.sim_drive_motor.update(period)
         self.sim_turn_motor.update(period)
 
         self.sim_turn_encoder_distance += (
-                self.sim_turn_motor.getAngularVelocity() * period
+            self.sim_turn_motor.getAngularVelocity() * period
         )
 
         self.sim_turn_encoder.setPosition(self.sim_turn_encoder_distance)
         self.sim_turn_encoder.setVelocity(self.sim_turn_motor.getAngularVelocity())
 
         self.sim_drive_encoder_distance += (
-                self.sim_drive_motor.getAngularVelocity() * period
+            self.sim_drive_motor.getAngularVelocity() * period
         )
         self.sim_drive_encoder.setPosition(self.sim_drive_encoder_distance)
         self.sim_drive_encoder.setVelocity(self.sim_drive_motor.getAngularVelocity())
