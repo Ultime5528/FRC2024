@@ -10,7 +10,7 @@ from robot import Robot
 def test_drive_to_poses(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        wanted_pose = Pose2d(1, 2, Rotation2d.fromDegrees(20))
+        wanted_pose = Pose2d(1, 2, Rotation2d.fromDegrees(175))
         cmd = DriveToPos(robot.drivetrain, wanted_pose)
         cmd.schedule()
         control.step_timing(seconds=15, autonomous=False, enabled=True)
