@@ -11,9 +11,11 @@ from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
+from commands.pivot.movepivot import MovePivot
 from subsystems.climber import Climber
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
+from subsystems.pivot import Pivot
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -47,6 +49,7 @@ class Robot(commands2.TimedCommandRobot):
             ports.climber_right_switch_down,
         )
         self.intake = Intake()
+        self.pivot = Pivot()
 
         """
         Default subsystem commands
@@ -94,9 +97,31 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
         )
+
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
+
+        putCommandOnDashboard(
+            "Pivot",
+            MovePivot(self.pivot, MovePivot.toAmp(self.pivot)),
+            "MovePivotToAmp",
+        )
+        putCommandOnDashboard(
+            "Pivot",
+            MovePivot(self.pivot, MovePivot.toSpeakerFar(self.pivot)),
+            "MovePivotToSpeakerFar",
+        )
+        putCommandOnDashboard(
+            "Pivot",
+            MovePivot(self.pivot, MovePivot.toSpeakerClose(self.pivot)),
+            "MovePivotToSpeakerClose",
+        )
+        putCommandOnDashboard(
+            "Pivot",
+            MovePivot(self.pivot, MovePivot.toLoading(self.pivot)),
+            "MovePivotToLoading",
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
