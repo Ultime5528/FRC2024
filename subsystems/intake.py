@@ -5,6 +5,7 @@ import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
+from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
 
 
@@ -20,6 +21,7 @@ class Intake(SafeSubsystem):
         )
         self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyOpen)
 
+        configureLeader(self._motor, mode="brake", inverted=False)
         if RobotBase.isSimulation():
             self._sim_motor = SparkMaxSim(self._motor)
 
