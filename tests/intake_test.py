@@ -76,13 +76,25 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
 @mock.patch("rev.CANSparkMax.setSmartCurrentLimit")
 def test_settings(
-        _, __, control: "pyfrc.test_support.controller.TestController", robot: Robot
+    _, __, control: "pyfrc.test_support.controller.TestController", robot: Robot
 ):
     with control.run_robot():
         assert not robot.intake._motor.getInverted()
-        assert robot.intake._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
+        assert (
+            robot.intake._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
+        )
         assert robot.intake._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
         robot.intake._motor.restoreFactoryDefaults.assert_called_with()
         robot.intake._motor.setSmartCurrentLimit.assert_called_with(15, 30)
 
 
+def test_requirements(
+    control: "pyfrc.test_support.controller.TestController", robot: Robot
+):
+    with control.run_robot():
+        cmd = PickUp(robot.intake)
+        assert cmd.hasRequirement(robot.intake)
+        cmd = Drop(robot.intake)
+        assert cmd.hasRequirement(robot.intake)
+        cmd = Load(robot.intake)
+        assert cmd.hasRequirement(robot.intake)
