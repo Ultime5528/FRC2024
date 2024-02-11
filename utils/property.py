@@ -1,4 +1,6 @@
+import contextlib
 import inspect
+import os
 from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, Union, Callable
@@ -91,7 +93,11 @@ def autoproperty(
         )
     )
 
-    prop = _old_ntproperty(full_key, default_value, writeDefault=write, persistent=True)
+    with open(os.devnull, "w") as devnull:
+        with contextlib.redirect_stdout(devnull):
+            prop = _old_ntproperty(
+                full_key, default_value, writeDefault=write, persistent=True
+            )
 
     def fget(_):
         val = prop.fget(_)
