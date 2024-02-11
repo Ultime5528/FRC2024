@@ -22,7 +22,7 @@ class Pivot(SafeSubsystem):
         self._motor = wpilib.VictorSP(ports.pivot_motor)
         self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
 
-        self.offset = 0.0
+        self._offset = 0.0
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
@@ -34,12 +34,12 @@ class Pivot(SafeSubsystem):
 
     def periodic(self) -> None:
         if self._prev_is_down and not self._switch_down.isPressed():
-            self.offset = self.height_min - self._encoder.getDistance()
+            self._offset = self.height_min - self._encoder.getDistance()
             self._has_reset = True
         self._prev_is_down = self._switch_down.isPressed()
 
         if self._prev_is_up and not self._switch_up.isPressed():
-            self.offset = self.height_max - self._encoder.getDistance()
+            self._offset = self.height_max - self._encoder.getDistance()
             self._has_reset = True
         self._prev_is_up = self._switch_up.isPressed()
 
@@ -91,8 +91,11 @@ class Pivot(SafeSubsystem):
     def stop(self):
         self._motor.stopMotor()
 
+    def setHeight(self, reset_value):
+        self._offset = reset_value - self._encoder.getDistance()
+
     def getHeight(self):
-        return self._encoder.getDistance() + self.offset
+        return self._encoder.getDistance() + self._offset
 
     def getMotorInput(self):
         return self._motor.get()
