@@ -8,7 +8,6 @@ from subsystems.climber import Climber
 class ExtendClimber(SequentialCommandGroup, SafeMixin):
     def __init__(self, climber: Climber):
         super().__init__(UnlockRatchet(climber), _ExtendClimber(climber))
-        self.addRequirements(climber)
 
 
 class _ExtendClimber(SafeCommand):

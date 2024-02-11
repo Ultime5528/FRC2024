@@ -8,7 +8,6 @@ from subsystems.climber import Climber
 class RetractClimber(SequentialCommandGroup, SafeMixin):
     def __init__(self, climber: Climber):
         super().__init__(LockRatchet(climber), _RetractClimber(climber))
-        self.addRequirements(climber)
 
 
 class _RetractClimber(SafeCommand):

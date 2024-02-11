@@ -5,7 +5,9 @@ from pytest import approx
 import rev
 
 from commands.climber.extendclimber import ExtendClimber
+from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
+from commands.climber.unlockratchet import UnlockRatchet
 from robot import Robot
 
 
@@ -15,6 +17,14 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         cmd = ExtendClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.climber_left.speed_unload == approx(
+            robot.climber_left._motor.get()
+        )
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.climber_left._ratchet_motor.getAngle() == approx(
+            robot.climber_left.ratchet_unlock_angle
+        )
+        control.step_timing(seconds=0.5, autonomous=False, enabled=True)
         assert robot.climber_left.speed_up == approx(robot.climber_left._motor.get())
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
         # If simulationPeriodic works, switch stopped climber from going over max
@@ -32,7 +42,11 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         cmd = RetractClimber(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
+        assert robot.climber_left.ratchet_lock_angle == approx(
+            robot.climber_left._ratchet_motor.getAngle()
+        )
+        control.step_timing(seconds=0.5, autonomous=False, enabled=True)
+        assert robot.climber_left.speed_down == approx(robot.climber_left._motor.get())
         control.step_timing(seconds=15.0, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
         assert robot.climber_left._sim_motor.getPosition() == approx(0.0)

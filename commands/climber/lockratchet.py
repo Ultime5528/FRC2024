@@ -6,7 +6,7 @@ from utils.safecommand import SafeCommand
 
 
 class LockRatchet(SafeCommand):
-    delay = autoproperty(0.1)
+    delay = autoproperty(0.5)
 
     def __init__(self, climber: Climber):
         super().__init__()

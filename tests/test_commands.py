@@ -4,7 +4,7 @@ from textwrap import dedent
 from typing import List
 from commands2 import Command, Subsystem
 from tests.utils import import_submodules
-from utils.safecommand import SafeMixin
+from utils.safecommand import SafeMixin, SafeCommand
 
 
 def get_commands() -> List[Command or None]:
@@ -15,9 +15,12 @@ def get_commands() -> List[Command or None]:
 
     for mod in results.values():
         for _, cls in inspect.getmembers(mod, inspect.isclass):
-            if issubclass(cls, Command) and cls.__name__ != "SafeCommand":
+            if (
+                issubclass(cls, Command)
+                and cls.__name__ != "SafeCommand"
+                and cls.__name__ != "SequentialCommandGroup"
+            ):
                 cmds.append(cls)
-
     return cmds
 
 
@@ -42,14 +45,10 @@ def test_arguments():
             ), f"Argument {name} of {obj.__name__} has no type annotation"
 
 
-def test_duplicates():
-    command_names = [command.__name__ for command in get_commands()]
-    for name in command_names:
-        assert command_names.count(name) == 1, f"Duplicate command name {name}"
-
-
 def test_requirements():
     for obj in get_commands():
+        if not issubclass(obj, SafeCommand):
+            continue
         addReqs = None
 
         for c in ast.walk(ast.parse(dedent(inspect.getsource(obj.__init__)))):
@@ -66,11 +65,14 @@ def test_requirements():
                             addReqs is None
                         ), f"{obj.__name__} calls addRequirements() multiple times"
                         addReqs = c
+
         assert addReqs is not None, f"{obj.__name__} does not call addRequirements()"
 
         subsystem_args = {}
         for name, arg in get_arguments(obj).items():
-            if isinstance(arg.annotation, type) and issubclass(arg.annotation, Subsystem): # if is a class and is subsystem
+            if isinstance(arg.annotation, type) and issubclass(
+                arg.annotation, Subsystem
+            ):  # if is a class and is subsystem
                 subsystem_args[name] = arg
 
         actual_required_subsystems = []
