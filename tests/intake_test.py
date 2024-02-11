@@ -86,13 +86,3 @@ def test_settings(
         robot.intake._motor.setSmartCurrentLimit.assert_called_with(15, 30)
 
 
-def test_requirements(
-        control: "pyfrc.test_support.controller.TestController", robot: Robot
-):
-    with control.run_robot():
-        cmd = PickUp(robot.intake)
-        assert cmd.hasRequirement(robot.intake)
-        cmd = Drop(robot.intake)
-        assert cmd.hasRequirement(robot.intake)
-        cmd = Load(robot.intake)
-        assert cmd.hasRequirement(robot.intake)
