@@ -6,6 +6,7 @@ import wpilib
 
 import ports
 from commands.climber.extendclimber import ExtendClimber
+from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.retractclimber import RetractClimber
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
@@ -94,6 +95,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
         )
+        putCommandOnDashboard("Climber", ForceResetClimber.toMax(self.climber_left), "Forceresetclimber tomax")
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
