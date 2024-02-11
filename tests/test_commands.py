@@ -70,7 +70,7 @@ def test_requirements():
 
         subsystem_args = {}
         for name, arg in get_arguments(obj).items():
-            if issubclass(arg.annotation, Subsystem):
+            if isinstance(arg.annotation, type) and issubclass(arg.annotation, Subsystem): # if is a class and is subsystem
                 subsystem_args[name] = arg
 
         actual_required_subsystems = []
