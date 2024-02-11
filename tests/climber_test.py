@@ -8,7 +8,6 @@ import rev
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
-from commands.climber.forceresetclimber import ForceResetClimber, _ClassProperties
 
 
 def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):

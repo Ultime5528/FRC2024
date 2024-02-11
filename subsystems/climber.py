@@ -54,10 +54,16 @@ class Climber(SafeSubsystem):
         self._motor.set(0)
 
     def isUp(self):
-        return self._switch_up.isPressed() or self._encoder.getPosition() >= self.height_max
+        return (
+            self._switch_up.isPressed()
+            or self._encoder.getPosition() >= self.height_max
+        )
 
     def isDown(self):
-        return self._switch_down.isPressed() or self._encoder.getPosition() <= self.height_min
+        return (
+            self._switch_down.isPressed()
+            or self._encoder.getPosition() <= self.height_min
+        )
 
     def periodic(self) -> None:
         if self._prev_is_up and not self._switch_up.isPressed():
@@ -88,4 +94,3 @@ class Climber(SafeSubsystem):
     @property
     def encoder(self):
         return self._encoder
-
