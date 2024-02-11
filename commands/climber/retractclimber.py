@@ -1,8 +1,17 @@
-from utils.safecommand import SafeCommand
+from commands2 import SequentialCommandGroup
+
+from commands.climber.lockratchet import LockRatchet
+from utils.safecommand import SafeCommand, SafeMixin
 from subsystems.climber import Climber
 
 
-class RetractClimber(SafeCommand):
+class RetractClimber(SequentialCommandGroup, SafeMixin):
+    def __init__(self, climber: Climber):
+        super().__init__(LockRatchet(climber), _RetractClimber(climber))
+        self.addRequirements(climber)
+
+
+class _RetractClimber(SafeCommand):
     def __init__(self, climber: Climber):
         super().__init__()
         self.climber = climber

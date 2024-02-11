@@ -1,8 +1,17 @@
-from utils.safecommand import SafeCommand
+from commands2 import SequentialCommandGroup
+
+from commands.climber.unlockratchet import UnlockRatchet
+from utils.safecommand import SafeCommand, SafeMixin
 from subsystems.climber import Climber
 
 
-class ExtendClimber(SafeCommand):
+class ExtendClimber(SequentialCommandGroup, SafeMixin):
+    def __init__(self, climber: Climber):
+        super().__init__(UnlockRatchet(climber), _ExtendClimber(climber))
+        self.addRequirements(climber)
+
+
+class _ExtendClimber(SafeCommand):
     def __init__(self, climber: Climber):
         super().__init__()
         self.climber = climber
