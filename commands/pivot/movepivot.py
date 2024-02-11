@@ -23,6 +23,12 @@ class MovePivot(SafeCommand):
         cmd.setName(cmd.getName() + ".toSpeakerFar")
         return cmd
 
+    @classmethod
+    def toLoading(cls, pivot: Pivot):
+        cmd = cls(pivot, lambda: properties.position_loading)
+        cmd.setName(cmd.getName() + ".toLoading")
+        return cmd
+
     def __init__(self, pivot: Pivot, end_position: FloatProperty):
         super().__init__()
         self.end_position_getter = asCallable(end_position)
@@ -56,6 +62,7 @@ class _ClassProperties:
     position_amp = autoproperty(70.0, subtable=MovePivot.__name__)
     position_speaker_far = autoproperty(155.0, subtable=MovePivot.__name__)
     position_speaker_close = autoproperty(232.0, subtable=MovePivot.__name__)
+    position_loading = autoproperty(100, subtable=MovePivot.__name__)
 
     min_speed = autoproperty(0.1, subtable=MovePivot.__name__)
     max_speed = autoproperty(0.95, subtable=MovePivot.__name__)
