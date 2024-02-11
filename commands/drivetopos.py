@@ -9,7 +9,8 @@ from utils.safecommand import SafeCommand
 
 
 def clamp(x, minimum, maximum):
-  return max(minimum, min(x, maximum))
+    return max(minimum, min(x, maximum))
+
 
 class DriveToPos(SafeCommand):
     xy_p = autoproperty(0.35)
@@ -53,25 +54,27 @@ class DriveToPos(SafeCommand):
         vel_x = self.pid_x.calculate(current_pos.x)
         vel_y = self.pid_y.calculate(current_pos.y)
 
-        speed = math.sqrt(vel_x*vel_x+vel_y*vel_y)
+        speed = math.sqrt(vel_x * vel_x + vel_y * vel_y)
         clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
 
         new_vel_x = 0
         new_vel_y = 0
         if not math.isclose(speed, 0):
-            speed_factor = clamped_speed/speed
+            speed_factor = clamped_speed / speed
 
-            new_vel_x = vel_x*speed_factor
-            new_vel_y = vel_y*speed_factor
+            new_vel_x = vel_x * speed_factor
+            new_vel_y = vel_y * speed_factor
 
-        self.drivetrain.drive(new_vel_x,
-                              new_vel_y,
-                              -self.pid_rot.calculate(current_rot),
-                              True
+        self.drivetrain.drive(
+            new_vel_x, new_vel_y, -self.pid_rot.calculate(current_rot), True
         )
 
     def end(self, interrupted):
         self.drivetrain.drive(0, 0, 0, False)
 
     def isFinished(self):
-        return self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint()
+        return (
+            self.pid_x.atSetpoint()
+            and self.pid_y.atSetpoint()
+            and self.pid_rot.atSetpoint()
+        )

@@ -77,9 +77,16 @@ class DriveToPoses(SafeCommand):
             self.pid_y.setSetpoint(target.y)
             self.pid_rot.setSetpoint(target.rotation().degrees())
 
-            if self.pid_x.atSetpoint() and self.pid_y.atSetpoint() and self.pid_rot.atSetpoint():
+            if (
+                self.pid_x.atSetpoint()
+                and self.pid_y.atSetpoint()
+                and self.pid_rot.atSetpoint()
+            ):
                 self.target_waypoint += 1
-        elif distance2(currRobotPose, target) < self.spoof_point_radius * self.spoof_point_radius:
+        elif (
+            distance2(currRobotPose, target)
+            < self.spoof_point_radius * self.spoof_point_radius
+        ):
             self.target_waypoint += 1
 
             self.pid_x.setSetpoint(target.x)
@@ -100,11 +107,9 @@ class DriveToPoses(SafeCommand):
             new_vel_x = vel_x * speed_factor
             new_vel_y = vel_y * speed_factor
 
-        self.drivetrain.drive(new_vel_x,
-                              new_vel_y,
-                              -self.pid_rot.calculate(currRobotRot),
-                              True
-                              )
+        self.drivetrain.drive(
+            new_vel_x, new_vel_y, -self.pid_rot.calculate(currRobotRot), True
+        )
 
     def isFinished(self) -> bool:
         return self.target_waypoint == len(self.waypoints)

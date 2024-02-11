@@ -66,7 +66,6 @@ class Robot(commands2.TimedCommandRobot):
         self.setupButtons()
         self.setupDashboard()
 
-
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
@@ -81,11 +80,26 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard("Drivetrain", DriveToPoses(self.drivetrain, [Pose2d(2.82, 2.13, Rotation2d.fromDegrees(90)), Pose2d(3.10, 6.47, 0), Pose2d(15.36, 6.70, Rotation2d.fromDegrees(-90)), Pose2d(15.01, 1.303, Rotation2d.fromDegrees(180))]))
-        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
-                                                       Pose2d(7, 7, Rotation2d.fromDegrees(-179))), "test drive to pos")
-        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain,
-                                                       Pose2d(0, 0, 0)), name="return")
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPoses(
+                self.drivetrain,
+                [
+                    Pose2d(2.82, 2.13, Rotation2d.fromDegrees(90)),
+                    Pose2d(3.10, 6.47, 0),
+                    Pose2d(15.36, 6.70, Rotation2d.fromDegrees(-90)),
+                    Pose2d(15.01, 1.303, Rotation2d.fromDegrees(180)),
+                ],
+            ),
+        )
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPos(self.drivetrain, Pose2d(7, 7, Rotation2d.fromDegrees(-179))),
+            "test drive to pos",
+        )
+        putCommandOnDashboard(
+            "Drivetrain", DriveToPos(self.drivetrain, Pose2d(0, 0, 0)), name="return"
+        )
 
         putCommandOnDashboard(
             "Drivetrain", DriveField(self.drivetrain, self.xbox_controller)
