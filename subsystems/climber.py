@@ -54,8 +54,6 @@ class Climber(SafeSubsystem):
         self._motor.set(0)
 
     def isUp(self):
-
-
         return self._switch_up.isPressed() or self._encoder.getPosition() >= self.height_max
 
     def isDown(self):
@@ -86,3 +84,8 @@ class Climber(SafeSubsystem):
             self._switch_up.setSimUnpressed()
         else:
             self._switch_up.setSimPressed()
+
+    @property
+    def encoder(self):
+        return self._encoder
+
