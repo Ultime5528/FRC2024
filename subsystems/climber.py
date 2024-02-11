@@ -19,7 +19,7 @@ class Climber(SafeSubsystem):
     free_limit = autoproperty(30)
     sim_max_height = 100
     height_max = autoproperty(100.0)
-    height_min = autoproperty(0.0)
+    height_min = 0.0
 
     def __init__(self, port_motor, port_switch_up, port_switch_down):
         super().__init__()
@@ -56,13 +56,13 @@ class Climber(SafeSubsystem):
     def isUp(self):
         return (
             self._switch_up.isPressed()
-            or self._encoder.getPosition() >= self.height_max
+            or self._encoder.getPosition() > self.height_max
         )
 
     def isDown(self):
         return (
             self._switch_down.isPressed()
-            or self._encoder.getPosition() <= self.height_min
+            or self._encoder.getPosition() < self.height_min
         )
 
     def periodic(self) -> None:
@@ -70,6 +70,9 @@ class Climber(SafeSubsystem):
             self._offset = self.height_max - self._encoder.getPosition()
 
         self._prev_is_up = self._switch_up.isPressed()
+
+    def setHeight(self, reset_value):
+        self._offset = reset_value - self._encoder.getPosition()
 
     def getHeight(self):
         return self._encoder.getPosition() + self._offset
@@ -90,7 +93,3 @@ class Climber(SafeSubsystem):
             self._switch_up.setSimUnpressed()
         else:
             self._switch_up.setSimPressed()
-
-    @property
-    def encoder(self):
-        return self._encoder
