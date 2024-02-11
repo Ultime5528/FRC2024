@@ -18,8 +18,8 @@ class Climber(SafeSubsystem):
     free_limit = autoproperty(30)
     sim_max_height = 100
 
-    ratchet_lock_angle = autoproperty(50)
-    ratchet_unlock_angle = autoproperty(110)
+    ratchet_lock_angle = autoproperty(50.0)
+    ratchet_unlock_angle = autoproperty(110.0)
 
     def __init__(self, port_motor, port_switch_up, port_switch_down, port_ratchet):
         super().__init__()
@@ -28,10 +28,10 @@ class Climber(SafeSubsystem):
             self._motor, "brake", stallLimit=self.stall_limit, freeLimit=self.free_limit
         )
 
-        self._ratchet_motor = wpilib.Servo(port_ratchet)
+        self._ratchet_servo = wpilib.Servo(port_ratchet)
 
-        self._switch_up = Switch(port_switch_up, Switch.Type.NormallyOpen)
-        self._switch_down = Switch(port_switch_down, Switch.Type.NormallyOpen)
+        self._switch_up = Switch(port_switch_up, Switch.Type.NormallyClosed)
+        self._switch_down = Switch(port_switch_down, Switch.Type.NormallyClosed)
 
         if RobotBase.isSimulation():
             self._sim_motor = SparkMaxSim(self._motor)
@@ -61,10 +61,10 @@ class Climber(SafeSubsystem):
         return self._switch_down.isPressed()
 
     def lockRatchet(self):
-        self._ratchet_motor.setAngle(self.ratchet_lock_angle)
+        self._ratchet_servo.setAngle(self.ratchet_lock_angle)
 
     def unlockRatchet(self):
-        self._ratchet_motor.setAngle(self.ratchet_unlock_angle)
+        self._ratchet_servo.setAngle(self.ratchet_unlock_angle)
 
     def simulationPeriodic(self) -> None:
         self._sim_motor.setVelocity(self._motor.get())

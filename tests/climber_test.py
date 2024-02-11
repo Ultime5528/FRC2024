@@ -21,7 +21,7 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
             robot.climber_left._motor.get()
         )
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left._ratchet_motor.getAngle() == approx(
+        assert robot.climber_left._ratchet_servo.getAngle() == approx(
             robot.climber_left.ratchet_unlock_angle
         )
         control.step_timing(seconds=0.5, autonomous=False, enabled=True)
@@ -43,7 +43,7 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert robot.climber_left.ratchet_lock_angle == approx(
-            robot.climber_left._ratchet_motor.getAngle()
+            robot.climber_left._ratchet_servo.getAngle()
         )
         control.step_timing(seconds=0.5, autonomous=False, enabled=True)
         assert robot.climber_left.speed_down == approx(robot.climber_left._motor.get())

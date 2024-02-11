@@ -1,8 +1,8 @@
 from commands2 import SequentialCommandGroup
 
 from commands.climber.unlockratchet import UnlockRatchet
-from utils.safecommand import SafeCommand, SafeMixin
 from subsystems.climber import Climber
+from utils.safecommand import SafeCommand, SafeMixin
 
 
 class ExtendClimber(SequentialCommandGroup, SafeMixin):
