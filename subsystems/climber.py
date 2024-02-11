@@ -15,11 +15,13 @@ from utils.switch import Switch
 class Climber(SafeSubsystem):
     speed_up = autoproperty(0.25)
     speed_down = autoproperty(-0.25)
+
+    height_min = 0.0
+    height_max = autoproperty(100.0)
+    sim_max_height = 100.0
+
     stall_limit = autoproperty(15)
     free_limit = autoproperty(30)
-    sim_max_height = 100
-    height_max = autoproperty(100.0)
-    height_min = 0.0
 
     def __init__(self, port_motor, port_switch_up, port_switch_down):
         super().__init__()
