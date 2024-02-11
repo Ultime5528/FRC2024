@@ -93,9 +93,11 @@ def autoproperty(
         )
     )
 
-    with open(os.devnull, 'w') as devnull:
+    with open(os.devnull, "w") as devnull:
         with contextlib.redirect_stdout(devnull):
-            prop = _old_ntproperty(full_key, default_value, writeDefault=write, persistent=True)
+            prop = _old_ntproperty(
+                full_key, default_value, writeDefault=write, persistent=True
+            )
 
     def fget(_):
         val = prop.fget(_)
