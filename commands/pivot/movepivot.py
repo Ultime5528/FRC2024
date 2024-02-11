@@ -31,22 +31,18 @@ class MovePivot(SafeCommand):
 
     def initialize(self):
         self.motion = TrapezoidalMotion(
-            start_position=self.pivot.getPosition(),
+            start_position=self.pivot.getHeight(),
             end_position=self.end_position_getter(),
             start_speed=max(properties.min_speed, abs(self.pivot.getMotorInput())),
             end_speed=properties.min_speed,
             max_speed=properties.max_speed,
             accel=properties.acceleration
         )
-        self.finished = False
 
     def execute(self):
-        if self.motion.isFinished():
-            self.pivot.stop()
-        else:
-            current_elevation = self.pivot.getPosition()
-            self.motion.setPosition(current_elevation)
-            self.pivot._motor.set(self.motion.getSpeed())
+        height = self.pivot.getHeight()
+        self.motion.setPosition(height)
+        self.pivot.setSpeed(self.motion.getSpeed())
 
     def isFinished(self) -> bool:
         return self.motion.isFinished()
