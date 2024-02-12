@@ -1,3 +1,4 @@
+from subsystems import pivot
 from subsystems.pivot import Pivot
 from utils.property import autoproperty, FloatProperty, asCallable
 from utils.safecommand import SafeCommand
@@ -51,7 +52,7 @@ class MovePivot(SafeCommand):
         self.pivot.setSpeed(self.motion.getSpeed())
 
     def isFinished(self) -> bool:
-        return self.motion.isFinished()
+        return self.motion.isFinished() or Pivot.hasReset(self.pivot)
 
     def end(self, interrupted: bool) -> None:
         self.pivot.stop()

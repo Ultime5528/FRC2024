@@ -25,6 +25,7 @@ class Pivot(SafeSubsystem):
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
+        self.has_reset = False
 
         if RobotBase.isSimulation():
             self._sim_motor = PWMSim(self._motor)
@@ -95,3 +96,6 @@ class Pivot(SafeSubsystem):
 
     def getMotorInput(self):
         return self._motor.get()
+
+    def hasReset(self):
+        return self.has_reset

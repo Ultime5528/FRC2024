@@ -9,6 +9,8 @@ from robot import Robot
 def test_movePivot_from_swich_down(control, robot: Robot):
     with control.run_robot():
 
+        # Set hasReset to true
+        robot.pivot.has_reset = True
         # Set encoder to the minimum value so switch_down is pressed
         robot.pivot._sim_encoder.setDistance(-0.05)
 
@@ -18,7 +20,7 @@ def test_movePivot_from_swich_down(control, robot: Robot):
 
         cmd = MovePivot.toSpeakerFar(robot.pivot)
         cmd.schedule()
-
+        s = robot.pivot._motor.get()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         counter = 0
         while robot.pivot._switch_down.isPressed() and counter < 100:
