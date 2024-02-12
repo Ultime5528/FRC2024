@@ -23,7 +23,7 @@ class ForceResetClimber(SafeCommand):
         self._get_reset_value = asCallable(reset_value)
 
     def initialize(self):
-        self.climber.setHeight(self._get_reset_value)
+        self.climber.setHeight(self._get_reset_value())
 
     def isFinished(self) -> bool:
         return True
