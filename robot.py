@@ -45,11 +45,13 @@ class Robot(commands2.TimedCommandRobot):
             ports.climber_motor_left,
             ports.climber_left_switch_up,
             ports.climber_left_switch_down,
+            ports.climber_servo_left,
         )
         self.climber_right = Climber(
             ports.climber_motor_right,
             ports.climber_right_switch_up,
             ports.climber_right_switch_down,
+            ports.climber_servo_right,
         )
         self.intake = Intake()
         self.pivot = Pivot()
