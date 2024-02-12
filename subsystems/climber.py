@@ -56,6 +56,7 @@ class Climber(SafeSubsystem):
             self.stop()
 
     def unload(self):
+        # Bypass security during unload
         self._motor.set(self.speed_unload)
 
     def stop(self):
