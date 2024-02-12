@@ -8,6 +8,7 @@ from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from robot import Robot
+from subsystems.intake import Intake
 
 
 def test_drop(control, robot: Robot):
@@ -75,17 +76,17 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
 
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
 @mock.patch("rev.CANSparkMax.setSmartCurrentLimit")
-def test_settings(
-    _, __, control: "pyfrc.test_support.controller.TestController", robot: Robot
-):
-    with control.run_robot():
-        assert not robot.intake._motor.getInverted()
-        assert (
-            robot.intake._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
-        )
-        assert robot.intake._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
-        robot.intake._motor.restoreFactoryDefaults.assert_called_with()
-        robot.intake._motor.setSmartCurrentLimit.assert_called_with(15, 30)
+def test_settings(mock_setSmartCurrentLimit, mock_restoreFactoryDefaults):
+    mock_restoreFactoryDefaults.assert_not_called()
+    mock_setSmartCurrentLimit.assert_not_called()
+
+    intake = Intake()
+
+    assert not intake._motor.getInverted()
+    assert intake._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
+    assert intake._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
+    intake._motor.restoreFactoryDefaults.assert_called_once()
+    mock_setSmartCurrentLimit.assert_not_called()
 
 
 def test_requirements(

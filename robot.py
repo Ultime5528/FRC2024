@@ -24,6 +24,7 @@ class Robot(commands2.TimedCommandRobot):
 
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
+        self.enableLiveWindowInTest(True)
 
         """
         Autonomous
