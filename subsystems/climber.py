@@ -99,13 +99,13 @@ class Climber(SafeSubsystem):
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
 
-        def set_offset(value: float):
+        def setOffset(value: float):
             self._offset = value
 
         builder.addFloatProperty(
             "encoder_value", self._encoder.getPosition, lambda x: None
         )
         builder.addFloatProperty(
-            "offset", lambda: self._offset, lambda x: set_offset(x)
+            "offset", lambda: self._offset, lambda x: setOffset(x)
         )
         builder.addFloatProperty("height", self.getHeight, lambda x: None)
