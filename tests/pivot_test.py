@@ -74,6 +74,7 @@ def test_resetCommand(control, robot: Robot):
 
 def test_forceResetPivot(control, robot: Robot):
     with control.run_robot():
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         cmd = ForceResetPivot.toMax(robot.pivot)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
