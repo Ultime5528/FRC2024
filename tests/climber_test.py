@@ -5,6 +5,7 @@ import rev
 from pytest import approx
 
 from commands.climber.extendclimber import ExtendClimber
+from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
 from subsystems.climber import Climber
@@ -32,6 +33,20 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
             robot.climber_left.sim_max_height
         )
         assert not cmd.isScheduled()
+
+
+def test_forceresetclimber(
+    control: "pyfrc.test_support.controller.TestController", robot: Robot
+):
+    with control.run_robot():
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        cmd = ExtendClimber(robot.climber_left)
+        cmd.schedule()
+        control.step_timing(seconds=5, autonomous=False, enabled=True)
+        cmd = ForceResetClimber.toMax(robot.climber_left)
+        cmd.schedule()
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.climber_left.height_max == approx(robot.climber_left.getHeight())
 
 
 def test_retract(control: "pyfrc.test_support.controller.TestController", robot: Robot):
