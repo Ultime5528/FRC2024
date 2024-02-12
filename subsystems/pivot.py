@@ -106,9 +106,7 @@ class Pivot(SafeSubsystem):
         def setOffset(value: float):
             self._offset = value
 
-        builder.addFloatProperty(
-            "offset", lambda: self._offset, lambda x: setOffset(x)
-        )
+        builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, lambda x: None)
         builder.addBooleanProperty("has_reset", lambda: self._has_reset, lambda x: None)
         builder.addBooleanProperty(

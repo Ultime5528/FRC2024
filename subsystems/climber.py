@@ -118,7 +118,5 @@ class Climber(SafeSubsystem):
         builder.addFloatProperty(
             "encoder_value", self._encoder.getPosition, lambda x: None
         )
-        builder.addFloatProperty(
-            "offset", lambda: self._offset, lambda x: setOffset(x)
-        )
+        builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, lambda x: None)
