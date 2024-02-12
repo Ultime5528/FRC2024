@@ -90,6 +90,9 @@ class Pivot(SafeSubsystem):
     def stop(self):
         self._motor.stopMotor()
 
+    def setHeight(self, reset_value):
+        self._offset = reset_value - self._encoder.getDistance()
+
     def getHeight(self):
         return self._encoder.getDistance() + self._offset
 

@@ -12,7 +12,10 @@ from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
+from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
+from commands.pivot.resetpivotdown import ResetPivotDown
+from commands.pivot.resetpivotup import ResetPivotUp
 from subsystems.climber import Climber
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
@@ -125,6 +128,10 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toLoading(self.pivot))
+        putCommandOnDashboard("Pivot", ResetPivotDown(self.pivot))
+        putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
+        putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
+        putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
