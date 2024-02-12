@@ -11,12 +11,11 @@ from utils.switch import Switch
 class Pivot(SafeSubsystem):
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
-    height_max = autoproperty(255.0)
     height_min = 0.0
+    height_max = autoproperty(255.0)
 
     def __init__(self):
         super().__init__()
-
         self._switch_up = Switch(ports.pivot_switch_up, Switch.Type.NormallyClosed)
         self._switch_down = Switch(ports.pivot_switch_down, Switch.Type.NormallyClosed)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
@@ -47,7 +46,7 @@ class Pivot(SafeSubsystem):
         assert not (
             self.isUp() and self.isDown()
         ), "Both switches are on at the same time which doesn't make any sense"
-        # self._sim_encoder.setRate(self._motor.getSpeed())
+
         self._sim_encoder.setDistance(
             self._sim_encoder.getDistance() + self._motor.get()
         )

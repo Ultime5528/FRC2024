@@ -6,6 +6,7 @@ import wpilib
 
 import ports
 from commands.climber.extendclimber import ExtendClimber
+from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.retractclimber import RetractClimber
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
@@ -20,8 +21,11 @@ from subsystems.pivot import Pivot
 
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
+        # robotInit fonctionne mieux avec les tests que __init__.
+
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
+        self.enableLiveWindowInTest(True)
 
         """
         Autonomous
@@ -42,11 +46,13 @@ class Robot(commands2.TimedCommandRobot):
             ports.climber_motor_left,
             ports.climber_left_switch_up,
             ports.climber_left_switch_down,
+            ports.climber_servo_left,
         )
         self.climber_right = Climber(
             ports.climber_motor_right,
             ports.climber_right_switch_up,
             ports.climber_right_switch_down,
+            ports.climber_servo_right,
         )
         self.intake = Intake()
         self.pivot = Pivot()
@@ -85,43 +91,40 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
         )
-        putCommandOnDashboard(
-            "Climber", ExtendClimber(self.climber_left), "ExtendClimber.left"
-        )
-        putCommandOnDashboard(
-            "Climber", RetractClimber(self.climber_left), "RetractClimber.left"
-        )
-        putCommandOnDashboard(
-            "Climber", ExtendClimber(self.climber_right), "ExtendClimber.right"
-        )
-        putCommandOnDashboard(
-            "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
-        )
+
+        for climber, name in (
+            (self.climber_left, "Left"),
+            (self.climber_right, "Right"),
+        ):
+            putCommandOnDashboard(
+                "Climber" + name,
+                ExtendClimber(self.climber_left),
+                "ExtendClimber." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name,
+                RetractClimber(self.climber_left),
+                "RetractClimber." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name,
+                ForceResetClimber.toMin(climber),
+                "ForceResetClimber.toMin." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name,
+                ForceResetClimber.toMax(climber),
+                "ForceResetClimber.toMax." + name,
+            )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toAmp(self.pivot)),
-            "MovePivotToAmp",
-        )
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toSpeakerFar(self.pivot)),
-            "MovePivotToSpeakerFar",
-        )
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toSpeakerClose(self.pivot)),
-            "MovePivotToSpeakerClose",
-        )
-        putCommandOnDashboard(
-            "Pivot",
-            MovePivot(self.pivot, MovePivot.toLoading(self.pivot)),
-            "MovePivotToLoading",
-        )
+        putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toLoading(self.pivot))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
