@@ -24,12 +24,18 @@ climber_motor_right = 9
 climber_motor_left = 10
 shooter_motor_left: Final = 11
 shooter_motor_right: Final = 12
+intake_motor: Final = 13
 
 # PWM
-
+pivot_motor: Final = 0
 
 # DIO
 climber_left_switch_up = 0
 climber_right_switch_up = 1
 climber_left_switch_down = 2
 climber_right_switch_down = 3
+intake_sensor: Final = 4
+pivot_switch_up: Final = 5
+pivot_switch_down: Final = 6
+pivot_encoder_a: Final = 7
+pivot_encoder_b: Final = 8
