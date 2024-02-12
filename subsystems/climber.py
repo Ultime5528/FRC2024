@@ -32,6 +32,9 @@ class ClimberProperties(ABC):
     @property
     @abstractmethod
     def ratchet_unlock_angle(self) -> float: ...
+    @property
+    @abstractmethod
+    def height_max(self) -> float: ...
 
 
 class Climber(SafeSubsystem):
@@ -167,6 +170,7 @@ class ClimberLeftProperties(ClimberProperties):
     port_ratchet = ports.climber_servo_left
     ratchet_lock_angle = autoproperty(50.0)
     ratchet_unlock_angle = autoproperty(110.0)
+    height_max = autoproperty(100)
 
 
 climber_left_properties = ClimberLeftProperties()
@@ -179,6 +183,7 @@ class ClimberRightProperties(ClimberProperties):
     port_ratchet = ports.climber_servo_right
     ratchet_lock_angle = autoproperty(180.0)
     ratchet_unlock_angle = autoproperty(90.0)
+    height_max = autoproperty(100)
 
 
 climber_right_properties = ClimberRightProperties()
