@@ -12,15 +12,20 @@ from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
+from commands.pivot.movepivot import MovePivot
 from subsystems.climber import Climber
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
+from subsystems.pivot import Pivot
 
 
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
+        # robotInit fonctionne mieux avec les tests que __init__.
+
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
+        self.enableLiveWindowInTest(True)
 
         """
         Autonomous
@@ -41,13 +46,16 @@ class Robot(commands2.TimedCommandRobot):
             ports.climber_motor_left,
             ports.climber_left_switch_up,
             ports.climber_left_switch_down,
+            ports.climber_servo_left,
         )
         self.climber_right = Climber(
             ports.climber_motor_right,
             ports.climber_right_switch_up,
             ports.climber_right_switch_down,
+            ports.climber_servo_right,
         )
         self.intake = Intake()
+        self.pivot = Pivot()
 
         """
         Default subsystem commands
@@ -112,6 +120,11 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
+
+        putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivot.toLoading(self.pivot))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
