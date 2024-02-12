@@ -83,18 +83,32 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
         )
-        putCommandOnDashboard(
-            "Climber", ExtendClimber(self.climber_left), "ExtendClimber.left"
-        )
-        putCommandOnDashboard(
-            "Climber", RetractClimber(self.climber_left), "RetractClimber.left"
-        )
-        putCommandOnDashboard(
-            "Climber", ExtendClimber(self.climber_right), "ExtendClimber.right"
-        )
-        putCommandOnDashboard(
-            "Climber", RetractClimber(self.climber_right), "RetractClimber.right"
-        )
+
+        for climber, name in (
+            (self.climber_left, "Left"),
+            (self.climber_right, "Right"),
+        ):
+            putCommandOnDashboard(
+                "Climber" + name,
+                ExtendClimber(self.climber_left),
+                "ExtendClimber." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name,
+                RetractClimber(self.climber_left),
+                "RetractClimber." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name,
+                ForceResetClimber.toMin(climber),
+                "ForceResetClimber.toMin." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name,
+                ForceResetClimber.toMax(climber),
+                "ForceResetClimber.toMax." + name,
+            )
+
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
