@@ -50,4 +50,8 @@ class Intake(SafeSubsystem):
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
 
-        builder.addBooleanProperty("hasNote", self.hasNote, lambda x: None)
+        def noop(x):
+            pass
+
+        builder.addFloatProperty("motor_input", self._motor.get, noop)
+        builder.addBooleanProperty("hasNote", self.hasNote, noop)

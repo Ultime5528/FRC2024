@@ -4,7 +4,6 @@ from typing import Optional
 import commands2.button
 import wpilib
 
-import ports
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.retractclimber import RetractClimber
@@ -17,9 +16,9 @@ from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from subsystems.climber import Climber
+from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
-from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.pivot import Pivot
 
 
@@ -77,11 +76,11 @@ class Robot(commands2.TimedCommandRobot):
         pass
 
     def setupSubsystemOnDashboard(self):
-        wpilib.SmartDashboard.putData("Pivot", self.pivot)
+        wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
         wpilib.SmartDashboard.putData("ClimberLeft", self.climber_left)
         wpilib.SmartDashboard.putData("ClimberRight", self.climber_right)
-        wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
         wpilib.SmartDashboard.putData("Intake", self.intake)
+        wpilib.SmartDashboard.putData("Pivot", self.pivot)
 
     def setupCommandsOnDashboard(self):
         """

@@ -109,14 +109,15 @@ class Pivot(SafeSubsystem):
         def setOffset(value: float):
             self._offset = value
 
+        def noop(x):
+            pass
+
+        builder.addFloatProperty("motor_input", self._motor.get, noop)
+        builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
         builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
-        builder.addFloatProperty("height", self.getHeight, lambda x: None)
-        builder.addBooleanProperty("has_reset", lambda: self._has_reset, lambda x: None)
-        builder.addBooleanProperty(
-            "switch_up_raw", self._switch_up.isPressed, lambda x: None
-        )
-        builder.addBooleanProperty(
-            "switch_down_raw", self._switch_down.isPressed, lambda x: None
-        )
-        builder.addBooleanProperty("isUp", self.isUp, lambda x: None)
-        builder.addBooleanProperty("isDown", self.isDown, lambda x: None)
+        builder.addFloatProperty("height", self.getHeight, noop)
+        builder.addBooleanProperty("has_reset", lambda: self._has_reset, noop)
+        builder.addBooleanProperty("switch_up", self._switch_up.isPressed, noop)
+        builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
+        builder.addBooleanProperty("isUp", self.isUp, noop)
+        builder.addBooleanProperty("isDown", self.isDown, noop)
