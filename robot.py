@@ -23,6 +23,7 @@ class Robot(commands2.TimedCommandRobot):
         # robotInit fonctionne mieux avec les tests que __init__.
 
         wpilib.LiveWindow.enableAllTelemetry()
+        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
 
         """
@@ -65,7 +66,8 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.setupAuto()
         self.setupButtons()
-        self.setupDashboard()
+        self.setupSubsystemOnDashboard()
+        self.setupCommandsOnDashboard()
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
@@ -77,7 +79,14 @@ class Robot(commands2.TimedCommandRobot):
         """
         pass
 
-    def setupDashboard(self):
+    def setupSubsystemOnDashboard(self):
+        wpilib.SmartDashboard.putData("Pivot", self.pivot)
+        wpilib.SmartDashboard.putData("Climber Left", self.climber_left)
+        wpilib.SmartDashboard.putData("Climber Right", self.climber_right)
+        wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
+        wpilib.SmartDashboard.putData("Intake", self.intake)
+
+    def setupCommandsOnDashboard(self):
         """
         Send commands to dashboard to
         """
