@@ -28,6 +28,8 @@ intake_motor: Final = 13
 
 # PWM
 pivot_motor: Final = 0
+climber_servo_right = 1
+climber_servo_left = 2
 
 # DIO
 climber_left_switch_up = 0
