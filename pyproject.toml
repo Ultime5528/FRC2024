@@ -30,5 +30,6 @@ robotpy_extras = [
 requires = [
      "numpy",
      "robotpy-commands-v2~=2024.2.2",
-     "black==24.1.1; platform_machine != 'roborio'"
+     "black==24.1.1; platform_machine != 'roborio'",
+     "coverage==7.4.1; platform_machine != 'roborio'"
 ]
