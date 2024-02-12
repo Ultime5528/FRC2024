@@ -33,3 +33,10 @@ requires = [
      "black==24.1.1; platform_machine != 'roborio'",
      "coverage==7.4.1; platform_machine != 'roborio'"
 ]
+
+[tool.coverage.html]
+directory = "coverage_html_report"
+
+[tool.coverage.run]
+branch = true
+relative_files = true
