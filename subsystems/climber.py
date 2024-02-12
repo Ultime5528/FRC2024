@@ -1,13 +1,40 @@
+from abc import abstractmethod, ABC
+
 import rev
 import wpilib
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
+import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
 from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
+
+
+class ClimberProperties(ABC):
+    @property
+    @abstractmethod
+    def port_motor(self) -> int: ...
+    @property
+    @abstractmethod
+    def port_switch_up(self) -> int: ...
+    @property
+    @abstractmethod
+    def port_switch_down(self) -> int: ...
+    @property
+    @abstractmethod
+    def port_ratchet(self) -> int: ...
+    @property
+    @abstractmethod
+    def ratchet_lock_angle(self) -> float: ...
+    @property
+    @abstractmethod
+    def ratchet_unlock_angle(self) -> float: ...
+    @property
+    @abstractmethod
+    def height_max(self) -> float: ...
 
 
 class Climber(SafeSubsystem):
@@ -22,21 +49,27 @@ class Climber(SafeSubsystem):
     stall_limit = autoproperty(15)
     free_limit = autoproperty(30)
 
-    ratchet_lock_angle = autoproperty(50.0)
-    ratchet_unlock_angle = autoproperty(110.0)
-
-    def __init__(self, port_motor, port_switch_up, port_switch_down, port_ratchet):
+    def __init__(self, climber_properties: ClimberProperties):
         super().__init__()
-        self._motor = rev.CANSparkMax(port_motor, rev.CANSparkMax.MotorType.kBrushless)
+        self._motor = rev.CANSparkMax(
+            climber_properties.port_motor, rev.CANSparkMax.MotorType.kBrushless
+        )
         configureLeader(
             self._motor, "brake", stallLimit=self.stall_limit, freeLimit=self.free_limit
         )
         self._encoder = self._motor.getEncoder()
 
-        self._ratchet_servo = wpilib.Servo(port_ratchet)
+        self._ratchet_servo = wpilib.Servo(climber_properties.port_ratchet)
 
-        self._switch_up = Switch(port_switch_up, Switch.Type.NormallyClosed)
-        self._switch_down = Switch(port_switch_down, Switch.Type.NormallyClosed)
+        self.addChild("servo", self._ratchet_servo)
+        self._switch_up = Switch(
+            climber_properties.port_switch_up, Switch.Type.NormallyOpen
+        )
+        self._switch_down = Switch(
+            climber_properties.port_switch_down, Switch.Type.NormallyOpen
+        )
+
+        self.climber_properties = climber_properties
 
         self._prev_is_up = False
         self._offset = 0.0
@@ -90,10 +123,10 @@ class Climber(SafeSubsystem):
         return self._motor.get()
 
     def lockRatchet(self):
-        self._ratchet_servo.setAngle(self.ratchet_lock_angle)
+        self._ratchet_servo.setAngle(self.climber_properties.ratchet_lock_angle)
 
     def unlockRatchet(self):
-        self._ratchet_servo.setAngle(self.ratchet_unlock_angle)
+        self._ratchet_servo.setAngle(self.climber_properties.ratchet_unlock_angle)
 
     def simulationPeriodic(self) -> None:
         self._sim_motor.setVelocity(self._motor.get())
@@ -118,7 +151,39 @@ class Climber(SafeSubsystem):
         builder.addFloatProperty(
             "encoder_value", self._encoder.getPosition, lambda x: None
         )
-        builder.addFloatProperty(
-            "offset", lambda: self._offset, lambda x: setOffset(x)
-        )
+        builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, lambda x: None)
+        builder.addBooleanProperty(
+            "switch_up_raw", self._switch_up.isPressed, lambda x: None
+        )
+        builder.addBooleanProperty(
+            "switch_down_raw", self._switch_down.isPressed, lambda x: None
+        )
+        builder.addBooleanProperty("isUp", self.isUp, lambda x: None)
+        builder.addBooleanProperty("isDown", self.isDown, lambda x: None)
+
+
+class ClimberLeftProperties(ClimberProperties):
+    port_motor = ports.climber_motor_left
+    port_switch_up = ports.climber_left_switch_up
+    port_switch_down = ports.climber_left_switch_down
+    port_ratchet = ports.climber_servo_left
+    ratchet_lock_angle = autoproperty(50.0)
+    ratchet_unlock_angle = autoproperty(110.0)
+    height_max = autoproperty(100)
+
+
+climber_left_properties = ClimberLeftProperties()
+
+
+class ClimberRightProperties(ClimberProperties):
+    port_motor = ports.climber_motor_right
+    port_switch_up = ports.climber_right_switch_up
+    port_switch_down = ports.climber_right_switch_down
+    port_ratchet = ports.climber_servo_right
+    ratchet_lock_angle = autoproperty(180.0)
+    ratchet_unlock_angle = autoproperty(90.0)
+    height_max = autoproperty(100)
+
+
+climber_right_properties = ClimberRightProperties()
