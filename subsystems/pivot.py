@@ -1,3 +1,5 @@
+from enum import Enum, auto
+
 import wpilib
 from wpilib import RobotBase
 from wpilib.simulation import PWMSim, EncoderSim
@@ -9,6 +11,13 @@ from utils.switch import Switch
 
 
 class Pivot(SafeSubsystem):
+    class State(Enum):
+        Moving = auto()
+        Loading = auto()
+        SpeakerClose = auto()
+        SpeakerFar = auto()
+        Amp = auto()
+
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
     height_min = 0.0
@@ -25,6 +34,7 @@ class Pivot(SafeSubsystem):
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
+        self.state = Pivot.State.Moving
 
         if RobotBase.isSimulation():
             self._sim_motor = PWMSim(self._motor)

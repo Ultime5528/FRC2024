@@ -46,6 +46,8 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
+        self.pivot = Pivot()
+        self.intake = Intake()
         self.shooter = Shooter()
         self.climber_left = Climber(
             ports.climber_motor_left,

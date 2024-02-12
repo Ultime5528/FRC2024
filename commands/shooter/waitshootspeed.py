@@ -4,6 +4,7 @@ from subsystems.shooter import Shooter
 
 type NoReqShooter = Shooter
 
+
 class WaitShootSpeed(SafeCommand):
     def __init__(self, shooter: NoReqShooter):
         super().__init__()
