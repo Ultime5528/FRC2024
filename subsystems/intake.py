@@ -16,12 +16,10 @@ class Intake(SafeSubsystem):
     def __init__(self):
         super().__init__()
 
-        self._motor = wpilib.VictorSP(ports.pivot_motor)
+        self._motor = wpilib.VictorSP(ports.intake_motor)
 
         self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyClosed)
 
-        if RobotBase.isSimulation():
-            self._sim_motor = SparkMaxSim(self._motor)
 
     def pickUp(self):
         self._motor.set(self.speed_in)

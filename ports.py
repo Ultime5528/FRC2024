@@ -24,6 +24,7 @@ climber_motor_right: Final = 10
 climber_motor_left: Final = 9
 
 # PWM
+
 pivot_motor: Final = 0
 climber_servo_right = 3
 climber_servo_left = 2

@@ -70,13 +70,13 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         # left
-        assert robot.climber_left._motor.getDeviceId() == 10
-        assert robot.climber_left._switch_up.getChannel() == 0
-        assert robot.climber_left._switch_down.getChannel() == 2
+        assert robot.climber_left._motor.getDeviceId() == 9
+        assert robot.climber_left._switch_up.getChannel() == 3
+        assert robot.climber_left._switch_down.getChannel() == 8
         # right
-        assert robot.climber_right._motor.getDeviceId() == 9
-        assert robot.climber_right._switch_up.getChannel() == 1
-        assert robot.climber_right._switch_down.getChannel() == 3
+        assert robot.climber_right._motor.getDeviceId() == 10
+        assert robot.climber_right._switch_up.getChannel() == 4
+        assert robot.climber_right._switch_down.getChannel() == 9
 
 
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
