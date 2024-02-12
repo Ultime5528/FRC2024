@@ -20,20 +20,22 @@
 | commands/intake/drop.py               |       22 |        0 |        2 |        0 |    100% |           |
 | commands/intake/load.py               |       22 |        0 |        2 |        0 |    100% |           |
 | commands/intake/pickup.py             |       22 |        0 |        2 |        0 |    100% |           |
+| commands/pivot/forceresetpivot.py     |       23 |        0 |        8 |        1 |     97% |  15->exit |
 | commands/pivot/movepivot.py           |       49 |        0 |       16 |        3 |     95% |10->exit, 16->exit, 28->exit |
 | commands/pivot/resetpivotdown.py      |       19 |        0 |        2 |        0 |    100% |           |
+| commands/pivot/resetpivotup.py        |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
 | gyro.py                               |      122 |       50 |       14 |        5 |     60% |19, 28->exit, 31->exit, 34->exit, 37->exit, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                              |       25 |        0 |        0 |        0 |    100% |           |
 | properties.py                         |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                              |       75 |        3 |       10 |        3 |     93% |132, 137, 146 |
+| robot.py                              |       82 |        3 |       10 |        3 |     93% |139, 144, 153 |
 | subsystems/\_\_init\_\_.py            |        0 |        0 |        0 |        0 |    100% |           |
 | subsystems/climber.py                 |       70 |        1 |       12 |        1 |     98% |43->exit, 89 |
 | subsystems/drivetrain.py              |       96 |        7 |        4 |        2 |     91% |97->exit, 116, 136, 148, 154-163 |
 | subsystems/intake.py                  |       32 |        0 |        2 |        1 |     97% |  27->exit |
-| subsystems/pivot.py                   |       65 |        4 |       14 |        4 |     90% |29->exit, 41-42, 60, 76 |
+| subsystems/pivot.py                   |       67 |        4 |       14 |        4 |     90% |29->exit, 41-42, 60, 76 |
 | tests/climber\_test.py                |       74 |        0 |       18 |        0 |    100% |           |
 | tests/intake\_test.py                 |       74 |        0 |       16 |        0 |    100% |           |
-| tests/pivot\_test.py                  |       51 |        3 |       10 |        1 |     93% |     25-27 |
+| tests/pivot\_test.py                  |       59 |        3 |       12 |        1 |     94% |     26-28 |
 | tests/pyfrc\_test.py                  |        1 |        0 |        0 |        0 |    100% |           |
 | tests/switch\_test.py                 |       21 |        0 |        2 |        0 |    100% |           |
 | tests/test\_commands.py               |       55 |        2 |       42 |        3 |     95% |62->54, 64-67, 82->79 |
@@ -47,7 +49,7 @@
 | utils/swerve.py                       |      116 |        0 |        2 |        1 |     99% | 137->exit |
 | utils/switch.py                       |       40 |        3 |       24 |        7 |     84% |19->exit, 24->exit, 33, 37, 40->exit, 45, 48->exit |
 | utils/trapezoidalmotion.py            |       99 |       32 |       44 |       10 |     59% |20, 22, 40-44, 59->exit, 73-91, 110-111, 140-146, 161, 168, 188, 194 |
-|                             **TOTAL** | **1648** |  **268** |  **354** |   **57** | **80%** |           |
+|                             **TOTAL** | **1707** |  **275** |  **366** |   **58** | **81%** |           |
 
 
 ## Setup coverage badge
