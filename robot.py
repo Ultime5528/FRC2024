@@ -23,7 +23,6 @@ class Robot(commands2.TimedCommandRobot):
         # robotInit fonctionne mieux avec les tests que __init__.
 
         wpilib.LiveWindow.enableAllTelemetry()
-        wpilib.LiveWindow.setEnabled(True)
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
         self.enableLiveWindowInTest(True)
 
