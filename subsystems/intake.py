@@ -1,11 +1,10 @@
-import rev
+import wpilib
 from wpilib import RobotBase
 
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
-from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
 
 
@@ -17,10 +16,7 @@ class Intake(SafeSubsystem):
     def __init__(self):
         super().__init__()
 
-        self._motor = rev.CANSparkMax(
-            ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless
-        )
-        configureLeader(self._motor, mode="brake", inverted=False)
+        self._motor = wpilib.VictorSP(ports.pivot_motor)
 
         self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyClosed)
 
@@ -42,6 +38,6 @@ class Intake(SafeSubsystem):
     def hasNote(self):
         return self._sensor.isPressed()
 
-    def simulationPeriodic(self) -> None:
-        self._sim_motor.setVelocity(self._motor.get())
-        self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
+    # def simulationPeriodic(self) -> None:
+    #     self._sim_motor.setVelocity(self._motor.get())
+    #     self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
