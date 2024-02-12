@@ -14,9 +14,12 @@ class Climber(SafeSubsystem):
     speed_down = autoproperty(-0.25)
     speed_unload = autoproperty(-0.1)
 
+    height_min = 0.0
+    height_max = autoproperty(100.0)
+    sim_max_height = 100.0
+
     stall_limit = autoproperty(15)
     free_limit = autoproperty(30)
-    sim_max_height = 100
 
     ratchet_lock_angle = autoproperty(50.0)
     ratchet_unlock_angle = autoproperty(110.0)
@@ -27,11 +30,15 @@ class Climber(SafeSubsystem):
         configureLeader(
             self._motor, "brake", stallLimit=self.stall_limit, freeLimit=self.free_limit
         )
+        self._encoder = self._motor.getEncoder()
 
         self._ratchet_servo = wpilib.Servo(port_ratchet)
 
         self._switch_up = Switch(port_switch_up, Switch.Type.NormallyClosed)
         self._switch_down = Switch(port_switch_down, Switch.Type.NormallyClosed)
+
+        self._prev_is_up = False
+        self._offset = 0.0
 
         if RobotBase.isSimulation():
             self._sim_motor = SparkMaxSim(self._motor)
@@ -55,10 +62,30 @@ class Climber(SafeSubsystem):
         self._motor.set(0)
 
     def isUp(self):
-        return self._switch_up.isPressed()
+        return (
+            self._switch_up.isPressed() or self._encoder.getPosition() > self.height_max
+        )
 
     def isDown(self):
-        return self._switch_down.isPressed()
+        return (
+            self._switch_down.isPressed()
+            or self._encoder.getPosition() < self.height_min
+        )
+
+    def periodic(self) -> None:
+        if self._prev_is_up and not self._switch_up.isPressed():
+            self.setHeight(self.height_max)
+
+        self._prev_is_up = self._switch_up.isPressed()
+
+    def setHeight(self, reset_value):
+        self._offset = reset_value - self._encoder.getPosition()
+
+    def getHeight(self):
+        return self._encoder.getPosition() + self._offset
+
+    def getMotorSpeed(self):
+        return self._motor.get()
 
     def lockRatchet(self):
         self._ratchet_servo.setAngle(self.ratchet_lock_angle)

@@ -1,14 +1,15 @@
 from unittest import mock
 
 import pyfrc.test_support.controller
-from pytest import approx
 import rev
+from pytest import approx
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
 from robot import Robot
+from subsystems.climber import Climber
 
 
 def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):
@@ -67,16 +68,17 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
 
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
 @mock.patch("rev.CANSparkMax.setSmartCurrentLimit")
-def test_settings(
-    _, __, control: "pyfrc.test_support.controller.TestController", robot: Robot
-):
-    with control.run_robot():
-        for climber in (robot.climber_left, robot.climber_right):
-            assert not climber._motor.getInverted()
-            assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
-            assert climber._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
-            climber._motor.restoreFactoryDefaults.assert_called_with()
-            climber._motor.setSmartCurrentLimit.assert_called_with(15, 30)
+def test_settings(mock_setSmartCurrentLimit, mock_restoreFactoryDefaults):
+    mock_restoreFactoryDefaults.assert_not_called()
+    mock_setSmartCurrentLimit.assert_not_called()
+
+    climber = Climber(1, 1, 2)
+
+    assert not climber._motor.getInverted()
+    assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
+    assert climber._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
+    climber._motor.restoreFactoryDefaults.assert_called_with()
+    climber._motor.setSmartCurrentLimit.assert_called_with(15, 30)
 
 
 def test_requirements(
