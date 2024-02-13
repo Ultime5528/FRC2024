@@ -37,6 +37,6 @@ climber_left_switch_down = 8
 climber_right_switch_down = 9
 intake_sensor: Final = 2
 pivot_switch_up: Final = 0
-pivot_switch_down: Final = 1
+pivot_switch_down: Final = 7
 pivot_encoder_a: Final = 5
 pivot_encoder_b: Final = 6

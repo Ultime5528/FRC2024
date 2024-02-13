@@ -10,8 +10,8 @@ from utils.switch import Switch
 
 
 class Intake(SafeSubsystem):
-    speed_in = autoproperty(0.3)
-    speed_load = autoproperty(0.8)
+    speed_in = autoproperty(0.5)
+    speed_load = autoproperty(0.2)
     speed_out = autoproperty(-0.17)
 
     def __init__(self):
@@ -19,7 +19,7 @@ class Intake(SafeSubsystem):
 
         self._motor = wpilib.VictorSP(ports.intake_motor)
 
-        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyClosed)
+        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyOpen)
 
 
     def pickUp(self):
