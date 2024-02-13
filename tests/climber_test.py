@@ -8,7 +8,7 @@ from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
-from subsystems.climber import Climber
+from subsystems.climber import Climber, climber_left_properties
 
 
 def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):
@@ -22,7 +22,7 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         )
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert robot.climber_left._ratchet_servo.getAngle() == approx(
-            robot.climber_left.ratchet_unlock_angle
+            robot.climber_left.climber_properties.ratchet_unlock_angle
         )
         control.step_timing(seconds=0.5, autonomous=False, enabled=True)
         assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_up)
@@ -57,7 +57,7 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert robot.climber_left._ratchet_servo.getAngle() == approx(
-            robot.climber_left.ratchet_lock_angle
+            robot.climber_left.climber_properties.ratchet_lock_angle
         )
         control.step_timing(seconds=0.5, autonomous=False, enabled=True)
         assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
@@ -85,7 +85,7 @@ def test_settings(mock_setSmartCurrentLimit, mock_restoreFactoryDefaults):
     mock_restoreFactoryDefaults.assert_not_called()
     mock_setSmartCurrentLimit.assert_not_called()
 
-    climber = Climber(1, 1, 2, 2)
+    climber = Climber(climber_left_properties)
 
     assert not climber._motor.getInverted()
     assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
