@@ -27,12 +27,12 @@
 | gyro.py                               |      122 |       50 |       14 |        5 |     60% |19, 28->exit, 31->exit, 34->exit, 37->exit, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                              |       25 |        0 |        0 |        0 |    100% |           |
 | properties.py                         |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                              |       82 |        3 |       10 |        3 |     93% |139, 144, 153 |
+| robot.py                              |       89 |        3 |       10 |        3 |     94% |137, 142, 151 |
 | subsystems/\_\_init\_\_.py            |        0 |        0 |        0 |        0 |    100% |           |
-| subsystems/climber.py                 |       70 |        1 |       12 |        1 |     98% |43->exit, 89 |
+| subsystems/climber.py                 |      128 |        3 |       63 |        8 |     94% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 77->exit, 123, 149, 152 |
 | subsystems/drivetrain.py              |       96 |        7 |        4 |        2 |     91% |97->exit, 116, 136, 148, 154-163 |
-| subsystems/intake.py                  |       32 |        0 |        2 |        1 |     97% |  27->exit |
-| subsystems/pivot.py                   |       67 |        4 |       14 |        4 |     90% |29->exit, 41-42, 60, 76 |
+| subsystems/intake.py                  |       39 |        1 |        2 |        1 |     95% |28->exit, 54 |
+| subsystems/pivot.py                   |       85 |        6 |       18 |        4 |     90% |33->exit, 45-46, 64, 80, 110, 113 |
 | tests/climber\_test.py                |       74 |        0 |       18 |        0 |    100% |           |
 | tests/intake\_test.py                 |       74 |        0 |       16 |        0 |    100% |           |
 | tests/pivot\_test.py                  |       59 |        3 |       12 |        1 |     94% |     26-28 |
@@ -49,7 +49,7 @@
 | utils/swerve.py                       |      116 |        0 |        2 |        1 |     99% | 137->exit |
 | utils/switch.py                       |       40 |        3 |       24 |        7 |     84% |19->exit, 24->exit, 33, 37, 40->exit, 45, 48->exit |
 | utils/trapezoidalmotion.py            |       99 |       32 |       44 |       10 |     59% |20, 22, 40-44, 59->exit, 73-91, 110-111, 140-146, 161, 168, 188, 194 |
-|                             **TOTAL** | **1707** |  **275** |  **366** |   **58** | **81%** |           |
+|                             **TOTAL** | **1797** |  **280** |  **421** |   **65** | **81%** |           |
 
 
 ## Setup coverage badge
