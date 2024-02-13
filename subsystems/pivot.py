@@ -1,6 +1,7 @@
 import wpilib
 from wpilib import RobotBase
 from wpilib.simulation import PWMSim, EncoderSim
+from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
@@ -20,6 +21,9 @@ class Pivot(SafeSubsystem):
         self._switch_down = Switch(ports.pivot_switch_down, Switch.Type.NormallyClosed)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
         self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
+
+        self.addChild("motor", self._motor)
+        self.addChild("encoder", self._encoder)
 
         self._offset = 0.0
         self._has_reset = False
@@ -98,3 +102,22 @@ class Pivot(SafeSubsystem):
 
     def getMotorInput(self):
         return self._motor.get()
+
+    def initSendable(self, builder: SendableBuilder) -> None:
+        super().initSendable(builder)
+
+        def setOffset(value: float):
+            self._offset = value
+
+        def noop(x):
+            pass
+
+        builder.addFloatProperty("motor_input", self._motor.get, noop)
+        builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
+        builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
+        builder.addFloatProperty("height", self.getHeight, noop)
+        builder.addBooleanProperty("has_reset", lambda: self._has_reset, noop)
+        builder.addBooleanProperty("switch_up", self._switch_up.isPressed, noop)
+        builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
+        builder.addBooleanProperty("isUp", self.isUp, noop)
+        builder.addBooleanProperty("isDown", self.isDown, noop)
