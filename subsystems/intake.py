@@ -1,5 +1,6 @@
 import rev
 from wpilib import RobotBase
+from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
@@ -45,3 +46,12 @@ class Intake(SafeSubsystem):
     def simulationPeriodic(self) -> None:
         self._sim_motor.setVelocity(self._motor.get())
         self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
+
+    def initSendable(self, builder: SendableBuilder) -> None:
+        super().initSendable(builder)
+
+        def noop(x):
+            pass
+
+        builder.addFloatProperty("motor_input", self._motor.get, noop)
+        builder.addBooleanProperty("hasNote", self.hasNote, noop)
