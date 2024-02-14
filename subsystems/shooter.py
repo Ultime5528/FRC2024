@@ -28,9 +28,6 @@ class Shooter(SafeSubsystem):
         self._pid.setD(self.d)
         self._pid.setFF(self.ff)
 
-
-
-
         self._right_motor = rev.CANSparkMax(
             ports.shooter_motor_right, rev.CANSparkMax.MotorType.kBrushless
         )

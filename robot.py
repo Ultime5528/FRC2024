@@ -87,6 +87,7 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         pass
+
     def setupDashboard(self):
         """
         Send commands to dashboard to
