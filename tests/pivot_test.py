@@ -8,7 +8,9 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
 
 
-def common_test_movePivot_from_switch_down(control, robot : Robot, MovePivotMethod, wantedHeight):
+def common_test_movePivot_from_switch_down(
+    control, robot: Robot, MovePivotMethod, wantedHeight
+):
     with control.run_robot():
 
         # Set hasReset to true
@@ -42,19 +44,33 @@ def common_test_movePivot_from_switch_down(control, robot : Robot, MovePivotMeth
 
 
 def test_movePivot_toSpeakerFar(control, robot: Robot):
-    common_test_movePivot_from_switch_down(control, robot, MovePivot.toSpeakerFar, move_pivot_properties.position_speaker_far)
+    common_test_movePivot_from_switch_down(
+        control,
+        robot,
+        MovePivot.toSpeakerFar,
+        move_pivot_properties.position_speaker_far,
+    )
 
 
 def test_movePivot_toSpeakerClose(control, robot: Robot):
-    common_test_movePivot_from_switch_down(control, robot, MovePivot.toSpeakerClose, move_pivot_properties.position_speaker_close)
+    common_test_movePivot_from_switch_down(
+        control,
+        robot,
+        MovePivot.toSpeakerClose,
+        move_pivot_properties.position_speaker_close,
+    )
 
 
 def test_movePivot_toAmp(control, robot: Robot):
-    common_test_movePivot_from_switch_down(control, robot, MovePivot.toAmp, move_pivot_properties.position_amp)
+    common_test_movePivot_from_switch_down(
+        control, robot, MovePivot.toAmp, move_pivot_properties.position_amp
+    )
 
 
 def test_movePivot_toLoading(control, robot: Robot):
-    common_test_movePivot_from_switch_down(control, robot, MovePivot.toLoading, move_pivot_properties.position_loading)
+    common_test_movePivot_from_switch_down(
+        control, robot, MovePivot.toLoading, move_pivot_properties.position_loading
+    )
 
 
 def test_resetCommand(control, robot: Robot):

@@ -40,7 +40,9 @@ class MovePivot(SafeCommand):
         self.motion = TrapezoidalMotion(
             start_position=self.pivot.getHeight(),
             end_position=self.end_position_getter(),
-            start_speed=max(move_pivot_properties.speed_min, abs(self.pivot.getMotorInput())),
+            start_speed=max(
+                move_pivot_properties.speed_min, abs(self.pivot.getMotorInput())
+            ),
             end_speed=move_pivot_properties.speed_min,
             max_speed=move_pivot_properties.speed_max,
             accel=move_pivot_properties.accel,
