@@ -10,9 +10,9 @@ from commands.pivot.movepivot import properties
 
 
 class PrepareShoot(SafeCommand):
-    speed_far = autoproperty(100.0)
-    speed_close = autoproperty(50.0)
-    speed_amp = autoproperty(25.0)
+    speed_far = autoproperty(1)
+    speed_close = autoproperty(0.5)
+    speed_amp = autoproperty(0.25)
 
     def __init__(self, shooter: Shooter, pivot: Pivot):
         super().__init__()

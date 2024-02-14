@@ -13,6 +13,7 @@ from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from commands.pivot.movepivot import MovePivot
+from commands.shooter.shoot import Shoot
 from subsystems.climber import Climber
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
@@ -85,7 +86,6 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         pass
-
     def setupDashboard(self):
         """
         Send commands to dashboard to
@@ -130,6 +130,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toLoading(self.pivot))
+
+        putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
