@@ -37,6 +37,9 @@ class ClimberProperties(ABC):
     def height_max(self) -> float: ...
     @property
     @abstractmethod
+    def height_min(self) -> float: ...
+    @property
+    @abstractmethod
     def inversed(self) -> bool: ...
 
 
@@ -45,8 +48,6 @@ class Climber(SafeSubsystem):
     speed_down = autoproperty(-0.3)
     speed_unload = autoproperty(-0.1)
 
-    height_min = 0.0
-    height_max = autoproperty(190.0)
     sim_max_height = 100.0
 
     stall_limit = autoproperty(15)
@@ -57,9 +58,7 @@ class Climber(SafeSubsystem):
         self._motor = rev.CANSparkMax(
             climber_properties.port_motor, rev.CANSparkMax.MotorType.kBrushless
         )
-        configureLeader(
-            self._motor, "brake", inverted=climber_properties.inversed
-        )
+        configureLeader(self._motor, "brake", inverted=climber_properties.inversed)
         self._encoder = self._motor.getEncoder()
 
         self._ratchet_servo = wpilib.Servo(climber_properties.port_ratchet)
@@ -100,15 +99,10 @@ class Climber(SafeSubsystem):
         self._motor.stopMotor()
 
     def isUp(self):
-        return (
-            self._switch_up.isPressed() or self.getHeight() > self.height_max
-        )
+        return self._switch_up.isPressed() or self.getHeight() > self.climber_properties.height_max
 
     def isDown(self):
-        return (
-            self._switch_down.isPressed()
-            or self.getHeight() < self.height_min
-        )
+        return self._switch_down.isPressed() or self.getHeight() < self.climber_properties.height_min
 
     def periodic(self) -> None:
         if self._prev_is_up and not self._switch_up.isPressed():
@@ -174,6 +168,7 @@ class ClimberLeftProperties(ClimberProperties):
     ratchet_lock_angle = autoproperty(0.0, subtable="ClimberLeft")
     ratchet_unlock_angle = autoproperty(0.5, subtable="ClimberLeft")
     height_max = autoproperty(1000.0, subtable="ClimberLeft")
+    height_min = autoproperty(0, subtable="ClimberLeft")
     inversed = False
 
 
@@ -188,6 +183,7 @@ class ClimberRightProperties(ClimberProperties):
     ratchet_lock_angle = autoproperty(0.0, subtable="ClimberRight")
     ratchet_unlock_angle = autoproperty(0.5, subtable="ClimberRight")
     height_max = autoproperty(100.0, subtable="ClimberRight")
+    height_min = autoproperty(0, subtable="ClimberRight")
     inversed = True
 
 
