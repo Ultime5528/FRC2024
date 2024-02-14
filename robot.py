@@ -13,6 +13,7 @@ from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from commands.pivot.movepivot import MovePivot
+from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.shoot import Shoot
 from subsystems.climber import Climber
 from subsystems.drivetrain import Drivetrain
@@ -132,6 +133,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", MovePivot.toLoading(self.pivot))
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
+        putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
