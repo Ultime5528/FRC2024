@@ -65,6 +65,8 @@ class MovePivot(SafeCommand):
         self.pivot.stop()
         if not interrupted:
             self.pivot.state = self.new_state
+        else:
+            self.pivot.state = Pivot.State.Invalid
 
 
 class _ClassProperties:

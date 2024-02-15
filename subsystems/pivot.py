@@ -17,9 +17,11 @@ class Pivot(SafeSubsystem):
         SpeakerClose = auto()
         SpeakerFar = auto()
         Amp = auto()
+        Invalid = auto()
 
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
+    speed_maintain = autoproperty(-0.2)
     height_min = 0.0
     height_max = autoproperty(255.0)
 
@@ -54,7 +56,7 @@ class Pivot(SafeSubsystem):
 
     def simulationPeriodic(self) -> None:
         assert not (
-            self.isUp() and self.isDown()
+                self.isUp() and self.isDown()
         ), "Both switches are on at the same time which doesn't make any sense"
 
         self._sim_encoder.setDistance(
@@ -87,14 +89,17 @@ class Pivot(SafeSubsystem):
         else:
             self._motor.set(speed)
 
+    def maintain(self):
+        self.setSpeed(self.speed_maintain)
+
     def isDown(self) -> bool:
         return self._switch_down.isPressed() or (
-            self._has_reset and self.getHeight() < self.height_min
+                self._has_reset and self.getHeight() < self.height_min
         )
 
     def isUp(self) -> bool:
         return self._switch_up.isPressed() or (
-            self._has_reset and self.getHeight() > self.height_max
+                self._has_reset and self.getHeight() > self.height_max
         )
 
     def stop(self):
