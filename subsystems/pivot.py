@@ -12,6 +12,7 @@ from utils.switch import Switch
 
 class Pivot(SafeSubsystem):
     class State(Enum):
+        Invalid = auto()
         Moving = auto()
         Loading = auto()
         SpeakerClose = auto()
@@ -34,7 +35,7 @@ class Pivot(SafeSubsystem):
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
-        self.state = Pivot.State.Moving
+        self.state = Pivot.State.Invalid
 
         if RobotBase.isSimulation():
             self._sim_motor = PWMSim(self._motor)

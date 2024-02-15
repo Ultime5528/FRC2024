@@ -1,12 +1,12 @@
 import rev
-import wpilib
 from wpilib import RobotBase
-import commands2
+from wpiutil import SendableBuilder
+
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.sparkmaxutils import configureFollower, configureLeader
 from utils.sparkmaxsim import SparkMaxSim
+from utils.sparkmaxutils import configureFollower, configureLeader
 
 
 class Shooter(SafeSubsystem):
@@ -35,6 +35,7 @@ class Shooter(SafeSubsystem):
 
         self._encoder = self._left_motor.getEncoder()
 
+        self._ref_rpm = 0.0
         self._reached_speed = False
 
         if RobotBase.isSimulation():
@@ -43,6 +44,7 @@ class Shooter(SafeSubsystem):
 
     def shoot(self, rpm: float):
         self._pid.setReference(rpm, rev.CANSparkMax.ControlType.kVelocity)
+        self._ref_rpm = rpm
 
         if self._encoder.getVelocity() >= rpm:
             self._reached_speed = True
@@ -59,3 +61,12 @@ class Shooter(SafeSubsystem):
     def simulationPeriodic(self):
         self.left_motor_sim.setVelocity(self._left_motor.get())
         self.right_motor_sim.setVelocity(-self._left_motor.get())
+
+    def initSendable(self, builder: SendableBuilder) -> None:
+        super().initSendable(builder)
+
+        def noop(_): pass
+
+        builder.addBooleanProperty("reached_speed", lambda: self._reached_speed, noop)
+        builder.addFloatProperty("velocity", self._encoder.getVelocity, noop)
+        builder.addFloatProperty("ref_rpm", lambda: self._ref_rpm, noop)

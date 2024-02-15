@@ -1,6 +1,5 @@
-from utils.safecommand import SafeCommand
 from subsystems.shooter import Shooter
-
+from utils.safecommand import SafeCommand
 
 type NoReqShooter = Shooter
 

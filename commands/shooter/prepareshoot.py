@@ -1,20 +1,20 @@
-import math
-
 import wpilib
 
-from utils.safecommand import SafeCommand
+from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.property import autoproperty
-from subsystems.pivot import Pivot
-from commands.pivot.movepivot import properties
+from utils.safecommand import SafeCommand
+
+
+type NoReqPivot = Pivot
 
 
 class PrepareShoot(SafeCommand):
-    speed_far = autoproperty(1)
-    speed_close = autoproperty(0.5)
-    speed_amp = autoproperty(0.25)
+    speed_far = autoproperty(1000.0)
+    speed_close = autoproperty(500.0)
+    speed_amp = autoproperty(300.0)
 
-    def __init__(self, shooter: Shooter, pivot: Pivot):
+    def __init__(self, shooter: Shooter, pivot: NoReqPivot):
         super().__init__()
         self.shooter = shooter
         self.addRequirements(shooter)

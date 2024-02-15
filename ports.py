@@ -20,11 +20,11 @@ drivetrain_motor_driving_fl: Final = 5
 drivetrain_motor_turning_fl: Final = 6
 drivetrain_motor_turning_fr: Final = 7
 drivetrain_motor_driving_fr: Final = 8
-climber_motor_right = 9
-climber_motor_left = 10
-shooter_motor_left: Final = 11
-shooter_motor_right: Final = 12
-intake_motor: Final = 13
+climber_motor_right: Final = 9
+climber_motor_left: Final = 10
+intake_motor: Final = 11
+shooter_motor_left: Final = 12
+shooter_motor_right: Final = 13
 
 # PWM
 pivot_motor: Final = 0

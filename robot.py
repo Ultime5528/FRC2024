@@ -14,14 +14,12 @@ from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from commands.pivot.movepivot import MovePivot
 from commands.shooter.manualshoot import ManualShoot
+from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import Shoot
 from subsystems.climber import Climber
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
-from subsystems.climber import Climber
-from commands.climber.extendclimber import ExtendClimber
-from commands.climber.retractclimber import RetractClimber
 from subsystems.shooter import Shooter
 
 
@@ -48,9 +46,6 @@ class Robot(commands2.TimedCommandRobot):
         Subsystems
         """
         self.drivetrain = Drivetrain(self.getPeriod())
-        self.pivot = Pivot()
-        self.intake = Intake()
-        self.shooter = Shooter()
         self.climber_left = Climber(
             ports.climber_motor_left,
             ports.climber_left_switch_up,
@@ -63,6 +58,9 @@ class Robot(commands2.TimedCommandRobot):
             ports.climber_right_switch_down,
             ports.climber_servo_right,
         )
+        self.intake = Intake()
+        self.pivot = Pivot()
+        self.shooter = Shooter()
 
         """
         Default subsystem commands
@@ -135,6 +133,7 @@ class Robot(commands2.TimedCommandRobot):
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
+        putCommandOnDashboard("Shooter", PrepareShoot(self.shooter))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()

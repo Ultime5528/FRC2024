@@ -7,14 +7,14 @@ from utils.trapezoidalmotion import TrapezoidalMotion
 class MovePivot(SafeCommand):
     @classmethod
     def toAmp(cls, pivot: Pivot):
-        cmd = cls(pivot, lambda: properties.position_amp, pivot.state.Amp)
+        cmd = cls(pivot, lambda: properties.position_amp, Pivot.State.Amp)
         cmd.setName(cmd.getName() + ".toAmp")
         return cmd
 
     @classmethod
     def toSpeakerClose(cls, pivot: Pivot):
         cmd = cls(
-            pivot, lambda: properties.position_speaker_close, pivot.state.SpeakerClose
+            pivot, lambda: properties.position_speaker_close, Pivot.State.SpeakerClose
         )
         cmd.setName(cmd.getName() + ".toSpeakerClose")
         return cmd
@@ -22,19 +22,19 @@ class MovePivot(SafeCommand):
     @classmethod
     def toSpeakerFar(cls, pivot: Pivot):
         cmd = cls(
-            pivot, lambda: properties.position_speaker_far, pivot.state.SpeakerFar
+            pivot, lambda: properties.position_speaker_far, Pivot.State.SpeakerFar
         )
         cmd.setName(cmd.getName() + ".toSpeakerFar")
         return cmd
 
     @classmethod
     def toLoading(cls, pivot: Pivot):
-        cmd = cls(pivot, lambda: properties.position_loading, pivot.state.Loading)
+        cmd = cls(pivot, lambda: properties.position_loading, Pivot.State.Loading)
         cmd.setName(cmd.getName() + ".toLoading")
         return cmd
 
     def __init__(
-        self, pivot: Pivot, end_position: FloatProperty, new_state=Pivot.State
+        self, pivot: Pivot, end_position: FloatProperty, new_state: Pivot.State
     ):
         super().__init__()
         self.end_position_getter = asCallable(end_position)
@@ -63,7 +63,9 @@ class MovePivot(SafeCommand):
 
     def end(self, interrupted: bool) -> None:
         self.pivot.stop()
-        if not interrupted:
+        if interrupted:
+            self.pivot.state = Pivot.State.Invalid
+        else:
             self.pivot.state = self.new_state
 
 
