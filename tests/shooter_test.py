@@ -1,13 +1,14 @@
 import pytest
-#from commands.pivot.movepivot import MovePivot
-#from wpilib.simulation import stepTiming
-#from commands.shooter.shoot import Shoot
-#from commands.shooter.prepareshoot import PrepareShoot
-#from commands.shooter.waitshootspeed import WaitShootSpeed
-#from pytest import approx
+
+# from commands.pivot.movepivot import MovePivot
+# from wpilib.simulation import stepTiming
+# from commands.shooter.shoot import Shoot
+# from commands.shooter.prepareshoot import PrepareShoot
+# from commands.shooter.waitshootspeed import WaitShootSpeed
+# from pytest import approx
 #
 #
-#def test_ShootFar(control, robot):
+# def test_ShootFar(control, robot):
 #
 #    with control.run_robot():
 #        robot.pivot._sim_encoder.setDistance(-0.05)
