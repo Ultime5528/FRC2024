@@ -64,9 +64,7 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             DriveField(self.drivetrain, self.xbox_controller)
         )
-        self.pivot.setDefaultCommand(
-            MaintainPivot(self.pivot)
-        )
+        self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """
         Setups
