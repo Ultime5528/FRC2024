@@ -65,7 +65,8 @@ class Shooter(SafeSubsystem):
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
 
-        def noop(_): pass
+        def noop(_):
+            pass
 
         builder.addBooleanProperty("reached_speed", lambda: self._reached_speed, noop)
         builder.addFloatProperty("velocity", self._encoder.getVelocity, noop)

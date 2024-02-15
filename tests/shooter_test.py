@@ -18,8 +18,8 @@ def test_ShootFar(control, robot: Robot):
         counter = 0
 
         while not cmd_move_pivot.isScheduled() and counter < 1000:
-           stepTiming(0.01)
-           counter += 1
+            stepTiming(0.01)
+            counter += 1
 
         assert counter < 1000, "MovePivot takes too long to finish"
 
