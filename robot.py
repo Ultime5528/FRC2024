@@ -133,7 +133,7 @@ class Robot(commands2.TimedCommandRobot):
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
-        putCommandOnDashboard("Shooter", PrepareShoot(self.shooter))
+        putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()

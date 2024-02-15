@@ -70,7 +70,7 @@ def test_pickUp(control, robot: Robot):
 
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
-        assert robot.intake._motor.getDeviceId() == 13
+        assert robot.intake._motor.getDeviceId() == 11
         assert robot.intake._sensor.getChannel() == 4
 
 
