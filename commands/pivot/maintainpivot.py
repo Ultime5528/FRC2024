@@ -8,6 +8,7 @@ class MaintainPivot(SafeCommand):
     def __init__(self, pivot: Pivot):
         super().__init__()
         self.pivot = pivot
+        self.addRequirements(pivot)
 
     def execute(self):
         if (
