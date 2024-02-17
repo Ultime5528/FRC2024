@@ -21,22 +21,28 @@
 | commands/intake/load.py               |       22 |        0 |        2 |        0 |    100% |           |
 | commands/intake/pickup.py             |       22 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/forceresetpivot.py     |       23 |        0 |        8 |        1 |     97% |  15->exit |
-| commands/pivot/movepivot.py           |       49 |        0 |       16 |        3 |     95% |10->exit, 16->exit, 28->exit |
+| commands/pivot/movepivot.py           |       54 |        1 |       18 |        4 |     93% |10->exit, 16->exit, 32->exit, 67 |
 | commands/pivot/resetpivotdown.py      |       19 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/resetpivotup.py        |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
+| commands/shooter/manualshoot.py       |       13 |        2 |        0 |        0 |     85% |    15, 18 |
+| commands/shooter/prepareshoot.py      |       27 |        7 |        6 |        1 |     64% | 27-33, 36 |
+| commands/shooter/shoot.py             |       14 |        0 |        0 |        0 |    100% |           |
+| commands/shooter/waitshootspeed.py    |       10 |        0 |        0 |        0 |    100% |           |
 | gyro.py                               |      122 |       50 |       14 |        5 |     60% |19, 28->exit, 31->exit, 34->exit, 37->exit, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
-| ports.py                              |       25 |        0 |        0 |        0 |    100% |           |
+| ports.py                              |       27 |        0 |        0 |        0 |    100% |           |
 | properties.py                         |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                              |       91 |        3 |       12 |        4 |     93% |137, 142, 149, 153->156 |
+| robot.py                              |       99 |        3 |       12 |        4 |     94% |146, 151, 158, 162->165 |
 | subsystems/\_\_init\_\_.py            |        0 |        0 |        0 |        0 |    100% |           |
 | subsystems/climber.py                 |      128 |        3 |       63 |        8 |     94% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 77->exit, 123, 149, 152 |
 | subsystems/drivetrain.py              |       96 |        7 |        4 |        2 |     91% |97->exit, 116, 136, 148, 154-163 |
 | subsystems/intake.py                  |       39 |        1 |        2 |        1 |     95% |28->exit, 54 |
-| subsystems/pivot.py                   |       85 |        6 |       18 |        4 |     90% |33->exit, 45-46, 64, 80, 110, 113 |
+| subsystems/pivot.py                   |       94 |        6 |       18 |        4 |     91% |44->exit, 56-57, 75, 91, 121, 124 |
+| subsystems/shooter.py                 |       51 |        9 |        8 |        2 |     75% |41->exit, 52, 58-59, 66-73 |
 | tests/climber\_test.py                |       74 |        0 |       18 |        0 |    100% |           |
 | tests/intake\_test.py                 |       74 |        0 |       16 |        0 |    100% |           |
 | tests/pivot\_test.py                  |       59 |        3 |       12 |        1 |     94% |     26-28 |
 | tests/pyfrc\_test.py                  |        1 |        0 |        0 |        0 |    100% |           |
+| tests/shooter\_test.py                |       36 |        0 |        6 |        0 |    100% |           |
 | tests/switch\_test.py                 |       21 |        0 |        2 |        0 |    100% |           |
 | tests/test\_commands.py               |       55 |        2 |       42 |        3 |     95% |62->54, 64-67, 82->79 |
 | tests/test\_subsystems.py             |       17 |        0 |        8 |        0 |    100% |           |
@@ -45,11 +51,11 @@
 | utils/safecommand.py                  |       37 |       19 |        8 |        0 |     40% | 13, 17-38 |
 | utils/safesubsystem.py                |       23 |        1 |        4 |        0 |     96% |        28 |
 | utils/sparkmaxsim.py                  |       20 |        2 |        0 |        0 |     90% |    25, 28 |
-| utils/sparkmaxutils.py                |       38 |       11 |       12 |        3 |     68% |14, 37-56, 76, 86-88 |
+| utils/sparkmaxutils.py                |       38 |        3 |       12 |        3 |     88% |14, 76, 88 |
 | utils/swerve.py                       |      116 |        0 |        2 |        1 |     99% | 137->exit |
 | utils/switch.py                       |       40 |        3 |       24 |        7 |     84% |19->exit, 24->exit, 33, 37, 40->exit, 45, 48->exit |
 | utils/trapezoidalmotion.py            |       99 |       32 |       44 |       10 |     59% |20, 22, 40-44, 59->exit, 73-91, 110-111, 140-146, 161, 168, 188, 194 |
-|                             **TOTAL** | **1817** |  **281** |  **427** |   **66** | **81%** |           |
+|                             **TOTAL** | **1992** |  **292** |  **449** |   **70** | **82%** |           |
 
 
 ## Setup coverage badge
