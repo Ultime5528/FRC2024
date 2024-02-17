@@ -14,6 +14,7 @@ from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from commands.pivot.forceresetpivot import ForceResetPivot
+from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
@@ -63,6 +64,7 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             DriveField(self.drivetrain, self.xbox_controller)
         )
+        self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """
         Setups

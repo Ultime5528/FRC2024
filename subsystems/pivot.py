@@ -22,6 +22,7 @@ class Pivot(SafeSubsystem):
 
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
+    speed_maintain = autoproperty(-0.2)
     height_min = 0.0
     height_max = autoproperty(255.0)
 
@@ -91,6 +92,9 @@ class Pivot(SafeSubsystem):
             self._motor.set(speed if speed <= 0 else 0)
         else:
             self._motor.set(speed)
+
+    def maintain(self):
+        self.setSpeed(self.speed_maintain)
 
     def isDown(self) -> bool:
         return self._switch_down.isPressed() or (
