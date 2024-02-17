@@ -67,8 +67,6 @@ class MovePivot(SafeCommand):
             self.pivot.state = Pivot.State.Invalid
         else:
             self.pivot.state = self.new_state
-        else:
-            self.pivot.state = Pivot.State.Invalid
 
 
 class _ClassProperties:
