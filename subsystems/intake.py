@@ -21,7 +21,6 @@ class Intake(SafeSubsystem):
 
         self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyOpen)
 
-
     def pickUp(self):
         self._motor.set(self.speed_in)
 

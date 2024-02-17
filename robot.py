@@ -119,12 +119,12 @@ class Robot(commands2.TimedCommandRobot):
                 ForceResetClimber.toMax(climber),
                 "ForceResetClimber.toMax." + name,
             )
-            putCommandOnDashboard("Climber" + name,
-                                   LockRatchet(climber),
-                                  "LockRatchet." + name)
-            putCommandOnDashboard("Climber" + name,
-                                   UnlockRatchet(climber),
-                                  "UnlockRatchet." + name)
+            putCommandOnDashboard(
+                "Climber" + name, LockRatchet(climber), "LockRatchet." + name
+            )
+            putCommandOnDashboard(
+                "Climber" + name, UnlockRatchet(climber), "UnlockRatchet." + name
+            )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
