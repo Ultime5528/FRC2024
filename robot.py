@@ -146,7 +146,9 @@ def putCommandOnDashboard(
     sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
 ) -> commands2.Command:
     if not isinstance(sub_table, str):
-        raise ValueError(f"sub_table should be a str: '{sub_table}' of type '{type(sub_table)}'")
+        raise ValueError(
+            f"sub_table should be a str: '{sub_table}' of type '{type(sub_table)}'"
+        )
 
     if suffix:
         sub_table += suffix
