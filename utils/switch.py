@@ -14,7 +14,7 @@ class Switch:
 
     def __init__(self, type: "Switch.Type", port: Optional[int]):
 
-        if type == Switch.Type.NormallyClosed or Switch.Type.NormallyOpen:
+        if type == Switch.Type.NormallyClosed or type == Switch.Type.NormallyOpen:
             self._input = DigitalInput(port)
 
         if not isinstance(type, Switch.Type):
@@ -23,11 +23,12 @@ class Switch:
         self._type = type
 
         if RobotBase.isSimulation:
-            self._sim_input = DIOSim(self._input)
 
             if self._type == Switch.Type.NormallyOpen:
+                self._sim_input = DIOSim(self._input)
                 self._sim_input.setValue(False)
             elif self._type == Switch.Type.NormallyClosed:
+                self._sim_input = DIOSim(self._input)
                 self._sim_input.setValue(True)
             elif self._type == Switch.Type.AlwaysPressed:
                 self._sim_switch_state = True

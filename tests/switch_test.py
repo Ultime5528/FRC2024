@@ -3,7 +3,7 @@ from utils.switch import Switch
 
 
 def test_normallyOpened():
-    switch = Switch(1, Switch.Type.NormallyOpen)
+    switch = Switch(Switch.Type.NormallyOpen, 1)
     switch.setSimPressed()
     assert switch.isPressed()
     assert switch._input.get()
@@ -13,13 +13,29 @@ def test_normallyOpened():
 
 
 def test_normallyClosed():
-    switch = Switch(1, Switch.Type.NormallyClosed)
+    switch = Switch(Switch.Type.NormallyClosed, 1)
     switch.setSimPressed()
     assert switch.isPressed()
     assert not switch._input.get()
     switch.setSimUnpressed()
     assert not switch.isPressed()
     assert switch._input.get()
+
+
+def test_alwaysPressed():
+    switch = Switch(Switch.Type.AlwaysPressed, None)
+    switch.setSimPressed()
+    assert switch.isPressed()
+    switch.setSimUnpressed()
+    assert not switch.isPressed()
+
+
+def test_alwaysUnPressed():
+    switch = Switch(Switch.Type.AlwaysUnPressed, None)
+    switch.setSimPressed()
+    assert switch.isPressed()
+    switch.setSimUnpressed()
+    assert not switch.isPressed()
 
 
 def test_TypeError():
