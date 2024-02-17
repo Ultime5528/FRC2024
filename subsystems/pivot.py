@@ -19,7 +19,6 @@ class Pivot(SafeSubsystem):
         SpeakerClose = auto()
         SpeakerFar = auto()
         Amp = auto()
-        Invalid = auto()
 
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
