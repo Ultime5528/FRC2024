@@ -23,11 +23,7 @@ class Shooter(SafeSubsystem):
         )
         configureLeader(self._left_motor, "coast")
         self._pid = self._left_motor.getPIDController()
-        self._pid.setP(self.p)
-        self._pid.setI(self.i)
-        self._pid.setD(self.d)
-        self._pid.setFF(self.ff)
-
+        self.updatePIDSettings()
         self._right_motor = rev.CANSparkMax(
             ports.shooter_motor_right, rev.CANSparkMax.MotorType.kBrushless
         )
@@ -57,6 +53,12 @@ class Shooter(SafeSubsystem):
     def stop(self):
         self._left_motor.stopMotor()
         self._reached_speed = False
+
+    def updatePIDSettings(self):
+        self._pid.setP(self.p)
+        self._pid.setI(self.i)
+        self._pid.setD(self.d)
+        self._pid.setFF(self.ff)
 
     def simulationPeriodic(self):
         self.left_motor_sim.setVelocity(self._left_motor.get())

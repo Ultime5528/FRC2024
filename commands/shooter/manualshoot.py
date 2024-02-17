@@ -11,6 +11,9 @@ class ManualShoot(SafeCommand):
         self.shooter = shooter
         self.addRequirements(shooter)
 
+    def initialize(self):
+        self.shooter.updatePIDSettings()
+
     def execute(self):
         self.shooter.shoot(rpm=self.rpm)
 
