@@ -1,5 +1,7 @@
 # FRC2024
 
+[![Coverage badge](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Ultime5528/FRC2024/python-coverage-comment-action-data/endpoint.json)](https://htmlpreview.github.io/?https://github.com/Ultime5528/FRC2024/blob/python-coverage-comment-action-data/htmlcov/index.html)
+
 ## Execution
 
 * Simulation : `python -m robotpy sim`

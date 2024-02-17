@@ -1,10 +1,12 @@
 import rev
 from wpilib import RobotBase
+from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
+from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
 
 
@@ -15,10 +17,13 @@ class Intake(SafeSubsystem):
 
     def __init__(self):
         super().__init__()
+
         self._motor = rev.CANSparkMax(
             ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless
         )
-        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyOpen)
+        configureLeader(self._motor, mode="brake", inverted=False)
+
+        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyClosed)
 
         if RobotBase.isSimulation():
             self._sim_motor = SparkMaxSim(self._motor)
@@ -41,3 +46,12 @@ class Intake(SafeSubsystem):
     def simulationPeriodic(self) -> None:
         self._sim_motor.setVelocity(self._motor.get())
         self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
+
+    def initSendable(self, builder: SendableBuilder) -> None:
+        super().initSendable(builder)
+
+        def noop(x):
+            pass
+
+        builder.addFloatProperty("motor_input", self._motor.get, noop)
+        builder.addBooleanProperty("hasNote", self.hasNote, noop)
