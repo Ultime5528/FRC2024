@@ -1,3 +1,5 @@
+from enum import Enum, auto
+
 import wpilib
 from wpilib import RobotBase
 from wpilib.simulation import PWMSim, EncoderSim
@@ -10,6 +12,14 @@ from utils.switch import Switch
 
 
 class Pivot(SafeSubsystem):
+    class State(Enum):
+        Invalid = auto()
+        Moving = auto()
+        Loading = auto()
+        SpeakerClose = auto()
+        SpeakerFar = auto()
+        Amp = auto()
+
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
     height_min = 0.0
@@ -29,6 +39,7 @@ class Pivot(SafeSubsystem):
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
+        self.state = Pivot.State.Invalid
 
         if RobotBase.isSimulation():
             self._sim_motor = PWMSim(self._motor)
@@ -112,11 +123,14 @@ class Pivot(SafeSubsystem):
         def noop(x):
             pass
 
+        def setHasReset(value: bool):
+            self._has_reset = value
+
         builder.addFloatProperty("motor_input", self._motor.get, noop)
         builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
         builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, noop)
-        builder.addBooleanProperty("has_reset", lambda: self._has_reset, noop)
+        builder.addBooleanProperty("has_reset", lambda: self._has_reset, setHasReset)
         builder.addBooleanProperty("switch_up", self._switch_up.isPressed, noop)
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)

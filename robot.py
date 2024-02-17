@@ -17,11 +17,15 @@ from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
+from commands.shooter.manualshoot import ManualShoot
+from commands.shooter.prepareshoot import PrepareShoot
+from commands.shooter.shoot import Shoot
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
+from subsystems.shooter import Shooter
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -51,6 +55,7 @@ class Robot(commands2.TimedCommandRobot):
         self.climber_right = Climber(climber_right_properties)
         self.intake = Intake()
         self.pivot = Pivot()
+        self.shooter = Shooter()
 
         """
         Default subsystem commands
@@ -139,6 +144,10 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
 
+        putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
+        putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
+        putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
@@ -154,7 +163,9 @@ def putCommandOnDashboard(
     sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
 ) -> commands2.Command:
     if not isinstance(sub_table, str):
-        raise ValueError(f"sub_table should be a str: '{sub_table}' of type '{type(sub_table)}'")
+        raise ValueError(
+            f"sub_table should be a str: '{sub_table}' of type '{type(sub_table)}'"
+        )
 
     if suffix:
         sub_table += suffix

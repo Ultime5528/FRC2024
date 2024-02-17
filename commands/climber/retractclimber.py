@@ -8,7 +8,7 @@ from utils.safecommand import SafeCommand, SafeMixin
 
 class RetractClimber(SequentialCommandGroup, SafeMixin):
     def __init__(self, climber: Climber):
-        super().__init__(UnlockRatchet(climber), _RetractClimber(climber), LockRatchet(climber))
+        super().__init__(LockRatchet(climber), _RetractClimber(climber))
 
 
 class _RetractClimber(SafeCommand):
