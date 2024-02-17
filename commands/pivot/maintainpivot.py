@@ -17,3 +17,8 @@ class MaintainPivot(SafeCommand):
             or self.pivot.State == Pivot.State.Amp
         ):
             self.pivot.maintain()
+        else:
+            self.pivot.stop()
+
+    def end(self, interrupted: bool):
+        self.pivot.stop()

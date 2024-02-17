@@ -3,7 +3,6 @@ from pytest import approx
 from wpilib.simulation import stepTiming
 
 from commands.pivot.forceresetpivot import ForceResetPivot
-from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
