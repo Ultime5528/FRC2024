@@ -23,6 +23,8 @@ drivetrain_motor_driving_fr: Final = 8
 climber_motor_right: Final = 9
 climber_motor_left: Final = 10
 intake_motor: Final = 11
+shooter_motor_left: Final = 12
+shooter_motor_right: Final = 13
 
 # PWM
 pivot_motor: Final = 0
