@@ -31,7 +31,7 @@ def test_alwaysPressed():
 
 
 def test_alwaysUnPressed():
-    switch = Switch(Switch.Type.AlwaysUnPressed)
+    switch = Switch(Switch.Type.AlwaysUnpressed)
     switch.setSimPressed()
     assert switch.isPressed()
     switch.setSimUnpressed()

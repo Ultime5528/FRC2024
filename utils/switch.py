@@ -10,7 +10,7 @@ class Switch:
         NormallyOpen = auto()  # The switch is False when not pressed
         NormallyClosed = auto()  # The switch is True when not pressed
         AlwaysPressed = auto()  # The switch is always open
-        AlwaysUnPressed = auto()  # The switch is always close
+        AlwaysUnpressed = auto()  # The switch is always close
 
     def __init__(self, type: "Switch.Type", port: Optional[int] = None):
         if not isinstance(type, Switch.Type):
@@ -30,7 +30,7 @@ class Switch:
                 self._sim_input.setValue(True)
             elif self._type == Switch.Type.AlwaysPressed:
                 self._sim_switch_state = True
-            elif self._type == Switch.Type.AlwaysUnPressed:
+            elif self._type == Switch.Type.AlwaysUnpressed:
                 self._sim_switch_state = False
             else:
                 raise TypeError(f"Type is not instance of Switch.Type: {type}")
@@ -42,7 +42,7 @@ class Switch:
             return not self._input.get()
         elif self._type == Switch.Type.AlwaysPressed:
             return self._sim_switch_state
-        elif self._type == Switch.Type.AlwaysUnPressed:
+        elif self._type == Switch.Type.AlwaysUnpressed:
             return self._sim_switch_state
         else:
             raise TypeError(f"Type is not instance of Switch.Type: {type}")
@@ -56,7 +56,7 @@ class Switch:
             self._sim_input.setValue(False)
         elif self._type == Switch.Type.AlwaysPressed:
             self._sim_switch_state = True
-        elif self._type == Switch.Type.AlwaysUnPressed:
+        elif self._type == Switch.Type.AlwaysUnpressed:
             self._sim_switch_state = True
         else:
             raise TypeError(f"Type is not instance of Switch.Type: {type}")
@@ -70,7 +70,7 @@ class Switch:
             self._sim_input.setValue(True)
         elif self._type == Switch.Type.AlwaysPressed:
             self._sim_switch_state = False
-        elif self._type == Switch.Type.AlwaysUnPressed:
+        elif self._type == Switch.Type.AlwaysUnpressed:
             self._sim_switch_state = False
         else:
             raise TypeError(f"Type is not instance of Switch.Type: {type}")
