@@ -1,3 +1,5 @@
+from enum import Enum, auto
+
 import wpilib
 from wpilib import RobotBase
 from wpilib.simulation import PWMSim, EncoderSim
@@ -10,6 +12,14 @@ from utils.switch import Switch
 
 
 class Pivot(SafeSubsystem):
+    class State(Enum):
+        Invalid = auto()
+        Moving = auto()
+        Loading = auto()
+        SpeakerClose = auto()
+        SpeakerFar = auto()
+        Amp = auto()
+
     speed_up = autoproperty(0.5)
     speed_down = autoproperty(-0.25)
     height_min = 0.0
@@ -17,8 +27,8 @@ class Pivot(SafeSubsystem):
 
     def __init__(self):
         super().__init__()
-        self._switch_up = Switch(ports.pivot_switch_up, Switch.Type.NormallyClosed)
-        self._switch_down = Switch(ports.pivot_switch_down, Switch.Type.NormallyClosed)
+        self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
+        self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
         self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
 
@@ -29,6 +39,7 @@ class Pivot(SafeSubsystem):
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
+        self.state = Pivot.State.Invalid
 
         if RobotBase.isSimulation():
             self._sim_motor = PWMSim(self._motor)

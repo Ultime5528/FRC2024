@@ -1,4 +1,4 @@
-import rev
+import wpilib
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
@@ -6,27 +6,20 @@ import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
-from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
 
 
 class Intake(SafeSubsystem):
-    speed_in = autoproperty(0.3)
-    speed_load = autoproperty(0.8)
+    speed_in = autoproperty(0.5)
+    speed_load = autoproperty(0.2)
     speed_out = autoproperty(-0.17)
 
     def __init__(self):
         super().__init__()
 
-        self._motor = rev.CANSparkMax(
-            ports.intake_motor, rev.CANSparkMax.MotorType.kBrushless
-        )
-        configureLeader(self._motor, mode="brake", inverted=False)
+        self._motor = wpilib.VictorSP(ports.intake_motor)
 
-        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyClosed)
-
-        if RobotBase.isSimulation():
-            self._sim_motor = SparkMaxSim(self._motor)
+        self._sensor = Switch(Switch.Type.NormallyClosed, ports.intake_sensor)
 
     def pickUp(self):
         self._motor.set(self.speed_in)
@@ -43,9 +36,9 @@ class Intake(SafeSubsystem):
     def hasNote(self):
         return self._sensor.isPressed()
 
-    def simulationPeriodic(self) -> None:
-        self._sim_motor.setVelocity(self._motor.get())
-        self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
+    # def simulationPeriodic(self) -> None:
+    #     self._sim_motor.setVelocity(self._motor.get())
+    #     self._sim_motor.setPosition(self._sim_motor.getPosition() + self._motor.get())
 
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
