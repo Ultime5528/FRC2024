@@ -1,3 +1,5 @@
+from typing import TypeAlias, NewType
+
 import wpilib
 
 from subsystems.pivot import Pivot
@@ -5,8 +7,7 @@ from subsystems.shooter import Shooter
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
-
-type NoReqPivot = Pivot
+NoReqPivot = NewType("NoReqPivot", Pivot)
 
 
 class PrepareShoot(SafeCommand):
