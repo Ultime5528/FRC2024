@@ -2,7 +2,7 @@
   {
     "name": "/Properties/Climber/speed_up",
     "type": "double",
-    "value": 0.75,
+    "value": 0.25,
     "properties": {
       "persistent": true
     }
@@ -10,7 +10,7 @@
   {
     "name": "/Properties/Climber/speed_down",
     "type": "double",
-    "value": -0.3,
+    "value": -0.25,
     "properties": {
       "persistent": true
     }
@@ -19,14 +19,6 @@
     "name": "/Properties/Climber/speed_unload",
     "type": "double",
     "value": -0.1,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Climber/height_max",
-    "type": "double",
-    "value": 190.0,
     "properties": {
       "persistent": true
     }
@@ -50,7 +42,7 @@
   {
     "name": "/Properties/ClimberLeft/ratchet_lock_angle",
     "type": "double",
-    "value": 0.0,
+    "value": 0.7,
     "properties": {
       "persistent": true
     }
@@ -58,7 +50,7 @@
   {
     "name": "/Properties/ClimberLeft/ratchet_unlock_angle",
     "type": "double",
-    "value": 0.5,
+    "value": 0.3,
     "properties": {
       "persistent": true
     }
@@ -66,7 +58,15 @@
   {
     "name": "/Properties/ClimberLeft/height_max",
     "type": "double",
-    "value": 1000.0,
+    "value": 100.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/height_min",
+    "type": "int",
+    "value": 0,
     "properties": {
       "persistent": true
     }
@@ -74,7 +74,7 @@
   {
     "name": "/Properties/ClimberRight/ratchet_lock_angle",
     "type": "double",
-    "value": 0.0,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
@@ -82,7 +82,7 @@
   {
     "name": "/Properties/ClimberRight/ratchet_unlock_angle",
     "type": "double",
-    "value": 0.5,
+    "value": 0.6,
     "properties": {
       "persistent": true
     }
@@ -96,15 +96,23 @@
     }
   },
   {
-    "name": "/Properties/UnlockRatchet/delay",
-    "type": "double",
-    "value": 0.5,
+    "name": "/Properties/ClimberRight/height_min",
+    "type": "int",
+    "value": 0,
     "properties": {
       "persistent": true
     }
   },
   {
     "name": "/Properties/LockRatchet/delay",
+    "type": "double",
+    "value": 0.3,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/UnlockRatchet/delay",
     "type": "double",
     "value": 0.5,
     "properties": {
@@ -330,7 +338,7 @@
   {
     "name": "/Properties/Intake/speed_in",
     "type": "double",
-    "value": 0.5,
+    "value": 0.75,
     "properties": {
       "persistent": true
     }
@@ -338,7 +346,7 @@
   {
     "name": "/Properties/Intake/speed_load",
     "type": "double",
-    "value": 0.2,
+    "value": 0.75,
     "properties": {
       "persistent": true
     }
@@ -346,7 +354,7 @@
   {
     "name": "/Properties/Intake/speed_out",
     "type": "double",
-    "value": -0.17,
+    "value": -0.75,
     "properties": {
       "persistent": true
     }
@@ -354,7 +362,7 @@
   {
     "name": "/Properties/Drop/delay",
     "type": "double",
-    "value": 0.75,
+    "value": 1.5,
     "properties": {
       "persistent": true
     }
@@ -370,7 +378,7 @@
   {
     "name": "/Properties/PickUp/delay",
     "type": "double",
-    "value": 1.0,
+    "value": 0.0,
     "properties": {
       "persistent": true
     }
@@ -378,7 +386,7 @@
   {
     "name": "/Properties/Pivot/speed_up",
     "type": "double",
-    "value": 0.5,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
@@ -386,7 +394,7 @@
   {
     "name": "/Properties/Pivot/speed_down",
     "type": "double",
-    "value": -0.25,
+    "value": -0.4,
     "properties": {
       "persistent": true
     }
@@ -394,7 +402,7 @@
   {
     "name": "/Properties/Pivot/height_max",
     "type": "double",
-    "value": 255.0,
+    "value": 53.0,
     "properties": {
       "persistent": true
     }
@@ -402,7 +410,7 @@
   {
     "name": "/Properties/MovePivot/position_amp",
     "type": "double",
-    "value": 70.0,
+    "value": 48.0,
     "properties": {
       "persistent": true
     }
@@ -410,7 +418,7 @@
   {
     "name": "/Properties/MovePivot/position_speaker_far",
     "type": "double",
-    "value": 155.0,
+    "value": 20.0,
     "properties": {
       "persistent": true
     }
@@ -418,7 +426,7 @@
   {
     "name": "/Properties/MovePivot/position_speaker_close",
     "type": "double",
-    "value": 232.0,
+    "value": 30.0,
     "properties": {
       "persistent": true
     }
@@ -426,7 +434,7 @@
   {
     "name": "/Properties/MovePivot/position_loading",
     "type": "double",
-    "value": 100.0,
+    "value": 5.0,
     "properties": {
       "persistent": true
     }
@@ -456,23 +464,71 @@
     }
   },
   {
-    "name": "/Properties/ClimberLeft/inversed",
-    "type": "boolean",
-    "value": true,
+    "name": "/Properties/Shooter/p_left",
+    "type": "double",
+    "value": 0.002,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/ClimberRight/inversed",
-    "type": "boolean",
-    "value": false,
+    "name": "/Properties/Shooter/ff_left",
+    "type": "double",
+    "value": 0.00218,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Climber/ratchet_lock_angle",
+    "name": "/Properties/Shooter/p_right",
+    "type": "double",
+    "value": 0.002,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/ff_right",
+    "type": "double",
+    "value": 0.00198,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ManualShoot/rpm",
+    "type": "double",
+    "value": 3000.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_far",
+    "type": "double",
+    "value": 1000.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_close",
+    "type": "double",
+    "value": 500.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_amp",
+    "type": "double",
+    "value": 300.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/i_left",
     "type": "double",
     "value": 0.0,
     "properties": {
@@ -480,9 +536,65 @@
     }
   },
   {
-    "name": "/Properties/Climber/ratchet_unlock_angle",
+    "name": "/Properties/Shooter/d_left",
     "type": "double",
-    "value": 0.5,
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/i_right",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/d_right",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/p",
+    "type": "double",
+    "value": 0.001,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/i",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/d",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/ff",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/height_max",
+    "type": "double",
+    "value": 100.0,
     "properties": {
       "persistent": true
     }

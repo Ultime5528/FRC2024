@@ -10,9 +10,9 @@ from utils.switch import Switch
 
 
 class Intake(SafeSubsystem):
-    speed_in = autoproperty(0.5)
-    speed_load = autoproperty(0.2)
-    speed_out = autoproperty(-0.17)
+    speed_in = autoproperty(0.75)
+    speed_load = autoproperty(0.75)
+    speed_out = autoproperty(-0.75)
 
     def __init__(self):
         super().__init__()

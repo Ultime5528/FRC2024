@@ -20,10 +20,10 @@ class Pivot(SafeSubsystem):
         SpeakerFar = auto()
         Amp = auto()
 
-    speed_up = autoproperty(0.5)
-    speed_down = autoproperty(-0.25)
+    speed_up = autoproperty(0.2)
+    speed_down = autoproperty(-0.4)
     height_min = 0.0
-    height_max = autoproperty(255.0)
+    height_max = autoproperty(53.0)
 
     def __init__(self):
         super().__init__()

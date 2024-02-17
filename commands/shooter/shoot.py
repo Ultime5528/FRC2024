@@ -1,3 +1,5 @@
+from typing import NewType
+
 from commands2 import ProxyCommand
 
 from commands.shooter.prepareshoot import PrepareShoot
