@@ -6,7 +6,9 @@ import wpilib
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
+from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
+from commands.climber.unlockratchet import UnlockRatchet
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
@@ -104,12 +106,12 @@ class Robot(commands2.TimedCommandRobot):
         ):
             putCommandOnDashboard(
                 "Climber" + name,
-                ExtendClimber(self.climber_left),
+                ExtendClimber(climber),
                 "ExtendClimber." + name,
             )
             putCommandOnDashboard(
                 "Climber" + name,
-                RetractClimber(self.climber_left),
+                RetractClimber(climber),
                 "RetractClimber." + name,
             )
             putCommandOnDashboard(
@@ -121,6 +123,12 @@ class Robot(commands2.TimedCommandRobot):
                 "Climber" + name,
                 ForceResetClimber.toMax(climber),
                 "ForceResetClimber.toMax." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name, LockRatchet(climber), "LockRatchet." + name
+            )
+            putCommandOnDashboard(
+                "Climber" + name, UnlockRatchet(climber), "UnlockRatchet." + name
             )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
