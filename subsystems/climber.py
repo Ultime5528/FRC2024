@@ -63,11 +63,9 @@ class Climber(SafeSubsystem):
         self.addChild("servo", self._ratchet_servo)
 
         self._switch_up = Switch(
-            climber_properties.port_switch_up, Switch.Type.NormallyOpen
+            Switch.Type.NormallyOpen, climber_properties.port_switch_up
         )
-        self._switch_down = Switch(
-            climber_properties.port_switch_down, Switch.Type.NormallyOpen
-        )
+        self._switch_down = Switch(Switch.Type.AlwaysPressed)
 
         self.climber_properties = climber_properties
 

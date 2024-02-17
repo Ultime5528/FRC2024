@@ -23,7 +23,7 @@ class Intake(SafeSubsystem):
         )
         configureLeader(self._motor, mode="brake", inverted=False)
 
-        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyClosed)
+        self._sensor = Switch(Switch.Type.NormallyClosed, ports.intake_sensor)
 
         if RobotBase.isSimulation():
             self._sim_motor = SparkMaxSim(self._motor)
