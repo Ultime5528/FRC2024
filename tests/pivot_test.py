@@ -1,6 +1,7 @@
 from pytest import approx
 from wpilib.simulation import stepTiming
 
+from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
@@ -69,3 +70,12 @@ def test_resetCommand(control, robot: Robot):
         assert robot.pivot.getHeight() == approx(0.0, abs=1.0)
 
         assert not cmd.isScheduled()
+
+
+def test_forceResetPivot(control, robot: Robot):
+    with control.run_robot():
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        cmd = ForceResetPivot.toMax(robot.pivot)
+        cmd.schedule()
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.pivot.height_max == approx(robot.pivot.getHeight())
