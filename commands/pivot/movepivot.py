@@ -41,7 +41,6 @@ class MovePivot(SafeCommand):
         self.pivot = pivot
         self.addRequirements(pivot)
         self.new_state = new_state
-        self.pivot.state = pivot.state.Moving
 
     def initialize(self):
         self.motion = TrapezoidalMotion(
@@ -52,6 +51,7 @@ class MovePivot(SafeCommand):
             max_speed=properties.speed_max,
             accel=properties.accel,
         )
+        self.pivot.state = Pivot.State.Moving
 
     def execute(self):
         height = self.pivot.getHeight()
