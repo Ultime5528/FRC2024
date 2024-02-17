@@ -1,8 +1,9 @@
-from utils.safecommand import SafeCommand
+from typing import NewType
+
 from subsystems.shooter import Shooter
+from utils.safecommand import SafeCommand
 
-
-type NoReqShooter = Shooter
+NoReqShooter = NewType("NoReqShoot", Shooter)
 
 
 class WaitShootSpeed(SafeCommand):

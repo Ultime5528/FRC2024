@@ -6,13 +6,13 @@ from utils.property import FloatProperty, asCallable
 class ForceResetClimber(SafeCommand):
     @classmethod
     def toMax(cls, climber: Climber):
-        cmd = cls(climber, lambda: climber.height_max)
+        cmd = cls(climber, lambda: climber.properties.height_max)
         cmd.setName(cmd.getName() + ".toMax")
         return cmd
 
     @classmethod
     def toMin(cls, climber: Climber):
-        cmd = cls(climber, lambda: climber.height_min)
+        cmd = cls(climber, lambda: climber.properties.height_min)
         cmd.setName(cmd.getName() + ".toMin")
         return cmd
 

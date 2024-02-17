@@ -1,5 +1,117 @@
 [
   {
+    "name": "/Properties/Climber/speed_up",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/speed_down",
+    "type": "double",
+    "value": -0.3,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/speed_unload",
+    "type": "double",
+    "value": -0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/height_max",
+    "type": "double",
+    "value": 190.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/stall_limit",
+    "type": "int",
+    "value": 15,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/free_limit",
+    "type": "int",
+    "value": 30,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/ratchet_lock_angle",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/ratchet_unlock_angle",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/height_max",
+    "type": "double",
+    "value": 1000.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/ratchet_lock_angle",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/ratchet_unlock_angle",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/height_max",
+    "type": "double",
+    "value": 100.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/UnlockRatchet/delay",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/LockRatchet/delay",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/ADIS16470/pitch_offset",
     "type": "double",
     "value": 4.1,
@@ -138,7 +250,7 @@
   {
     "name": "/Properties/Drivetrain/angular_offset_fl",
     "type": "double",
-    "value": -1.5707963267948966,
+    "value": -1.57,
     "properties": {
       "persistent": true
     }
@@ -154,7 +266,7 @@
   {
     "name": "/Properties/Drivetrain/angular_offset_bl",
     "type": "double",
-    "value": 3.141592653589793,
+    "value": 3.14,
     "properties": {
       "persistent": true
     }
@@ -162,7 +274,7 @@
   {
     "name": "/Properties/Drivetrain/angular_offset_br",
     "type": "double",
-    "value": 1.5707963267948966,
+    "value": 1.57,
     "properties": {
       "persistent": true
     }
@@ -179,22 +291,6 @@
     "name": "/Properties/Drivetrain/wheel_flip_rotation",
     "type": "double",
     "value": 0.85,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquares/line_duration",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquares/speed",
-    "type": "double",
-    "value": 0.2,
     "properties": {
       "persistent": true
     }
@@ -232,31 +328,135 @@
     }
   },
   {
-    "name": "/Properties/Drivetrain/mag_slew_rate",
+    "name": "/Properties/Intake/speed_in",
     "type": "double",
-    "value": 30.0,
+    "value": 0.5,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Drivetrain/rotation_slew_rate",
+    "name": "/Properties/Intake/speed_load",
     "type": "double",
-    "value": 30.0,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Drivetrain/direction_slew_rate",
+    "name": "/Properties/Intake/speed_out",
     "type": "double",
-    "value": 30.0,
+    "value": -0.17,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Drive/is_field_relative",
+    "name": "/Properties/Drop/delay",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Load/delay",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PickUp/delay",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Pivot/speed_up",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Pivot/speed_down",
+    "type": "double",
+    "value": -0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Pivot/height_max",
+    "type": "double",
+    "value": 255.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_amp",
+    "type": "double",
+    "value": 70.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_speaker_far",
+    "type": "double",
+    "value": 155.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_speaker_close",
+    "type": "double",
+    "value": 232.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_loading",
+    "type": "double",
+    "value": 100.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/speed_min",
+    "type": "double",
+    "value": 0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/speed_max",
+    "type": "double",
+    "value": 0.95,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/accel",
+    "type": "double",
+    "value": 0.035,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/inversed",
     "type": "boolean",
     "value": true,
     "properties": {
@@ -264,7 +464,7 @@
     }
   },
   {
-    "name": "/Properties/Drive/has_rate_limiter",
+    "name": "/Properties/ClimberRight/inversed",
     "type": "boolean",
     "value": false,
     "properties": {
@@ -272,105 +472,17 @@
     }
   },
   {
-    "name": "/Properties/Drive/rotation_deadzone",
+    "name": "/Properties/Climber/ratchet_lock_angle",
     "type": "double",
-    "value": 0.6,
+    "value": 0.0,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Drive/rotate_speed",
+    "name": "/Properties/Climber/ratchet_unlock_angle",
     "type": "double",
-    "value": -0.03,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPauses/line_duration",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPauses/speed",
-    "type": "double",
-    "value": 0.25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPauses/pause",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPausesRotate/line_duration",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPausesRotate/speed",
-    "type": "double",
-    "value": 0.25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPausesRotate/pause",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresPausesRotate/rotate_speed",
-    "type": "double",
-    "value": 0.25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresRotate/line_duration",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresRotate/speed",
-    "type": "double",
-    "value": 0.25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveSquaresRotate/rotate_speed",
-    "type": "double",
-    "value": 0.25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Drive/deadzone",
-    "type": "double",
-    "value": 0.1,
+    "value": 0.5,
     "properties": {
       "persistent": true
     }

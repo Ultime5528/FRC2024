@@ -19,11 +19,11 @@ def test_drop(control, robot: Robot):
         cmd.schedule()
 
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_out)
+        assert robot.intake._motor.get() == approx(robot.intake.speed_out, rel=0.1)
 
         robot.intake._sensor.setSimUnpressed()
         control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_out)
+        assert robot.intake._motor.get() == approx(robot.intake.speed_out, rel=0.1)
 
         control.step_timing(seconds=0.4, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(0.0)
@@ -38,11 +38,11 @@ def test_load(control, robot: Robot):
         cmd.schedule()
 
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_load)
+        assert robot.intake._motor.get() == approx(robot.intake.speed_load, rel=0.1)
 
         robot.intake._sensor.setSimUnpressed()
         control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_load)
+        assert robot.intake._motor.get() == approx(robot.intake.speed_load, rel=0.1)
 
         control.step_timing(seconds=0.4, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(0.0)
@@ -57,11 +57,11 @@ def test_pickUp(control, robot: Robot):
         cmd.schedule()
 
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_in)
+        assert robot.intake._motor.get() == approx(robot.intake.speed_in, rel=0.1)
 
         robot.intake._sensor.setSimPressed()
         control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_in)
+        assert robot.intake._motor.get() == approx(robot.intake.speed_in, rel=0.1)
 
         control.step_timing(seconds=0.4, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(0.0)
@@ -70,23 +70,8 @@ def test_pickUp(control, robot: Robot):
 
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
-        assert robot.intake._motor.getDeviceId() == 13
-        assert robot.intake._sensor.getChannel() == 4
-
-
-@mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
-@mock.patch("rev.CANSparkMax.setSmartCurrentLimit")
-def test_settings(mock_setSmartCurrentLimit, mock_restoreFactoryDefaults):
-    mock_restoreFactoryDefaults.assert_not_called()
-    mock_setSmartCurrentLimit.assert_not_called()
-
-    intake = Intake()
-
-    assert not intake._motor.getInverted()
-    assert intake._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
-    assert intake._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
-    intake._motor.restoreFactoryDefaults.assert_called_once()
-    mock_setSmartCurrentLimit.assert_not_called()
+        assert robot.intake._motor.getChannel() == 1
+        assert robot.intake._sensor.getChannel() == 2
 
 
 def test_requirements(

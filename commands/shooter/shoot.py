@@ -1,3 +1,5 @@
+from commands2 import ProxyCommand
+
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.waitshootspeed import WaitShootSpeed
 from subsystems.shooter import Shooter
@@ -17,5 +19,5 @@ class Shoot(SequentialCommandGroup, SafeMixin):
                 PrepareShoot(shooter, pivot),
                 SequentialCommandGroup(WaitShootSpeed(shooter), Load(intake)),
             ),
-            MovePivot.toLoading(pivot),
+            ProxyCommand(MovePivot.toLoading(pivot)),
         )

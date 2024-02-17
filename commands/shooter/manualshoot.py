@@ -4,11 +4,12 @@ from utils.safecommand import SafeCommand
 
 
 class ManualShoot(SafeCommand):
-    rpm = autoproperty(0.5)
+    rpm = autoproperty(500.0)
 
     def __init__(self, shooter: Shooter):
         super().__init__()
         self.shooter = shooter
+        self.addRequirements(shooter)
 
     def execute(self):
         self.shooter.shoot(rpm=self.rpm)

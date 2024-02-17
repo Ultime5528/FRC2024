@@ -1,3 +1,4 @@
+import pyfrc.test_support.controller
 from pytest import approx
 from wpilib.simulation import stepTiming
 
@@ -43,6 +44,14 @@ def test_movePivot_from_swich_down(control, robot: Robot):
         assert not robot.pivot._switch_down.isPressed()
         assert robot.pivot._motor.get() == approx(0.0)
         assert robot.pivot.getHeight() == approx(155, abs=1.0)
+
+
+def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+    with control.run_robot():
+        # left
+        assert robot.pivot._switch_up.getChannel() == 0
+        assert robot.pivot._switch_down.getChannel() == 7
+        assert robot.pivot._motor.getChannel() == 0
 
 
 def test_resetCommand(control, robot: Robot):
