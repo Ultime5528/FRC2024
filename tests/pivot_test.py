@@ -1,3 +1,4 @@
+import pyfrc.test_support.controller
 from pytest import approx
 from wpilib.simulation import stepTiming
 
