@@ -12,7 +12,7 @@ class Switch:
         AlwaysPressed = auto()  # The switch is always open
         AlwaysUnPressed = auto()  # The switch is always close
 
-    def __init__(self, type: "Switch.Type", port: Optional[int]):
+    def __init__(self, type: "Switch.Type", port: Optional[int] = None):
 
         if type == Switch.Type.NormallyClosed or type == Switch.Type.NormallyOpen:
             self._input = DigitalInput(port)

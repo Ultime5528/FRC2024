@@ -71,11 +71,11 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
     with control.run_robot():
         # left
         assert robot.climber_left._motor.getDeviceId() == 10
-        # assert robot.climber_left._switch_up.getChannel() == 0
+        assert robot.climber_left._switch_up.getChannel() == 0
         # assert robot.climber_left._switch_down.getChannel() == 2
         # right
         assert robot.climber_right._motor.getDeviceId() == 9
-        # assert robot.climber_right._switch_up.getChannel() == 1
+        assert robot.climber_right._switch_up.getChannel() == 1
         # assert robot.climber_right._switch_down.getChannel() == 3
 
 

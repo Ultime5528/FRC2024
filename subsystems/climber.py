@@ -62,8 +62,10 @@ class Climber(SafeSubsystem):
         self._ratchet_servo = wpilib.Servo(climber_properties.port_ratchet)
         self.addChild("servo", self._ratchet_servo)
 
-        self._switch_up = Switch(Switch.Type.AlwaysPressed, None)
-        self._switch_down = Switch(Switch.Type.AlwaysPressed, None)
+        self._switch_up = Switch(
+            Switch.Type.NormallyOpen, climber_properties.port_switch_up
+        )
+        self._switch_down = Switch(Switch.Type.AlwaysPressed)
 
         self.climber_properties = climber_properties
 

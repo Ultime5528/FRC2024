@@ -23,7 +23,7 @@ def test_normallyClosed():
 
 
 def test_alwaysPressed():
-    switch = Switch(Switch.Type.AlwaysPressed, None)
+    switch = Switch(Switch.Type.AlwaysPressed)
     switch.setSimPressed()
     assert switch.isPressed()
     switch.setSimUnpressed()
@@ -31,7 +31,7 @@ def test_alwaysPressed():
 
 
 def test_alwaysUnPressed():
-    switch = Switch(Switch.Type.AlwaysUnPressed, None)
+    switch = Switch(Switch.Type.AlwaysUnPressed)
     switch.setSimPressed()
     assert switch.isPressed()
     switch.setSimUnpressed()
