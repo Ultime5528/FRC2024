@@ -1,3 +1,8 @@
+from unittest import mock
+
+import pyfrc
+import pyfrc.test_support.controller
+import wpilib
 from pytest import approx
 from wpilib.simulation import stepTiming
 
@@ -5,6 +10,7 @@ from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
+from subsystems.pivot import Pivot
 
 
 def test_movePivot_from_swich_down(control, robot: Robot):
@@ -79,3 +85,16 @@ def test_forceResetPivot(control, robot: Robot):
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert robot.pivot.height_max == approx(robot.pivot.getHeight())
+
+
+@mock.patch("wpilib.Encoder", wraps=wpilib.Encoder)
+def test_ports(mock_Encoder):
+    mock_Encoder.assert_not_called()
+
+    pivot = Pivot()
+
+    assert pivot._motor.getChannel() == 0
+    assert not pivot._motor.getInverted()
+    mock_Encoder.assert_called_once_with(7, 8)
+    assert pivot._switch_up.getChannel() == 5
+    assert pivot._switch_down.getChannel() == 6
