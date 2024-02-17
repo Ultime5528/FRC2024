@@ -123,11 +123,14 @@ class Pivot(SafeSubsystem):
         def noop(x):
             pass
 
+        def setHasReset(value: bool):
+            self._has_reset = value
+
         builder.addFloatProperty("motor_input", self._motor.get, noop)
         builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
         builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, noop)
-        builder.addBooleanProperty("has_reset", lambda: self._has_reset, noop)
+        builder.addBooleanProperty("has_reset", lambda: self._has_reset, setHasReset)
         builder.addBooleanProperty("switch_up", self._switch_up.isPressed, noop)
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)
