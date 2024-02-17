@@ -33,17 +33,17 @@
 | properties.py                         |       71 |       71 |       24 |        0 |      0% |     1-141 |
 | robot.py                              |       99 |        3 |       12 |        4 |     94% |146, 151, 158, 162->165 |
 | subsystems/\_\_init\_\_.py            |        0 |        0 |        0 |        0 |    100% |           |
-| subsystems/climber.py                 |      128 |        3 |       63 |        8 |     94% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 77->exit, 123, 149, 152 |
+| subsystems/climber.py                 |      128 |        3 |       63 |        8 |     94% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 75->exit, 121, 147, 150 |
 | subsystems/drivetrain.py              |       96 |        7 |        4 |        2 |     91% |97->exit, 116, 136, 148, 154-163 |
 | subsystems/intake.py                  |       39 |        1 |        2 |        1 |     95% |28->exit, 54 |
 | subsystems/pivot.py                   |       94 |        6 |       18 |        4 |     91% |44->exit, 56-57, 75, 91, 121, 124 |
 | subsystems/shooter.py                 |       51 |        9 |        8 |        2 |     75% |41->exit, 52, 58-59, 66-73 |
-| tests/climber\_test.py                |       74 |        0 |       18 |        0 |    100% |           |
+| tests/climber\_test.py                |       72 |        0 |       18 |        0 |    100% |           |
 | tests/intake\_test.py                 |       74 |        0 |       16 |        0 |    100% |           |
 | tests/pivot\_test.py                  |       59 |        3 |       12 |        1 |     94% |     26-28 |
 | tests/pyfrc\_test.py                  |        1 |        0 |        0 |        0 |    100% |           |
 | tests/shooter\_test.py                |       36 |        0 |        6 |        0 |    100% |           |
-| tests/switch\_test.py                 |       21 |        0 |        2 |        0 |    100% |           |
+| tests/switch\_test.py                 |       33 |        0 |        2 |        0 |    100% |           |
 | tests/test\_commands.py               |       55 |        2 |       42 |        3 |     95% |62->54, 64-67, 82->79 |
 | tests/test\_subsystems.py             |       17 |        0 |        8 |        0 |    100% |           |
 | tests/utils.py                        |       17 |        2 |        6 |        0 |     91% |     21-22 |
@@ -53,9 +53,9 @@
 | utils/sparkmaxsim.py                  |       20 |        2 |        0 |        0 |     90% |    25, 28 |
 | utils/sparkmaxutils.py                |       38 |        3 |       12 |        3 |     88% |14, 76, 88 |
 | utils/swerve.py                       |      116 |        0 |        2 |        1 |     99% | 137->exit |
-| utils/switch.py                       |       40 |        3 |       24 |        7 |     84% |19->exit, 24->exit, 33, 37, 40->exit, 45, 48->exit |
+| utils/switch.py                       |       64 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py            |       99 |       32 |       44 |       10 |     59% |20, 22, 40-44, 59->exit, 73-91, 110-111, 140-146, 161, 168, 188, 194 |
-|                             **TOTAL** | **1992** |  **292** |  **449** |   **70** | **82%** |           |
+|                             **TOTAL** | **2026** |  **295** |  **467** |   **70** | **82%** |           |
 
 
 ## Setup coverage badge
