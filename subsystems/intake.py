@@ -19,7 +19,7 @@ class Intake(SafeSubsystem):
 
         self._motor = wpilib.VictorSP(ports.intake_motor)
 
-        self._sensor = Switch(ports.intake_sensor, Switch.Type.NormallyOpen)
+        self._sensor = Switch(Switch.Type.NormallyClosed, ports.intake_sensor)
 
     def pickUp(self):
         self._motor.set(self.speed_in)
