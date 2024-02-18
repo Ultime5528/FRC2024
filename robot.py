@@ -61,9 +61,9 @@ class Robot(commands2.TimedCommandRobot):
         """
         Default subsystem commands
         """
-        # self.drivetrain.setDefaultCommand(
-        #     DriveField(self.drivetrain, self.xbox_controller)
-        # )
+        self.drivetrain.setDefaultCommand(
+            DriveField(self.drivetrain, self.xbox_controller)
+        )
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """

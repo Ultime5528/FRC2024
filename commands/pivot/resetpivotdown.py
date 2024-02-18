@@ -13,14 +13,14 @@ class ResetPivotDown(SafeCommand):
         self.switch_down_was_pressed = False
 
     def execute(self):
-        if self.pivot.isDown():  # If the down switch is pressed move up.
+        if self.pivot.isSwitchDownPressed():  # If the down switch is pressed move up.
             self.pivot.moveUp()
             self.switch_down_was_pressed = True
         else:
             self.pivot.moveDown()  # if switch is not pressed move down until pressed.
 
     def isFinished(self) -> bool:
-        return not self.pivot.isDown() and self.switch_down_was_pressed
+        return not self.pivot.isSwitchDownPressed() and self.switch_down_was_pressed
 
     def end(self, interrupted: bool):
         self.pivot.stop()

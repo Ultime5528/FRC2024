@@ -39,6 +39,5 @@ pivot_switch_up: Final = 1
 pivot_switch_down: Final = 0
 pivot_encoder_a: Final = 5
 pivot_encoder_b: Final = 6
-pivot_switch_down: Final = 7
 climber_left_switch_down: Final = 8
 climber_right_switch_down: Final = 9

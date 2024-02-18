@@ -86,7 +86,7 @@ class Pivot(SafeSubsystem):
     def setSpeed(self, speed: float):
         assert -1.0 <= speed <= 1.0
 
-        if self.isDown():
+        if self.isSwitchDownPressed():
             self._motor.set(speed if speed >= 0 else 0)
         elif self.isUp():
             self._motor.set(speed if speed <= 0 else 0)
@@ -100,6 +100,9 @@ class Pivot(SafeSubsystem):
         return self._switch_down.isPressed() or (
             self._has_reset and self.getHeight() < self.height_min
         )
+
+    def isSwitchDownPressed(self) -> bool:
+        return self._switch_down.isPressed()
 
     def isUp(self) -> bool:
         return self._switch_up.isPressed() or (
@@ -130,6 +133,7 @@ class Pivot(SafeSubsystem):
         def setHasReset(value: bool):
             self._has_reset = value
 
+        builder.addStringProperty("state", lambda: self.state.name, noop)
         builder.addFloatProperty("motor_input", self._motor.get, noop)
         builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
         builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
