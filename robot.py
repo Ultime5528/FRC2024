@@ -68,6 +68,7 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             DriveField(self.drivetrain, self.xbox_controller)
         )
+        # TODO Maintain pivot isn't putting any power
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """
@@ -86,10 +87,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
-            self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeakerRed(self.drivetrain))
-        elif wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kBlue:
-            self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeakerBlue(self.drivetrain))
+        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeakerRed(self.drivetrain))
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)

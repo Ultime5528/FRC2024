@@ -18,8 +18,8 @@ def getTagFromID(targets: [PhotonTrackedTarget], _id: int):
 
 
 class AlignWithTag2D(SafeCommand):
-    p_align = autoproperty(0.001)
-    ff_align = autoproperty(0.001)
+    p_align = autoproperty(0.01)
+    ff_align = autoproperty(0.01)
 
     @classmethod
     def toSpeakerRed(cls, drivetrain: Drivetrain):
@@ -43,9 +43,10 @@ class AlignWithTag2D(SafeCommand):
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
         target: PhotonTrackedTarget = getTagFromID(results, self.tag_id)
+        print(target.getFiducialId() if target is not None else "No Tag")
         if target is not None:
             self.vel_rot = self.p_align * (0 - target.getYaw()) + self.ff_align * (0 - target.getYaw())
-            self.drivetrain.drive(0, 0, -self.vel_rot, is_field_relative=True)
+            self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
             self.drivetrain.drive(0, 0, 0, is_field_relative=True)
 

@@ -288,6 +288,14 @@
     }
   },
   {
+    "name": "/Properties/Drivetrain/use_vision",
+    "type": "boolean",
+    "value": true,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/Drivetrain/acceptable_wheel_rotation",
     "type": "double",
     "value": 0.51,
@@ -394,7 +402,15 @@
   {
     "name": "/Properties/Pivot/speed_down",
     "type": "double",
-    "value": -0.4,
+    "value": -0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Pivot/speed_maintain",
+    "type": "double",
+    "value": -0.2,
     "properties": {
       "persistent": true
     }
@@ -402,7 +418,7 @@
   {
     "name": "/Properties/Pivot/height_max",
     "type": "double",
-    "value": 53.0,
+    "value": 34.0,
     "properties": {
       "persistent": true
     }
@@ -410,7 +426,7 @@
   {
     "name": "/Properties/MovePivot/position_amp",
     "type": "double",
-    "value": 48.0,
+    "value": 31.0,
     "properties": {
       "persistent": true
     }
@@ -426,7 +442,7 @@
   {
     "name": "/Properties/MovePivot/position_speaker_close",
     "type": "double",
-    "value": 30.0,
+    "value": 31.0,
     "properties": {
       "persistent": true
     }
@@ -442,7 +458,7 @@
   {
     "name": "/Properties/MovePivot/speed_min",
     "type": "double",
-    "value": 0.1,
+    "value": 0.5,
     "properties": {
       "persistent": true
     }
@@ -450,7 +466,7 @@
   {
     "name": "/Properties/MovePivot/speed_max",
     "type": "double",
-    "value": 0.95,
+    "value": 0.8,
     "properties": {
       "persistent": true
     }
@@ -458,7 +474,7 @@
   {
     "name": "/Properties/MovePivot/accel",
     "type": "double",
-    "value": 0.035,
+    "value": 0.06,
     "properties": {
       "persistent": true
     }
@@ -498,7 +514,7 @@
   {
     "name": "/Properties/ManualShoot/rpm",
     "type": "double",
-    "value": 3000.0,
+    "value": 800.0,
     "properties": {
       "persistent": true
     }
@@ -506,7 +522,7 @@
   {
     "name": "/Properties/PrepareShoot/speed_far",
     "type": "double",
-    "value": 1000.0,
+    "value": 800.0,
     "properties": {
       "persistent": true
     }
@@ -514,7 +530,7 @@
   {
     "name": "/Properties/PrepareShoot/speed_close",
     "type": "double",
-    "value": 500.0,
+    "value": 2200.0,
     "properties": {
       "persistent": true
     }
@@ -528,73 +544,17 @@
     }
   },
   {
-    "name": "/Properties/Shooter/i_left",
+    "name": "/Properties/AlignWithTag2D/p_align",
     "type": "double",
-    "value": 0.0,
+    "value": 0.01,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Shooter/d_left",
+    "name": "/Properties/AlignWithTag2D/ff_align",
     "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/i_right",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/d_right",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/p",
-    "type": "double",
-    "value": 0.001,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/i",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/d",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/ff",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Climber/height_max",
-    "type": "double",
-    "value": 100.0,
+    "value": -0.01,
     "properties": {
       "persistent": true
     }
