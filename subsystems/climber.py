@@ -53,25 +53,21 @@ class Climber(SafeSubsystem):
     stall_limit = autoproperty(15)
     free_limit = autoproperty(30)
 
-    def __init__(self, climber_properties: ClimberProperties):
+    def __init__(self, properties: ClimberProperties):
         super().__init__()
         self._motor = rev.CANSparkMax(
-            climber_properties.port_motor, rev.CANSparkMax.MotorType.kBrushless
+            properties.port_motor, rev.CANSparkMax.MotorType.kBrushless
         )
-        configureLeader(self._motor, "brake", inverted=climber_properties.inversed)
+        configureLeader(self._motor, "brake", inverted=properties.inversed)
         self._encoder = self._motor.getEncoder()
 
-        self._ratchet_servo = wpilib.Servo(climber_properties.port_ratchet)
+        self._ratchet_servo = wpilib.Servo(properties.port_ratchet)
         self.addChild("servo", self._ratchet_servo)
 
-        self._switch_up = Switch(
-            climber_properties.port_switch_up, Switch.Type.NormallyClosed
-        )
-        self._switch_down = Switch(
-            climber_properties.port_switch_down, Switch.Type.NormallyClosed
-        )
+        self._switch_up = Switch(Switch.Type.NormallyClosed, properties.port_switch_up)
+        self._switch_down = Switch(Switch.Type.AlwaysPressed)
 
-        self.climber_properties = climber_properties
+        self.properties = properties
 
         self._prev_is_up = False
         self._offset = 0.0
@@ -99,10 +95,15 @@ class Climber(SafeSubsystem):
         self._motor.stopMotor()
 
     def isUp(self):
-        return self._switch_up.isPressed() or self.getHeight() > self.climber_properties.height_max
+        return (
+            self._switch_up.isPressed() or self.getHeight() > self.properties.height_max
+        )
 
     def isDown(self):
-        return self._switch_down.isPressed() or self.getHeight() < self.climber_properties.height_min
+        return (
+            self._switch_down.isPressed()
+            or self.getHeight() < self.properties.height_min
+        )
 
     def periodic(self) -> None:
         if self._prev_is_up and not self._switch_up.isPressed():
@@ -120,10 +121,10 @@ class Climber(SafeSubsystem):
         return self._motor.get()
 
     def lockRatchet(self):
-        self._ratchet_servo.set(self.climber_properties.ratchet_lock_angle)
+        self._ratchet_servo.set(self.properties.ratchet_lock_angle)
 
     def unlockRatchet(self):
-        self._ratchet_servo.set(self.climber_properties.ratchet_unlock_angle)
+        self._ratchet_servo.set(self.properties.ratchet_unlock_angle)
 
     def simulationPeriodic(self) -> None:
         self._sim_motor.setVelocity(self._motor.get())
