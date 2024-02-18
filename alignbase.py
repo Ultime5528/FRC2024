@@ -1,5 +1,5 @@
 import math
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d
@@ -7,13 +7,10 @@ from wpimath.geometry import Pose2d
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
+from utils.alignbaseutils import clamp
 
 
-def clamp(x, minimum, maximum):
-    return max(minimum, min(x, maximum))
-
-
-class AlignBase(SafeCommand):
+class AlignBase(SafeCommand, metaclass=ABCMeta):
     xy_p = autoproperty(0.35)
     xy_i = autoproperty(0.0)
     xy_d = autoproperty(0.0)
@@ -28,7 +25,7 @@ class AlignBase(SafeCommand):
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, update_goal: bool, drivetrain: Drivetrain):
+    def __init__(self, drivetrain: Drivetrain, update_goal: bool):
         super().__init__()
         self.drivetrain = drivetrain
         self.addRequirements(drivetrain)
@@ -63,10 +60,10 @@ class AlignBase(SafeCommand):
         vel_x = self.pid_x.calculate(current_pos.x)
         vel_y = self.pid_y.calculate(current_pos.y)
 
-        speed = math.sqrt(vel_x * vel_x + vel_y * vel_y)
-        clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
+        speed = math.hypot(vel_x, vel_y)
 
         if not math.isclose(speed, 0):
+            clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
             speed_factor = clamped_speed / speed
 
             new_vel_x = vel_x * speed_factor
@@ -76,7 +73,7 @@ class AlignBase(SafeCommand):
                 new_vel_x,
                 new_vel_y,
                 -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
-                True,
+                is_field_relative=True,
             )
 
     def isFinished(self) -> bool:

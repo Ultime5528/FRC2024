@@ -65,7 +65,24 @@ def test_requirements():
                             addReqs is None
                         ), f"{obj.__name__} calls addRequirements() multiple times"
                         addReqs = c
-
+        super_classes = obj.__bases__
+        for super_class in super_classes:
+            for c in ast.walk(
+                ast.parse(dedent(inspect.getsource(super_class.__init__)))
+            ):
+                if isinstance(c, ast.Call):
+                    if isinstance(c.func, ast.Attribute):
+                        if c.func.attr == "addRequirements":
+                            assert (
+                                addReqs is None
+                            ), f"{obj.__name__} calls addRequirements() multiple times"
+                            addReqs = c
+                    elif isinstance(c.func, ast.Name):
+                        if c.func.id == "addRequirements":
+                            assert (
+                                addReqs is None
+                            ), f"{obj.__name__} calls addRequirements() multiple times"
+                            addReqs = c
         assert addReqs is not None, f"{obj.__name__} does not call addRequirements()"
 
         subsystem_args = {}

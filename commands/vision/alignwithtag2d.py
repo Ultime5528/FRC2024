@@ -26,7 +26,7 @@ class AlignWithTag2D(SafeCommand):
         self.addRequirements(drivetrain)
         self.has_tag = False
         self.tag_id = tag_id
-        self.vr: Optional[float] = None
+        self.vel_rot: Optional[float] = None
         self.last_vr: Optional[float] = None
 
     def execute(self):
@@ -34,17 +34,17 @@ class AlignWithTag2D(SafeCommand):
         target: PhotonTrackedTarget = getTagFromID(results, self.tag_id)
         if target is not None:
             self.has_tag = True
-            self.vr = min(abs(target.getYaw()), self.align_speed)
-            self.vr = math.copysign(self.vr, target.getYaw() * -1)
-            self.last_vr = self.vr
-            self.drivetrain.drive(0, 0, self.vr, True)
+            self.vel_rot = min(abs(target.getYaw()), self.align_speed)
+            self.vel_rot = math.copysign(self.vel_rot, target.getYaw() * -1)
+            self.last_vr = self.vel_rot
+            self.drivetrain.drive(0, 0, self.vel_rot, True)
         elif self.last_vr is not None:
             self.drivetrain.drive(0, 0, self.last_vr, True)
         else:
             self.has_tag = False
 
     def isFinished(self) -> bool:
-        return abs(self.vr) <= self.align_threshold or not self.has_tag
+        return abs(self.vel_rot) <= self.align_threshold or not self.has_tag
 
     def end(self, interrupted: bool):
         self.drivetrain.stop()

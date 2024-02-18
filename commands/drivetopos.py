@@ -5,9 +5,8 @@ from subsystems.drivetrain import Drivetrain
 
 
 class DriveToPos(AlignBase):
-
     def __init__(self, drivetrain: Drivetrain, goal: Pose2d):
-        super().__init__(False, drivetrain)
+        super().__init__(drivetrain, False)
         self.goal = goal
 
     def computeGoal(self):
