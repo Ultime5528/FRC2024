@@ -30,7 +30,7 @@ class Pivot(SafeSubsystem):
         self._switch_up = Switch(ports.pivot_switch_up, Switch.Type.NormallyClosed)
         self._switch_down = Switch(ports.pivot_switch_down, Switch.Type.NormallyClosed)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
-        self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
+        self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True)
 
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)
