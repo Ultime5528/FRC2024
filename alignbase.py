@@ -1,13 +1,13 @@
 import math
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 
 from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
-from utils.property import autoproperty
-from utils.safecommand import SafeCommand, AbstractSafeCommandMetaclass, SafeMixin
 from utils.alignbaseutils import clamp
+from utils.property import autoproperty
+from utils.safecommand import AbstractSafeCommandMetaclass, SafeMixin
 
 
 class AlignBase(SafeMixin, metaclass=AbstractSafeCommandMetaclass):
