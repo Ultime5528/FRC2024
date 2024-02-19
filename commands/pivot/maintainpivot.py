@@ -13,8 +13,8 @@ class MaintainPivot(SafeCommand):
     def execute(self):
         if (
             self.pivot.state == Pivot.State.SpeakerClose
-            or self.pivot.State == Pivot.State.SpeakerFar
-            or self.pivot.State == Pivot.State.Amp
+            or self.pivot.state == Pivot.State.SpeakerFar
+            or self.pivot.state == Pivot.State.Amp
         ):
             self.pivot.maintain()
         else:

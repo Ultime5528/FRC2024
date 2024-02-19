@@ -138,7 +138,6 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
     def getRotation(self):
-        self._gyro.reset()
         return self._gyro.getRotation2d()
 
     def getPitch(self):
