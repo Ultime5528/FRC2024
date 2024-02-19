@@ -35,7 +35,12 @@ class AlignWithTag2D(SafeCommand):
         cmd.setName(cmd.getName() + ".toSpeaker")
         return cmd
 
-    def __init__(self, drivetrain: Drivetrain, tag_id: Union[int, Callable[[], int]], xbox_remote: CommandXboxController):
+    def __init__(
+        self,
+        drivetrain: Drivetrain,
+        tag_id: Union[int, Callable[[], int]],
+        xbox_remote: CommandXboxController,
+    ):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
@@ -47,7 +52,9 @@ class AlignWithTag2D(SafeCommand):
         results = self.drivetrain.cam.getLatestResult().getTargets()
         target: PhotonTrackedTarget = getTagFromID(results, self.tag_id())
         if target is not None:
-            self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (0 - target.getYaw())
+            self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (
+                0 - target.getYaw()
+            )
             self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
             self.xbox_remote.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
