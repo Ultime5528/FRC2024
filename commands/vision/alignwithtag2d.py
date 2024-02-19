@@ -1,12 +1,13 @@
-import math
-from typing import Optional
+from typing import Union, Callable
 
+import wpilib
+from commands2.button import CommandXboxController
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
-from wpimath._controls._controls.controller import PIDController
 
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
+from wpilib.interfaces import GenericHID
 
 
 def getTagFromID(targets: [PhotonTrackedTarget], _id: int):
@@ -16,38 +17,42 @@ def getTagFromID(targets: [PhotonTrackedTarget], _id: int):
     return None
 
 
+def getTagIDFromAlliance() -> int:
+    alliance = wpilib.DriverStation.getAlliance()
+    if alliance is wpilib.DriverStation.Alliance.kRed:
+        return 4
+    elif alliance is wpilib.DriverStation.Alliance.kBlue:
+        return 8
+
+
 class AlignWithTag2D(SafeCommand):
-    p_align = autoproperty(0.01)
-    ff_align = autoproperty(0.01)
+    p = autoproperty(0.01)
+    ff = autoproperty(0.01)
 
     @classmethod
-    def toSpeakerRed(cls, drivetrain: Drivetrain):
-        cmd = cls(drivetrain, tag_id=4)
-        cmd.setName(cmd.getName() + ".toSpeakerRed")
+    def toSpeaker(cls, drivetrain: Drivetrain):
+        cmd = cls(drivetrain, tag_id=getTagIDFromAlliance)
+        cmd.setName(cmd.getName() + ".toSpeaker")
         return cmd
 
-    @classmethod
-    def toSpeakerBlue(cls, drivetrain: Drivetrain):
-        cmd = cls(drivetrain, tag_id=8)
-        cmd.setName(cmd.getName() + ".toSpeakerBlue")
-        return cmd
-
-    def __init__(self, drivetrain: Drivetrain, tag_id: int):
+    def __init__(self, drivetrain: Drivetrain, tag_id: Union[int, Callable[[], int]], xbox_remote: CommandXboxController):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.tag_id = tag_id
+        self.xbox_remote = xbox_remote
+        self.tag_id = lambda: tag_id if tag_id is int else tag_id
         self.vel_rot = 0
 
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
-        target: PhotonTrackedTarget = getTagFromID(results, self.tag_id)
-        print(target.getFiducialId() if target is not None else "No Tag")
+        target: PhotonTrackedTarget = getTagFromID(results, self.tag_id())
         if target is not None:
-            self.vel_rot = self.p_align * (0 - target.getYaw()) + self.ff_align * (0 - target.getYaw())
+            self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (0 - target.getYaw())
             self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
+            self.xbox_remote.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
             self.drivetrain.drive(0, 0, 0, is_field_relative=True)
 
     def end(self, interrupted: bool):
+        self.xbox_remote.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0)
         self.drivetrain.stop()
