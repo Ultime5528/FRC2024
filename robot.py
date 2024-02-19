@@ -11,6 +11,7 @@ from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
+from commands.drivetrain.ResetGyro import ResetGyro
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
@@ -87,7 +88,9 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeakerRed(self.drivetrain))
+        self.xbox_controller.rightTrigger().whileTrue(
+            AlignWithTag2D.toSpeakerRed(self.drivetrain)
+        )
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -107,6 +110,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
         )
+        putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
             (self.climber_left, "Left"),

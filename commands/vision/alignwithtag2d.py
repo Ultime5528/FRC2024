@@ -45,7 +45,9 @@ class AlignWithTag2D(SafeCommand):
         target: PhotonTrackedTarget = getTagFromID(results, self.tag_id)
         print(target.getFiducialId() if target is not None else "No Tag")
         if target is not None:
-            self.vel_rot = self.p_align * (0 - target.getYaw()) + self.ff_align * (0 - target.getYaw())
+            self.vel_rot = self.p_align * (0 - target.getYaw()) + self.ff_align * (
+                0 - target.getYaw()
+            )
             self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
             self.drivetrain.drive(0, 0, 0, is_field_relative=True)
