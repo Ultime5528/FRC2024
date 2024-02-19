@@ -1,3 +1,4 @@
+from abc import ABCMeta
 from functools import wraps
 
 import commands2
@@ -44,6 +45,10 @@ class SafeCommandMetaclass(commands2.CommandBase.__class__):
         #     dct["execute"] = wrapNone(dct["execute"], name)
         cls = super().__new__(mcls, name, bases, dct)
         return cls
+
+
+class AbstractSafeCommandMetaclass(ABCMeta, SafeCommandMetaclass):
+    pass
 
 
 class SafeMixin:

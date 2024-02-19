@@ -1,7 +1,6 @@
 import math
 from typing import Optional
 
-import wpilib
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 
 from subsystems.drivetrain import Drivetrain
@@ -26,25 +25,25 @@ class AlignWithTag2D(SafeCommand):
         self.addRequirements(drivetrain)
         self.has_tag = False
         self.tag_id = tag_id
-        self.vel_rot: Optional[float] = None
-        self.last_vr: Optional[float] = None
+        self.rot_speed: Optional[float] = None
+        self.last_rot_speed: Optional[float] = None
 
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
         target: PhotonTrackedTarget = getTagFromID(results, self.tag_id)
         if target is not None:
             self.has_tag = True
-            self.vel_rot = min(abs(target.getYaw()), self.align_speed)
-            self.vel_rot = math.copysign(self.vel_rot, target.getYaw() * -1)
-            self.last_vr = self.vel_rot
-            self.drivetrain.drive(0, 0, self.vel_rot, True)
-        elif self.last_vr is not None:
-            self.drivetrain.drive(0, 0, self.last_vr, True)
+            self.rot_speed = min(abs(target.getYaw()), self.align_speed)
+            self.rot_speed = math.copysign(self.rot_speed, target.getYaw() * -1)
+            self.last_rot_speed = self.rot_speed
+            self.drivetrain.drive(0, 0, self.rot_speed, True)
+        elif self.last_rot_speed is not None:
+            self.drivetrain.drive(0, 0, self.last_rot_speed, True)
         else:
             self.has_tag = False
 
     def isFinished(self) -> bool:
-        return abs(self.vel_rot) <= self.align_threshold or not self.has_tag
+        return abs(self.rot_speed) <= self.align_threshold or not self.has_tag
 
     def end(self, interrupted: bool):
         self.drivetrain.stop()
