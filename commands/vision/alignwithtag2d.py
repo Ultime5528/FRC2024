@@ -2,6 +2,7 @@ import math
 from typing import Optional
 
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
+from wpimath._controls._controls.controller import PIDController
 
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
@@ -16,34 +17,37 @@ def getTagFromID(targets: [PhotonTrackedTarget], _id: int):
 
 
 class AlignWithTag2D(SafeCommand):
-    align_speed = autoproperty(0.2)
-    align_threshold = autoproperty(0.1)
+    p_align = autoproperty(0.01)
+    ff_align = autoproperty(0.01)
+
+    @classmethod
+    def toSpeakerRed(cls, drivetrain: Drivetrain):
+        cmd = cls(drivetrain, tag_id=4)
+        cmd.setName(cmd.getName() + ".toSpeakerRed")
+        return cmd
+
+    @classmethod
+    def toSpeakerBlue(cls, drivetrain: Drivetrain):
+        cmd = cls(drivetrain, tag_id=8)
+        cmd.setName(cmd.getName() + ".toSpeakerBlue")
+        return cmd
 
     def __init__(self, drivetrain: Drivetrain, tag_id: int):
         super().__init__()
-        self.drivetrain = drivetrain
         self.addRequirements(drivetrain)
-        self.has_tag = False
+        self.drivetrain = drivetrain
         self.tag_id = tag_id
-        self.rot_speed: Optional[float] = None
-        self.last_rot_speed: Optional[float] = None
+        self.vel_rot = 0
 
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
         target: PhotonTrackedTarget = getTagFromID(results, self.tag_id)
+        print(target.getFiducialId() if target is not None else "No Tag")
         if target is not None:
-            self.has_tag = True
-            self.rot_speed = min(abs(target.getYaw()), self.align_speed)
-            self.rot_speed = math.copysign(self.rot_speed, target.getYaw() * -1)
-            self.last_rot_speed = self.rot_speed
-            self.drivetrain.drive(0, 0, self.rot_speed, True)
-        elif self.last_rot_speed is not None:
-            self.drivetrain.drive(0, 0, self.last_rot_speed, True)
+            self.vel_rot = self.p_align * (0 - target.getYaw()) + self.ff_align * (0 - target.getYaw())
+            self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
-            self.has_tag = False
-
-    def isFinished(self) -> bool:
-        return abs(self.rot_speed) <= self.align_threshold or not self.has_tag
+            self.drivetrain.drive(0, 0, 0, is_field_relative=True)
 
     def end(self, interrupted: bool):
         self.drivetrain.stop()
