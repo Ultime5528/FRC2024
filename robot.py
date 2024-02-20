@@ -3,7 +3,6 @@ from typing import Optional
 
 import commands2.button
 import wpilib
-from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
@@ -26,8 +25,6 @@ from commands.shooter.shoot import Shoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
-from commands.vision.alignwithtag2d import AlignWithTag2D
-
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -88,9 +85,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.rightTrigger().whileTrue(
-            AlignWithTag2D.toSpeakerRed(self.drivetrain)
-        )
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
