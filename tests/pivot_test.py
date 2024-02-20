@@ -15,6 +15,16 @@ from subsystems.pivot import Pivot
 from utils.switch import Switch
 
 
+def test_maintain(control, robot: Robot):
+    with control.run_robot():
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.pivot._motor.get() == 0
+        robot.pivot.state = robot.pivot.State.Amp
+        assert robot.pivot._motor.get() >= robot.pivot.speed_maintain
+        robot.pivot.state = robot.pivot.State.Moving
+        assert robot.pivot._motor.get() == 0
+
+
 def test_movePivot_from_swich_down(control, robot: Robot):
     with control.run_robot():
 
