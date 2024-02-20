@@ -99,7 +99,7 @@ class DriveToPoses(SafeCommand):
                 self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
 
     def end(self, interrupted):
-        self.drivetrain.drive(0, 0, 0, False)
+        self.drivetrain.stop()
 
     def isFinished(self):
         return self.currGoal == len(self.goals)

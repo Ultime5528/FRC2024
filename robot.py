@@ -24,8 +24,6 @@ from commands.shooter.shoot import Shoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
-from commands.vision.alignwithtag2d import AlignWithTag2D
-
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -67,7 +65,6 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             DriveField(self.drivetrain, self.xbox_controller)
         )
-        # TODO Maintain pivot isn't putting any power
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """
@@ -86,7 +83,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeakerRed(self.drivetrain))
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)

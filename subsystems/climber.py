@@ -107,7 +107,7 @@ class Climber(SafeSubsystem):
 
     def periodic(self) -> None:
         if self._prev_is_up and not self._switch_up.isPressed():
-            self.setHeight(self.climber_properties.height_max)
+            self.setHeight(self.properties.height_max)
 
         self._prev_is_up = self._switch_up.isPressed()
 
