@@ -15,7 +15,9 @@ class MovePivot(SafeCommand):
     @classmethod
     def toSpeakerClose(cls, pivot: Pivot):
         cmd = cls(
-            pivot, lambda: move_pivot_properties.position_speaker_close, Pivot.State.SpeakerClose
+            pivot,
+            lambda: move_pivot_properties.position_speaker_close,
+            Pivot.State.SpeakerClose,
         )
         cmd.setName(cmd.getName() + ".toSpeakerClose")
         return cmd
@@ -23,14 +25,18 @@ class MovePivot(SafeCommand):
     @classmethod
     def toSpeakerFar(cls, pivot: Pivot):
         cmd = cls(
-            pivot, lambda: move_pivot_properties.position_speaker_far, Pivot.State.SpeakerFar
+            pivot,
+            lambda: move_pivot_properties.position_speaker_far,
+            Pivot.State.SpeakerFar,
         )
         cmd.setName(cmd.getName() + ".toSpeakerFar")
         return cmd
 
     @classmethod
     def toLoading(cls, pivot: Pivot):
-        cmd = cls(pivot, lambda: move_pivot_properties.position_loading, Pivot.State.Loading)
+        cmd = cls(
+            pivot, lambda: move_pivot_properties.position_loading, Pivot.State.Loading
+        )
         cmd.setName(cmd.getName() + ".toLoading")
         return cmd
 
