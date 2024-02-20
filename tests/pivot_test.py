@@ -1,3 +1,4 @@
+import pyfrc.test_support.controller
 from pytest import approx
 from wpilib.simulation import stepTiming
 
@@ -6,6 +7,16 @@ from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
+
+
+def test_maintain(control, robot: Robot):
+    with control.run_robot():
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        assert robot.pivot._motor.get() == 0
+        robot.pivot.state = robot.pivot.State.Amp
+        assert robot.pivot._motor.get() >= robot.pivot.speed_maintain
+        robot.pivot.state = robot.pivot.State.Moving
+        assert robot.pivot._motor.get() == 0
 
 
 def common_test_movePivot_from_switch_down(
@@ -71,6 +82,14 @@ def test_movePivot_toLoading(control, robot: Robot):
     common_test_movePivot_from_switch_down(
         control, robot, MovePivot.toLoading, move_pivot_properties.position_loading
     )
+
+
+def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+    with control.run_robot():
+        # left
+        assert robot.pivot._switch_up.getChannel() == 0
+        assert robot.pivot._switch_down.getChannel() == 7
+        assert robot.pivot._motor.getChannel() == 0
 
 
 def test_resetCommand(control, robot: Robot):
