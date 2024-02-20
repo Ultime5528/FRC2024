@@ -83,7 +83,6 @@ class MovePivot(SafeCommand):
             self.pivot.state = self.new_state
 
 
-
 class _ClassProperties:
     # Pivot Properties #
     position_amp = autoproperty(70.0, subtable=MovePivot.__name__)
