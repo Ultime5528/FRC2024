@@ -25,8 +25,6 @@ from commands.shooter.shoot import Shoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
-from commands.vision.alignwithtag2d import AlignWithTag2D
-
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -36,7 +34,6 @@ from subsystems.shooter import Shooter
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
         # robotInit fonctionne mieux avec les tests que __init__.
-
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
         self.enableLiveWindowInTest(True)
@@ -87,9 +84,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.rightTrigger().whileTrue(
-            AlignWithTag2D.toSpeakerRed(self.drivetrain)
-        )
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -169,7 +163,6 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
-        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 

@@ -70,7 +70,7 @@ class Climber(SafeSubsystem):
         self.properties = properties
 
         self._prev_is_up = False
-        self._has_reset = True
+        self._has_reset = False
         self._offset = 0.0
 
         if RobotBase.isSimulation():

@@ -20,10 +20,13 @@ def getTargetWithID(
 
 def getTagIDFromAlliance() -> int:
     alliance = wpilib.DriverStation.getAlliance()
-    if alliance is wpilib.DriverStation.Alliance.kRed:
+    if alliance == wpilib.DriverStation.Alliance.kRed:
         return 4
-    elif alliance is wpilib.DriverStation.Alliance.kBlue:
+    elif alliance == wpilib.DriverStation.Alliance.kBlue:
         return 8
+    else:
+        wpilib.reportError("Alliance is invalid")
+        return None
 
 
 class AlignWithTag2D(SafeCommand):
@@ -52,6 +55,9 @@ class AlignWithTag2D(SafeCommand):
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
         target: PhotonTrackedTarget = getTargetWithID(results, self.get_tag_id())
+        print(f"should go to {self.get_tag_id()}, good target {target}, found {len(results)} targets")
+        print(target.getFiducialId() if target else "None")
+
         if target is not None:
             self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (
                 0 - target.getYaw()
@@ -65,4 +71,4 @@ class AlignWithTag2D(SafeCommand):
     def end(self, interrupted: bool):
         self.drivetrain.stop()
         if self.hid:
-            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
+            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0)
