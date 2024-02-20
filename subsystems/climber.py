@@ -70,6 +70,7 @@ class Climber(SafeSubsystem):
         self.properties = properties
 
         self._prev_is_up = False
+        self._has_reset = True
         self._offset = 0.0
 
         if RobotBase.isSimulation():
@@ -96,7 +97,7 @@ class Climber(SafeSubsystem):
 
     def isUp(self):
         return (
-            self._switch_up.isPressed() or self.getHeight() > self.properties.height_max
+            self._switch_up.isPressed() or self._has_reset and self.getHeight() > self.properties.height_max
         )
 
     def isDown(self):
@@ -113,6 +114,7 @@ class Climber(SafeSubsystem):
 
     def setHeight(self, reset_value):
         self._offset = reset_value - self._encoder.getPosition()
+        self._has_reset = True
 
     def getHeight(self):
         return self._encoder.getPosition() + self._offset
