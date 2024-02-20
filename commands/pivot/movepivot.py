@@ -1,4 +1,3 @@
-from subsystems import pivot
 from subsystems.pivot import Pivot
 from utils.property import autoproperty, FloatProperty, asCallable
 from utils.safecommand import SafeCommand

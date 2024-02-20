@@ -23,9 +23,8 @@ def common_test_movePivot_from_switch_down(
     control, robot: Robot, MovePivotMethod, wantedHeight
 ):
     with control.run_robot():
-
         # Set hasReset to true
-        robot.pivot.has_reset = True
+        robot.pivot._has_reset = True
         # Set encoder to the minimum value so switch_down is pressed
         robot.pivot._sim_encoder.setDistance(-0.05)
         # Enable robot and schedule command
