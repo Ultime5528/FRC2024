@@ -99,10 +99,12 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
         # left
         assert robot.climber_left._motor.getDeviceId() == 9
         assert robot.climber_left._switch_up.getChannel() == 3
+        assert robot.climber_left._ratchet_servo.getChannel() == 2
         # assert robot.climber_left._switch_down.getChannel() == 2
         # right
         assert robot.climber_right._motor.getDeviceId() == 10
         assert robot.climber_right._switch_up.getChannel() == 4
+        assert robot.climber_right._ratchet_servo.getChannel() == 3
         # assert robot.climber_right._switch_down.getChannel() == 3
 
 

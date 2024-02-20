@@ -1,7 +1,9 @@
+import rev
 from pytest import approx
 from wpilib.simulation import stepTiming
 
 from commands.pivot.movepivot import MovePivot
+from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import Shoot
 from commands.shooter.waitshootspeed import WaitShootSpeed
@@ -44,3 +46,41 @@ def test_WaitForSpeed(control, robot):
         cmd.schedule()
         control.step_timing(seconds=5.0, autonomous=False, enabled=True)
         assert not cmd.isScheduled()
+
+
+def test_ports(control, robot):
+    with control.run_robot():
+        assert robot.shooter._left_motor.getDeviceId() == 12
+        assert robot.shooter._right_motor.getDeviceId() == 13
+
+
+def test_settings(control, robot):
+    with control.run_robot():
+        # left
+        assert not robot.shooter._left_motor.getInverted()
+        assert (
+            robot.shooter._left_motor.getMotorType()
+            == rev.CANSparkMax.MotorType.kBrushless
+        )
+        assert (
+            robot.shooter._left_motor.getIdleMode() == rev.CANSparkMax.IdleMode.kCoast
+        )
+        # right
+        assert (
+            not robot.shooter._right_motor.getInverted()
+        )  # I might be wrong but shouldn't this motor be inverted
+        assert (
+            robot.shooter._right_motor.getMotorType()
+            == rev.CANSparkMax.MotorType.kBrushless
+        )
+        assert (
+            robot.shooter._right_motor.getIdleMode() == rev.CANSparkMax.IdleMode.kCoast
+        )
+
+
+def test_requirements(control, robot):
+    with control.run_robot():
+        cmd = PrepareShoot(robot.shooter, robot.pivot)
+        assert cmd.hasRequirement(robot.shooter)
+        cmd = ManualShoot(robot.shooter)
+        assert cmd.hasRequirement(robot.shooter)
