@@ -25,7 +25,7 @@
 | commands/intake/pickup.py             |       22 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/forceresetpivot.py     |       23 |        0 |        8 |        1 |     97% |  15->exit |
 | commands/pivot/maintainpivot.py       |       14 |        1 |        2 |        1 |     88% |        19 |
-| commands/pivot/movepivot.py           |       54 |        1 |       18 |        4 |     93% |10->exit, 16->exit, 32->exit, 67 |
+| commands/pivot/movepivot.py           |       54 |        1 |       18 |        1 |     97% |        75 |
 | commands/pivot/resetpivotdown.py      |       19 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/resetpivotup.py        |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
 | commands/shooter/manualshoot.py       |       13 |        2 |        0 |        0 |     85% |    15, 18 |
@@ -41,11 +41,11 @@
 | subsystems/climber.py                 |      137 |        3 |       77 |       10 |     94% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 40->exit, 43->exit, 75->exit, 121, 147, 150 |
 | subsystems/drivetrain.py              |       96 |        7 |        4 |        2 |     91% |94->exit, 113, 133, 145, 151-160 |
 | subsystems/intake.py                  |       32 |        1 |        0 |        0 |     97% |        47 |
-| subsystems/pivot.py                   |       97 |        7 |       18 |        4 |     90% |45->exit, 57-58, 76, 92, 97, 125, 128 |
+| subsystems/pivot.py                   |       99 |        7 |       18 |        4 |     91% |45->exit, 57-58, 76, 92, 97, 128, 131 |
 | subsystems/shooter.py                 |       51 |        9 |        8 |        2 |     75% |41->exit, 52, 58-59, 66-73 |
 | tests/climber\_test.py                |       76 |        0 |       22 |        0 |    100% |           |
 | tests/intake\_test.py                 |       63 |        0 |       10 |        0 |    100% |           |
-| tests/pivot\_test.py                  |       73 |        3 |       16 |        1 |     96% |     37-39 |
+| tests/pivot\_test.py                  |       82 |        2 |       18 |        1 |     97% |     41-42 |
 | tests/pyfrc\_test.py                  |        1 |        0 |        0 |        0 |    100% |           |
 | tests/shooter\_test.py                |       36 |        0 |        6 |        0 |    100% |           |
 | tests/switch\_test.py                 |       33 |        0 |        2 |        0 |    100% |           |
@@ -61,7 +61,7 @@
 | utils/swerve.py                       |      116 |        0 |        2 |        1 |     99% | 137->exit |
 | utils/switch.py                       |       64 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py            |       99 |       32 |       44 |       10 |     59% |20, 22, 40-44, 59->exit, 73-91, 110-111, 140-146, 161, 168, 188, 194 |
-|                             **TOTAL** | **2265** |  **401** |  **530** |   **78** | **79%** |           |
+|                             **TOTAL** | **2276** |  **400** |  **532** |   **75** | **79%** |           |
 
 
 ## Setup coverage badge
