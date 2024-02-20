@@ -108,4 +108,3 @@ def test_settings():
     assert not pivot._motor.getInverted()
     assert pivot._switch_up.getType() == Switch.Type.NormallyClosed
     assert pivot._switch_up.getType() == Switch.Type.NormallyClosed
-
