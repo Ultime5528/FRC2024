@@ -3,7 +3,6 @@ from typing import Optional
 
 import commands2.button
 import wpilib
-from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
@@ -22,6 +21,7 @@ from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import Shoot
+from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.drivetrain import Drivetrain
@@ -101,6 +101,10 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
+        )
+        putCommandOnDashboard(
+            "Drivetrain",
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
         )
 
         for climber, name in (

@@ -2,8 +2,7 @@ import math
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
-from photonlibpy.photonPipelineResult import PhotonPipelineResult
-from wpilib import RobotBase, RobotController
+from wpilib import RobotBase
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
@@ -28,16 +27,6 @@ class Drivetrain(SafeSubsystem):
     angular_offset_fr = autoproperty(0.0)
     angular_offset_bl = autoproperty(3.14)
     angular_offset_br = autoproperty(1.57)
-
-    use_vision = autoproperty(True)
-
-    acceptable_wheel_rotation = autoproperty(
-        0.51
-    )  # is radians. Tolerance in which the wheel can be in
-    wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
-
-    # wheel will lock and flip
-    wheel_flip_rotation = autoproperty(0.85)
 
     def __init__(self, period: float) -> None:
         super().__init__()
