@@ -12,6 +12,7 @@ from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
 from subsystems.pivot import Pivot
+from utils.switch import Switch
 
 
 def test_movePivot_from_swich_down(control, robot: Robot):
@@ -39,14 +40,6 @@ def test_movePivot_from_swich_down(control, robot: Robot):
         assert not robot.pivot._switch_down.isPressed()
         assert robot.pivot._motor.get() == approx(0.0)
         assert robot.pivot.getHeight() == approx(155, abs=1.0)
-
-
-def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
-    with control.run_robot():
-        # left
-        assert robot.pivot._switch_up.getChannel() == 0
-        assert robot.pivot._switch_down.getChannel() == 7
-        assert robot.pivot._motor.getChannel() == 0
 
 
 def test_resetCommand(control, robot: Robot):
@@ -103,7 +96,16 @@ def test_ports(mock_Encoder):
     pivot = Pivot()
 
     assert pivot._motor.getChannel() == 0
+    mock_Encoder.assert_called_once_with(5, 6)
+    assert pivot._switch_up.getChannel() == 0
+    assert pivot._switch_down.getChannel() == 7
+
+
+def test_settings():
+
+    pivot = Pivot()
+
     assert not pivot._motor.getInverted()
-    mock_Encoder.assert_called_once_with(7, 8)
-    assert pivot._switch_up.getChannel() == 5
-    assert pivot._switch_down.getChannel() == 6
+    assert pivot._switch_up.getType() == Switch.Type.NormallyClosed
+    assert pivot._switch_up.getType() == Switch.Type.NormallyClosed
+
