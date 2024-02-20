@@ -121,6 +121,9 @@ class Pivot(SafeSubsystem):
     def getMotorInput(self):
         return self._motor.get()
 
+    def hasReset(self):
+        return self._has_reset
+
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
 

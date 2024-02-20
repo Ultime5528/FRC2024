@@ -1,16 +1,16 @@
 import math
-from abc import abstractmethod, ABCMeta
+from abc import abstractmethod
 
 from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
-from utils.property import autoproperty
-from utils.safecommand import SafeCommand
 from utils.alignbaseutils import clamp
+from utils.property import autoproperty
+from utils.safecommand import AbstractSafeCommandMetaclass, SafeMixin
 
 
-class AlignBase(SafeCommand, metaclass=ABCMeta):
+class AlignBase(SafeMixin, metaclass=AbstractSafeCommandMetaclass):
     xy_p = autoproperty(0.35)
     xy_i = autoproperty(0.0)
     xy_d = autoproperty(0.0)

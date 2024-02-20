@@ -5,12 +5,9 @@ from wpimath.controller import PIDController
 from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
+from utils.alignbaseutils import clamp
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-
-
-def clamp(x, minimum, maximum):
-    return max(minimum, min(x, maximum))
 
 
 class DriveToPoses(SafeCommand):
