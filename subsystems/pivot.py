@@ -29,7 +29,6 @@ class Pivot(SafeSubsystem):
         self._has_reset = False
         self._prev_is_down = False
         self._prev_is_up = False
-        self.has_reset = False
 
         if RobotBase.isSimulation():
             self._sim_motor = PWMSim(self._motor)
@@ -105,7 +104,7 @@ class Pivot(SafeSubsystem):
         return self._motor.get()
 
     def hasReset(self):
-        return self.has_reset
+        return self._has_reset
 
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)

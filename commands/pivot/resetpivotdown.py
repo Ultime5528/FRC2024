@@ -1,4 +1,3 @@
-from subsystems import pivot
 from subsystems.pivot import Pivot
 from utils.safecommand import SafeCommand
 
@@ -24,5 +23,4 @@ class ResetPivotDown(SafeCommand):
         return not self.pivot.isDown() and self.switch_down_was_pressed
 
     def end(self, interrupted: bool):
-        pivot.has_reset = True
         self.pivot.stop()
