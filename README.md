@@ -25,7 +25,7 @@
 | commands/intake/pickup.py             |       22 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/forceresetpivot.py     |       23 |        0 |        8 |        1 |     97% |  15->exit |
 | commands/pivot/maintainpivot.py       |       14 |        1 |        2 |        1 |     88% |        19 |
-| commands/pivot/movepivot.py           |       54 |        1 |       18 |        1 |     97% |        75 |
+| commands/pivot/movepivot.py           |       57 |        2 |       20 |        2 |     95% |    76, 81 |
 | commands/pivot/resetpivotdown.py      |       19 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/resetpivotup.py        |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
 | commands/shooter/manualshoot.py       |       13 |        2 |        0 |        0 |     85% |    15, 18 |
@@ -61,7 +61,7 @@
 | utils/swerve.py                       |      116 |        0 |        2 |        1 |     99% | 137->exit |
 | utils/switch.py                       |       64 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py            |       99 |       32 |       44 |       10 |     59% |20, 22, 40-44, 59->exit, 73-91, 110-111, 140-146, 161, 168, 188, 194 |
-|                             **TOTAL** | **2276** |  **400** |  **532** |   **75** | **79%** |           |
+|                             **TOTAL** | **2279** |  **401** |  **534** |   **76** | **79%** |           |
 
 
 ## Setup coverage badge
