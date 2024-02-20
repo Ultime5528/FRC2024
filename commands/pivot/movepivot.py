@@ -7,14 +7,16 @@ from utils.trapezoidalmotion import TrapezoidalMotion
 class MovePivot(SafeCommand):
     @classmethod
     def toAmp(cls, pivot: Pivot):
-        cmd = cls(pivot, lambda: properties.position_amp, Pivot.State.Amp)
+        cmd = cls(pivot, lambda: move_pivot_properties.position_amp, Pivot.State.Amp)
         cmd.setName(cmd.getName() + ".toAmp")
         return cmd
 
     @classmethod
     def toSpeakerClose(cls, pivot: Pivot):
         cmd = cls(
-            pivot, lambda: properties.position_speaker_close, Pivot.State.SpeakerClose
+            pivot,
+            lambda: move_pivot_properties.position_speaker_close,
+            Pivot.State.SpeakerClose,
         )
         cmd.setName(cmd.getName() + ".toSpeakerClose")
         return cmd
@@ -22,14 +24,18 @@ class MovePivot(SafeCommand):
     @classmethod
     def toSpeakerFar(cls, pivot: Pivot):
         cmd = cls(
-            pivot, lambda: properties.position_speaker_far, Pivot.State.SpeakerFar
+            pivot,
+            lambda: move_pivot_properties.position_speaker_far,
+            Pivot.State.SpeakerFar,
         )
         cmd.setName(cmd.getName() + ".toSpeakerFar")
         return cmd
 
     @classmethod
     def toLoading(cls, pivot: Pivot):
-        cmd = cls(pivot, lambda: properties.position_loading, Pivot.State.Loading)
+        cmd = cls(
+            pivot, lambda: move_pivot_properties.position_loading, Pivot.State.Loading
+        )
         cmd.setName(cmd.getName() + ".toLoading")
         return cmd
 
@@ -46,10 +52,12 @@ class MovePivot(SafeCommand):
         self.motion = TrapezoidalMotion(
             start_position=self.pivot.getHeight(),
             end_position=self.end_position_getter(),
-            start_speed=max(properties.speed_min, abs(self.pivot.getMotorInput())),
-            end_speed=properties.speed_min,
-            max_speed=properties.speed_max,
-            accel=properties.accel,
+            start_speed=max(
+                move_pivot_properties.speed_min, abs(self.pivot.getMotorInput())
+            ),
+            end_speed=move_pivot_properties.speed_min,
+            max_speed=move_pivot_properties.speed_max,
+            accel=move_pivot_properties.accel,
         )
         self.pivot.state = Pivot.State.Moving
 
@@ -59,7 +67,7 @@ class MovePivot(SafeCommand):
         self.pivot.setSpeed(self.motion.getSpeed())
 
     def isFinished(self) -> bool:
-        return self.motion.isFinished()
+        return self.motion.isFinished() or not self.pivot.hasReset()
 
     def end(self, interrupted: bool) -> None:
         self.pivot.stop()
@@ -81,4 +89,4 @@ class _ClassProperties:
     accel = autoproperty(0.035, subtable=MovePivot.__name__)
 
 
-properties = _ClassProperties()
+move_pivot_properties = _ClassProperties()
