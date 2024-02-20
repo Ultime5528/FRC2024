@@ -1,3 +1,5 @@
+import wpilib
+
 from subsystems.pivot import Pivot
 from utils.property import autoproperty, FloatProperty, asCallable
 from utils.safecommand import SafeCommand
@@ -70,7 +72,11 @@ class MovePivot(SafeCommand):
         return self.motion.isFinished() or not self.pivot.hasReset()
 
     def end(self, interrupted: bool) -> None:
+        if not self.pivot.hasReset():
+            wpilib.reportError("Pivot has not reset: cannot MovePivot")
+
         self.pivot.stop()
+
         if interrupted:
             self.pivot.state = Pivot.State.Invalid
         else:
