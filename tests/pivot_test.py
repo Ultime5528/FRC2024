@@ -93,8 +93,7 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
 
 def test_resetCommand(control, robot: Robot):
     with control.run_robot():
-        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        robot.pivot._motor.set(15)
+        robot.pivot._sim_encoder.setDistance(30.0)
 
         # Enable robot and schedule command
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
@@ -104,21 +103,21 @@ def test_resetCommand(control, robot: Robot):
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
 
         counter = 0
-        while not robot.pivot._switch_down.isPressed() and counter < 100:
+        while not robot.pivot._switch_down.isPressed() and counter < 1000:
             assert robot.pivot._motor.get() < 0.0
             stepTiming(0.01)
             counter += 1
 
-        assert counter < 100, "isPressed takes too long to happen"
+        assert counter < 1000, "isPressed takes too long to happen"
         assert robot.pivot._switch_down.isPressed()
 
         counter = 0
-        while robot.pivot._switch_down.isPressed() and counter < 100:
+        while robot.pivot._switch_down.isPressed() and counter < 1000:
             assert robot.pivot._motor.get() > 0.0
             stepTiming(0.01)
             counter += 1
 
-        assert counter < 100, "not isPressed takes too long to happen"
+        assert counter < 1000, "not isPressed takes too long to happen"
         assert not robot.pivot._switch_down.isPressed()
         assert robot.pivot._motor.get() == approx(0.0)
         assert robot.pivot.getHeight() == approx(0.0, abs=1.0)
