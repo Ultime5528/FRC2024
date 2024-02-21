@@ -3,12 +3,14 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
+from commands.drivetopos import DriveToPos
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
@@ -150,6 +152,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
+        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain, Pose2d(4, 5, Rotation2d.fromDegrees(90))), "DriveToPos-4,5,90")
+        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain, Pose2d(1, 0, Rotation2d.fromDegrees(0)), relative=True), "DriveToPos-1,0,0Rel")
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
