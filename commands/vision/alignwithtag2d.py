@@ -55,7 +55,9 @@ class AlignWithTag2D(SafeCommand):
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
         target: PhotonTrackedTarget = getTargetWithID(results, self.get_tag_id())
-        print(f"should go to {self.get_tag_id()}, good target {target}, found {len(results)} targets")
+        print(
+            f"should go to {self.get_tag_id()}, good target {target}, found {len(results)} targets"
+        )
         print(target.getFiducialId() if target else "None")
 
         if target is not None:

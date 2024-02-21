@@ -97,7 +97,9 @@ class Climber(SafeSubsystem):
 
     def isUp(self):
         return (
-            self._switch_up.isPressed() or self._has_reset and self.getHeight() > self.properties.height_max
+            self._switch_up.isPressed()
+            or self._has_reset
+            and self.getHeight() > self.properties.height_max
         )
 
     def isDown(self):
