@@ -1,6 +1,5 @@
 from commands2 import SequentialCommandGroup
 
-from commands.climber.lockratchet import LockRatchet
 from commands.climber.unlockratchet import UnlockRatchet
 from subsystems.climber import Climber
 from utils.safecommand import SafeCommand, SafeMixin

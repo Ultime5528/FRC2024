@@ -65,7 +65,6 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             DriveField(self.drivetrain, self.xbox_controller)
         )
-        # TODO Maintain pivot isn't putting any power
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """

@@ -1,6 +1,5 @@
 import math
 
-import wpilib
 from rev import (
     SparkMaxAbsoluteEncoder,
     CANSparkMax,

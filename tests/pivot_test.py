@@ -2,9 +2,9 @@ import pyfrc.test_support.controller
 from pytest import approx
 from wpilib.simulation import stepTiming
 
-from commands.pivot.movepivot import MovePivot, move_pivot_properties
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
+from commands.pivot.movepivot import move_pivot_properties
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
 
@@ -86,8 +86,8 @@ def test_movePivot_toLoading(control, robot: Robot):
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         # left
-        assert robot.pivot._switch_up.getChannel() == 0
-        assert robot.pivot._switch_down.getChannel() == 7
+        assert robot.pivot._switch_up.getChannel() == 1
+        assert robot.pivot._switch_down.getChannel() == 0
         assert robot.pivot._motor.getChannel() == 0
 
 
