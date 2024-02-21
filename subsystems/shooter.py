@@ -1,15 +1,12 @@
-from ctypes import Union
-
 import rev
 from wpilib import RobotBase
-from wpimath._controls._controls.controller import PIDController
 from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
-from utils.sparkmaxutils import configureFollower, configureLeader
+from utils.sparkmaxutils import configureLeader
 
 
 def computeVoltage(rpm_goal, rpm_actual, p, ff) -> tuple[float, bool]:

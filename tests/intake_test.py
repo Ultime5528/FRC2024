@@ -1,14 +1,10 @@
-from unittest import mock
-
 import pyfrc.test_support.controller
-import rev
 from pytest import approx
 
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from robot import Robot
-from subsystems.intake import Intake
 
 
 def test_drop(control, robot: Robot):

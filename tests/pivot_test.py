@@ -2,9 +2,9 @@ import pyfrc.test_support.controller
 from pytest import approx
 from wpilib.simulation import stepTiming
 
-from commands.pivot.movepivot import MovePivot, move_pivot_properties
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.movepivot import MovePivot
+from commands.pivot.movepivot import move_pivot_properties
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
 

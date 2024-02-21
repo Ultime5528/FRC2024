@@ -1,4 +1,4 @@
-from typing import TypeAlias, NewType
+from typing import NewType
 
 import wpilib
 

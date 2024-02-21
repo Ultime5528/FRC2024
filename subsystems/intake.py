@@ -1,11 +1,9 @@
 import wpilib
-from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.sparkmaxsim import SparkMaxSim
 from utils.switch import Switch
 
 
