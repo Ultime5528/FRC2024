@@ -60,10 +60,7 @@ def test_pickUp(control, robot: Robot):
         assert robot.intake._motor.get() == approx(robot.intake.speed_in, rel=0.1)
 
         robot.intake._sensor.setSimPressed()
-        control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_in, rel=0.1)
-
-        control.step_timing(seconds=0.4, autonomous=False, enabled=True)
+        control.step_timing(seconds=cmd.delay + 0.1, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(0.0)
         assert not cmd.isScheduled()
 

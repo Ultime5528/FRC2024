@@ -7,23 +7,23 @@ from wpilib.simulation import stepTiming
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
+from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
 from subsystems.climber import Climber, climber_left_properties
-from utils.safecommand import SafeCommand
 
 
 def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         # Put climber at min
         robot.climber_left._sim_motor.setPosition(0.0)
-        cmd = ExtendClimber(robot.climber_left)
 
         # Enable robot and schedule command
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        cmd = ExtendClimber(robot.climber_left)
+        cmd.schedule()
 
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        cmd.schedule()
-        stepTiming(0.05)
 
         # At the beginning, should unload to unlock ratchet
         assert robot.climber_left._motor.get() == approx(
@@ -52,7 +52,7 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         counter = 0
 
         while cmd.isScheduled() and counter < 1000:
-            stepTiming(0.01)
+            stepTiming(0.1)
             counter += 1
 
         assert counter < 1000, "command takes too long to finish"
@@ -60,45 +60,27 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         # If simulationPeriodic works, switch stopped climber from going over max
         assert not cmd.isScheduled()
         assert robot.climber_left._motor.get() == approx(0.0)
-
-
-def test_retract(control: "pyfrc.test_support.controller.TestController", robot: Robot):
-    with control.run_robot():
-        # Put climber at min
-        robot.climber_left._sim_motor.setPosition(0.0)
-        cmd = RetractClimber(robot.climber_left)
-
-        # Enable robot and schedule command
-
-        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        cmd.schedule()
-        stepTiming(0.05)
-
-        # At the beginning, should unload to unlock ratchet
-        assert robot.climber_left._motor.get() == approx(
-            robot.climber_left.speed_down
-        )
         assert robot.climber_left._ratchet_servo.get() == approx(
             robot.climber_left.properties.ratchet_unlock_angle
         )
 
-        counter = 0
 
-        while (
-            robot.climber_left._motor.get()
-            == approx(robot.climber_left.speed_unload)
-            and counter < 1000
-        ):
-            stepTiming(0.01)
-            counter += 1
+def test_retract(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+    with control.run_robot():
+        # Put climber at half
+        robot.climber_left._sim_motor.setPosition(robot.climber_left.sim_max_height / 2)
 
-        assert counter < 1000, "climber unload takes too long to finish"
+        # Enable robot and schedule command
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        cmd = RetractClimber(robot.climber_left)
+        cmd.schedule()
 
-        # Leave some for next subcommand to start
-        stepTiming(0.1)
+        # Wait for LockRatchet delay
+        stepTiming(LockRatchet(robot.climber_left).delay + 0.1)
 
-        assert robot.climber_left._motor.get() == approx(
-            robot.climber_left.speed_up
+        assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
+        assert robot.climber_left._ratchet_servo.get() == approx(
+            robot.climber_left.properties.ratchet_lock_angle
         )
 
         counter = 0
@@ -112,6 +94,9 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         # If simulationPeriodic works, switch stopped climber from going over max
         assert not cmd.isScheduled()
         assert robot.climber_left._motor.get() == approx(0.0)
+        assert robot.climber_left._ratchet_servo.get() == approx(
+            robot.climber_left.properties.ratchet_lock_angle
+        )
 
 
 def test_forceresetclimber(

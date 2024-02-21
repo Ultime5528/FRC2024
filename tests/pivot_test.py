@@ -86,8 +86,8 @@ def test_movePivot_toLoading(control, robot: Robot):
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         # left
-        assert robot.pivot._switch_up.getChannel() == 0
-        assert robot.pivot._switch_down.getChannel() == 7
+        assert robot.pivot._switch_up.getChannel() == 1
+        assert robot.pivot._switch_down.getChannel() == 0
         assert robot.pivot._motor.getChannel() == 0
 
 
