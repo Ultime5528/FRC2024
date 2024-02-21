@@ -43,8 +43,15 @@ def test_WaitForSpeed(control, robot):
     # For the moment, we only test that the command does not crash.
     with control.run_robot():
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        robot.shooter.shoot(500)
         cmd = WaitShootSpeed(robot.shooter)
         cmd.schedule()
-        control.step_timing(seconds=5.0, autonomous=False, enabled=True)
+
+        counter = 0
+
+        while cmd.isScheduled() and counter < 200:
+            robot.shooter.shoot(1500)
+            stepTiming(0.05)
+            counter += 1
+
+        assert counter < 200, "Command takes too long to finish"
         assert not cmd.isScheduled()
