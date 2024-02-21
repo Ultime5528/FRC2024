@@ -20,18 +20,20 @@ class Pivot(SafeSubsystem):
         SpeakerFar = auto()
         Amp = auto()
 
-    speed_up = autoproperty(0.5)
-    speed_down = autoproperty(-0.25)
+    speed_up = autoproperty(0.2)
+    speed_down = autoproperty(-0.4)
     speed_maintain = autoproperty(-0.2)
     height_min = 0.0
-    height_max = autoproperty(255.0)
+    height_max = autoproperty(53.0)
 
     def __init__(self):
         super().__init__()
         self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
         self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
-        self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
+        self._encoder = wpilib.Encoder(
+            ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True
+        )
 
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)
@@ -97,9 +99,7 @@ class Pivot(SafeSubsystem):
         self.setSpeed(self.speed_maintain)
 
     def isDown(self) -> bool:
-        return self._switch_down.isPressed() or (
-            self._has_reset and self.getHeight() < self.height_min
-        )
+        return self._switch_down.isPressed()
 
     def isUp(self) -> bool:
         return self._switch_up.isPressed() or (
@@ -130,11 +130,15 @@ class Pivot(SafeSubsystem):
         def noop(x):
             pass
 
+        def setHasReset(value: bool):
+            self._has_reset = value
+
+        builder.addStringProperty("state", lambda: self.state.name, noop)
         builder.addFloatProperty("motor_input", self._motor.get, noop)
         builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
         builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, noop)
-        builder.addBooleanProperty("has_reset", lambda: self._has_reset, noop)
+        builder.addBooleanProperty("has_reset", lambda: self._has_reset, setHasReset)
         builder.addBooleanProperty("switch_up", self._switch_up.isPressed, noop)
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)

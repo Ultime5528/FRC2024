@@ -12,4 +12,4 @@ class WaitShootSpeed(SafeCommand):
         self._shooter = shooter
 
     def isFinished(self) -> bool:
-        return self._shooter.reachedSpeed()
+        return self._shooter.hasReachedSpeed()

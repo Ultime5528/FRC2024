@@ -83,7 +83,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -91,6 +90,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("ClimberRight", self.climber_right)
         wpilib.SmartDashboard.putData("Intake", self.intake)
         wpilib.SmartDashboard.putData("Pivot", self.pivot)
+        wpilib.SmartDashboard.putData("Shooter", self.shooter)
 
     def setupCommandsOnDashboard(self):
         """

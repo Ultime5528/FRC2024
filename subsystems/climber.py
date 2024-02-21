@@ -44,8 +44,8 @@ class ClimberProperties(ABC):
 
 
 class Climber(SafeSubsystem):
-    speed_up = autoproperty(0.75)
-    speed_down = autoproperty(-0.3)
+    speed_up = autoproperty(0.25)
+    speed_down = autoproperty(-0.25)
     speed_unload = autoproperty(-0.1)
 
     sim_max_height = 100.0
@@ -166,9 +166,9 @@ class ClimberLeftProperties(ClimberProperties):
     port_switch_up = ports.climber_left_switch_up
     port_switch_down = ports.climber_left_switch_down
     port_ratchet = ports.climber_servo_left
-    ratchet_lock_angle = autoproperty(0.0, subtable="ClimberLeft")
-    ratchet_unlock_angle = autoproperty(0.5, subtable="ClimberLeft")
-    height_max = autoproperty(1000.0, subtable="ClimberLeft")
+    ratchet_lock_angle = autoproperty(0.7, subtable="ClimberLeft")
+    ratchet_unlock_angle = autoproperty(0.3, subtable="ClimberLeft")
+    height_max = autoproperty(100.0, subtable="ClimberLeft")
     height_min = autoproperty(0, subtable="ClimberLeft")
     inversed = False
 
@@ -181,8 +181,8 @@ class ClimberRightProperties(ClimberProperties):
     port_switch_up = ports.climber_right_switch_up
     port_switch_down = ports.climber_right_switch_down
     port_ratchet = ports.climber_servo_right
-    ratchet_lock_angle = autoproperty(0.0, subtable="ClimberRight")
-    ratchet_unlock_angle = autoproperty(0.5, subtable="ClimberRight")
+    ratchet_lock_angle = autoproperty(0.2, subtable="ClimberRight")
+    ratchet_unlock_angle = autoproperty(0.6, subtable="ClimberRight")
     height_max = autoproperty(100.0, subtable="ClimberRight")
     height_min = autoproperty(0, subtable="ClimberRight")
     inversed = True

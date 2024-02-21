@@ -1,15 +1,15 @@
 from commands2 import ProxyCommand
-
-from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.waitshootspeed import WaitShootSpeed
-from subsystems.shooter import Shooter
 from commands2.parallelracegroup import ParallelRaceGroup
 from commands2.sequentialcommandgroup import SequentialCommandGroup
-from utils.safecommand import SafeMixin
-from subsystems.pivot import Pivot
-from commands.pivot.movepivot import MovePivot
-from subsystems.intake import Intake
+
 from commands.intake.load import Load
+from commands.pivot.movepivot import MovePivot
+from commands.shooter.prepareshoot import PrepareShoot
+from commands.shooter.waitshootspeed import WaitShootSpeed
+from subsystems.intake import Intake
+from subsystems.pivot import Pivot
+from subsystems.shooter import Shooter
+from utils.safecommand import SafeMixin
 
 
 class Shoot(SequentialCommandGroup, SafeMixin):

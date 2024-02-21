@@ -1,5 +1,3 @@
-from commands2 import ProxyCommand
-
 from subsystems.pivot import Pivot
 from utils.safecommand import SafeCommand
 
