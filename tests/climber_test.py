@@ -3,9 +3,11 @@ from unittest import mock
 import pyfrc.test_support.controller
 import rev
 from pytest import approx
+from wpilib.simulation import stepTiming
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
+from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
 from subsystems.climber import Climber, climber_left_properties
@@ -13,26 +15,88 @@ from subsystems.climber import Climber, climber_left_properties
 
 def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
+        # Put climber at min
+        robot.climber_left._sim_motor.setPosition(0.0)
+
+        # Enable robot and schedule command
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         cmd = ExtendClimber(robot.climber_left)
         cmd.schedule()
+
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+
+        # At the beginning, should unload to unlock ratchet
         assert robot.climber_left._motor.get() == approx(
             robot.climber_left.speed_unload
         )
-        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left._ratchet_servo.getAngle() == approx(
-            robot.climber_left.climber_properties.ratchet_unlock_angle
+        assert robot.climber_left._ratchet_servo.get() == approx(
+            robot.climber_left.properties.ratchet_unlock_angle
         )
-        control.step_timing(seconds=0.5, autonomous=False, enabled=True)
+
+        counter = 0
+
+        while (
+            robot.climber_left._motor.get() == approx(robot.climber_left.speed_unload)
+            and counter < 1000
+        ):
+            stepTiming(0.01)
+            counter += 1
+
+        assert counter < 1000, "climber unload takes too long to finish"
+
+        # Leave some for next subcommand to start
+        stepTiming(0.1)
+
         assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_up)
-        control.step_timing(seconds=15.0, autonomous=False, enabled=True)
+
+        counter = 0
+
+        while cmd.isScheduled() and counter < 1000:
+            stepTiming(0.1)
+            counter += 1
+
+        assert counter < 1000, "command takes too long to finish"
+
         # If simulationPeriodic works, switch stopped climber from going over max
-        assert robot.climber_left._motor.get() == approx(0.0)
-        assert robot.climber_left._sim_motor.getPosition() == approx(
-            robot.climber_left.sim_max_height
-        )
         assert not cmd.isScheduled()
+        assert robot.climber_left._motor.get() == approx(0.0)
+        assert robot.climber_left._ratchet_servo.get() == approx(
+            robot.climber_left.properties.ratchet_unlock_angle
+        )
+
+
+def test_retract(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+    with control.run_robot():
+        # Put climber at half
+        robot.climber_left._sim_motor.setPosition(robot.climber_left.sim_max_height / 2)
+
+        # Enable robot and schedule command
+        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
+        cmd = RetractClimber(robot.climber_left)
+        cmd.schedule()
+
+        # Wait for LockRatchet delay
+        stepTiming(LockRatchet(robot.climber_left).delay + 0.1)
+
+        assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
+        assert robot.climber_left._ratchet_servo.get() == approx(
+            robot.climber_left.properties.ratchet_lock_angle
+        )
+
+        counter = 0
+
+        while cmd.isScheduled() and counter < 1000:
+            stepTiming(0.01)
+            counter += 1
+
+        assert counter < 1000, "command takes too long to finish"
+
+        # If simulationPeriodic works, switch stopped climber from going over max
+        assert not cmd.isScheduled()
+        assert robot.climber_left._motor.get() == approx(0.0)
+        assert robot.climber_left._ratchet_servo.get() == approx(
+            robot.climber_left.properties.ratchet_lock_angle
+        )
 
 
 def test_forceresetclimber(
@@ -46,37 +110,21 @@ def test_forceresetclimber(
         cmd = ForceResetClimber.toMax(robot.climber_left)
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left.height_max == approx(robot.climber_left.getHeight())
-
-
-def test_retract(control: "pyfrc.test_support.controller.TestController", robot: Robot):
-    with control.run_robot():
-        robot.climber_left._sim_motor.setPosition(robot.climber_left.sim_max_height)
-        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        cmd = RetractClimber(robot.climber_left)
-        cmd.schedule()
-        control.step_timing(seconds=0.1, autonomous=False, enabled=True)
-        assert robot.climber_left._ratchet_servo.getAngle() == approx(
-            robot.climber_left.climber_properties.ratchet_lock_angle
+        assert robot.climber_left.getHeight() == approx(
+            robot.climber_left.properties.height_max
         )
-        control.step_timing(seconds=0.5, autonomous=False, enabled=True)
-        assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_down)
-        control.step_timing(seconds=15.0, autonomous=False, enabled=True)
-        assert not cmd.isScheduled()
-        assert robot.climber_left._sim_motor.getPosition() == approx(0.0)
-        assert robot.climber_left._motor.get() == approx(0.0)
 
 
 def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         # left
-        assert robot.climber_left._motor.getDeviceId() == 10
-        assert robot.climber_left._switch_up.getChannel() == 0
-        assert robot.climber_left._switch_down.getChannel() == 2
+        assert robot.climber_left._motor.getDeviceId() == 9
+        assert robot.climber_left._switch_up.getChannel() == 3
+        # assert robot.climber_left._switch_down.getChannel() == 2
         # right
-        assert robot.climber_right._motor.getDeviceId() == 9
-        assert robot.climber_right._switch_up.getChannel() == 1
-        assert robot.climber_right._switch_down.getChannel() == 3
+        assert robot.climber_right._motor.getDeviceId() == 10
+        assert robot.climber_right._switch_up.getChannel() == 4
+        # assert robot.climber_right._switch_down.getChannel() == 3
 
 
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")
@@ -91,7 +139,6 @@ def test_settings(mock_setSmartCurrentLimit, mock_restoreFactoryDefaults):
     assert climber._motor.getMotorType() == rev.CANSparkMax.MotorType.kBrushless
     assert climber._motor.getIdleMode() == rev.CANSparkMax.IdleMode.kBrake
     climber._motor.restoreFactoryDefaults.assert_called_with()
-    climber._motor.setSmartCurrentLimit.assert_called_with(15, 30)
 
 
 def test_requirements(

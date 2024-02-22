@@ -20,17 +20,20 @@ class Pivot(SafeSubsystem):
         SpeakerFar = auto()
         Amp = auto()
 
-    speed_up = autoproperty(0.5)
-    speed_down = autoproperty(-0.25)
+    speed_up = autoproperty(0.2)
+    speed_down = autoproperty(-0.4)
+    speed_maintain = autoproperty(-0.2)
     height_min = 0.0
-    height_max = autoproperty(255.0)
+    height_max = autoproperty(53.0)
 
     def __init__(self):
         super().__init__()
-        self._switch_up = Switch(ports.pivot_switch_up, Switch.Type.NormallyClosed)
-        self._switch_down = Switch(ports.pivot_switch_down, Switch.Type.NormallyClosed)
+        self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
+        self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
         self._motor = wpilib.VictorSP(ports.pivot_motor)
-        self._encoder = wpilib.Encoder(ports.pivot_encoder_a, ports.pivot_encoder_b)
+        self._encoder = wpilib.Encoder(
+            ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True
+        )
 
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)
@@ -52,10 +55,10 @@ class Pivot(SafeSubsystem):
             self._has_reset = True
         self._prev_is_down = self._switch_down.isPressed()
 
-        if self._prev_is_up and not self._switch_up.isPressed():
-            self._offset = self.height_max - self._encoder.getDistance()
-            self._has_reset = True
-        self._prev_is_up = self._switch_up.isPressed()
+        # if self._prev_is_up and not self._switch_up.isPressed():
+        #     self._offset = self.height_max - self._encoder.getDistance()
+        #     self._has_reset = True
+        # self._prev_is_up = self._switch_up.isPressed()
 
     def simulationPeriodic(self) -> None:
         assert not (
@@ -92,15 +95,17 @@ class Pivot(SafeSubsystem):
         else:
             self._motor.set(speed)
 
+    def maintain(self):
+        self.setSpeed(self.speed_maintain)
+
     def isDown(self) -> bool:
-        return self._switch_down.isPressed() or (
-            self._has_reset and self.getHeight() < self.height_min
-        )
+        return self._switch_down.isPressed()
 
     def isUp(self) -> bool:
-        return self._switch_up.isPressed() or (
-            self._has_reset and self.getHeight() > self.height_max
-        )
+        # return self._switch_up.isPressed() or (
+        #     self._has_reset and self.getHeight() > self.height_max
+        # )
+        return self._has_reset and self.getHeight() > self.height_max
 
     def stop(self):
         self._motor.stopMotor()
@@ -114,6 +119,9 @@ class Pivot(SafeSubsystem):
     def getMotorInput(self):
         return self._motor.get()
 
+    def hasReset(self):
+        return self._has_reset
+
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
 
@@ -123,11 +131,15 @@ class Pivot(SafeSubsystem):
         def noop(x):
             pass
 
+        def setHasReset(value: bool):
+            self._has_reset = value
+
+        builder.addStringProperty("state", lambda: self.state.name, noop)
         builder.addFloatProperty("motor_input", self._motor.get, noop)
         builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
         builder.addFloatProperty("offset", lambda: self._offset, lambda x: setOffset(x))
         builder.addFloatProperty("height", self.getHeight, noop)
-        builder.addBooleanProperty("has_reset", lambda: self._has_reset, noop)
+        builder.addBooleanProperty("has_reset", lambda: self._has_reset, setHasReset)
         builder.addBooleanProperty("switch_up", self._switch_up.isPressed, noop)
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)

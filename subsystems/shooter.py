@@ -6,14 +6,19 @@ import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
-from utils.sparkmaxutils import configureFollower, configureLeader
+from utils.sparkmaxutils import configureLeader
+
+
+def computeVoltage(rpm_goal, rpm_actual, p, ff) -> tuple[float, bool]:
+    return p * (rpm_goal - rpm_actual) + ff * rpm_goal, rpm_actual >= rpm_goal
 
 
 class Shooter(SafeSubsystem):
-    p = autoproperty(0.001)
-    i = autoproperty(0.0)
-    d = autoproperty(0.0)
-    ff = autoproperty(0.0)
+    p_left = autoproperty(0.002)
+    ff_left = autoproperty(0.00218)
+
+    p_right = autoproperty(0.002)
+    ff_right = autoproperty(0.00198)
 
     def __init__(self):
         super().__init__()
@@ -22,45 +27,49 @@ class Shooter(SafeSubsystem):
             ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless
         )
         configureLeader(self._left_motor, "coast")
-        self._pid = self._left_motor.getPIDController()
-        self._pid.setP(self.p)
-        self._pid.setI(self.i)
-        self._pid.setD(self.d)
-        self._pid.setFF(self.ff)
+        self._left_motor.enableVoltageCompensation(12.0)
+        self._encoder_left = self._left_motor.getEncoder()
 
         self._right_motor = rev.CANSparkMax(
             ports.shooter_motor_right, rev.CANSparkMax.MotorType.kBrushless
         )
-        configureFollower(self._right_motor, self._left_motor, "coast", inverted=True)
-
-        self._encoder = self._left_motor.getEncoder()
+        configureLeader(self._right_motor, "coast", inverted=True)
+        self._right_motor.enableVoltageCompensation(12.0)
+        self._encoder_right = self._right_motor.getEncoder()
 
         self._ref_rpm = 0.0
-        self._reached_speed = False
+        self._reached_speed_left = False
+        self._reached_speed_right = False
 
         if RobotBase.isSimulation():
             self.left_motor_sim = SparkMaxSim(self._left_motor)
             self.right_motor_sim = SparkMaxSim(self._right_motor)
 
     def shoot(self, rpm: float):
-        self._pid.setReference(rpm, rev.CANSparkMax.ControlType.kVelocity)
+        left_volts, self._reached_speed_left = computeVoltage(
+            rpm, self._encoder_left.getVelocity(), self.p_left, self.ff_left
+        )
+        right_volts, self._reached_speed_right = computeVoltage(
+            rpm, self._encoder_right.getVelocity(), self.p_right, self.ff_right
+        )
+
+        self._left_motor.setVoltage(left_volts)
+        self._right_motor.setVoltage(right_volts)
+
         self._ref_rpm = rpm
 
-        if self._encoder.getVelocity() >= rpm:
-            self._reached_speed = True
-        else:
-            self._reached_speed = False
-
-    def reachedSpeed(self):
-        return self._reached_speed
+    def hasReachedSpeed(self):
+        return self._reached_speed_left and self._reached_speed_right
 
     def stop(self):
         self._left_motor.stopMotor()
-        self._reached_speed = False
+        self._right_motor.stopMotor()
+        self._reached_speed_left = False
+        self._reached_speed_right = False
 
     def simulationPeriodic(self):
-        self.left_motor_sim.setVelocity(self._left_motor.get())
-        self.right_motor_sim.setVelocity(-self._left_motor.get())
+        self.left_motor_sim.setVelocity(10000 * self._left_motor.get())
+        self.right_motor_sim.setVelocity(10000 * self._left_motor.get())
 
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
@@ -68,6 +77,14 @@ class Shooter(SafeSubsystem):
         def noop(_):
             pass
 
-        builder.addBooleanProperty("reached_speed", lambda: self._reached_speed, noop)
-        builder.addFloatProperty("velocity", self._encoder.getVelocity, noop)
+        builder.addBooleanProperty(
+            "reached_speed_left", lambda: self._reached_speed_left, noop
+        )
+        builder.addBooleanProperty(
+            "reached_speed_right", lambda: self._reached_speed_right, noop
+        )
+        builder.addFloatProperty("velocity_left", self._encoder_left.getVelocity, noop)
+        builder.addFloatProperty(
+            "velocity_right", self._encoder_right.getVelocity, noop
+        )
         builder.addFloatProperty("ref_rpm", lambda: self._ref_rpm, noop)

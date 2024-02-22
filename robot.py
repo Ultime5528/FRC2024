@@ -6,18 +6,23 @@ import wpilib
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
+from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
+from commands.climber.unlockratchet import UnlockRatchet
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from commands.pivot.forceresetpivot import ForceResetPivot
+from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import Shoot
+from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.drivetrain import Drivetrain
@@ -29,7 +34,6 @@ from subsystems.shooter import Shooter
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
         # robotInit fonctionne mieux avec les tests que __init__.
-
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
         self.enableLiveWindowInTest(True)
@@ -61,6 +65,7 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain.setDefaultCommand(
             DriveField(self.drivetrain, self.xbox_controller)
         )
+        self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
 
         """
         Setups
@@ -78,7 +83,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        pass
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -86,6 +90,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("ClimberRight", self.climber_right)
         wpilib.SmartDashboard.putData("Intake", self.intake)
         wpilib.SmartDashboard.putData("Pivot", self.pivot)
+        wpilib.SmartDashboard.putData("Shooter", self.shooter)
 
     def setupCommandsOnDashboard(self):
         """
@@ -97,6 +102,11 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
         )
+        putCommandOnDashboard(
+            "Drivetrain",
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
+        )
+        putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
             (self.climber_left, "Left"),
@@ -104,12 +114,12 @@ class Robot(commands2.TimedCommandRobot):
         ):
             putCommandOnDashboard(
                 "Climber" + name,
-                ExtendClimber(self.climber_left),
+                ExtendClimber(climber),
                 "ExtendClimber." + name,
             )
             putCommandOnDashboard(
                 "Climber" + name,
-                RetractClimber(self.climber_left),
+                RetractClimber(climber),
                 "RetractClimber." + name,
             )
             putCommandOnDashboard(
@@ -121,6 +131,12 @@ class Robot(commands2.TimedCommandRobot):
                 "Climber" + name,
                 ForceResetClimber.toMax(climber),
                 "ForceResetClimber.toMax." + name,
+            )
+            putCommandOnDashboard(
+                "Climber" + name, LockRatchet(climber), "LockRatchet." + name
+            )
+            putCommandOnDashboard(
+                "Climber" + name, UnlockRatchet(climber), "UnlockRatchet." + name
             )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
@@ -146,7 +162,6 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
-        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
