@@ -10,10 +10,11 @@ from utils.safecommand import SafeCommand
 
 
 def apply_center_distance_deadzone(x_dist, y_dist, deadzone):
-    if math.hypot(x_dist, y_dist) <= deadzone:
-        return 0.0, 0.0
+    hypot = math.hypot(x_dist, y_dist)
+    if hypot <= deadzone:
+        return 0.0, 0.0, 0.0
     else:
-        return x_dist, y_dist
+        return x_dist, y_dist, hypot
 
 
 def apply_linear_deadzone(_input, deadzone):
@@ -42,7 +43,7 @@ class Drive(SafeCommand):
         self.m_rotLimiter_x = SlewRateLimiter(3)
 
     def execute(self):
-        x_speed, y_speed = apply_center_distance_deadzone(
+        x_speed, y_speed, _ = apply_center_distance_deadzone(
             self.xbox_remote.getLeftY() * -1,
             self.xbox_remote.getLeftX() * -1,
             properties.moving_deadzone,
@@ -63,7 +64,7 @@ class Drive(SafeCommand):
 
 
 class DriveField(SafeCommand):
-    rotation_deadzone = autoproperty(0.8)
+    rotation_deadzone = autoproperty(0.3)
     rotate_speed = autoproperty(-0.03)
 
     def __init__(
@@ -86,7 +87,7 @@ class DriveField(SafeCommand):
         self.rot = self.drivetrain.getAngle()
 
     def execute(self):
-        x_speed, y_speed = apply_center_distance_deadzone(
+        x_speed, y_speed, _ = apply_center_distance_deadzone(
             self.xbox_remote.getLeftY() * -1,
             self.xbox_remote.getLeftX() * -1,
             properties.moving_deadzone,
@@ -94,7 +95,7 @@ class DriveField(SafeCommand):
         x_speed = self.m_xspeedLimiter.calculate(x_speed)
         y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
-        rot_x, rot_y = apply_center_distance_deadzone(
+        rot_x, rot_y, rot_hyp = apply_center_distance_deadzone(
             self.xbox_remote.getRightX(),
             -1 * self.xbox_remote.getRightY(),
             self.rotation_deadzone,
@@ -105,7 +106,7 @@ class DriveField(SafeCommand):
 
         rot_speed = (
             self.drivetrain.getRotation() - Rotation2d.fromDegrees(self.rot)
-        ).degrees() * self.rotate_speed
+        ).degrees() * self.rotate_speed * rot_hyp
 
         self.drivetrain.drive(x_speed, y_speed, rot_speed, True)
 

@@ -121,10 +121,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
         )
-        putCommandOnDashboard(
-            "Drivetrain",
-            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
-        )
+
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
