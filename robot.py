@@ -15,6 +15,7 @@ from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
 from commands.drivetrain.drive import DriveField, Drive
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
@@ -34,13 +35,11 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.axistrigger import AxisTrigger
-from utils.property import autoproperty
 
 
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
         # robotInit fonctionne mieux avec les tests que __init__.
-
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
         self.enableLiveWindowInTest(True)
@@ -110,6 +109,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("ClimberRight", self.climber_right)
         wpilib.SmartDashboard.putData("Intake", self.intake)
         wpilib.SmartDashboard.putData("Pivot", self.pivot)
+        wpilib.SmartDashboard.putData("Shooter", self.shooter)
 
     def setupCommandsOnDashboard(self):
         """
@@ -125,6 +125,7 @@ class Robot(commands2.TimedCommandRobot):
             "Drivetrain",
             AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
         )
+        putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
             (self.climber_left, "Left"),
@@ -193,8 +194,6 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
-
-        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
         self.drivetrain.resetToPose(Pose2d(15.15, 5.55, Rotation2d.fromDegrees(0)))

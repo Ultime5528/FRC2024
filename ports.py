@@ -22,22 +22,22 @@ drivetrain_motor_turning_fr: Final = 7
 drivetrain_motor_driving_fr: Final = 8
 climber_motor_left: Final = 9
 climber_motor_right: Final = 10
-shooter_motor_left: Final = 12
-shooter_motor_right: Final = 13
+shooter_motor_left: Final = 11
+shooter_motor_right: Final = 12
 
 # PWM
 pivot_motor: Final = 0
 intake_motor: Final = 1
-climber_servo_left: Final = 2
-climber_servo_right: Final = 3
+climber_servo_right: Final = 2
+climber_servo_left: Final = 3
 
 # DIO
-pivot_switch_up: Final = 0
+pivot_switch_down: Final = 0
+pivot_switch_up: Final = 1
 intake_sensor: Final = 2
-climber_left_switch_up: Final = 3
-climber_right_switch_up: Final = 4
+climber_left_switch_up = 3
+climber_right_switch_up = 4
 pivot_encoder_a: Final = 5
 pivot_encoder_b: Final = 6
-pivot_switch_down: Final = 7
 climber_left_switch_down: Final = 8
 climber_right_switch_down: Final = 9

@@ -1,15 +1,14 @@
-import pygetwindow
+import ctypes
 import os
+import subprocess
 import time
 import webbrowser
 from pathlib import Path
-import psutil
-import subprocess
-import requests
 from threading import Thread
-import ctypes
 
-from wpilib import RobotBase
+import psutil
+import pygetwindow
+import requests
 
 # Kill previous dashboard processes
 

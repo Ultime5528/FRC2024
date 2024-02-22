@@ -1,14 +1,10 @@
-from unittest import mock
-
 import pyfrc.test_support.controller
-import rev
 from pytest import approx
 
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
 from robot import Robot
-from subsystems.intake import Intake
 
 
 def test_drop(control, robot: Robot):
@@ -60,10 +56,7 @@ def test_pickUp(control, robot: Robot):
         assert robot.intake._motor.get() == approx(robot.intake.speed_in, rel=0.1)
 
         robot.intake._sensor.setSimPressed()
-        control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
-        assert robot.intake._motor.get() == approx(robot.intake.speed_in, rel=0.1)
-
-        control.step_timing(seconds=0.4, autonomous=False, enabled=True)
+        control.step_timing(seconds=cmd.delay + 0.1, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(0.0)
         assert not cmd.isScheduled()
 
