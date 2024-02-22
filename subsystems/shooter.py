@@ -53,8 +53,8 @@ class Shooter(SafeSubsystem):
             rpm, self._encoder_right.getVelocity(), self.p_right, self.ff_right
         )
 
-        self._left_motor.setVoltage(11)
-        self._right_motor.setVoltage(11)
+        self._left_motor.setVoltage(12)
+        self._right_motor.setVoltage(12)
 
         self._ref_rpm = rpm
 
