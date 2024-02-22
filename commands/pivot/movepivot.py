@@ -41,6 +41,12 @@ class MovePivot(SafeCommand):
         cmd.setName(cmd.getName() + ".toLoading")
         return cmd
 
+    @classmethod
+    def auto(cls, pivot: Pivot, position):
+        cmd = cls(pivot, position, Pivot.State.Amp)
+        cmd.setName(cmd.getName() + ".toAmp")
+        return cmd
+
     def __init__(
         self, pivot: Pivot, end_position: FloatProperty, new_state: Pivot.State
     ):

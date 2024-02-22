@@ -12,12 +12,19 @@ from subsystems.intake import Intake
 from commands.intake.load import Load
 
 
-class Shoot(SequentialCommandGroup, SafeMixin):
+class ShootQuick(ParallelRaceGroup, SafeMixin):
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
             ParallelRaceGroup(
                 PrepareShoot(shooter, pivot),
                 SequentialCommandGroup(WaitShootSpeed(shooter), Load(intake)),
-            ),
+            )
+        )
+
+
+class Shoot(SequentialCommandGroup, SafeMixin):
+    def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
+        super().__init__(
+            ShootQuick,
             ProxyCommand(MovePivot.toLoading(pivot)),
         )
