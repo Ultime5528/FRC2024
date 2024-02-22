@@ -47,7 +47,7 @@
 | tests/climber\_test.py                |       85 |        0 |       24 |        0 |    100% |           |
 | tests/drive\_test.py                  |       10 |        0 |        2 |        0 |    100% |           |
 | tests/intake\_test.py                 |       58 |        0 |       10 |        0 |    100% |           |
-| tests/pivot\_test.py                  |       82 |        2 |       18 |        1 |     97% |     41-42 |
+| tests/pivot\_test.py                  |       98 |        2 |       22 |        1 |     98% |     41-42 |
 | tests/pyfrc\_test.py                  |        1 |        0 |        0 |        0 |    100% |           |
 | tests/shooter\_test.py                |       42 |        0 |        8 |        0 |    100% |           |
 | tests/switch\_test.py                 |       33 |        0 |        2 |        0 |    100% |           |
@@ -63,7 +63,7 @@
 | utils/swerve.py                       |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                       |       64 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py            |       99 |       30 |       44 |       11 |     60% |20, 22, 40-44, 59->exit, 73-91, 110-111, 136->exit, 161, 168, 176, 188, 194 |
-|                             **TOTAL** | **2314** |  **401** |  **540** |   **75** | **80%** |           |
+|                             **TOTAL** | **2330** |  **401** |  **544** |   **75** | **80%** |           |
 
 
 ## Setup coverage badge
