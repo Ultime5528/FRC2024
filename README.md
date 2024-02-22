@@ -19,12 +19,13 @@
 | commands/drivetrain/\_\_init\_\_.py   |        0 |        0 |        0 |        0 |    100% |           |
 | commands/drivetrain/drive.py          |       63 |       11 |        6 |        2 |     78% |16, 20-23, 45-59, 62, 104 |
 | commands/drivetrain/drivedistance.py  |       41 |       26 |        4 |        0 |     33% |17-26, 29-37, 46-61, 64, 67 |
+| commands/drivetrain/resetgyro.py      |       11 |        0 |        0 |        0 |    100% |           |
 | commands/intake/\_\_init\_\_.py       |        0 |        0 |        0 |        0 |    100% |           |
 | commands/intake/drop.py               |       22 |        0 |        2 |        0 |    100% |           |
 | commands/intake/load.py               |       22 |        0 |        2 |        0 |    100% |           |
 | commands/intake/pickup.py             |       22 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/forceresetpivot.py     |       23 |        0 |        8 |        1 |     97% |  15->exit |
-| commands/pivot/maintainpivot.py       |       13 |        1 |        2 |        1 |     87% |        17 |
+| commands/pivot/maintainpivot.py       |       13 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/movepivot.py           |       57 |        2 |       20 |        2 |     95% |    76, 81 |
 | commands/pivot/resetpivotdown.py      |       19 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/resetpivotup.py        |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
@@ -32,18 +33,19 @@
 | commands/shooter/prepareshoot.py      |       27 |        7 |        6 |        1 |     64% | 27-33, 36 |
 | commands/shooter/shoot.py             |       14 |        0 |        0 |        0 |    100% |           |
 | commands/shooter/waitshootspeed.py    |       10 |        0 |        0 |        0 |    100% |           |
-| commands/vision/alignwithtag2d.py     |       46 |       20 |       18 |        1 |     45% |15-18, 22-26, 49->exit, 53-63, 66-68 |
+| commands/vision/alignwithtag2d.py     |       48 |       22 |       18 |        1 |     44% |15-18, 22-29, 52->exit, 56-67, 70-72 |
 | gyro.py                               |      122 |       50 |       14 |        5 |     60% |19, 28->exit, 31->exit, 34->exit, 37->exit, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                              |       27 |        0 |        0 |        0 |    100% |           |
 | properties.py                         |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                              |      107 |        3 |       12 |        4 |     94% |161, 166, 173, 177->180 |
+| robot.py                              |      108 |        3 |       12 |        4 |     94% |162, 166, 173, 177->180 |
 | subsystems/\_\_init\_\_.py            |        0 |        0 |        0 |        0 |    100% |           |
-| subsystems/climber.py                 |      137 |        4 |       77 |       11 |     93% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 40->exit, 43->exit, 75->exit, 110, 121, 147, 150 |
+| subsystems/climber.py                 |      139 |        4 |       77 |       11 |     93% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 40->exit, 43->exit, 76->exit, 113, 125, 151, 154 |
 | subsystems/drivetrain.py              |       96 |        7 |        4 |        2 |     91% |94->exit, 113, 133, 145, 151-160 |
 | subsystems/intake.py                  |       30 |        1 |        0 |        0 |     97% |        45 |
-| subsystems/pivot.py                   |      102 |        8 |       20 |        4 |     90% |47->exit, 59-60, 78, 94, 99, 128, 131, 134 |
+| subsystems/pivot.py                   |       98 |        5 |       18 |        3 |     93% |47->exit, 78, 94, 129, 132, 135 |
 | subsystems/shooter.py                 |       56 |        5 |        8 |        1 |     91% |44->exit, 65-68, 78 |
 | tests/climber\_test.py                |       85 |        0 |       24 |        0 |    100% |           |
+| tests/drive\_test.py                  |       10 |        0 |        2 |        0 |    100% |           |
 | tests/intake\_test.py                 |       58 |        0 |       10 |        0 |    100% |           |
 | tests/pivot\_test.py                  |       82 |        2 |       18 |        1 |     97% |     41-42 |
 | tests/pyfrc\_test.py                  |        1 |        0 |        0 |        0 |    100% |           |
@@ -61,7 +63,7 @@
 | utils/swerve.py                       |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                       |       64 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py            |       99 |       30 |       44 |       11 |     60% |20, 22, 40-44, 59->exit, 73-91, 110-111, 136->exit, 161, 168, 176, 188, 194 |
-|                             **TOTAL** | **2292** |  **403** |  **540** |   **77** | **80%** |           |
+|                             **TOTAL** | **2314** |  **401** |  **540** |   **75** | **80%** |           |
 
 
 ## Setup coverage badge
