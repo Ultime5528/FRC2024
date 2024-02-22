@@ -3,19 +3,14 @@ from typing import Optional
 
 import commands2.button
 import wpilib
-from wpimath.geometry import Pose2d, Rotation2d
 
-from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
-from commands.auto.autospeakercentershoottwiceline import (
-    AutoSpeakerCenterShootTwiceLine,
-)
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
-from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetrain.drive import DriveField, Drive
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
@@ -35,7 +30,6 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.axistrigger import AxisTrigger
-from utils.property import autoproperty
 
 
 class Robot(commands2.TimedCommandRobot):
