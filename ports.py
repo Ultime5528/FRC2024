@@ -28,8 +28,8 @@ shooter_motor_right: Final = 12
 # PWM
 pivot_motor: Final = 0
 intake_motor: Final = 1
-climber_servo_left: Final = 2
-climber_servo_right: Final = 3
+climber_servo_right: Final = 2
+climber_servo_left: Final = 3
 
 # DIO
 pivot_switch_down: Final = 0

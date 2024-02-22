@@ -9,6 +9,7 @@ from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
@@ -33,7 +34,6 @@ from subsystems.shooter import Shooter
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
         # robotInit fonctionne mieux avec les tests que __init__.
-
         wpilib.LiveWindow.enableAllTelemetry()
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
         self.enableLiveWindowInTest(True)
@@ -106,6 +106,7 @@ class Robot(commands2.TimedCommandRobot):
             "Drivetrain",
             AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
         )
+        putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
             (self.climber_left, "Left"),
@@ -161,7 +162,6 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
-        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 

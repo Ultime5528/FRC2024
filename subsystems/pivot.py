@@ -55,10 +55,10 @@ class Pivot(SafeSubsystem):
             self._has_reset = True
         self._prev_is_down = self._switch_down.isPressed()
 
-        if self._prev_is_up and not self._switch_up.isPressed():
-            self._offset = self.height_max - self._encoder.getDistance()
-            self._has_reset = True
-        self._prev_is_up = self._switch_up.isPressed()
+        # if self._prev_is_up and not self._switch_up.isPressed():
+        #     self._offset = self.height_max - self._encoder.getDistance()
+        #     self._has_reset = True
+        # self._prev_is_up = self._switch_up.isPressed()
 
     def simulationPeriodic(self) -> None:
         assert not (
@@ -102,9 +102,10 @@ class Pivot(SafeSubsystem):
         return self._switch_down.isPressed()
 
     def isUp(self) -> bool:
-        return self._switch_up.isPressed() or (
-            self._has_reset and self.getHeight() > self.height_max
-        )
+        # return self._switch_up.isPressed() or (
+        #     self._has_reset and self.getHeight() > self.height_max
+        # )
+        return self._has_reset and self.getHeight() > self.height_max
 
     def stop(self):
         self._motor.stopMotor()
