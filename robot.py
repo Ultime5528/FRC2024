@@ -37,7 +37,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.drivetrain = Drivetrain(self.getPeriod())
         self.intake = Intake()
-        self.led = LEDController(self.intake)
+        self.led = LEDController()
 
         """
         Default subsystem commands
@@ -68,7 +68,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Drivetrain", DriveField(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Drivetrain", Drive(self.drivetrain, self.xbox_controller))
         putCommandOnDashboard("Intake", Drop(self.intake))
-        putCommandOnDashboard("Intake", PickUp(self.intake, self.led))
+        putCommandOnDashboard("Intake", PickUp(self.intake))
 
         putCommandOnDashboard("led", Lightall(self.led))
         
