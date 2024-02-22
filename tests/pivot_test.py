@@ -132,3 +132,38 @@ def test_forceResetPivot(control, robot: Robot):
         cmd.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
         assert robot.pivot.height_max == approx(robot.pivot.getHeight())
+
+
+def common_test_requirements(
+    control: "pyfrc.test_support.controller.TestController",
+    robot: Robot,
+    MovePivotMethod,
+):
+    with control.run_robot():
+        cmd = MovePivotMethod(robot.pivot)
+        assert cmd.hasRequirement(robot.pivot)
+
+
+def test_requirements_toSpeakerFar(control, robot: Robot):
+    common_test_requirements(control, robot, MovePivot.toSpeakerFar)
+
+
+def test_requirements_toSpeakerClose(control, robot: Robot):
+    common_test_requirements(control, robot, MovePivot.toSpeakerClose)
+
+
+def test_requirements_toAmp(control, robot: Robot):
+    common_test_requirements(control, robot, MovePivot.toAmp)
+
+
+def test_requirements_toLoading(control, robot: Robot):
+    common_test_requirements(control, robot, MovePivot.toLoading)
+
+
+def test_requirements_ResetPivotDown(
+    control: "pyfrc.test_support.controller.TestController",
+    robot: Robot,
+):
+    with control.run_robot():
+        cmd = ResetPivotDown(robot.pivot)
+        assert cmd.hasRequirement(robot.pivot)
