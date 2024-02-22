@@ -3,7 +3,12 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
+from commands.auto.autospeakercentershoottwiceline import (
+    AutoSpeakerCenterShootTwiceLine,
+)
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -29,6 +34,8 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
+from utils.axistrigger import AxisTrigger
+from utils.property import autoproperty
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -48,6 +55,8 @@ class Robot(commands2.TimedCommandRobot):
         Joysticks
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
+        self.panel_1 = commands2.button.CommandJoystick(1)
+        self.panel_2 = commands2.button.CommandJoystick(1)
 
         """
         Subsystems
@@ -83,6 +92,17 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
+        AxisTrigger(self.panel_1, 1, "down").onTrue(ExtendClimber(self.climber_left))
+        AxisTrigger(self.panel_1, 1, "up").onTrue(RetractClimber(self.climber_left))
+        self.panel_1.button(3).onTrue(PickUp(self.intake))
+        self.panel_1.button(2).onTrue(Drop(self.intake))
+        self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
+
+        AxisTrigger(self.panel_2, 1, "down").onTrue(ExtendClimber(self.climber_right))
+        AxisTrigger(self.panel_2, 1, "up").onTrue(RetractClimber(self.climber_right))
+        self.panel_2.button(2).onTrue(MovePivot.toSpeakerFar(self.pivot))
+        self.panel_2.button(5).onTrue(Shoot(self.shooter, self.pivot, self.intake))
+        self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
