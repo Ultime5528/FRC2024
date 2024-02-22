@@ -84,6 +84,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
+        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()))
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -103,10 +104,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
         )
-        putCommandOnDashboard(
-            "Drivetrain",
-            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
-        )
+
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (

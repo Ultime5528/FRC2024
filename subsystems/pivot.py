@@ -21,10 +21,10 @@ class Pivot(SafeSubsystem):
         Amp = auto()
 
     speed_up = autoproperty(0.2)
-    speed_down = autoproperty(-0.4)
+    speed_down = autoproperty(-0.75)
     speed_maintain = autoproperty(-0.2)
     height_min = 0.0
-    height_max = autoproperty(53.0)
+    height_max = autoproperty(55.0)
 
     def __init__(self):
         super().__init__()
