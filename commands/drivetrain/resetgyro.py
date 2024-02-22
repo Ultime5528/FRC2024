@@ -1,5 +1,3 @@
-import commands2
-
 from subsystems.drivetrain import Drivetrain
 from utils.safecommand import SafeCommand
 
