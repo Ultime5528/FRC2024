@@ -195,7 +195,6 @@ class Robot(commands2.TimedCommandRobot):
     def teleopInit(self):
         if self.auto_command:
             self.auto_command.cancel()
-        self.drivetrain.resetToPose(Pose2d(15.15, 5.55, Rotation2d.fromDegrees(0)))
 
 
 def putCommandOnDashboard(

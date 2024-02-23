@@ -1,6 +1,7 @@
 import commands2
 from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.pivot.resetpivotdown import ResetPivotDown
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
@@ -13,13 +14,14 @@ from commands.drivetopos import DriveToPos
 
 
 class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
-    x_goal = autoproperty(0)
+    x_goal = autoproperty(1)
     y_goal = autoproperty(0)
 
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
+            ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             ShootQuick(shooter, pivot, intake),
             DriveToPos(

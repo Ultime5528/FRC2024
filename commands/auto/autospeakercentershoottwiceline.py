@@ -1,6 +1,9 @@
 import commands2
+from commands2 import ParallelCommandGroup
 from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.intake.pickup import PickUp
+from commands.pivot.resetpivotdown import ResetPivotDown
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
@@ -13,7 +16,7 @@ from commands.drivetopos import DriveToPos
 
 
 class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
-    x_goal = autoproperty(0)
+    x_goal = autoproperty(1)
     y_goal = autoproperty(0)
     position = autoproperty(45)
 
@@ -21,12 +24,16 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
+            ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             ShootQuick(shooter, pivot, intake),
-            DriveToPos(
-                drivetrain,
-                Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(0)),
+            ParallelCommandGroup(
+                DriveToPos(
+                    drivetrain,
+                    Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(0)),
+                ),
+                PickUp(intake),
+                MovePivot.auto(pivot, self.position),
             ),
-            MovePivot.auto(pivot, self.position),
             ShootQuick(shooter, pivot, intake),
         )
