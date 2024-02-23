@@ -11,6 +11,8 @@ from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.switch import Switch
 
+# X is height in camera view, y is the subsequent wanted pivot pitch
+interpolation_points = [(10, 20), (20, 40)]
 
 class Pivot(SafeSubsystem):
     class State(Enum):
@@ -35,8 +37,6 @@ class Pivot(SafeSubsystem):
         self._encoder = wpilib.Encoder(
             ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True
         )
-
-        interpolation_points = [(10, 20), (20, 40)]
 
         self.interpolator = LinearInterpolator(interpolation_points)
 
@@ -103,6 +103,9 @@ class Pivot(SafeSubsystem):
     def maintain(self):
         self.setSpeed(self.speed_maintain)
 
+    def getInterpolatedPosition(self, tag_position):
+        return self.interpolator.interpolate(tag_position)
+    
     def isDown(self) -> bool:
         return self._switch_down.isPressed()
 
