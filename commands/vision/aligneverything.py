@@ -8,6 +8,7 @@ from wpimath.filter import SlewRateLimiter
 
 from commands.pivot.movepivot import MovePivot
 from subsystems.drivetrain import Drivetrain
+from subsystems.pivot import Pivot
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 from commands.drivetrain.drive import apply_center_distance_deadzone, properties
@@ -38,20 +39,22 @@ class AlignEverything(SafeCommand):
     ff = autoproperty(0.01)
 
     @classmethod
-    def toSpeaker(cls, drivetrain: Drivetrain, xbox_remote: CommandXboxController):
-        cmd = cls(drivetrain, getTagIDFromAlliance, xbox_remote)
+    def toSpeaker(cls, drivetrain: Drivetrain, pivot: Pivot, xbox_remote: CommandXboxController):
+        cmd = cls(drivetrain, pivot, getTagIDFromAlliance, xbox_remote)
         cmd.setName(cmd.getName() + ".toSpeaker")
         return cmd
 
     def __init__(
         self,
         drivetrain: Drivetrain,
+        pivot: Pivot,
         tag_id: Union[int, Callable[[], int]],
         xbox_remote: CommandXboxController,
     ):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
+        self.pivot = pivot
         self.xbox_remote = xbox_remote
         self.hid = xbox_remote.getHID()
         self.get_tag_id = tag_id if callable(tag_id) else lambda: tag_id
@@ -62,7 +65,7 @@ class AlignEverything(SafeCommand):
 
     def execute(self):
         results = self.drivetrain.cam.getLatestResult().getTargets()
-        target: PhotonTrackedTarget = getTargetWithID(results, self.get_tag_id())
+        self.target: PhotonTrackedTarget = getTargetWithID(results, self.get_tag_id())
 
         x_speed, y_speed, _ = apply_center_distance_deadzone(
             self.xbox_remote.getLeftY() * -1,
@@ -84,6 +87,7 @@ class AlignEverything(SafeCommand):
 
     def end(self, interrupted: bool):
         self.drivetrain.stop()
-        MovePivot.auto(self.pivot, self.pivot.interpolator.interpolate(self.tag.getY()))
+        if self.target is not None:
+            MovePivot.auto(self.pivot, self.pivot.getInterpolatedPosition(self.target.getPitch())).start()
         if self.hid:
             self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0)
