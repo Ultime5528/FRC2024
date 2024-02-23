@@ -6,6 +6,7 @@ from wpilib.simulation import PWMSim, EncoderSim
 from wpiutil import SendableBuilder
 
 import ports
+from utils.linearinterpolator import LinearInterpolator
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.switch import Switch
@@ -34,6 +35,10 @@ class Pivot(SafeSubsystem):
         self._encoder = wpilib.Encoder(
             ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True
         )
+
+        interpolation_points = [(10, 20), (20, 40)]
+
+        self.interpolator = LinearInterpolator(interpolation_points)
 
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)

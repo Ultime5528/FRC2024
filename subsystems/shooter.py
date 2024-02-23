@@ -2,7 +2,9 @@ import rev
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
+
 import ports
+from utils.linearinterpolator import LinearInterpolator
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
@@ -40,6 +42,7 @@ class Shooter(SafeSubsystem):
         self._ref_rpm = 0.0
         self._reached_speed_left = False
         self._reached_speed_right = False
+
 
         if RobotBase.isSimulation():
             self.left_motor_sim = SparkMaxSim(self._left_motor)

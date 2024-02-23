@@ -27,6 +27,7 @@ from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import Shoot
+from commands.vision.aligneverything import AlignEverything
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
@@ -92,7 +93,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()))
+        self.xbox_controller.rightTrigger().whileTrue(AlignEverything.toSpeaker(self.drivetrain, self.xbox_controller))
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
         AxisTrigger(self.panel_1, 1, "up").whileTrue(RetractClimber(self.climber_left))
         self.panel_1.button(3).onTrue(PickUp(self.intake))
