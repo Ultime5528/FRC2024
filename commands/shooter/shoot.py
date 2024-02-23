@@ -25,6 +25,6 @@ class ShootQuick(ParallelRaceGroup, SafeMixin):
 class Shoot(SequentialCommandGroup, SafeMixin):
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
-            ShootQuick,
+            ShootQuick(shooter, pivot, intake),
             ProxyCommand(MovePivot.toLoading(pivot)),
         )
