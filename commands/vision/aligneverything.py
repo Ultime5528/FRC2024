@@ -12,26 +12,7 @@ from subsystems.pivot import Pivot
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 from commands.drivetrain.drive import apply_center_distance_deadzone, properties
-
-
-def getTargetWithID(
-    targets: [PhotonTrackedTarget], _id: int
-) -> Optional[PhotonTrackedTarget]:
-    for target in targets:
-        if target.getFiducialId() == _id:
-            return target
-    return None
-
-
-def getTagIDFromAlliance() -> int:
-    alliance = wpilib.DriverStation.getAlliance()
-    if alliance == wpilib.DriverStation.Alliance.kRed:
-        return 4
-    elif alliance == wpilib.DriverStation.Alliance.kBlue:
-        return 8
-    else:
-        wpilib.reportError("Alliance is invalid")
-        return None
+from commands.vision.alignwithtag2d import getTargetWithID, getTagIDFromAlliance
 
 
 class AlignEverything(SafeCommand):
