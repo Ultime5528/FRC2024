@@ -18,7 +18,7 @@ from commands.drivetopos import DriveToPos
 class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     x_goal = autoproperty(1)
     y_goal = autoproperty(0)
-    position = autoproperty(45)
+    position_pivot = autoproperty(45)
 
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
@@ -31,9 +31,10 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                 DriveToPos(
                     drivetrain,
                     Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(0)),
+                    True,
                 ),
                 PickUp(intake),
-                MovePivot.auto(pivot, self.position),
+                MovePivot.auto(pivot, self.position_pivot),
             ),
             ShootQuick(shooter, pivot, intake),
         )

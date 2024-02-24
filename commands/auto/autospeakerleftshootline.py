@@ -16,6 +16,7 @@ from commands.drivetopos import DriveToPos
 class AutoSpeakerLeftShootLine(SafeMixin, commands2.SequentialCommandGroup):
     x_goal = autoproperty(-2.5)
     y_goal = autoproperty(0.25)
+    rotation = autoproperty(0)
 
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
@@ -26,6 +27,7 @@ class AutoSpeakerLeftShootLine(SafeMixin, commands2.SequentialCommandGroup):
             ShootQuick(shooter, pivot, intake),
             DriveToPos(
                 drivetrain,
-                Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(180)),
+                Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(self.rotation)),
+                True,
             ),
         )

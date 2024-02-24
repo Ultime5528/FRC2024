@@ -27,5 +27,6 @@ class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
             DriveToPos(
                 drivetrain,
                 Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(0)),
+                True,
             ),
         )
