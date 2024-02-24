@@ -30,14 +30,17 @@ class DriveToPoses(SafeCommand):
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
+    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d], relative: bool = False):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.goals = goals
+        self.goals_normal = goals
+        self.relative = relative
 
     def initialize(self):
         self.currGoal = 0
+        currentPos = self.drivetrain.getPose()
+        self.goals = [goal if not self.relative else Pose2d(goal.x+currentPos.x, goal.y+currentPos.y, goal.rotation().radians()+currentPos.rotation().radians()) for goal in self.goals_normal]
         currentGoal = self.goals[self.currGoal]
 
         self.pid_x = PIDController(self.xy_p, self.xy_i, self.xy_d)
@@ -82,9 +85,7 @@ class DriveToPoses(SafeCommand):
         ):
             self.currGoal += 1
             if self.currGoal != len(self.goals):
-                print(len(self.goals) - 1, self.currGoal)
                 if self.currGoal == len(self.goals) - 1:
-                    print("last")
                     self.pid_x.setI(self.xy_i_last)
                     self.pid_y.setI(self.xy_i_last)
                     self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)

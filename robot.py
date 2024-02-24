@@ -3,12 +3,14 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
+from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
@@ -107,6 +109,7 @@ class Robot(commands2.TimedCommandRobot):
             AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
         )
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
+        putCommandOnDashboard("Drivetrain", DriveToPoses(self.drivetrain, [Pose2d(5, 5, 0), Pose2d(2, 1, Rotation2d.fromDegrees(90))], relative=True))
 
         for climber, name in (
             (self.climber_left, "Left"),
