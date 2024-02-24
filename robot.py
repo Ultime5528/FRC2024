@@ -153,8 +153,18 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
-        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain, Pose2d(4, 5, Rotation2d.fromDegrees(90))), "DriveToPos-4,5,90")
-        putCommandOnDashboard("Drivetrain", DriveToPos(self.drivetrain, Pose2d(1, 0, Rotation2d.fromDegrees(0)), relative=True), "DriveToPos-1,0,0Rel")
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPos(self.drivetrain, Pose2d(4, 5, Rotation2d.fromDegrees(90))),
+            "DriveToPos-4,5,90",
+        )
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPos(
+                self.drivetrain, Pose2d(1, 0, Rotation2d.fromDegrees(0)), relative=True
+            ),
+            "DriveToPos-1,0,0Rel",
+        )
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))

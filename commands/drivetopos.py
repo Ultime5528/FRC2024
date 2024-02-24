@@ -9,11 +9,15 @@ class DriveToPos(AlignBase):
         super().__init__(drivetrain, False)
         self.drivetrain = drivetrain
         self.relative = relative
-        self.goal = goal
+        self.local_goal = goal
 
     def computeGoal(self):
         if self.relative:
             pose = self.drivetrain.getPose()
-            rel_goal = Pose2d(pose.x+self.goal.x, pose.y+self.goal.y, pose.rotation().rotateBy(self.goal.rotation()))
+            rel_goal = Pose2d(
+                pose.x + self.local_goal.x,
+                pose.y + self.local_goal.y,
+                pose.rotation().rotateBy(self.local_goal.rotation()),
+            )
             return rel_goal
-        return self.goal
+        return self.local_goal
