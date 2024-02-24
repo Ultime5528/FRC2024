@@ -36,6 +36,9 @@ from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.axistrigger import AxisTrigger
 
+from subsystems.led import LEDController
+from commands.Led.lightall import Lightall
+
 
 class Robot(commands2.TimedCommandRobot):
     def robotInit(self):
@@ -66,6 +69,7 @@ class Robot(commands2.TimedCommandRobot):
         self.intake = Intake()
         self.pivot = Pivot()
         self.shooter = Shooter()
+        self.led = LEDController()
 
         """
         Default subsystem commands
@@ -161,6 +165,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
+        putCommandOnDashboard("led", Lightall(self.led))
+        
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))

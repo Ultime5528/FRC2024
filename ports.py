@@ -26,6 +26,7 @@ shooter_motor_left: Final = 11
 shooter_motor_right: Final = 12
 
 # PWM
+led_strip = 0
 pivot_motor: Final = 0
 intake_motor: Final = 1
 climber_servo_right: Final = 2
