@@ -41,8 +41,9 @@ class LEDController(SafeSubsystem):
     black = np.array([0, 0, 0])
     white = np.array([255, 255, 255])
     beige_rgb = np.array([225, 198, 153])
+    green_rgb = np.array([0, 255, 0])
 
-    led_number = 203
+    led_number = 190
 
     speed = autoproperty(0.75)
     white_length = autoproperty(6.0)
@@ -67,7 +68,6 @@ class LEDController(SafeSubsystem):
 
         self.timer = wpilib.Timer()
         self.timer.start()
-
 
     def setRGB(self, i: int, color: Color):
         color = (color * self.brightness).astype(int)
@@ -135,9 +135,22 @@ class LEDController(SafeSubsystem):
             for i in range(self.led_number):
                 self.buffer[i].setRGB(0, 0, pixel_value)
 
+    def ModeNoteLoaded(self):
+        # pixel_value = round((abs(round(255 * math.cos((self.time) / (18 * math.pi))))) * self.brightness)
+        # for i in range(self.led_number):
+        #     self.buffer[i].setRGB(0, pixel_value, 0)
+        pass
+
+    def ModeReadyToShoot(self):
+        pass
 
     def ModeConnected(self):
-        pixel_value = round((abs(round(255 * math.cos((self.time) / (18 * math.pi)))))*self.brightness)
+        pixel_value = round((abs(round(255 * math.cos((self.time) / (18 * math.pi))))) * self.brightness)
+        for i in range(self.led_number):
+            self.buffer[i].setRGB(0, pixel_value, 0)
+
+    def ModeNotConnected(self):
+        pixel_value = round(abs(127*self.brightness*(1+math.cos(self.time/(18*math.pi)))))
 
         if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
             for i in range(self.led_number):
@@ -145,9 +158,6 @@ class LEDController(SafeSubsystem):
         else:
             for i in range(self.led_number):
                 self.buffer[i].setRGB(0, 0, pixel_value)
-
-    def ModeNotConnected(self):
-        pass
 
     def periodic(self) -> None:
         start_time = wpilib.getTime()
