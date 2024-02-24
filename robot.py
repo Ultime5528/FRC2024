@@ -86,14 +86,16 @@ class Robot(commands2.TimedCommandRobot):
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
-        self.auto_chooser.addOption("AutoSpeakerCenterShootLine", AutoSpeakerCenterShootLine(self.drivetrain, self.shooter, self.pivot, self.intake))
+        self.auto_chooser.addOption("AutoSpeakerCenterShootLine",
+                                    AutoSpeakerCenterShootLine(self.drivetrain, self.shooter, self.pivot, self.intake))
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        self.xbox_controller.rightTrigger().whileTrue(AlignEverything.toSpeaker(self.drivetrain, self.xbox_controller))
+        self.xbox_controller.rightTrigger().whileTrue(
+            AlignEverything(self.drivetrain, self.pivot, self.xbox_controller))
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
         AxisTrigger(self.panel_1, 1, "up").whileTrue(RetractClimber(self.climber_left))
         self.panel_1.button(3).onTrue(PickUp(self.intake))
@@ -128,8 +130,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
-            (self.climber_left, "Left"),
-            (self.climber_right, "Right"),
+                (self.climber_left, "Left"),
+                (self.climber_right, "Right"),
         ):
             putCommandOnDashboard(
                 "Climber" + name,
@@ -200,7 +202,7 @@ class Robot(commands2.TimedCommandRobot):
 
 
 def putCommandOnDashboard(
-    sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
+        sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
 ) -> commands2.Command:
     if not isinstance(sub_table, str):
         raise ValueError(

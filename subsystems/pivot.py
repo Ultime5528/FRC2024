@@ -1,4 +1,5 @@
 from enum import Enum, auto
+from typing import Union
 
 import wpilib
 from wpilib import RobotBase
@@ -22,6 +23,7 @@ class Pivot(SafeSubsystem):
         SpeakerClose = auto()
         SpeakerFar = auto()
         Amp = auto()
+        LockedInterpolation = auto()
 
     speed_up = autoproperty(0.2)
     speed_down = autoproperty(-0.75)
@@ -103,9 +105,12 @@ class Pivot(SafeSubsystem):
     def maintain(self):
         self.setSpeed(self.speed_maintain)
 
-    def getInterpolatedPosition(self, tag_position):
-        return self.interpolator.interpolate(tag_position)
-    
+    def setInterpolatorPosition(self, tag_position):
+        self.interpolator.interpolate(tag_position)
+
+    def getInterpolatedPosition(self) -> Union[None, float]:
+        return self.interpolator.getInterpolatedValue()
+
     def isDown(self) -> bool:
         return self._switch_down.isPressed()
 
