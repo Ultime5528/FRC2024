@@ -86,7 +86,12 @@ class Robot(commands2.TimedCommandRobot):
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
-        self.auto_chooser.addOption("AutoSpeakerCenterShootLine", AutoSpeakerCenterShootLine(self.drivetrain, self.shooter, self.pivot, self.intake))
+        self.auto_chooser.addOption(
+            "AutoSpeakerCenterShootLine",
+            AutoSpeakerCenterShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):

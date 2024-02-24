@@ -1,6 +1,9 @@
 import commands2
+from commands2 import ParallelCommandGroup
 from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.intake.pickup import PickUp
+from commands.pivot.resetpivotdown import ResetPivotDown
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
@@ -22,11 +25,18 @@ class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup)
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
+            ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             ShootQuick(shooter, pivot, intake),
-            DriveToPos(
-                drivetrain,
-                Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(self.rotation)),
+            ParallelCommandGroup(
+                DriveToPos(
+                    drivetrain,
+                    Pose2d(
+                        self.x_goal, self.y_goal, Rotation2d.fromDegrees(self.rotation)
+                    ),
+                ),
+                PickUp(intake),
+                MovePivot.auto(pivot, self.position),
             ),
             MovePivot.auto(pivot, self.position),
             ShootQuick(shooter, pivot, intake),

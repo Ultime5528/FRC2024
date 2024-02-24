@@ -1,6 +1,7 @@
 import commands2
 from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.pivot.resetpivotdown import ResetPivotDown
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
@@ -20,6 +21,7 @@ class AutoSpeakerRightShootLine(SafeMixin, commands2.SequentialCommandGroup):
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
+            ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             ShootQuick(shooter, pivot, intake),
             DriveToPos(
