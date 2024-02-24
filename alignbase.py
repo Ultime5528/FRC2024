@@ -7,10 +7,10 @@ from wpimath.geometry import Pose2d
 from subsystems.drivetrain import Drivetrain
 from utils.alignbaseutils import clamp
 from utils.property import autoproperty
-from utils.safecommand import AbstractSafeCommandMetaclass, SafeMixin
+from utils.safecommand import AbstractSafeCommandMetaclass, SafeMixin, SafeCommand
 
 
-class AlignBase(SafeMixin, metaclass=AbstractSafeCommandMetaclass):
+class AlignBase(SafeCommand, metaclass=AbstractSafeCommandMetaclass):
     xy_p = autoproperty(0.35)
     xy_i = autoproperty(0.0)
     xy_d = autoproperty(0.0)
