@@ -61,8 +61,8 @@ def test_WaitForSpeed(control, robot):
 
 def test_ports(control, robot):
     with control.run_robot():
-        assert robot.shooter._left_motor.getDeviceId() == 12
-        assert robot.shooter._right_motor.getDeviceId() == 13
+        assert robot.shooter._left_motor.getDeviceId() == 11
+        assert robot.shooter._right_motor.getDeviceId() == 12
 
 
 def test_settings(control, robot):
@@ -77,9 +77,7 @@ def test_settings(control, robot):
             robot.shooter._left_motor.getIdleMode() == rev.CANSparkMax.IdleMode.kCoast
         )
         # right
-        assert (
-            not robot.shooter._right_motor.getInverted()
-        )  # I might be wrong but shouldn't this motor be inverted
+        assert robot.shooter._right_motor.getInverted()
         assert (
             robot.shooter._right_motor.getMotorType()
             == rev.CANSparkMax.MotorType.kBrushless
