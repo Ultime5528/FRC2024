@@ -69,6 +69,8 @@ class LEDController(SafeSubsystem):
         self.timer = wpilib.Timer()
         self.timer.start()
 
+        self.intake = Intake
+
     def setRGB(self, i: int, color: Color):
         color = (color * self.brightness).astype(int)
         self.buffer[i].setRGB(*color)
@@ -98,12 +100,6 @@ class LEDController(SafeSubsystem):
         if self.mode == ModeLED.NOTE:
             return self.orange_rgb
         else:
-            return self.getAllianceColor()
-
-    def getModeSecondaryColor(self):
-        if self.mode == ModeLED.NOTE:
-            return self.getAllianceColor()
-        else:
             return self.white
 
     def e_stopped(self):
@@ -123,14 +119,21 @@ class LEDController(SafeSubsystem):
     def ModeAuto(self):
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
-        y_values = 0.5 * np.sin(2 * math.pi ** 2 * (i_values - 2 * self.time) / 200) + 0.5
+        y_values = 0.5 * np.sin(2 * math.pi ** 2 * (i_values - 3 * self.time) / 200) + 0.5
 
         pixel_value = numpy_interpolation(y_values, color, self.white)
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
     def ModeTeleop(self):
-        pass
+        color = self.getAllianceColor()
+        color2 = self.getModeColor()
+        i_values = np.arange(self.led_number)
+        y_values = 0.5*np.sin(10*(i_values-2*(self.time/2))/50)+0.5
+
+        pixel_value = numpy_interpolation(y_values, color, color2)
+        for i, y in enumerate(pixel_value):
+            self.buffer[i].setRGB(*y)
 
     def ModeEndgame(self):
         pixel_value = abs(round(50 * (math.tan(self.time / 30))))
