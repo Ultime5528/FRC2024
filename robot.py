@@ -3,13 +3,19 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
+from commands.auto.autospeakercentershoottwiceline import (
+    AutoSpeakerCenterShootTwiceLine,
+)
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
 from commands.drivetrain.resetgyro import ResetGyro
+from commands.drivetopos import DriveToPos
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
@@ -29,6 +35,8 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
+from utils.axistrigger import AxisTrigger
+from utils.property import autoproperty
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -48,6 +56,8 @@ class Robot(commands2.TimedCommandRobot):
         Joysticks
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
+        self.panel_1 = commands2.button.CommandJoystick(1)
+        self.panel_2 = commands2.button.CommandJoystick(1)
 
         """
         Subsystems
@@ -77,12 +87,29 @@ class Robot(commands2.TimedCommandRobot):
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
+        self.auto_chooser.addOption(
+            "AutoSpeakerCenterShootLine",
+            AutoSpeakerCenterShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):
         """
         Bind commands to buttons on controllers and joysticks
         """
+        AxisTrigger(self.panel_1, 1, "down").onTrue(ExtendClimber(self.climber_left))
+        AxisTrigger(self.panel_1, 1, "up").onTrue(RetractClimber(self.climber_left))
+        self.panel_1.button(3).onTrue(PickUp(self.intake))
+        self.panel_1.button(2).onTrue(Drop(self.intake))
+        self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
+
+        AxisTrigger(self.panel_2, 1, "down").onTrue(ExtendClimber(self.climber_right))
+        AxisTrigger(self.panel_2, 1, "up").onTrue(RetractClimber(self.climber_right))
+        self.panel_2.button(2).onTrue(MovePivot.toSpeakerFar(self.pivot))
+        self.panel_2.button(5).onTrue(Shoot(self.shooter, self.pivot, self.intake))
+        self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -151,10 +178,35 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPos(self.drivetrain, Pose2d(4, 5, Rotation2d.fromDegrees(90))),
+            "DriveToPos-4,5,90",
+        )
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPos(
+                self.drivetrain, Pose2d(1, 0, Rotation2d.fromDegrees(0)), relative=True
+            ),
+            "DriveToPos-1,0,0Rel",
+        )
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
+        putCommandOnDashboard(
+            "Auto",
+            AutoSpeakerCenterShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+
+        putCommandOnDashboard(
+            "Auto",
+            AutoSpeakerCenterShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -162,6 +214,8 @@ class Robot(commands2.TimedCommandRobot):
             self.auto_command.schedule()
 
     def teleopInit(self):
+
+        self.drivetrain.resetGyro()
         if self.auto_command:
             self.auto_command.cancel()
 
