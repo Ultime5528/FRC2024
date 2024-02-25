@@ -86,7 +86,10 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         self.xbox_controller.rightTrigger().whileTrue(
-            AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller.getHID()))
+            AlignWithTag2D.toSpeaker(
+                self.drivetrain, self.vision, self.xbox_controller.getHID()
+            )
+        )
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -109,13 +112,15 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard(
             "Drivetrain",
-            AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller.getHID())
+            AlignWithTag2D.toSpeaker(
+                self.drivetrain, self.vision, self.xbox_controller.getHID()
+            ),
         )
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
-                (self.climber_left, "Left"),
-                (self.climber_right, "Right"),
+            (self.climber_left, "Left"),
+            (self.climber_right, "Right"),
         ):
             putCommandOnDashboard(
                 "Climber" + name,
@@ -176,7 +181,7 @@ class Robot(commands2.TimedCommandRobot):
 
 
 def putCommandOnDashboard(
-        sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
+    sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
 ) -> commands2.Command:
     if not isinstance(sub_table, str):
         raise ValueError(

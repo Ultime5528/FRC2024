@@ -15,17 +15,19 @@ class AlignWithTag2D(SafeCommand):
     ff = autoproperty(0.01)
 
     @classmethod
-    def toSpeaker(cls, drivetrain: Drivetrain, vision: Vision, hid: Optional[GenericHID]):
+    def toSpeaker(
+        cls, drivetrain: Drivetrain, vision: Vision, hid: Optional[GenericHID]
+    ):
         cmd = cls(drivetrain, vision, getSpeakerTagIDFromAlliance, hid)
         cmd.setName(cmd.getName() + ".toSpeaker")
         return cmd
 
     def __init__(
-            self,
-            drivetrain: Drivetrain,
-            vision: Vision,
-            tag_id: Union[int, Callable[[], int]],
-            hid: Optional[GenericHID],
+        self,
+        drivetrain: Drivetrain,
+        vision: Vision,
+        tag_id: Union[int, Callable[[], int]],
+        hid: Optional[GenericHID],
     ):
         super().__init__()
         self.addRequirements(drivetrain)
@@ -40,7 +42,7 @@ class AlignWithTag2D(SafeCommand):
 
         if target is not None:
             self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (
-                    0 - target.getYaw()
+                0 - target.getYaw()
             )
             self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
