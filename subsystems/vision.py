@@ -26,7 +26,6 @@ class Vision(Sendable):
 
     def periodic(self):
         self._targets = self._cam.getLatestResult().getTargets()
-        self._speaker_target = self.getTargetWithID(getSpeakerTagIDFromAlliance())
 
     def getTargetWithID(self, _id: int) -> Optional[PhotonTrackedTarget]:
         for target in self._targets:
@@ -35,13 +34,13 @@ class Vision(Sendable):
         return None
 
     def initSendable(self, builder):
-        super().initSendable(builder)
-
         def noop(x):
             pass
 
-        def getSpeakerTagValues():
-            if self._speaker_target is not None:
-                return self._speaker_target.getPitch(), self._speaker_target.getYaw()
+        def getSpeakerPitch():
+            target = self.getTargetWithID(getSpeakerTagIDFromAlliance())
+            if target is not None:
+                return target.getPitch()
+            return 0.0
 
-        builder.addFloatProperty("speaker_tag_Y_pos", lambda: getSpeakerTagValues()[0], noop)
+        builder.addFloatProperty("Y_pos_speaker_target", getSpeakerPitch, noop)

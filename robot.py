@@ -29,6 +29,7 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
+from subsystems.vision import Vision
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -58,6 +59,7 @@ class Robot(commands2.TimedCommandRobot):
         self.intake = Intake()
         self.pivot = Pivot()
         self.shooter = Shooter()
+        self.vision = Vision()
 
         """
         Default subsystem commands
@@ -83,6 +85,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
+        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeaker(self.drivetrain,self.vision, self.xbox_controller.getHID()))
 
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
@@ -91,6 +94,8 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Intake", self.intake)
         wpilib.SmartDashboard.putData("Pivot", self.pivot)
         wpilib.SmartDashboard.putData("Shooter", self.shooter)
+        wpilib.SmartDashboard.putData("Vision", self.vision)
+
 
     def setupCommandsOnDashboard(self):
         """
@@ -104,7 +109,7 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard(
             "Drivetrain",
-            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()),
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller.getHID())
         )
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
@@ -165,6 +170,9 @@ class Robot(commands2.TimedCommandRobot):
         if self.auto_command:
             self.auto_command.cancel()
 
+    def robotPeriodic(self):
+        self.vision.periodic()
+        super().robotPeriodic()
 
 def putCommandOnDashboard(
     sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
