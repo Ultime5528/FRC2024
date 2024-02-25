@@ -21,7 +21,10 @@ class LockRatchet(SafeCommand):
         self.climber.lockRatchet()
 
     def isFinished(self) -> bool:
-        return self.climber.ratchet_state == RatchetState.Locked or self.timer.get() >= self.delay
+        return (
+            self.climber.ratchet_state == RatchetState.Locked
+            or self.timer.get() >= self.delay
+        )
 
     def end(self, interrupted: bool):
         self.timer.stop()

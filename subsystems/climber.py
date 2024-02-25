@@ -171,7 +171,9 @@ class Climber(SafeSubsystem):
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)
         builder.addBooleanProperty("isDown", self.isDown, noop)
-        builder.addStringProperty("ratchet_state", lambda: str(self.ratchet_state), noop)
+        builder.addStringProperty(
+            "ratchet_state", lambda: str(self.ratchet_state), noop
+        )
 
 
 class ClimberLeftProperties(ClimberProperties):
