@@ -12,13 +12,10 @@ from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 from commands.shooter.shoot import ShootQuick
 from commands.pivot.movepivot import MovePivot
-from commands.drivetopos import DriveToPos
+from commands.drivetoposes import DriveToPoses
 
 
 class AutoSpeakerRightShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
-    x_goal = autoproperty(0)
-    y_goal = autoproperty(0)
-    rotation = autoproperty(-45)
     position_pivot = autoproperty(25)
 
     def __init__(
@@ -29,12 +26,11 @@ class AutoSpeakerRightShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup
             MovePivot.toSpeakerClose(pivot),
             ShootQuick(shooter, pivot, intake),
             ParallelCommandGroup(
-                DriveToPos(
+                DriveToPoses(
                     drivetrain,
-                    Pose2d(
-                        self.x_goal, self.y_goal, Rotation2d.fromDegrees(self.rotation)
-                    ),
-                    True,
+                    Pose2d(16.08 - 0.22, 4.77 - 0.385, Rotation2d.fromDegrees(60)),
+                    [Pose2d(15, 4.1, Rotation2d.fromDegrees(30)),
+                     Pose2d(14, 4.1, Rotation2d(0))]
                 ),
                 PickUp(intake),
                 MovePivot.auto(pivot, self.position_pivot),

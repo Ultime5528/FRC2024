@@ -9,13 +9,18 @@ from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
 from commands.auto.autospeakercentershoottwiceline import (
     AutoSpeakerCenterShootTwiceLine,
 )
+from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
+from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine
+
+from commands.auto.megamodeautonome import MegaModeAutonome
+
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
 from commands.drivetrain.resetgyro import ResetGyro
-from commands.drivetopos import DriveToPos
+from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.drive import DriveField, Drive
 from commands.intake.drop import Drop
 from commands.intake.load import Load
@@ -90,6 +95,24 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             "AutoSpeakerCenterShootLine",
             AutoSpeakerCenterShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerLeftShootLine",
+            AutoSpeakerLeftShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerRightShootLine",
+            AutoSpeakerRightShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "MegaModeAutonome",
+            MegaModeAutonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
@@ -180,16 +203,30 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
         putCommandOnDashboard(
             "Drivetrain",
-            DriveToPos(self.drivetrain, Pose2d(4, 5, Rotation2d.fromDegrees(90))),
-            "DriveToPos-4,5,90",
+            DriveToPoses(
+                self.drivetrain,
+                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(0)),
+                [Pose2d(14, 5.55, Rotation2d.fromDegrees(0))]
+            ),
+            "Centre",
         )
         putCommandOnDashboard(
             "Drivetrain",
-            DriveToPos(
-                self.drivetrain, Pose2d(1, 0, Rotation2d.fromDegrees(0)), relative=True
-            ),
-            "DriveToPos-1,0,0Rel",
+            DriveToPoses(self.drivetrain,
+                         Pose2d(16.08-0.22, 6.33+0.385, Rotation2d.fromDegrees(-60)),
+                         [Pose2d(15, 7, Rotation2d.fromDegrees(-30)),
+                          Pose2d(14, 7, Rotation2d.fromDegrees(0))]),
+            "Left",
         )
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPoses(self.drivetrain,
+                         Pose2d(16.08-0.22, 4.77-0.385, Rotation2d.fromDegrees(60)),
+                         [Pose2d(15, 4.1, Rotation2d.fromDegrees(30)),
+                          Pose2d(14, 4.1, Rotation2d(0))]),
+            "Right",
+        )
+
 
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))

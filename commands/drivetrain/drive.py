@@ -83,7 +83,7 @@ class DriveField(SafeCommand):
         self.m_rotLimiter_y = SlewRateLimiter(3)
 
     def initialize(self):
-        self.rot = self.drivetrain.getAngle()
+        self.rot = self.drivetrain.getPose().rotation()
 
     def execute(self):
         x_speed, y_speed = apply_center_distance_deadzone(
@@ -101,10 +101,10 @@ class DriveField(SafeCommand):
         )
 
         if not (rot_x == 0 and rot_y == 0):
-            self.rot = math.degrees(math.atan2(rot_x, rot_y)) * -1
+            self.rot = Rotation2d(math.atan2(rot_x, rot_y) * -1)
 
         rot_speed = (
-            self.drivetrain.getRotation() - Rotation2d.fromDegrees(self.rot)
+            self.drivetrain.getPose().rotation() - self.rot
         ).degrees() * self.rotate_speed
 
         self.drivetrain.drive(x_speed, y_speed, rot_speed, True)

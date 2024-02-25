@@ -10,13 +10,10 @@ from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 from commands.shooter.shoot import ShootQuick
 from commands.pivot.movepivot import MovePivot
-from commands.drivetopos import DriveToPos
+from commands.drivetoposes import DriveToPoses
 
 
 class AutoSpeakerLeftShootLine(SafeMixin, commands2.SequentialCommandGroup):
-    x_goal = autoproperty(-2.5)
-    y_goal = autoproperty(0.25)
-    rotation = autoproperty(0)
 
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
@@ -25,9 +22,10 @@ class AutoSpeakerLeftShootLine(SafeMixin, commands2.SequentialCommandGroup):
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             ShootQuick(shooter, pivot, intake),
-            DriveToPos(
+            DriveToPoses(
                 drivetrain,
-                Pose2d(self.x_goal, self.y_goal, Rotation2d.fromDegrees(self.rotation)),
-                True,
+                Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(-60)),
+                [Pose2d(15, 7, Rotation2d.fromDegrees(-30)),
+                 Pose2d(14, 7, Rotation2d.fromDegrees(0))]
             ),
         )

@@ -12,32 +12,35 @@ from utils.safecommand import SafeCommand
 
 class DriveToPoses(SafeCommand):
     xy_p = autoproperty(0.35)
-    xy_i = autoproperty(1.0)
+    xy_i = autoproperty(0.0)
     xy_i_last = autoproperty(0.0)
     xy_d = autoproperty(0.0)
-    xy_tol_pos = autoproperty(2.0)
-    xy_tol_vel = autoproperty(2.0)
+    xy_tol_pos = autoproperty(0.5)
+    xy_tol_vel = autoproperty(0.5)
     xy_tol_pos_last = autoproperty(0.04)
     xy_tol_vel_last = autoproperty(0.04)
 
     rot_p = autoproperty(0.0065)
     rot_i = autoproperty(0.0)
     rot_d = autoproperty(0.0)
-    rot_tol_pos = autoproperty(2.0)
-    rot_tol_vel = autoproperty(2.0)
+    rot_tol_pos = autoproperty(0.5)
+    rot_tol_vel = autoproperty(0.5)
     rot_tol_pos_last = autoproperty(0.047)
     rot_tol_vel_last = autoproperty(0.047)
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
+    def __init__(self, drivetrain: Drivetrain, starting_pos: Pose2d, goals: List[Pose2d]):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.goals = goals
+        self.starting_pos = starting_pos
+        self.goals = [self.starting_pos, *goals]
 
     def initialize(self):
-        self.currGoal = 0
+        self.drivetrain.resetToPose(self.goals[0])
+
+        self.currGoal = 1
         currentGoal = self.goals[self.currGoal]
 
         self.pid_x = PIDController(self.xy_p, self.xy_i, self.xy_d)
@@ -58,11 +61,12 @@ class DriveToPoses(SafeCommand):
 
         vel_x = self.pid_x.calculate(current_pos.x)
         vel_y = self.pid_y.calculate(current_pos.y)
+        vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
 
-        speed = math.sqrt(vel_x * vel_x + vel_y * vel_y)
-        clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
+        speed = math.hypot(vel_x, vel_y)
 
         if not math.isclose(speed, 0):
+            clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
             speed_factor = clamped_speed / speed
 
             new_vel_x = vel_x * speed_factor
@@ -71,7 +75,7 @@ class DriveToPoses(SafeCommand):
             self.drivetrain.drive(
                 new_vel_x,
                 new_vel_y,
-                -self.pid_rot.calculate(self.drivetrain.getRotation().degrees()),
+                vel_rot,
                 True,
             )
 
@@ -81,7 +85,8 @@ class DriveToPoses(SafeCommand):
             and self.pid_rot.atSetpoint()
         ):
             self.currGoal += 1
-            if self.currGoal != len(self.goals):
+
+            if self.currGoal < len(self.goals):
                 print(len(self.goals) - 1, self.currGoal)
                 if self.currGoal == len(self.goals) - 1:
                     print("last")
