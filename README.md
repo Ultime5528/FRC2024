@@ -48,12 +48,12 @@
 | subsystems/pivot.py                          |       98 |        3 |       18 |        1 |     97% |47->exit, 129, 132, 135 |
 | subsystems/shooter.py                        |       56 |        5 |        8 |        1 |     91% |44->exit, 65-68, 78 |
 | subsystems/vision.py                         |       35 |        6 |       10 |        4 |     73% |12, 14, 32-33, 38, 43 |
-| tests/climber\_test.py                       |       85 |        0 |       24 |        0 |    100% |           |
+| tests/climber\_test.py                       |       87 |        0 |       24 |        0 |    100% |           |
 | tests/drive\_test.py                         |       10 |        0 |        2 |        0 |    100% |           |
 | tests/intake\_test.py                        |       58 |        0 |       10 |        0 |    100% |           |
 | tests/pivot\_test.py                         |      108 |        2 |       20 |        1 |     98% |     46-47 |
 | tests/pyfrc\_test.py                         |        1 |        0 |        0 |        0 |    100% |           |
-| tests/shooter\_test.py                       |       42 |        0 |        8 |        0 |    100% |           |
+| tests/shooter\_test.py                       |       64 |        0 |       14 |        0 |    100% |           |
 | tests/switch\_test.py                        |       33 |        0 |        2 |        0 |    100% |           |
 | tests/test\_commands.py                      |       67 |        4 |       56 |        5 |     93% |64->56, 66-69, 82->72, 84-87, 101->98 |
 | tests/test\_subsystems.py                    |       17 |        0 |        8 |        0 |    100% |           |
@@ -68,7 +68,7 @@
 | utils/swerve.py                              |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                              |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                   |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                    **TOTAL** | **2548** |  **445** |  **592** |   **79** | **80%** |           |
+|                                    **TOTAL** | **2572** |  **445** |  **598** |   **79** | **80%** |           |
 
 
 ## Setup coverage badge
