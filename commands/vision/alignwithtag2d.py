@@ -9,25 +9,6 @@ from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
 
-def getTargetWithID(
-    targets: [PhotonTrackedTarget], _id: int
-) -> Optional[PhotonTrackedTarget]:
-    for target in targets:
-        if target.getFiducialId() == _id:
-            return target
-    return None
-
-
-def getTagIDFromAlliance() -> int:
-    alliance = wpilib.DriverStation.getAlliance()
-    if alliance == wpilib.DriverStation.Alliance.kRed:
-        return 4
-    elif alliance == wpilib.DriverStation.Alliance.kBlue:
-        return 8
-    else:
-        wpilib.reportError("Alliance is invalid")
-        return None
-
 
 class AlignWithTag2D(SafeCommand):
     p = autoproperty(0.01)
@@ -40,10 +21,10 @@ class AlignWithTag2D(SafeCommand):
         return cmd
 
     def __init__(
-        self,
-        drivetrain: Drivetrain,
-        tag_id: Union[int, Callable[[], int]],
-        hid: Optional[GenericHID],
+            self,
+            drivetrain: Drivetrain,
+            tag_id: Union[int, Callable[[], int]],
+            hid: Optional[GenericHID],
     ):
         super().__init__()
         self.addRequirements(drivetrain)
@@ -58,7 +39,7 @@ class AlignWithTag2D(SafeCommand):
 
         if target is not None:
             self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (
-                0 - target.getYaw()
+                    0 - target.getYaw()
             )
             self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
         else:
