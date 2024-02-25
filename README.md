@@ -51,7 +51,7 @@
 | tests/climber\_test.py                       |       85 |        0 |       24 |        0 |    100% |           |
 | tests/drive\_test.py                         |       10 |        0 |        2 |        0 |    100% |           |
 | tests/intake\_test.py                        |       58 |        0 |       10 |        0 |    100% |           |
-| tests/pivot\_test.py                         |       98 |        2 |       22 |        1 |     98% |     41-42 |
+| tests/pivot\_test.py                         |      108 |        2 |       20 |        1 |     98% |     46-47 |
 | tests/pyfrc\_test.py                         |        1 |        0 |        0 |        0 |    100% |           |
 | tests/shooter\_test.py                       |       42 |        0 |        8 |        0 |    100% |           |
 | tests/switch\_test.py                        |       33 |        0 |        2 |        0 |    100% |           |
@@ -66,9 +66,9 @@
 | utils/sparkmaxsim.py                         |       20 |        2 |        0 |        0 |     90% |    25, 28 |
 | utils/sparkmaxutils.py                       |       38 |       10 |       12 |        4 |     72% |14, 37-56, 70, 76, 88 |
 | utils/swerve.py                              |      115 |        0 |        2 |        1 |     99% | 136->exit |
-| utils/switch.py                              |       64 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
+| utils/switch.py                              |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                   |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                    **TOTAL** | **2536** |  **445** |  **594** |   **79** | **79%** |           |
+|                                    **TOTAL** | **2548** |  **445** |  **592** |   **79** | **80%** |           |
 
 
 ## Setup coverage badge
