@@ -39,11 +39,6 @@ class Drivetrain(SafeSubsystem):
     angular_offset_bl = autoproperty(3.14)
     angular_offset_br = autoproperty(1.57)
 
-    acceptable_wheel_rotation = autoproperty(
-        0.51
-    )  # is radians. Tolerance in which the wheel can be in
-    wheel_flip_rotation = autoproperty(0.85)  # wheel will lock and flip
-
     def __init__(self, period: float) -> None:
         super().__init__()
         self.period_seconds = period
@@ -269,3 +264,15 @@ class Drivetrain(SafeSubsystem):
         self._gyro.setSimAngle(-math.degrees(self.sim_yaw))
 
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
+
+    def resetToPose(self, pose: Pose2d):
+        self.swerve_estimator.resetPosition(
+            self.getRotation(),
+            (
+                self.swerve_module_fl.getPosition(),
+                self.swerve_module_fr.getPosition(),
+                self.swerve_module_bl.getPosition(),
+                self.swerve_module_br.getPosition(),
+            ),
+            pose,
+        )
