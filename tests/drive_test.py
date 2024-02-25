@@ -1,6 +1,6 @@
 import pyfrc.test_support.controller
 
-from commands.drivetrain.ResetGyro import ResetGyro
+from commands.drivetrain.resetgyro import ResetGyro
 from robot import Robot
 
 

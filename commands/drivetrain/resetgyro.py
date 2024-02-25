@@ -1,9 +1,8 @@
-import commands2
-
 from subsystems.drivetrain import Drivetrain
+from utils.safecommand import SafeCommand
 
 
-class ResetGyro(commands2.InstantCommand):
+class ResetGyro(SafeCommand):
     def __init__(self, drivetrain: Drivetrain):
         super().__init__()
         self.drivetrain = drivetrain

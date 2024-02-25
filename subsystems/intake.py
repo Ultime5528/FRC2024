@@ -1,16 +1,14 @@
 import wpilib
-from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.sparkmaxsim import SparkMaxSim
 from utils.switch import Switch
 
 
 class Intake(SafeSubsystem):
-    speed_in = autoproperty(0.75)
+    speed_in = autoproperty(0.7)
     speed_load = autoproperty(0.75)
     speed_out = autoproperty(-0.75)
 

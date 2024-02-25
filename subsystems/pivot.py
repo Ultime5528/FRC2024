@@ -21,10 +21,10 @@ class Pivot(SafeSubsystem):
         Amp = auto()
 
     speed_up = autoproperty(0.2)
-    speed_down = autoproperty(-0.4)
+    speed_down = autoproperty(-0.75)
     speed_maintain = autoproperty(-0.2)
     height_min = 0.0
-    height_max = autoproperty(53.0)
+    height_max = autoproperty(55.0)
 
     def __init__(self):
         super().__init__()
@@ -55,10 +55,10 @@ class Pivot(SafeSubsystem):
             self._has_reset = True
         self._prev_is_down = self._switch_down.isPressed()
 
-        if self._prev_is_up and not self._switch_up.isPressed():
-            self._offset = self.height_max - self._encoder.getDistance()
-            self._has_reset = True
-        self._prev_is_up = self._switch_up.isPressed()
+        # if self._prev_is_up and not self._switch_up.isPressed():
+        #     self._offset = self.height_max - self._encoder.getDistance()
+        #     self._has_reset = True
+        # self._prev_is_up = self._switch_up.isPressed()
 
     def simulationPeriodic(self) -> None:
         assert not (
@@ -88,7 +88,7 @@ class Pivot(SafeSubsystem):
     def setSpeed(self, speed: float):
         assert -1.0 <= speed <= 1.0
 
-        if self.isSwitchDownPressed():
+        if self.isDown():
             self._motor.set(speed if speed >= 0 else 0)
         elif self.isUp():
             self._motor.set(speed if speed <= 0 else 0)
@@ -99,17 +99,13 @@ class Pivot(SafeSubsystem):
         self.setSpeed(self.speed_maintain)
 
     def isDown(self) -> bool:
-        return self._switch_down.isPressed() or (
-            self._has_reset and self.getHeight() < self.height_min
-        )
-
-    def isSwitchDownPressed(self) -> bool:
         return self._switch_down.isPressed()
 
     def isUp(self) -> bool:
-        return self._switch_up.isPressed() or (
-            self._has_reset and self.getHeight() > self.height_max
-        )
+        # return self._switch_up.isPressed() or (
+        #     self._has_reset and self.getHeight() > self.height_max
+        # )
+        return self._has_reset and self.getHeight() > self.height_max
 
     def stop(self):
         self._motor.stopMotor()
