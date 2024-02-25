@@ -22,8 +22,6 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shoot import Shoot
-from commands.vision.aligneverything import AlignEverything
 from commands.shooter.shootandmovepivotloading import ShootAndMovePivotLoading
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
@@ -95,7 +93,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.xbox_controller.rightTrigger().whileTrue(
             AlignWithTag2D.toSpeaker(
-                self.drivetrain, self.vision, self.xbox_controller.getHID()
+                self.drivetrain, self.vision, self.xbox_controller
             )
         )
 
@@ -139,7 +137,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain",
             AlignWithTag2D.toSpeaker(
-                self.drivetrain, self.vision, self.xbox_controller.getHID()
+                self.drivetrain, self.vision, self.xbox_controller
             ),
         )
 

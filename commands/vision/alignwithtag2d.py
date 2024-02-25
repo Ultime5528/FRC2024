@@ -1,10 +1,13 @@
 from typing import Union, Callable, Optional
 
 import wpilib
+from commands2.button import CommandXboxController
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 from wpilib.interfaces import GenericHID
+from wpimath.filter import SlewRateLimiter
 
 from subsystems.drivetrain import Drivetrain
+from commands.drivetrain.drive import apply_center_distance_deadzone, properties
 from subsystems.vision import getSpeakerTagIDFromAlliance, Vision
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
@@ -16,9 +19,9 @@ class AlignWithTag2D(SafeCommand):
 
     @classmethod
     def toSpeaker(
-        cls, drivetrain: Drivetrain, vision: Vision, hid: Optional[GenericHID]
+        cls, drivetrain: Drivetrain, vision: Vision, xbox_remote: CommandXboxController
     ):
-        cmd = cls(drivetrain, vision, getSpeakerTagIDFromAlliance, hid)
+        cmd = cls(drivetrain, vision, getSpeakerTagIDFromAlliance, xbox_remote)
         cmd.setName(cmd.getName() + ".toSpeaker")
         return cmd
 
@@ -27,30 +30,40 @@ class AlignWithTag2D(SafeCommand):
         drivetrain: Drivetrain,
         vision: Vision,
         tag_id: Union[int, Callable[[], int]],
-        hid: Optional[GenericHID],
+        xbox_remote: CommandXboxController,
     ):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.vision = vision
-        self.hid = hid
+        self.xbox_remote = xbox_remote
+        self.hid = xbox_remote.getHID()
         self.get_tag_id = tag_id if callable(tag_id) else lambda: tag_id
         self.vel_rot = 0
 
+        self.m_xspeedLimiter = SlewRateLimiter(3)
+        self.m_yspeedLimiter = SlewRateLimiter(3)
+
     def execute(self):
         target = self.vision.getTargetWithID(self.get_tag_id())
+
+        x_speed, y_speed, _ = apply_center_distance_deadzone(
+            self.xbox_remote.getLeftY() * -1,
+            self.xbox_remote.getLeftX() * -1,
+            properties.moving_deadzone,
+        )
+        x_speed = self.m_xspeedLimiter.calculate(x_speed)
+        y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
         if target is not None:
             self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (
                 0 - target.getYaw()
             )
-            self.drivetrain.drive(0, 0, self.vel_rot, is_field_relative=True)
+            self.drivetrain.drive(x_speed, y_speed, self.vel_rot, is_field_relative=True)
         else:
-            self.drivetrain.stop()
-            if self.hid:
-                self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
+            self.drivetrain.drive(x_speed, y_speed, 0, is_field_relative=True)
+            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
 
     def end(self, interrupted: bool):
         self.drivetrain.stop()
-        if self.hid:
-            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0)
+        self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0)
