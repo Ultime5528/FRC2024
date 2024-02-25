@@ -1,16 +1,14 @@
-import random
-from enum import Enum
 import math
+from enum import Enum
 from typing import Callable, Union, Tuple, List
+
+import numpy as np
 import wpilib
 from wpiutil import SendableBuilder
 
 import ports
-import numpy as np
-
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from subsystems.intake import Intake
 
 
 def interpolate(t, color1, color2):

@@ -4,7 +4,6 @@ from typing import Optional
 import commands2.button
 import wpilib
 
-from commands.led.lightall import LightAll
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -15,6 +14,7 @@ from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
+from commands.led.lightall import LightAll
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
