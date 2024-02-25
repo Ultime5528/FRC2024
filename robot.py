@@ -94,7 +94,9 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         self.xbox_controller.rightTrigger().whileTrue(
-            AlignEverything(self.drivetrain, self.pivot, self.vision, self.xbox_controller)
+            AlignEverything(
+                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+            )
         )
         self.xbox_controller.leftTrigger().whileTrue(
             AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)

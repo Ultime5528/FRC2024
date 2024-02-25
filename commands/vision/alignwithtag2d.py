@@ -54,9 +54,7 @@ class AlignWithTag2D(SafeCommand):
         y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
         if target is not None:
-            self.vel_rot = self.p * (
-                self.horizontal_offset - target.getYaw()
-            )
+            self.vel_rot = self.p * (self.horizontal_offset - target.getYaw())
             self.drivetrain.drive(
                 x_speed, y_speed, self.vel_rot, is_field_relative=True
             )
