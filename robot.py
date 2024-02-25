@@ -90,7 +90,9 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         # Driver's joystick
-        self.xbox_controller.rightTrigger().whileTrue(AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID()))
+        self.xbox_controller.rightTrigger().whileTrue(
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID())
+        )
 
         # Copilot's panel
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
@@ -99,10 +101,14 @@ class Robot(commands2.TimedCommandRobot):
         self.panel_1.button(2).onTrue(Drop(self.intake))
         self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
 
-        AxisTrigger(self.panel_2, 1, "down").whileTrue(ExtendClimber(self.climber_right))
+        AxisTrigger(self.panel_2, 1, "down").whileTrue(
+            ExtendClimber(self.climber_right)
+        )
         AxisTrigger(self.panel_2, 1, "up").whileTrue(RetractClimber(self.climber_right))
         self.panel_2.button(2).onTrue(MovePivot.toSpeakerFar(self.pivot))
-        self.panel_2.button(5).onTrue(ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake))
+        self.panel_2.button(5).onTrue(
+            ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+        )
         self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
 
     def setupSubsystemOnDashboard(self):
@@ -163,7 +169,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", Load(self.intake))
 
         putCommandOnDashboard("LED", LightAll(self.led))
-        
+
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
@@ -173,7 +179,9 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
 
-        putCommandOnDashboard("Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake))
+        putCommandOnDashboard(
+            "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+        )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
 

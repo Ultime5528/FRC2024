@@ -105,8 +105,10 @@ class DriveField(SafeCommand):
             self.rot = math.degrees(math.atan2(rot_x, rot_y)) * -1
 
         rot_speed = (
-            self.drivetrain.getRotation() - Rotation2d.fromDegrees(self.rot)
-        ).degrees() * self.rotate_speed * rot_hyp
+            (self.drivetrain.getRotation() - Rotation2d.fromDegrees(self.rot)).degrees()
+            * self.rotate_speed
+            * rot_hyp
+        )
 
         self.drivetrain.drive(x_speed, y_speed, rot_speed, True)
 

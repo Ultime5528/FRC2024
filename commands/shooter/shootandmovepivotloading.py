@@ -34,6 +34,7 @@ class ShootAndMovePivotLoading(SafeMixin, SequentialCommandGroup):
     s'exécute pendant le Shoot.
 
     """
+
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
             Shoot(shooter, pivot, intake),

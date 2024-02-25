@@ -126,7 +126,7 @@ class LEDController(SafeSubsystem):
         pass
 
     def ModeEndgame(self):
-        pixel_value = abs(round(50*(math.tan(self.time/30))))
+        pixel_value = abs(round(50 * (math.tan(self.time / 30))))
         if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
             for i in range(self.led_number):
                 self.buffer[i].setRGB(pixel_value, 0, 0)
@@ -144,12 +144,16 @@ class LEDController(SafeSubsystem):
         pass
 
     def ModeConnected(self):
-        pixel_value = round((abs(round(255 * math.cos((self.time) / (18 * math.pi))))) * self.brightness)
+        pixel_value = round(
+            (abs(round(255 * math.cos((self.time) / (18 * math.pi))))) * self.brightness
+        )
         for i in range(self.led_number):
             self.buffer[i].setRGB(0, pixel_value, 0)
 
     def ModeNotConnected(self):
-        pixel_value = round(abs(127*self.brightness*(1+math.cos(self.time/(18*math.pi)))))
+        pixel_value = round(
+            abs(127 * self.brightness * (1 + math.cos(self.time / (18 * math.pi))))
+        )
 
         if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
             for i in range(self.led_number):
@@ -168,7 +172,10 @@ class LEDController(SafeSubsystem):
             if wpilib.DriverStation.isAutonomousEnabled():  # auto
                 self.ModeAuto()
             elif wpilib.DriverStation.isTeleopEnabled():  # teleop
-                if wpilib.DriverStation.getMatchTime() == -1.0 or wpilib.DriverStation.getMatchTime() > 20:
+                if (
+                    wpilib.DriverStation.getMatchTime() == -1.0
+                    or wpilib.DriverStation.getMatchTime() > 20
+                ):
                     self.ModeTeleop()
                 elif wpilib.DriverStation.getMatchTime() > 1:
                     self.ModeEndgame()

@@ -22,8 +22,7 @@ def getTagIDFromAlliance() -> int:
     alliance = wpilib.DriverStation.getAlliance()
     if alliance == wpilib.DriverStation.Alliance.kRed:
         return 4
-    elif (alliance ==
-          wpilib.DriverStation.Alliance.kBlue):
+    elif alliance == wpilib.DriverStation.Alliance.kBlue:
         return 8
     else:
         wpilib.reportError("Alliance is invalid")
