@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from enum import Enum, auto
 
 import rev
 import wpilib
@@ -43,9 +44,15 @@ class ClimberProperties(ABC):
     def inversed(self) -> bool: ...
 
 
+class RatchetState(Enum):
+    Unknown = auto()
+    Locked = auto()
+    Unlocked = auto()
+
+
 class Climber(SafeSubsystem):
-    speed_up = autoproperty(0.25)
-    speed_down = autoproperty(-0.25)
+    speed_up = autoproperty(0.6)
+    speed_down = autoproperty(-0.6)
     speed_unload = autoproperty(-0.1)
 
     sim_max_height = 100.0
@@ -63,6 +70,7 @@ class Climber(SafeSubsystem):
 
         self._ratchet_servo = wpilib.Servo(properties.port_ratchet)
         self.addChild("servo", self._ratchet_servo)
+        self.ratchet_state = RatchetState.Unknown
 
         self._switch_up = Switch(Switch.Type.NormallyClosed, properties.port_switch_up)
         self._switch_down = Switch(Switch.Type.AlwaysUnpressed)
@@ -163,6 +171,9 @@ class Climber(SafeSubsystem):
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)
         builder.addBooleanProperty("isDown", self.isDown, noop)
+        builder.addStringProperty(
+            "ratchet_state", lambda: str(self.ratchet_state), noop
+        )
 
 
 class ClimberLeftProperties(ClimberProperties):
@@ -170,9 +181,9 @@ class ClimberLeftProperties(ClimberProperties):
     port_switch_up = ports.climber_left_switch_up
     port_switch_down = ports.climber_left_switch_down
     port_ratchet = ports.climber_servo_left
-    ratchet_lock_angle = autoproperty(0.7, subtable="ClimberLeft")
-    ratchet_unlock_angle = autoproperty(0.3, subtable="ClimberLeft")
-    height_max = autoproperty(100.0, subtable="ClimberLeft")
+    ratchet_lock_angle = autoproperty(1.0, subtable="ClimberLeft")
+    ratchet_unlock_angle = autoproperty(0.05, subtable="ClimberLeft")
+    height_max = autoproperty(222.0, subtable="ClimberLeft")
     height_min = autoproperty(0, subtable="ClimberLeft")
     inversed = False
 
@@ -185,9 +196,9 @@ class ClimberRightProperties(ClimberProperties):
     port_switch_up = ports.climber_right_switch_up
     port_switch_down = ports.climber_right_switch_down
     port_ratchet = ports.climber_servo_right
-    ratchet_lock_angle = autoproperty(0.2, subtable="ClimberRight")
-    ratchet_unlock_angle = autoproperty(0.6, subtable="ClimberRight")
-    height_max = autoproperty(100.0, subtable="ClimberRight")
+    ratchet_lock_angle = autoproperty(0.3, subtable="ClimberRight")
+    ratchet_unlock_angle = autoproperty(0.85, subtable="ClimberRight")
+    height_max = autoproperty(222.0, subtable="ClimberRight")
     height_min = autoproperty(0, subtable="ClimberRight")
     inversed = True
 

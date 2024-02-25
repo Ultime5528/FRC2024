@@ -1,8 +1,8 @@
 import wpilib
 
+from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-from subsystems.drivetrain import Drivetrain
 
 
 class DriveSquares(SafeCommand):

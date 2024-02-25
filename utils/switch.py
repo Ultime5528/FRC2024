@@ -77,3 +77,6 @@ class Switch:
 
     def getChannel(self):
         return self._input.getChannel()
+
+    def getType(self):
+        return self._type

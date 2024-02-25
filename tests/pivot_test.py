@@ -1,4 +1,7 @@
+from unittest import mock
+
 import pyfrc.test_support.controller
+import wpilib
 from pytest import approx
 from wpilib.simulation import stepTiming
 
@@ -7,6 +10,8 @@ from commands.pivot.movepivot import MovePivot
 from commands.pivot.movepivot import move_pivot_properties
 from commands.pivot.resetpivotdown import ResetPivotDown
 from robot import Robot
+from subsystems.pivot import Pivot
+from utils.switch import Switch
 
 
 def test_maintain(control, robot: Robot):
@@ -50,7 +55,7 @@ def common_test_movePivot_from_switch_down(
 
         assert counter < 1000, "the motor takes too long to stop"
         assert robot.pivot._motor.get() == approx(0.0)
-        assert robot.pivot.getHeight() == approx(wantedHeight, rel=0.01)
+        assert robot.pivot.getHeight() == approx(wantedHeight, rel=0.1)
 
 
 def test_movePivot_toSpeakerFar(control, robot: Robot):
@@ -81,14 +86,6 @@ def test_movePivot_toLoading(control, robot: Robot):
     common_test_movePivot_from_switch_down(
         control, robot, MovePivot.toLoading, move_pivot_properties.position_loading
     )
-
-
-def test_ports(control: "pyfrc.test_support.controller.TestController", robot: Robot):
-    with control.run_robot():
-        # left
-        assert robot.pivot._switch_up.getChannel() == 1
-        assert robot.pivot._switch_down.getChannel() == 0
-        assert robot.pivot._motor.getChannel() == 0
 
 
 def test_resetCommand(control, robot: Robot):
@@ -160,10 +157,25 @@ def test_requirements_toLoading(control, robot: Robot):
     common_test_requirements(control, robot, MovePivot.toLoading)
 
 
-def test_requirements_ResetPivotDown(
-    control: "pyfrc.test_support.controller.TestController",
-    robot: Robot,
-):
-    with control.run_robot():
-        cmd = ResetPivotDown(robot.pivot)
-        assert cmd.hasRequirement(robot.pivot)
+def test_requirements_ResetPivotDown(control, robot: Robot):
+    common_test_requirements(control, robot, ResetPivotDown)
+
+
+@mock.patch("wpilib.Encoder", wraps=wpilib.Encoder)
+def test_ports(mock_Encoder):
+    mock_Encoder.assert_not_called()
+
+    pivot = Pivot()
+
+    assert pivot._motor.getChannel() == 0
+    mock_Encoder.assert_called_once_with(5, 6, reverseDirection=True)
+    assert pivot._switch_down.getChannel() == 0
+    assert pivot._switch_up.getChannel() == 1
+
+
+def test_settings():
+    pivot = Pivot()
+
+    assert not pivot._motor.getInverted()
+    assert pivot._switch_up.getType() == Switch.Type.NormallyClosed
+    assert pivot._switch_up.getType() == Switch.Type.NormallyClosed

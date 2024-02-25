@@ -10,13 +10,14 @@ from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from robot import Robot
-from subsystems.climber import Climber, climber_left_properties
+from subsystems.climber import Climber, climber_left_properties, RatchetState
 
 
 def test_extend(control: "pyfrc.test_support.controller.TestController", robot: Robot):
     with control.run_robot():
         # Put climber at min
         robot.climber_left._sim_motor.setPosition(0.0)
+        assert robot.climber_left.ratchet_state == RatchetState.Unknown
 
         # Enable robot and schedule command
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
@@ -32,6 +33,7 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         assert robot.climber_left._ratchet_servo.get() == approx(
             robot.climber_left.properties.ratchet_unlock_angle
         )
+        assert robot.climber_left.ratchet_state == RatchetState.Unknown
 
         counter = 0
 
@@ -47,6 +49,7 @@ def test_extend(control: "pyfrc.test_support.controller.TestController", robot: 
         # Leave some for next subcommand to start
         stepTiming(0.1)
 
+        assert robot.climber_left.ratchet_state == RatchetState.Unlocked
         assert robot.climber_left._motor.get() == approx(robot.climber_left.speed_up)
 
         counter = 0
@@ -69,6 +72,7 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
     with control.run_robot():
         # Put climber at half
         robot.climber_left._sim_motor.setPosition(robot.climber_left.sim_max_height / 2)
+        assert robot.climber_left.ratchet_state == RatchetState.Unknown
 
         # Enable robot and schedule command
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
@@ -82,6 +86,7 @@ def test_retract(control: "pyfrc.test_support.controller.TestController", robot:
         assert robot.climber_left._ratchet_servo.get() == approx(
             robot.climber_left.properties.ratchet_lock_angle
         )
+        assert robot.climber_left.ratchet_state == RatchetState.Locked
 
         counter = 0
 
@@ -120,11 +125,11 @@ def test_ports(control: "pyfrc.test_support.controller.TestController", robot: R
         # left
         assert robot.climber_left._motor.getDeviceId() == 9
         assert robot.climber_left._switch_up.getChannel() == 3
-        # assert robot.climber_left._switch_down.getChannel() == 2
+        assert robot.climber_left._ratchet_servo.getChannel() == 3
         # right
         assert robot.climber_right._motor.getDeviceId() == 10
         assert robot.climber_right._switch_up.getChannel() == 4
-        # assert robot.climber_right._switch_down.getChannel() == 3
+        assert robot.climber_right._ratchet_servo.getChannel() == 2
 
 
 @mock.patch("rev.CANSparkMax.restoreFactoryDefaults")

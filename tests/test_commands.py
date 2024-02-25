@@ -2,7 +2,9 @@ import ast
 import inspect
 from textwrap import dedent
 from typing import List
+
 from commands2 import Command, Subsystem
+
 from tests.utils import import_submodules
 from utils.safecommand import SafeMixin, SafeCommand
 

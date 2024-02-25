@@ -30,6 +30,7 @@ pivot_motor: Final = 0
 intake_motor: Final = 1
 climber_servo_right: Final = 2
 climber_servo_left: Final = 3
+led_strip = 4
 
 # DIO
 pivot_switch_down: Final = 0

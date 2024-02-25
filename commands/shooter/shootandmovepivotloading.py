@@ -12,7 +12,7 @@ from subsystems.shooter import Shooter
 from utils.safecommand import SafeMixin
 
 
-class ShootQuick(ParallelRaceGroup, SafeMixin):
+class Shoot(ParallelRaceGroup, SafeMixin):
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
             ParallelRaceGroup(
@@ -22,9 +22,21 @@ class ShootQuick(ParallelRaceGroup, SafeMixin):
         )
 
 
-class Shoot(SequentialCommandGroup, SafeMixin):
+class ShootAndMovePivotLoading(SafeMixin, SequentialCommandGroup):
+    """
+    La commande Shoot ne requiert pas le Pivot, il lit seulement sa hauteur.
+
+    Pendant qu'on tire, on veut qu'en arrière-plan, la commande par défaut MaintainPivot
+    s'exécute.
+
+    À la toute fin, on veut faire un MovePivot. Proxy est nécessaire
+    pour que le Pivot ne soit pas dans les requirements et que le Maintain poursuive de
+    s'exécute pendant le Shoot.
+
+    """
+
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
-            ShootQuick(shooter, pivot, intake),
+            Shoot(shooter, pivot, intake),
             ProxyCommand(MovePivot.toLoading(pivot)),
         )
