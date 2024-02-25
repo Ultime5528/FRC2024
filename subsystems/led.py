@@ -121,7 +121,13 @@ class LEDController(SafeSubsystem):
         self.setAll(getColor)
 
     def ModeAuto(self):
-        pass
+        color = self.getAllianceColor()
+        i_values = np.arange(self.led_number)
+        y_values = 0.5 * np.sin(2 * math.pi ** 2 * (i_values - 2 * self.time) / 200) + 0.5
+
+        pixel_value = numpy_interpolation(y_values, color, self.white)
+        for i, y in enumerate(pixel_value):
+            self.buffer[i].setRGB(*y)
 
     def ModeTeleop(self):
         pass
