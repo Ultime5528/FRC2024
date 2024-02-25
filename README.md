@@ -9,6 +9,7 @@
 * Run tests : `python -m robotpy test`
 * Sync dependencies : `python -m robotpy sync`
 * Format code with black `python -m black .`
+* Save autoproperties : `python properties.py saveonce`
 
 
 ## Environment setup

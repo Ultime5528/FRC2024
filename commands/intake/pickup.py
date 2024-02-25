@@ -6,7 +6,7 @@ from utils.safecommand import SafeCommand
 
 
 class PickUp(SafeCommand):
-    delay = autoproperty(1.0)
+    delay = autoproperty(0.0)
 
     def __init__(self, intake: Intake):
         super().__init__()
@@ -23,7 +23,7 @@ class PickUp(SafeCommand):
             self.timer.start()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= self.delay
+        return self.intake.hasNote() and self.timer.get() >= self.delay
 
     def end(self, interrupted: bool) -> None:
         self.timer.stop()

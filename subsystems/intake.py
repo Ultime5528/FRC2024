@@ -1,25 +1,23 @@
 import wpilib
-from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
 import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from utils.sparkmaxsim import SparkMaxSim
 from utils.switch import Switch
 
 
 class Intake(SafeSubsystem):
-    speed_in = autoproperty(0.5)
-    speed_load = autoproperty(0.2)
-    speed_out = autoproperty(-0.17)
+    speed_in = autoproperty(0.7)
+    speed_load = autoproperty(0.75)
+    speed_out = autoproperty(-0.75)
 
     def __init__(self):
         super().__init__()
 
         self._motor = wpilib.VictorSP(ports.intake_motor)
 
-        self._sensor = Switch(Switch.Type.NormallyClosed, ports.intake_sensor)
+        self._sensor = Switch(Switch.Type.NormallyOpen, ports.intake_sensor)
 
     def pickUp(self):
         self._motor.set(self.speed_in)
