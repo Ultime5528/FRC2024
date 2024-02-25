@@ -1,7 +1,5 @@
-import pyfrc.test_support.controller
 from unittest import mock
 
-import pyfrc
 import pyfrc.test_support.controller
 import wpilib
 from pytest import approx
@@ -175,13 +173,12 @@ def test_ports(mock_Encoder):
     pivot = Pivot()
 
     assert pivot._motor.getChannel() == 0
-    mock_Encoder.assert_called_once_with(5, 6)
-    assert pivot._switch_up.getChannel() == 0
-    assert pivot._switch_down.getChannel() == 7
+    mock_Encoder.assert_called_once_with(5, 6, reverseDirection=True)
+    assert pivot._switch_down.getChannel() == 0
+    assert pivot._switch_up.getChannel() == 1
 
 
 def test_settings():
-
     pivot = Pivot()
 
     assert not pivot._motor.getInverted()
