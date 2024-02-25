@@ -4,6 +4,7 @@ from typing import Optional
 import commands2.button
 import wpilib
 
+from commands.aligneverything import AlignEverything
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -18,6 +19,7 @@ from commands.led.lightall import LightAll
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
+from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
@@ -194,6 +196,9 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
+
+        putCommandOnDashboard("Vision", MovePivotContinuous(self.pivot, self.vision))
+        putCommandOnDashboard("Vision", AlignEverything(self.drivetrain, self.pivot, self.vision, self.xbox_controller))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()

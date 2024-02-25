@@ -39,12 +39,10 @@ class Pivot(SafeSubsystem):
         self._encoder = wpilib.Encoder(
             ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True
         )
-
-        self.interpolator = LinearInterpolator(interpolation_points)
-
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)
 
+        self._interpolator = LinearInterpolator(interpolation_points)
         self._offset = 0.0
         self._has_reset = False
         self._prev_is_down = False
@@ -105,11 +103,8 @@ class Pivot(SafeSubsystem):
     def maintain(self):
         self.setSpeed(self.speed_maintain)
 
-    def setInterpolatorPosition(self, tag_position):
-        self.interpolator.interpolate(tag_position)
-
-    def getInterpolatedPosition(self) -> Union[None, float]:
-        return self.interpolator.getInterpolatedValue()
+    def getInterpolatedPosition(self, target_pitch: float) -> float:
+        return self._interpolator.interpolate(target_pitch)
 
     def isDown(self) -> bool:
         return self._switch_down.isPressed()
