@@ -9,11 +9,12 @@ from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
-from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetrain.drive import DriveField, Drive
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
+from commands.led.lightall import LightAll
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
@@ -21,15 +22,17 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shoot import Shoot
+from commands.shooter.shootandmovepivotloading import ShootAndMovePivotLoading
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
+from subsystems.led import LEDController
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
+from utils.axistrigger import AxisTrigger
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -49,6 +52,8 @@ class Robot(commands2.TimedCommandRobot):
         Joysticks
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
+        self.panel_1 = commands2.button.CommandJoystick(1)
+        self.panel_2 = commands2.button.CommandJoystick(2)
 
         """
         Subsystems
@@ -60,6 +65,7 @@ class Robot(commands2.TimedCommandRobot):
         self.pivot = Pivot()
         self.shooter = Shooter()
         self.vision = Vision()
+        self.led = LEDController()
 
         """
         Default subsystem commands
@@ -91,6 +97,23 @@ class Robot(commands2.TimedCommandRobot):
             )
         )
 
+        # Copilot's panel
+        AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
+        AxisTrigger(self.panel_1, 1, "up").whileTrue(RetractClimber(self.climber_left))
+        self.panel_1.button(3).onTrue(PickUp(self.intake))
+        self.panel_1.button(2).onTrue(Drop(self.intake))
+        self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
+
+        AxisTrigger(self.panel_2, 1, "down").whileTrue(
+            ExtendClimber(self.climber_right)
+        )
+        AxisTrigger(self.panel_2, 1, "up").whileTrue(RetractClimber(self.climber_right))
+        self.panel_2.button(2).onTrue(MovePivot.toSpeakerFar(self.pivot))
+        self.panel_2.button(5).onTrue(
+            ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+        )
+        self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
+
     def setupSubsystemOnDashboard(self):
         wpilib.SmartDashboard.putData("Drivetrain", self.drivetrain)
         wpilib.SmartDashboard.putData("ClimberLeft", self.climber_left)
@@ -99,6 +122,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Pivot", self.pivot)
         wpilib.SmartDashboard.putData("Shooter", self.shooter)
         wpilib.SmartDashboard.putData("Vision", self.vision)
+        wpilib.SmartDashboard.putData("LED", self.led)
 
     def setupCommandsOnDashboard(self):
         """
@@ -116,6 +140,7 @@ class Robot(commands2.TimedCommandRobot):
                 self.drivetrain, self.vision, self.xbox_controller.getHID()
             ),
         )
+
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
@@ -153,6 +178,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
+        putCommandOnDashboard("LED", LightAll(self.led))
+
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
@@ -162,7 +189,9 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
 
-        putCommandOnDashboard("Shooter", Shoot(self.shooter, self.pivot, self.intake))
+        putCommandOnDashboard(
+            "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+        )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
 

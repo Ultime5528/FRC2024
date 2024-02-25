@@ -1,6 +1,6 @@
 from subsystems.pivot import Pivot
-from utils.safecommand import SafeCommand
 from utils.property import FloatProperty, asCallable
+from utils.safecommand import SafeCommand
 
 
 class ForceResetPivot(SafeCommand):
