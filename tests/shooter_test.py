@@ -84,3 +84,5 @@ def test_requirements(control, robot):
         assert cmd.hasRequirement(robot.shooter)
         cmd = ManualShoot(robot.shooter)
         assert cmd.hasRequirement(robot.shooter)
+        cmd = WaitShootSpeed(robot.shooter)
+        assert not cmd.hasRequirement(robot.shooter)
