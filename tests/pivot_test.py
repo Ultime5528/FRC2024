@@ -157,13 +157,8 @@ def test_requirements_toLoading(control, robot: Robot):
     common_test_requirements(control, robot, MovePivot.toLoading)
 
 
-def test_requirements_ResetPivotDown(
-    control: "pyfrc.test_support.controller.TestController",
-    robot: Robot,
-):
-    with control.run_robot():
-        cmd = ResetPivotDown(robot.pivot)
-        assert cmd.hasRequirement(robot.pivot)
+def test_requirements_ResetPivotDown(control, robot: Robot):
+    common_test_requirements(control, robot, ResetPivotDown)
 
 
 @mock.patch("wpilib.Encoder", wraps=wpilib.Encoder)
