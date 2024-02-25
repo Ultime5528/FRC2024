@@ -1,6 +1,6 @@
 import wpilib
 
-from subsystems.climber import Climber
+from subsystems.climber import Climber, RatchetState
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
@@ -21,7 +21,12 @@ class LockRatchet(SafeCommand):
         self.climber.lockRatchet()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= self.delay
+        return self.climber.ratchet_state == RatchetState.Locked or self.timer.get() >= self.delay
 
     def end(self, interrupted: bool):
         self.timer.stop()
+
+        if interrupted:
+            self.climber.ratchet_state = RatchetState.Unknown
+        else:
+            self.climber.ratchet_state = RatchetState.Locked

@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from enum import Enum, auto
 
 import rev
 import wpilib
@@ -43,6 +44,12 @@ class ClimberProperties(ABC):
     def inversed(self) -> bool: ...
 
 
+class RatchetState(Enum):
+    Unknown = auto()
+    Locked = auto()
+    Unlocked = auto()
+
+
 class Climber(SafeSubsystem):
     speed_up = autoproperty(0.6)
     speed_down = autoproperty(-0.6)
@@ -63,6 +70,7 @@ class Climber(SafeSubsystem):
 
         self._ratchet_servo = wpilib.Servo(properties.port_ratchet)
         self.addChild("servo", self._ratchet_servo)
+        self.ratchet_state = RatchetState.Unknown
 
         self._switch_up = Switch(Switch.Type.NormallyClosed, properties.port_switch_up)
         self._switch_down = Switch(Switch.Type.AlwaysUnpressed)
@@ -163,6 +171,7 @@ class Climber(SafeSubsystem):
         builder.addBooleanProperty("switch_down", self._switch_down.isPressed, noop)
         builder.addBooleanProperty("isUp", self.isUp, noop)
         builder.addBooleanProperty("isDown", self.isDown, noop)
+        builder.addStringProperty("ratchet_state", lambda: str(self.ratchet_state), noop)
 
 
 class ClimberLeftProperties(ClimberProperties):
