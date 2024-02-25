@@ -6,7 +6,7 @@ from utils.safecommand import SafeCommand
 
 
 class Drop(SafeCommand):
-    delay = autoproperty(3.0)
+    delay = autoproperty(1.5)
 
     def __init__(self, intake: Intake):
         super().__init__()
