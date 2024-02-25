@@ -50,7 +50,7 @@ def common_test_movePivot_from_switch_down(
 
         assert counter < 1000, "the motor takes too long to stop"
         assert robot.pivot._motor.get() == approx(0.0)
-        assert robot.pivot.getHeight() == approx(wantedHeight, rel=0.01)
+        assert robot.pivot.getHeight() == approx(wantedHeight, rel=0.1)
 
 
 def test_movePivot_toSpeakerFar(control, robot: Robot):

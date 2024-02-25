@@ -1,10 +1,10 @@
 import inspect
 from typing import List
+
 from commands2 import Subsystem
 
-from utils.safesubsystem import SafeSubsystem
-
 from tests.utils import import_submodules
+from utils.safesubsystem import SafeSubsystem
 
 
 def get_subsystems() -> List[Subsystem or None]:
