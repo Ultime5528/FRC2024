@@ -21,6 +21,7 @@ def get_commands() -> List[Command or None]:
                 issubclass(cls, Command)
                 and cls.__name__ != "SafeCommand"
                 and cls.__name__ != "SequentialCommandGroup"
+                and cls.__name__ != "ParallelCommandGroup"
             ):
                 cmds.append(cls)
     return cmds

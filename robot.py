@@ -4,6 +4,7 @@ from typing import Optional
 import commands2.button
 import wpilib
 
+from commands.aligneverything import AlignEverything
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -18,6 +19,7 @@ from commands.led.lightall import LightAll
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
+from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
@@ -92,9 +94,12 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         self.xbox_controller.rightTrigger().whileTrue(
-            AlignWithTag2D.toSpeaker(
-                self.drivetrain, self.vision, self.xbox_controller.getHID()
+            AlignEverything(
+                self.drivetrain, self.pivot, self.vision, self.xbox_controller
             )
+        )
+        self.xbox_controller.leftTrigger().whileTrue(
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)
         )
 
         # Copilot's panel
@@ -137,7 +142,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Drivetrain",
             AlignWithTag2D.toSpeaker(
-                self.drivetrain, self.vision, self.xbox_controller.getHID()
+                self.drivetrain, self.vision, self.xbox_controller
             ),
         )
 
@@ -188,12 +193,20 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
 
         putCommandOnDashboard(
             "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
         )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
+
+        putCommandOnDashboard(
+            "Vision",
+            AlignEverything(
+                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+            ),
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()

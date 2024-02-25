@@ -48,7 +48,7 @@ class LEDController(SafeSubsystem):
     speed = autoproperty(0.75)
     white_length = autoproperty(6.0)
     color_period = autoproperty(20.0)
-    brightnessValue = autoproperty(100)
+    brightnessValue = autoproperty(10)
 
     last = 0
 
