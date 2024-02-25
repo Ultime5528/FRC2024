@@ -11,9 +11,9 @@
 | commands/climber/\_\_init\_\_.py             |        0 |        0 |        0 |        0 |    100% |           |
 | commands/climber/extendclimber.py            |       18 |        0 |        0 |        0 |    100% |           |
 | commands/climber/forceresetclimber.py        |       23 |        0 |        8 |        1 |     97% |  15->exit |
-| commands/climber/lockratchet.py              |       19 |        0 |        0 |        0 |    100% |           |
+| commands/climber/lockratchet.py              |       22 |        1 |        2 |        1 |     92% |        33 |
 | commands/climber/retractclimber.py           |       18 |        0 |        0 |        0 |    100% |           |
-| commands/climber/unlockratchet.py            |       21 |        0 |        0 |        0 |    100% |           |
+| commands/climber/unlockratchet.py            |       24 |        1 |        2 |        1 |     92% |        35 |
 | commands/drivetopos.py                       |        9 |        3 |        0 |        0 |     67% |  9-10, 13 |
 | commands/drivetoposes.py                     |       73 |       43 |        8 |        0 |     37% |34-37, 40-54, 57-99, 102, 105 |
 | commands/drivetrain/\_\_init\_\_.py          |        0 |        0 |        0 |        0 |    100% |           |
@@ -41,14 +41,14 @@
 | properties.py                                |       71 |       71 |       24 |        0 |      0% |     1-141 |
 | robot.py                                     |      133 |        3 |       12 |        4 |     95% |201, 205, 216, 220->223 |
 | subsystems/\_\_init\_\_.py                   |        0 |        0 |        0 |        0 |    100% |           |
-| subsystems/climber.py                        |      139 |        4 |       77 |       11 |     93% |19->exit, 22->exit, 25->exit, 28->exit, 31->exit, 34->exit, 37->exit, 40->exit, 43->exit, 76->exit, 113, 125, 151, 154 |
+| subsystems/climber.py                        |      146 |        4 |       79 |       11 |     93% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 159, 162 |
 | subsystems/drivetrain.py                     |       98 |        8 |        4 |        2 |     90% |94->exit, 113, 133, 145, 151-160, 243 |
 | subsystems/intake.py                         |       30 |        1 |        0 |        0 |     97% |        45 |
 | subsystems/led.py                            |      132 |       51 |       44 |        4 |     54% |15-16, 20-21, 60->exit, 70-71, 74, 77-79, 82, 85-92, 95-98, 101-104, 107-118, 127-133, 139, 142, 152-161, 168, 178-179, 184 |
 | subsystems/pivot.py                          |       98 |        3 |       18 |        1 |     97% |47->exit, 129, 132, 135 |
 | subsystems/shooter.py                        |       56 |        5 |        8 |        1 |     91% |44->exit, 65-68, 78 |
 | subsystems/vision.py                         |       35 |        6 |       10 |        4 |     73% |12, 14, 32-33, 38, 43 |
-| tests/climber\_test.py                       |       87 |        0 |       24 |        0 |    100% |           |
+| tests/climber\_test.py                       |       92 |        0 |       24 |        0 |    100% |           |
 | tests/drive\_test.py                         |       10 |        0 |        2 |        0 |    100% |           |
 | tests/intake\_test.py                        |       58 |        0 |       10 |        0 |    100% |           |
 | tests/pivot\_test.py                         |      108 |        2 |       20 |        1 |     98% |     46-47 |
@@ -68,7 +68,7 @@
 | utils/swerve.py                              |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                              |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                   |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                    **TOTAL** | **2572** |  **445** |  **598** |   **79** | **80%** |           |
+|                                    **TOTAL** | **2590** |  **447** |  **604** |   **81** | **80%** |           |
 
 
 ## Setup coverage badge
