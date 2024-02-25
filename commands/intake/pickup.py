@@ -3,8 +3,6 @@ import wpilib
 from subsystems.intake import Intake
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-import ports
-from subsystems.led import LEDController, ModeLED
 
 
 class PickUp(SafeCommand):

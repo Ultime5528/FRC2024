@@ -3,6 +3,8 @@ from enum import Enum
 import math
 from typing import Callable, Union, Tuple, List
 import wpilib
+from wpiutil import SendableBuilder
+
 import ports
 import numpy as np
 
@@ -65,9 +67,6 @@ class LEDController(SafeSubsystem):
         self.mode = ModeLED.NONE
 
         self.brightness = max(min(100, self.brightnessValue), 0) / 100
-
-        self.timer = wpilib.Timer()
-        self.timer.start()
 
     def setRGB(self, i: int, color: Color):
         color = (color * self.brightness).astype(int)
@@ -181,3 +180,8 @@ class LEDController(SafeSubsystem):
 
         self.led_strip.setData(self.buffer)
         wpilib.SmartDashboard.putNumber("led_time", wpilib.getTime() - start_time)
+
+    def initSendable(self, builder: SendableBuilder) -> None:
+        super().initSendable(builder)
+        builder.addStringProperty("mode", lambda: str(self.mode), lambda _: None)
+        builder.addIntegerProperty("time", lambda: self.time, lambda _: None)

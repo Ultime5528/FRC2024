@@ -2,7 +2,7 @@ from subsystems.led import LEDController, ModeLED
 from utils.safecommand import SafeCommand
 
 
-class Lightall(SafeCommand):
+class LightAll(SafeCommand):
     def __init__(self, led_controller: LEDController):
         super().__init__()
         self.led_controller = led_controller
