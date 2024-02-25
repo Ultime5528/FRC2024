@@ -3,7 +3,7 @@ from wpilib.simulation import stepTiming
 
 from commands.pivot.movepivot import MovePivot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shoot import Shoot
+from commands.shooter.shootandmovepivotloading import ShootAndMovePivotLoading
 from commands.shooter.waitshootspeed import WaitShootSpeed
 from robot import Robot
 
@@ -30,7 +30,7 @@ def test_ShootFar(control, robot: Robot):
         assert not robot.shooter._reached_speed_right
 
         prepare_shoot_properties = PrepareShoot(robot.shooter, robot.pivot)
-        cmd_shoot = Shoot(robot.shooter, robot.pivot, robot.intake)
+        cmd_shoot = ShootAndMovePivotLoading(robot.shooter, robot.pivot, robot.intake)
         cmd_shoot.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
 
