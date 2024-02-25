@@ -10,8 +10,14 @@ from utils.safecommand import SafeMixin
 
 
 class AlignEverything(SafeMixin, ParallelCommandGroup):
-    def __init__(self, drivetrain: Drivetrain, pivot: Pivot, vision: Vision, xbox_remote: CommandXboxController):
+    def __init__(
+        self,
+        drivetrain: Drivetrain,
+        pivot: Pivot,
+        vision: Vision,
+        xbox_remote: CommandXboxController,
+    ):
         super().__init__(
             AlignWithTag2D.toSpeaker(drivetrain, vision, xbox_remote),
-            MovePivotContinuous(pivot, vision)
+            MovePivotContinuous(pivot, vision),
         )

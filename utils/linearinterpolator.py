@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional, Union
+from typing import List, Tuple
 
 
 class LinearInterpolator:
@@ -18,5 +18,5 @@ class LinearInterpolator:
             return self._points[i - 1][1]
 
         return (self._points[i][1] - self._points[i - 1][1]) / (
-                self._points[i][0] - self._points[i - 1][0]
+            self._points[i][0] - self._points[i - 1][0]
         ) * (x - self._points[i - 1][0]) + self._points[i - 1][1]

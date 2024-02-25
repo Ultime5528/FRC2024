@@ -1,21 +1,19 @@
-from typing import Union, Callable, Optional
+from typing import Union, Callable
 
-import wpilib
 from commands2.button import CommandXboxController
-from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 from wpilib.interfaces import GenericHID
 from wpimath.filter import SlewRateLimiter
 
-from subsystems.drivetrain import Drivetrain
 from commands.drivetrain.drive import apply_center_distance_deadzone, properties
+from subsystems.drivetrain import Drivetrain
 from subsystems.vision import getSpeakerTagIDFromAlliance, Vision
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
 
 class AlignWithTag2D(SafeCommand):
-    p = autoproperty(0.01)
-    ff = autoproperty(0.01)
+    p = autoproperty(0.025)
+    horizontal_offset = autoproperty(-5.0)
 
     @classmethod
     def toSpeaker(
@@ -56,10 +54,12 @@ class AlignWithTag2D(SafeCommand):
         y_speed = self.m_yspeedLimiter.calculate(y_speed)
 
         if target is not None:
-            self.vel_rot = self.p * (0 - target.getYaw()) + self.ff * (
-                0 - target.getYaw()
+            self.vel_rot = self.p * (
+                self.horizontal_offset - target.getYaw()
             )
-            self.drivetrain.drive(x_speed, y_speed, self.vel_rot, is_field_relative=True)
+            self.drivetrain.drive(
+                x_speed, y_speed, self.vel_rot, is_field_relative=True
+            )
         else:
             self.drivetrain.drive(x_speed, y_speed, 0, is_field_relative=True)
             self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0.5)

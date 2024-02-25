@@ -173,7 +173,7 @@ class ClimberLeftProperties(ClimberProperties):
     ratchet_lock_angle = autoproperty(1.0, subtable="ClimberLeft")
     ratchet_unlock_angle = autoproperty(0.05, subtable="ClimberLeft")
     height_max = autoproperty(222.0, subtable="ClimberLeft")
-    height_min = autoproperty(0, subtable="ClimberLeft")
+    height_min = autoproperty(20, subtable="ClimberLeft")
     inversed = False
 
 
@@ -188,7 +188,7 @@ class ClimberRightProperties(ClimberProperties):
     ratchet_lock_angle = autoproperty(0.3, subtable="ClimberRight")
     ratchet_unlock_angle = autoproperty(0.85, subtable="ClimberRight")
     height_max = autoproperty(222.0, subtable="ClimberRight")
-    height_min = autoproperty(0, subtable="ClimberRight")
+    height_min = autoproperty(20, subtable="ClimberRight")
     inversed = True
 
 

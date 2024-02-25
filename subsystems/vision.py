@@ -1,4 +1,4 @@
-from typing import Optional, List, Union
+from typing import Optional, List
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
@@ -43,4 +43,11 @@ class Vision(Sendable):
                 return target.getPitch()
             return 0.0
 
-        builder.addFloatProperty("Y_pos_speaker_target", getSpeakerPitch, noop)
+        def getSpeakerYaw():
+            target = self.getTargetWithID(getSpeakerTagIDFromAlliance())
+            if target is not None:
+                return target.getYaw()
+            return 0.0
+
+        builder.addFloatProperty("speaker_y", getSpeakerPitch, noop)
+        builder.addFloatProperty("speaker_x", getSpeakerYaw, noop)

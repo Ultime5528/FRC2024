@@ -1,6 +1,6 @@
 from enum import Enum, auto
-from typing import Union
 
+import numpy
 import wpilib
 from wpilib import RobotBase
 from wpilib.simulation import PWMSim, EncoderSim
@@ -13,7 +13,8 @@ from utils.safesubsystem import SafeSubsystem
 from utils.switch import Switch
 
 # X is height in camera view, y is the subsequent wanted pivot pitch
-interpolation_points = [(10, 20), (20, 40)]
+interpolation_points = [(-4.1, 28), (1.45, 48), (5.05, 55), (9.8, 64)]
+
 
 class Pivot(SafeSubsystem):
     class State(Enum):
@@ -27,9 +28,9 @@ class Pivot(SafeSubsystem):
 
     speed_up = autoproperty(0.2)
     speed_down = autoproperty(-0.75)
-    speed_maintain = autoproperty(-0.2)
+    speed_maintain = autoproperty(-0.25)
     height_min = 0.0
-    height_max = autoproperty(55.0)
+    height_max = autoproperty(65.0)
 
     def __init__(self):
         super().__init__()

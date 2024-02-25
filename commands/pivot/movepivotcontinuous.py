@@ -19,7 +19,9 @@ class MovePivotContinuous(SafeCommand):
         if self.pivot.hasReset():
             target = self.vision.getTargetWithID(getSpeakerTagIDFromAlliance())
             if target:
-                interpolated_value = self.pivot.getInterpolatedPosition(target.getPitch())
+                interpolated_value = self.pivot.getInterpolatedPosition(
+                    target.getPitch()
+                )
                 error = interpolated_value - self.pivot.getHeight()
                 if abs(error) <= self.threshold:
                     self.pivot.maintain()
@@ -28,7 +30,7 @@ class MovePivotContinuous(SafeCommand):
                 else:
                     self.pivot.moveUp()
         else:
-            wpilib.reportError("Pivot has not reset: cannot ContinuousMovePivot")
+            wpilib.reportError("Pivot has not reset: cannot MovePivotContinuous")
 
     def end(self, interrupted: bool):
         self.pivot.stop()

@@ -1,118 +1,38 @@
 [
   {
-    "name": "/Properties/Climber/speed_up",
+    "name": "/Properties/Pivot/speed_up",
     "type": "double",
-    "value": 0.6,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Climber/speed_down",
+    "name": "/Properties/Pivot/speed_down",
     "type": "double",
-    "value": -0.6,
+    "value": -0.75,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Climber/speed_unload",
+    "name": "/Properties/Pivot/speed_maintain",
     "type": "double",
-    "value": -0.1,
+    "value": -0.25,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Climber/stall_limit",
-    "type": "int",
-    "value": 15,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Climber/free_limit",
-    "type": "int",
-    "value": 30,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberLeft/ratchet_lock_angle",
+    "name": "/Properties/Pivot/height_max",
     "type": "double",
-    "value": 1.0,
+    "value": 65.0,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/ClimberLeft/ratchet_unlock_angle",
-    "type": "double",
-    "value": 0.05,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberLeft/height_max",
-    "type": "double",
-    "value": 222.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberLeft/height_min",
-    "type": "int",
-    "value": 0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberRight/ratchet_lock_angle",
-    "type": "double",
-    "value": 0.3,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberRight/ratchet_unlock_angle",
-    "type": "double",
-    "value": 0.85,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberRight/height_max",
-    "type": "double",
-    "value": 222.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/ClimberRight/height_min",
-    "type": "int",
-    "value": 0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/LockRatchet/delay",
-    "type": "double",
-    "value": 0.3,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/UnlockRatchet/delay",
+    "name": "/Properties/MovePivotContinuous/threshold",
     "type": "double",
     "value": 1.0,
     "properties": {
@@ -320,9 +240,145 @@
     }
   },
   {
+    "name": "/Properties/AlignWithTag2D/p",
+    "type": "double",
+    "value": 0.025,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignWithTag2D/horizontal_offset",
+    "type": "double",
+    "value": -5.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/speed_up",
+    "type": "double",
+    "value": 0.6,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/speed_down",
+    "type": "double",
+    "value": -0.6,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/speed_unload",
+    "type": "double",
+    "value": -0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/stall_limit",
+    "type": "int",
+    "value": 15,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Climber/free_limit",
+    "type": "int",
+    "value": 30,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/ratchet_lock_angle",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/ratchet_unlock_angle",
+    "type": "double",
+    "value": 0.05,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/height_max",
+    "type": "double",
+    "value": 222.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberLeft/height_min",
+    "type": "int",
+    "value": 20,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/ratchet_lock_angle",
+    "type": "double",
+    "value": 0.3,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/ratchet_unlock_angle",
+    "type": "double",
+    "value": 0.85,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/height_max",
+    "type": "double",
+    "value": 222.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/ClimberRight/height_min",
+    "type": "int",
+    "value": 20,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/UnlockRatchet/delay",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/LockRatchet/delay",
+    "type": "double",
+    "value": 0.3,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/Intake/speed_in",
     "type": "double",
-    "value": 0.7,
+    "value": 0.8,
     "properties": {
       "persistent": true
     }
@@ -338,7 +394,7 @@
   {
     "name": "/Properties/Intake/speed_out",
     "type": "double",
-    "value": -0.75,
+    "value": -0.9,
     "properties": {
       "persistent": true
     }
@@ -346,7 +402,7 @@
   {
     "name": "/Properties/Drop/delay",
     "type": "double",
-    "value": 1.5,
+    "value": 3.0,
     "properties": {
       "persistent": true
     }
@@ -368,33 +424,33 @@
     }
   },
   {
-    "name": "/Properties/Pivot/speed_up",
+    "name": "/Properties/LEDController/speed",
     "type": "double",
-    "value": 0.2,
+    "value": 0.75,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Pivot/speed_down",
+    "name": "/Properties/LEDController/white_length",
     "type": "double",
-    "value": -0.75,
+    "value": 6.0,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Pivot/speed_maintain",
+    "name": "/Properties/LEDController/color_period",
     "type": "double",
-    "value": -0.2,
+    "value": 20.0,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/Pivot/height_max",
-    "type": "double",
-    "value": 55.0,
+    "name": "/Properties/LEDController/brightnessValue",
+    "type": "int",
+    "value": 10,
     "properties": {
       "persistent": true
     }
@@ -410,7 +466,7 @@
   {
     "name": "/Properties/MovePivot/position_speaker_far",
     "type": "double",
-    "value": 10.0,
+    "value": 55.0,
     "properties": {
       "persistent": true
     }
@@ -418,7 +474,7 @@
   {
     "name": "/Properties/MovePivot/position_speaker_close",
     "type": "double",
-    "value": 54.0,
+    "value": 60.0,
     "properties": {
       "persistent": true
     }
@@ -426,7 +482,7 @@
   {
     "name": "/Properties/MovePivot/position_loading",
     "type": "double",
-    "value": 55.0,
+    "value": 65.0,
     "properties": {
       "persistent": true
     }
@@ -442,7 +498,7 @@
   {
     "name": "/Properties/MovePivot/speed_max",
     "type": "double",
-    "value": 0.9,
+    "value": 0.8,
     "properties": {
       "persistent": true
     }
@@ -450,7 +506,7 @@
   {
     "name": "/Properties/MovePivot/accel",
     "type": "double",
-    "value": 0.03,
+    "value": 0.01,
     "properties": {
       "persistent": true
     }
@@ -458,7 +514,7 @@
   {
     "name": "/Properties/Shooter/p_left",
     "type": "double",
-    "value": 0.002,
+    "value": 0.0,
     "properties": {
       "persistent": true
     }
@@ -466,7 +522,7 @@
   {
     "name": "/Properties/Shooter/ff_left",
     "type": "double",
-    "value": 0.00218,
+    "value": 0.0022,
     "properties": {
       "persistent": true
     }
@@ -474,7 +530,7 @@
   {
     "name": "/Properties/Shooter/p_right",
     "type": "double",
-    "value": 0.002,
+    "value": 0.0,
     "properties": {
       "persistent": true
     }
@@ -482,7 +538,7 @@
   {
     "name": "/Properties/Shooter/ff_right",
     "type": "double",
-    "value": 0.00198,
+    "value": 0.00205,
     "properties": {
       "persistent": true
     }
@@ -496,9 +552,49 @@
     }
   },
   {
+    "name": "/Properties/PrepareShoot/speed_amp",
+    "type": "double",
+    "value": 300.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_max",
+    "type": "double",
+    "value": 5200.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/WaitShootSpeed/delay",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignWithTag2D/ff",
+    "type": "double",
+    "value": 0.015,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignWithTag2D/horizontal_camera_offset",
+    "type": "int",
+    "value": 10,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/PrepareShoot/speed_far",
     "type": "double",
-    "value": 5000.0,
+    "value": 5250.0,
     "properties": {
       "persistent": true
     }
@@ -512,15 +608,135 @@
     }
   },
   {
-    "name": "/Properties/PrepareShoot/speed_amp",
+    "name": "/Properties/AlignBase/xy_p",
     "type": "double",
-    "value": 300.0,
+    "value": 0.35,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/AlignWithTag2D/p",
+    "name": "/Properties/AlignBase/xy_i",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/xy_d",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/xy_tol_pos",
+    "type": "double",
+    "value": 0.04,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/xy_tol_vel",
+    "type": "double",
+    "value": 0.04,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/rot_p",
+    "type": "double",
+    "value": 0.0065,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/rot_i",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/rot_d",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/rot_tol_pos",
+    "type": "double",
+    "value": 0.047,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/rot_tol_vel",
+    "type": "double",
+    "value": 0.047,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignBase/max_speed",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerCenterShootLine/x_goal",
+    "type": "int",
+    "value": 1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerCenterShootLine/y_goal",
+    "type": "int",
+    "value": 0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerCenterShootTwiceLine/x_goal",
+    "type": "int",
+    "value": 0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerCenterShootTwiceLine/y_goal",
+    "type": "int",
+    "value": 0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerCenterShootTwiceLine/position",
+    "type": "int",
+    "value": 45,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignEverything/p",
     "type": "double",
     "value": 0.01,
     "properties": {
@@ -528,7 +744,7 @@
     }
   },
   {
-    "name": "/Properties/AlignWithTag2D/ff",
+    "name": "/Properties/AlignEverything/ff",
     "type": "double",
     "value": 0.01,
     "properties": {

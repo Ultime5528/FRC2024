@@ -94,9 +94,10 @@ class Robot(commands2.TimedCommandRobot):
         Bind commands to buttons on controllers and joysticks
         """
         self.xbox_controller.rightTrigger().whileTrue(
-            AlignWithTag2D.toSpeaker(
-                self.drivetrain, self.vision, self.xbox_controller
-            )
+            AlignEverything(self.drivetrain, self.pivot, self.vision, self.xbox_controller)
+        )
+        self.xbox_controller.leftTrigger().whileTrue(
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)
         )
 
         # Copilot's panel
@@ -146,8 +147,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
 
         for climber, name in (
-                (self.climber_left, "Left"),
-                (self.climber_right, "Right"),
+            (self.climber_left, "Left"),
+            (self.climber_right, "Right"),
         ):
             putCommandOnDashboard(
                 "Climber" + name,
@@ -190,6 +191,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
+        putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
 
         putCommandOnDashboard(
             "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
@@ -197,8 +199,12 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
 
-        putCommandOnDashboard("Vision", MovePivotContinuous(self.pivot, self.vision))
-        putCommandOnDashboard("Vision", AlignEverything(self.drivetrain, self.pivot, self.vision, self.xbox_controller))
+        putCommandOnDashboard(
+            "Vision",
+            AlignEverything(
+                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+            ),
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -215,7 +221,7 @@ class Robot(commands2.TimedCommandRobot):
 
 
 def putCommandOnDashboard(
-        sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
+    sub_table: str, cmd: commands2.Command, name: str = None, suffix: str = " commands"
 ) -> commands2.Command:
     if not isinstance(sub_table, str):
         raise ValueError(
