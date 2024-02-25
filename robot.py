@@ -31,6 +31,7 @@ from subsystems.intake import Intake
 from subsystems.led import LEDController
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
+from subsystems.vision import Vision
 from utils.axistrigger import AxisTrigger
 
 
@@ -63,6 +64,7 @@ class Robot(commands2.TimedCommandRobot):
         self.intake = Intake()
         self.pivot = Pivot()
         self.shooter = Shooter()
+        self.vision = Vision()
         self.led = LEDController()
 
         """
@@ -89,9 +91,10 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-        # Driver's joystick
         self.xbox_controller.rightTrigger().whileTrue(
-            AlignWithTag2D.toSpeaker(self.drivetrain, self.xbox_controller.getHID())
+            AlignWithTag2D.toSpeaker(
+                self.drivetrain, self.vision, self.xbox_controller.getHID()
+            )
         )
 
         # Copilot's panel
@@ -118,6 +121,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Intake", self.intake)
         wpilib.SmartDashboard.putData("Pivot", self.pivot)
         wpilib.SmartDashboard.putData("Shooter", self.shooter)
+        wpilib.SmartDashboard.putData("Vision", self.vision)
         wpilib.SmartDashboard.putData("LED", self.led)
 
     def setupCommandsOnDashboard(self):
@@ -129,6 +133,12 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard(
             "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
+        )
+        putCommandOnDashboard(
+            "Drivetrain",
+            AlignWithTag2D.toSpeaker(
+                self.drivetrain, self.vision, self.xbox_controller.getHID()
+            ),
         )
 
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
@@ -193,6 +203,10 @@ class Robot(commands2.TimedCommandRobot):
     def teleopInit(self):
         if self.auto_command:
             self.auto_command.cancel()
+
+    def robotPeriodic(self):
+        self.vision.periodic()
+        super().robotPeriodic()
 
 
 def putCommandOnDashboard(
