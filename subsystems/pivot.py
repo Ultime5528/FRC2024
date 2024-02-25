@@ -1,6 +1,5 @@
 from enum import Enum, auto
 
-import numpy
 import wpilib
 from wpilib import RobotBase
 from wpilib.simulation import PWMSim, EncoderSim

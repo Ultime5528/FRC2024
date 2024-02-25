@@ -1,7 +1,5 @@
 from typing import NewType
 
-import wpilib
-
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.property import autoproperty

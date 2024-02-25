@@ -38,7 +38,7 @@ def test_ShootFar(control, robot: Robot):
 
         assert robot.shooter._reached_speed_left
         assert robot.shooter._reached_speed_right
-        assert robot.shooter._ref_rpm == approx(prepare_shoot_properties.speed_far)
+        assert robot.shooter._ref_rpm == approx(prepare_shoot_properties.speed_max)
 
 
 def test_WaitForSpeed(control, robot):
