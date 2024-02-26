@@ -20,14 +20,14 @@ class DriveToPoses(SafeCommand):
     xy_tol_pos = autoproperty(0.5)
     xy_tol_pos_last = autoproperty(0.06)
     xy_tol_vel_last = autoproperty(0.1)
+    xy_max = autoproperty(0.5)
 
     rot_p = autoproperty(0.008)
     rot_b = autoproperty(0.08)
     rot_tol_pos = autoproperty(10.0)
     rot_tol_pos_last = autoproperty(2.0)
     rot_tol_vel_last = autoproperty(1.0)
-
-    max_speed = autoproperty(1.0)
+    rot_max = autoproperty(0.5)
 
     def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
         super().__init__()
@@ -36,20 +36,22 @@ class DriveToPoses(SafeCommand):
         self.goals = goals
 
     def initialize(self):
-
         self.currGoal = 0
         currentGoal = self.goals[self.currGoal]
 
         self.pid_x = AffineController(self.xy_p, self.xy_b)
         self.pid_x.setTolerance(self.xy_tol_pos)
+        self.pid_x.setMaximumOutput(self.xy_max)
         self.pid_x.setSetpoint(currentGoal.x)
 
         self.pid_y = AffineController(self.xy_p, self.xy_b)
         self.pid_y.setTolerance(self.xy_tol_pos)
+        self.pid_y.setMaximumOutput(self.xy_max)
         self.pid_y.setSetpoint(currentGoal.y)
 
         self.pid_rot = AffineController(self.rot_p, self.rot_b)
         self.pid_rot.setTolerance(self.rot_tol_pos)
+        self.pid_rot.setMaximumOutput(self.rot_max)
         self.pid_rot.enableContinuousInput(-180, 180)
         self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
 

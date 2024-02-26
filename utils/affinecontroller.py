@@ -23,6 +23,7 @@ class AffineController(Sendable):
         self._p = p
         self._b = b
         self._period = period
+        self._maximum_output = float("inf")
 
         self._measurement = 0.0
         self._has_measurement = False
@@ -70,6 +71,12 @@ class AffineController(Sendable):
     def getVelocityTolerance(self) -> float:
         return self._velocity_tolerance
 
+    def setMaximumOutput(self, maximum_output: float) -> None:
+        self._maximum_output = maximum_output
+
+    def getMaximumOutput(self) -> float:
+        return self._maximum_output
+
     def setSetpoint(self, setpoint) -> None:
         self._setpoint = setpoint
         self._has_setpoint = True
@@ -103,7 +110,10 @@ class AffineController(Sendable):
         if abs(self._position_error) < self._position_tolerance:
             output = 0.0
         else:
-            abs_output = self._p * abs(self._position_error - self._position_tolerance) + self._b
+            abs_output = (
+                self._p * abs(self._position_error - self._position_tolerance) + self._b
+            )
+            abs_output = min(abs_output, self._maximum_output)
             output = math.copysign(abs_output, self._position_error)
 
         return output
