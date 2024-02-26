@@ -10,7 +10,7 @@ from subsystems.shooter import Shooter
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeMixin
-from commands.shooter.shoot import ShootQuick
+from commands.shooter.shoot import Shoot
 from commands.pivot.movepivot import MovePivot
 from commands.drivetoposes import DriveToPoses
 
@@ -24,7 +24,7 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
         super().__init__(
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
-            ShootQuick(shooter, pivot, intake),
+            Shoot(shooter, pivot, intake),
             ParallelCommandGroup(
                 DriveToPoses(
                     drivetrain,
@@ -32,14 +32,14 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                     [Pose2d(14, 5.55, Rotation2d.fromDegrees(0))]
                 ),
                 PickUp(intake),
-                MovePivot.auto(pivot, self.position_pivot),
+                MovePivot.toSpeakerClose(pivot),
             ),
             DriveToPoses(
                 drivetrain,
                 Pose2d(14, 5.55, Rotation2d.fromDegrees(0)),
                 [Pose2d(15.20, 5.55, Rotation2d.fromDegrees(0))]
                 ),
-            ShootQuick(shooter, pivot, intake),
+            Shoot(shooter, pivot, intake),
 
             ParallelCommandGroup(
                 DriveToPoses(
@@ -49,7 +49,7 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                      Pose2d(14, 4.1, Rotation2d(0))]
                 ),
                 PickUp(intake),
-                MovePivot.auto(pivot, self.position_pivot),
+                MovePivot.toSpeakerClose(pivot),
             ),
 
             DriveToPoses(
@@ -58,7 +58,7 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                 [Pose2d(15, 4.1, Rotation2d.fromDegrees(30)),
                  Pose2d(16.08 - 0.22, 4.77 - 0.385, Rotation2d.fromDegrees(60))]
             ),
-            ShootQuick(shooter, pivot, intake),
+            Shoot(shooter, pivot, intake),
 
             ParallelCommandGroup(
                 DriveToPoses(
@@ -69,7 +69,7 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                      Pose2d(14, 7, Rotation2d.fromDegrees(0))]
                 ),
                 PickUp(intake),
-                MovePivot.auto(pivot, self.position_pivot)
+                MovePivot.toSpeakerClose(pivot)
             ),
 
             DriveToPoses(
@@ -78,5 +78,5 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                 [Pose2d(15, 7, Rotation2d.fromDegrees(-30)),
                  Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(-60))]
             ),
-            ShootQuick(shooter, pivot, intake),
+            Shoot(shooter, pivot, intake),
         )

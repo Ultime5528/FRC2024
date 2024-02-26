@@ -9,7 +9,7 @@ from subsystems.shooter import Shooter
 from subsystems.drivetrain import Drivetrain
 from utils.property import autoproperty
 from utils.safecommand import SafeMixin
-from commands.shooter.shoot import ShootQuick
+from commands.shooter.shoot import Shoot
 from commands.pivot.movepivot import MovePivot
 
 
@@ -21,10 +21,10 @@ class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
         super().__init__(
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
-            ShootQuick(shooter, pivot, intake),
+            Shoot(shooter, pivot, intake),
             DriveToPoses(
                 drivetrain,
-                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(0)),
-                [Pose2d(14, 5.55, Rotation2d.fromDegrees(0))]
+                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180)),
+                [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))]
             ),
         )

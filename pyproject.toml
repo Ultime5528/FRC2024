@@ -28,7 +28,7 @@ robotpy_extras = [
 
 # Other pip packages to install
 requires = [
-     "photonlibpy==2024.2.0",
+     "photonlibpy==2024.2.7",
      "numpy",
      "robotpy-commands-v2~=2024.3.1",
      "black==24.1.1; platform_machine != 'roborio'",

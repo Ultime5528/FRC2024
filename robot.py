@@ -3,13 +3,16 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
 from commands.auto.autospeakercentershoottwiceline import (
     AutoSpeakerCenterShootTwiceLine,
 )
 from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
+from commands.auto.autospeakerleftshoottwiceline import AutoSpeakerLeftShootTwiceLine
 from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine
+from commands.auto.autospeakerrightshoottwiceline import AutoSpeakerRightShootTwiceLine
 
 from commands.auto.megamodeautonome import MegaModeAutonome
 
@@ -33,7 +36,7 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shootandmovepivotloading import ShootAndMovePivotLoading
+from commands.shooter.shoot import ShootAndMovePivotLoading
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
@@ -103,14 +106,32 @@ class Robot(commands2.TimedCommandRobot):
             ),
         )
         self.auto_chooser.addOption(
+            "AutoSpeakerCenterShootTwiceLine",
+            AutoSpeakerCenterShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
             "AutoSpeakerLeftShootLine",
             AutoSpeakerLeftShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
+            "AutoSpeakerLeftShootTwiveLine",
+            AutoSpeakerLeftShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
             "AutoSpeakerRightShootLine",
             AutoSpeakerRightShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerRightShootTwiceLine",
+            AutoSpeakerRightShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
@@ -227,18 +248,27 @@ class Robot(commands2.TimedCommandRobot):
             "Drivetrain",
             DriveToPoses(
                 self.drivetrain,
-                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(0)),
-                [Pose2d(14, 5.55, Rotation2d.fromDegrees(0))]
+                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180)),
+                [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))]
             ),
             "Centre",
         )
         putCommandOnDashboard(
             "Drivetrain",
             DriveToPoses(self.drivetrain,
-                         Pose2d(16.08-0.22, 6.33+0.385, Rotation2d.fromDegrees(-60)),
-                         [Pose2d(15, 7, Rotation2d.fromDegrees(-30)),
-                          Pose2d(14, 7, Rotation2d.fromDegrees(0))]),
+                         Pose2d(16.08-0.22, 6.33+0.385, Rotation2d.fromDegrees(120)),
+                         [Pose2d(15, 7, Rotation2d.fromDegrees(120)),
+                        Pose2d(14, 7, Rotation2d.fromDegrees(180))]),
             "Left",
+        )
+        putCommandOnDashboard(
+            "Drivetrain",
+            DriveToPoses(self.drivetrain,
+                         Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(120)),
+                         [Pose2d(15, 7, Rotation2d.fromDegrees(120)),
+                          Pose2d(15, 7, Rotation2d.fromDegrees(180)),
+                          Pose2d(14, 7, Rotation2d.fromDegrees(180))]),
+            "Left Rotation",
         )
         putCommandOnDashboard(
             "Drivetrain",

@@ -22,7 +22,7 @@ class AutopropertyCall:
     col_offset: int
 
 
-mode = PropertyMode.LocalOnly
+mode = PropertyMode.Dashboard
 
 registry: list[AutopropertyCall] = []
 
