@@ -18,10 +18,9 @@ from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
-from commands.drivetrain.drive import DriveField, Drive
-from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.drive import DriveField, Drive
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
