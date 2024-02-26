@@ -1,13 +1,17 @@
 import math
 from typing import List
 
-from wpimath.geometry import Pose2d
+from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.affinecontroller import AffineController
 from utils.alignbaseutils import clamp
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
+
+
+def pose(x: float, y: float, deg: float) -> Pose2d:
+    return Pose2d(x, y, Rotation2d.fromDegrees(deg))
 
 
 class DriveToPoses(SafeCommand):
