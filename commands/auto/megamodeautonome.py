@@ -40,18 +40,18 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                     parallel(
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(13.5, 5.55, Rotation2d.fromDegrees(180))],
+                            [Pose2d(13, 5.55, Rotation2d.fromDegrees(180))],
                         ),
                         PickUp(intake),
                     ),
                     DriveToPoses(
-                        drivetrain, [Pose2d(15, 6.5, Rotation2d.fromDegrees(-26.57))]
+                        drivetrain, [Pose2d(15, 6.5, Rotation2d.fromDegrees(180-26.57))]
                     ),
                     Shoot(shooter, pivot, intake),
                     parallel(
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(13.5, 7, Rotation2d.fromDegrees((-26.57)))],
+                            [Pose2d(13, 7, Rotation2d.fromDegrees((180-26.57)))],
                         ),
                         PickUp(intake),
                     ),
@@ -60,8 +60,8 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                         DriveToPoses(
                             drivetrain,
                             [
-                                Pose2d(15, 4.6, Rotation2d.fromDegrees(26.57)),
-                                Pose2d(13.5, 4.1, Rotation2d.fromDegrees(26.57)),
+                                Pose2d(15, 4.6, Rotation2d.fromDegrees(26.57-180)),
+                                Pose2d(14, 4.1, Rotation2d.fromDegrees(26.57-180)),
                             ],
                         )
                     ),

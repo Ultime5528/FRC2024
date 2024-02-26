@@ -256,6 +256,278 @@
     }
   },
   {
+    "name": "/Properties/DriveToPoses/xy_p",
+    "type": "double",
+    "value": 0.4,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_b",
+    "type": "double",
+    "value": 0.08,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_tol_pos",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_tol_pos_last",
+    "type": "double",
+    "value": 0.06,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_tol_vel_last",
+    "type": "double",
+    "value": 0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_p",
+    "type": "double",
+    "value": 0.008,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_b",
+    "type": "double",
+    "value": 0.08,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_tol_pos",
+    "type": "double",
+    "value": 10.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_tol_pos_last",
+    "type": "double",
+    "value": 2.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_tol_vel_last",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_speed",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_amp",
+    "type": "double",
+    "value": 31.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_speaker_far",
+    "type": "double",
+    "value": 40.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_speaker_close",
+    "type": "double",
+    "value": 64.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_loading",
+    "type": "double",
+    "value": 65.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/speed_min",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/speed_max",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/accel",
+    "type": "double",
+    "value": 0.01,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_in",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_load",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_out",
+    "type": "double",
+    "value": -0.9,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Load/delay",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/p_left",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/ff_left",
+    "type": "double",
+    "value": 0.0022,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/p_right",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/ff_right",
+    "type": "double",
+    "value": 0.00205,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_amp",
+    "type": "double",
+    "value": 300.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_max",
+    "type": "double",
+    "value": 5200.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/WaitShootSpeed/delay",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PickUp/delay",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerCenterShootTwiceLine/position_pivot",
+    "type": "int",
+    "value": 45,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerLeftShootTwiceLine/position_pivot",
+    "type": "int",
+    "value": 25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerRightShootTwiceLine/position_pivot",
+    "type": "int",
+    "value": 25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MegaModeAutonome/position_pivot",
+    "type": "int",
+    "value": 45,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/Climber/speed_up",
     "type": "double",
     "value": 0.6,
@@ -376,49 +648,9 @@
     }
   },
   {
-    "name": "/Properties/Intake/speed_in",
-    "type": "double",
-    "value": 0.8,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_load",
-    "type": "double",
-    "value": 0.75,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_out",
-    "type": "double",
-    "value": -0.9,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
     "name": "/Properties/Drop/delay",
     "type": "double",
     "value": 1.5,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Load/delay",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/PickUp/delay",
-    "type": "double",
-    "value": 0.0,
     "properties": {
       "persistent": true
     }
@@ -456,94 +688,6 @@
     }
   },
   {
-    "name": "/Properties/MovePivot/position_amp",
-    "type": "double",
-    "value": 31.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/position_speaker_far",
-    "type": "double",
-    "value": 40.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/position_speaker_close",
-    "type": "double",
-    "value": 64.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/position_loading",
-    "type": "double",
-    "value": 65.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/speed_min",
-    "type": "double",
-    "value": 0.5,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/speed_max",
-    "type": "double",
-    "value": 0.8,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/accel",
-    "type": "double",
-    "value": 0.01,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/p_left",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/ff_left",
-    "type": "double",
-    "value": 0.0022,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/p_right",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/ff_right",
-    "type": "double",
-    "value": 0.00205,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
     "name": "/Properties/ManualShoot/rpm",
     "type": "double",
     "value": 5000.0,
@@ -552,41 +696,57 @@
     }
   },
   {
-    "name": "/Properties/PrepareShoot/speed_amp",
+    "name": "/Properties/DriveToPoses/xy_i",
     "type": "double",
-    "value": 300.0,
+    "value": 0.05,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/PrepareShoot/speed_max",
+    "name": "/Properties/DriveToPoses/xy_i_last",
     "type": "double",
-    "value": 5200.0,
+    "value": 0.03,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/WaitShootSpeed/delay",
+    "name": "/Properties/DriveToPoses/xy_d",
     "type": "double",
-    "value": 0.75,
+    "value": 0.01,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/AlignWithTag2D/ff",
+    "name": "/Properties/DriveToPoses/xy_tol_vel",
     "type": "double",
-    "value": 0.015,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/AlignWithTag2D/horizontal_camera_offset",
-    "type": "int",
-    "value": 10,
+    "name": "/Properties/DriveToPoses/rot_i",
+    "type": "double",
+    "value": 0.005,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_d",
+    "type": "double",
+    "value": 0.0075,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_tol_vel",
+    "type": "double",
+    "value": 5.0,
     "properties": {
       "persistent": true
     }
@@ -603,6 +763,22 @@
     "name": "/Properties/PrepareShoot/speed_close",
     "type": "double",
     "value": 2200.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignWithTag2D/ff",
+    "type": "double",
+    "value": 0.015,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AlignWithTag2D/horizontal_camera_offset",
+    "type": "int",
+    "value": 10,
     "properties": {
       "persistent": true
     }

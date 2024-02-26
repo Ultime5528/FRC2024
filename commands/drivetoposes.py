@@ -11,17 +11,17 @@ from utils.safecommand import SafeCommand
 
 
 class DriveToPoses(SafeCommand):
-    xy_p = autoproperty(0.3)
-    xy_b = autoproperty(0.1)
+    xy_p = autoproperty(0.4)
+    xy_b = autoproperty(0.08)
     xy_tol_pos = autoproperty(0.5)
-    xy_tol_pos_last = autoproperty(0.08)
-    xy_tol_vel_last = autoproperty(0.08)
+    xy_tol_pos_last = autoproperty(0.06)
+    xy_tol_vel_last = autoproperty(0.1)
 
-    rot_p = autoproperty(0.0065)
-    rot_b = autoproperty(0.1)
-    rot_tol_pos = autoproperty(5.0)
+    rot_p = autoproperty(0.008)
+    rot_b = autoproperty(0.08)
+    rot_tol_pos = autoproperty(10.0)
     rot_tol_pos_last = autoproperty(2.0)
-    rot_tol_vel_last = autoproperty(2.0)
+    rot_tol_vel_last = autoproperty(1.0)
 
     max_speed = autoproperty(1.0)
 
