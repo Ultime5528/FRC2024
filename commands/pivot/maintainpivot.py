@@ -13,6 +13,7 @@ class MaintainPivot(SafeCommand):
             self.pivot.state == Pivot.State.SpeakerClose
             or self.pivot.state == Pivot.State.SpeakerFar
             or self.pivot.state == Pivot.State.Amp
+            or self.pivot.state == Pivot.State.LockedInterpolation
         ):
             self.pivot.maintain()
         else:

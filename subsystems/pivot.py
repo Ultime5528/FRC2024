@@ -6,9 +6,13 @@ from wpilib.simulation import PWMSim, EncoderSim
 from wpiutil import SendableBuilder
 
 import ports
+from utils.linearinterpolator import LinearInterpolator
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.switch import Switch
+
+# X is height in camera view, y is the subsequent wanted pivot pitch
+interpolation_points = [(-4.1, 28), (1.45, 48), (5.05, 55), (9.8, 64)]
 
 
 class Pivot(SafeSubsystem):
@@ -19,12 +23,13 @@ class Pivot(SafeSubsystem):
         SpeakerClose = auto()
         SpeakerFar = auto()
         Amp = auto()
+        LockedInterpolation = auto()
 
     speed_up = autoproperty(0.2)
     speed_down = autoproperty(-0.75)
-    speed_maintain = autoproperty(-0.2)
+    speed_maintain = autoproperty(-0.25)
     height_min = 0.0
-    height_max = autoproperty(55.0)
+    height_max = autoproperty(65.0)
 
     def __init__(self):
         super().__init__()
@@ -34,10 +39,10 @@ class Pivot(SafeSubsystem):
         self._encoder = wpilib.Encoder(
             ports.pivot_encoder_a, ports.pivot_encoder_b, reverseDirection=True
         )
-
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)
 
+        self._interpolator = LinearInterpolator(interpolation_points)
         self._offset = 0.0
         self._has_reset = False
         self._prev_is_down = False
@@ -97,6 +102,9 @@ class Pivot(SafeSubsystem):
 
     def maintain(self):
         self.setSpeed(self.speed_maintain)
+
+    def getInterpolatedPosition(self, target_pitch: float) -> float:
+        return self._interpolator.interpolate(target_pitch)
 
     def isDown(self) -> bool:
         return self._switch_down.isPressed()
