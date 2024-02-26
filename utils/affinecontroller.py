@@ -107,8 +107,8 @@ class AffineController(Sendable):
 
     def atSetpoint(self) -> bool:
         return (
-            self._has_measurement and
-            self._has_setpoint and
-            abs(self._position_error) < self._position_tolerance and
-            abs(self._velocity_error) < self._velocity_tolerance
+            self._has_measurement
+            and self._has_setpoint
+            and abs(self._position_error) < self._position_tolerance
+            and abs(self._velocity_error) < self._velocity_tolerance
         )

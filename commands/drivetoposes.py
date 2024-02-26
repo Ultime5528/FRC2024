@@ -25,7 +25,9 @@ class DriveToPoses(SafeCommand):
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, drivetrain: Drivetrain, starting_pos: Pose2d, goals: List[Pose2d]):
+    def __init__(
+        self, drivetrain: Drivetrain, starting_pos: Pose2d, goals: List[Pose2d]
+    ):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
