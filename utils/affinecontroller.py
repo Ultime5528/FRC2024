@@ -103,7 +103,9 @@ class AffineController(Sendable):
         if abs(self._position_error) < self._position_tolerance:
             output = 0.0
         else:
-            abs_output = self._p * abs(self._position_error - self._position_tolerance) + self._b
+            abs_output = (
+                self._p * abs(self._position_error - self._position_tolerance) + self._b
+            )
             output = math.copysign(abs_output, self._position_error)
 
         return output
