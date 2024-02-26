@@ -100,8 +100,11 @@ class AffineController(Sendable):
 
         self._velocity_error = (self._position_error - self._prev_error) / self._period
 
-        abs_output = self._p * abs(self._position_error) + self._b
-        output = math.copysign(abs_output, self._position_error)
+        if abs(self._position_error) < self._position_tolerance:
+            output = 0.0
+        else:
+            abs_output = self._p * abs(self._position_error - self._position_tolerance) + self._b
+            output = math.copysign(abs_output, self._position_error)
 
         return output
 
