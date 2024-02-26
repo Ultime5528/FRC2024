@@ -37,7 +37,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.drivetrain = Drivetrain(self.getPeriod())
         self.intake = Intake()
-        self.led = LEDController()
+        self.led = LEDController(self)
 
         """
         Default subsystem commands

@@ -1,14 +1,15 @@
 import random
-from enum import Enum
+from enum import Enum, auto
 import math
 from typing import Callable, Union, Tuple, List
 import wpilib
+from wpilib import DriverStation
+
 import ports
 import numpy as np
 
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
-from subsystems.intake import Intake
 
 
 def interpolate(t, color1, color2):
@@ -25,8 +26,9 @@ Color = Union[np.ndarray, Tuple[int, int, int], List[int]]
 
 
 class ModeLED(Enum):
-    NONE = "none"
-    NOTE = "note"
+    NONE = auto()
+    NOTE = auto()
+    PICKUP = auto()
 
 
 class LEDController(SafeSubsystem):
@@ -54,7 +56,7 @@ class LEDController(SafeSubsystem):
 
     i_values = np.array(led_number)
 
-    def __init__(self):
+    def __init__(self, robot):
         super().__init__()
         self.led_strip = wpilib.AddressableLED(ports.led_strip)
         self.buffer = [wpilib.AddressableLED.LEDData() for _ in range(self.led_number)]
@@ -69,7 +71,7 @@ class LEDController(SafeSubsystem):
         self.timer = wpilib.Timer()
         self.timer.start()
 
-        self.intake = Intake
+        self.robot = robot
 
     def setRGB(self, i: int, color: Color):
         color = (color * self.brightness).astype(int)
@@ -116,7 +118,7 @@ class LEDController(SafeSubsystem):
 
         self.setAll(getColor)
 
-    def ModeAuto(self):
+    def modeAuto(self):
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
         y_values = 0.5 * np.sin(2 * math.pi ** 2 * (i_values - 3 * self.time) / 200) + 0.5
@@ -125,18 +127,18 @@ class LEDController(SafeSubsystem):
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
-    def ModeTeleop(self):
+    def modeTeleop(self):
+        a = 1.5
         color = self.getAllianceColor()
-        color2 = self.getModeColor()
         i_values = np.arange(self.led_number)
-        y_values = 0.5*np.sin(10*(i_values-2*(self.time/2))/50)+0.5
+        y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
 
-        pixel_value = numpy_interpolation(y_values, color, color2)
+        pixel_value = numpy_interpolation(y_values, color, self.white)
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
-    def ModeEndgame(self):
-        pixel_value = abs(round(50 * (math.tan(self.time / 30))))
+    def modeEndgame(self):
+        pixel_value = abs(round(5 * (math.tan(self.time / 3))))
         if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
             for i in range(self.led_number):
                 self.buffer[i].setRGB(pixel_value, 0, 0)
@@ -144,53 +146,93 @@ class LEDController(SafeSubsystem):
             for i in range(self.led_number):
                 self.buffer[i].setRGB(0, 0, pixel_value)
 
-    def ModeNoteLoaded(self):
-        pass
+    def modePickUp(self):
+        a = 0
+        color = self.getAllianceColor()
+        i_values = np.arange(self.led_number)
+        y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
 
-    def ModeReadyToShoot(self):
-        pass
+        pixel_value = numpy_interpolation(y_values, color, self.white)
+        for i, y in enumerate(pixel_value):
+            self.buffer[i].setRGB(*y)
 
-    def ModeConnected(self):
+    def modeNoteLoaded(self):
+        a = - 0.5
+        color = self.getAllianceColor()
+        i_values = np.arange(self.led_number)
+        y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
+
+        pixel_value = numpy_interpolation(y_values, color, self.white)
+        for i, y in enumerate(pixel_value):
+            self.buffer[i].setRGB(*y)
+
+    def modeShoot(self):
+        period = 30
+        color = self.getAllianceColor()
+        i_values = np.arange(self.led_number)
+        y_values = ((i_values - self.time) / period) % 1.0
+
+        pixel_value = numpy_interpolation(y_values, color, self.white)
+        for i, y in enumerate(pixel_value):
+            self.buffer[i].setRGB(*y)
+
+    def modeConnected(self):
         pixel_value = round(
-            abs(127 * self.brightness * (1 + math.cos(self.time / (18 * math.pi))))
+            abs(255 * self.brightness * (math.cos(self.time / (12 * math.pi))))
         )
+
+        if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+            for i in range(self.led_number):
+                self.buffer[i].setRGB(pixel_value, 0, 0)
+        else:
+            for i in range(self.led_number):
+                self.buffer[i].setRGB(0, 0, pixel_value)
+
+    def modeNotConnected(self):
+        pixel_value = round(
+            255 * self.brightness * math.cos(self.time / (18 * math.pi)))
+
+        if pixel_value >= 0:
+            r = pixel_value
+            g = 0
+            b = 0
+        else:
+            r = 0
+            g = 0
+            b = abs(pixel_value)
+
         for i in range(self.led_number):
-            self.buffer[i].setRGB(0, pixel_value, 0)
-
-    def ModeNotConnected(self):
-        pixel_value = round(
-            abs(127 * self.brightness * (1 + math.cos(self.time / (18 * math.pi))))
-        )
-
-        if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
-            for i in range(self.led_number):
-                self.buffer[i].setRGB(pixel_value, 0, 0)
-        else:
-            for i in range(self.led_number):
-                self.buffer[i].setRGB(0, 0, pixel_value)
+            self.buffer[i].setRGB(r, g, b)
 
     def periodic(self) -> None:
+        from commands.intake.pickup import PickUp
+
         start_time = wpilib.getTime()
 
         self.time += 1
         if wpilib.DriverStation.isEStopped():
             self.e_stopped()
-        else:  # the game has started
-            if wpilib.DriverStation.isAutonomousEnabled():  # auto
-                self.ModeAuto()
-            elif wpilib.DriverStation.isTeleopEnabled():  # teleop
-                if (
-                    wpilib.DriverStation.getMatchTime() == -1.0
-                    or wpilib.DriverStation.getMatchTime() > 20
-                ):
-                    self.ModeTeleop()
-                elif wpilib.DriverStation.getMatchTime() > 1:
-                    self.ModeEndgame()
-            else:  # game hasn't started
-                if wpilib.DriverStation.isDSAttached():
-                    self.ModeConnected()  # connected to driver station
-                else:  # not connected to driver station
-                    self.ModeNotConnected()
+        elif wpilib.DriverStation.isAutonomousEnabled():  # auto
+            self.modeAuto()
+        elif wpilib.DriverStation.isTeleopEnabled():  # teleop
+            if (
+                wpilib.DriverStation.getMatchTime() == -1.0
+                or wpilib.DriverStation.getMatchTime() > 20
+            ):
+                if self.robot.shooter.isShooting():
+                    self.modePickUp()
+                elif self.robot.intake.hasNote():
+                    self.modeNoteLoaded()
+                elif isinstance(self.robot.intake.getCurrentCommand(), PickUp):
+                    self.modePickUp()
+                else:
+                    self.modeTeleop()
+            elif wpilib.DriverStation.getMatchTime() > 1:
+                self.modeEndgame()
+        elif wpilib.DriverStation.isDSAttached():
+            self.modeConnected()  # connected to driver station
+        else:  # not connected to driver station
+            self.modeNotConnected()
 
         self.led_strip.setData(self.buffer)
         wpilib.SmartDashboard.putNumber("led_time", wpilib.getTime() - start_time)
