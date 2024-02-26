@@ -11,6 +11,7 @@ from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 from commands.shooter.shoot import Shoot
 from commands.pivot.movepivot import MovePivot
+from commands.drivetrain.resetpose import ResetPose
 
 
 class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
@@ -19,12 +20,12 @@ class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
+            ResetPose(drivetrain, Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180))),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
             DriveToPoses(
                 drivetrain,
-                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180)),
                 [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))]
             ),
         )

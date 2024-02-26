@@ -6,6 +6,13 @@ import wpilib
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
+from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
+from commands.auto.autospeakercentershoottwiceline import AutoSpeakerCenterShootTwiceLine
+from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
+from commands.auto.autospeakerleftshoottwiceline import AutoSpeakerLeftShootTwiceLine
+from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine
+from commands.auto.autospeakerrightshoottwiceline import AutoSpeakerRightShootTwiceLine
+from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -129,7 +136,7 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             "MegaModeAutonome",
             MegaModeAutonome(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
@@ -239,40 +246,6 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
         putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
-        putCommandOnDashboard(
-            "Drivetrain",
-            DriveToPoses(
-                self.drivetrain,
-                Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180)),
-                [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))]
-            ),
-            "Centre",
-        )
-        putCommandOnDashboard(
-            "Drivetrain",
-            DriveToPoses(self.drivetrain,
-                         Pose2d(16.08-0.22, 6.33+0.385, Rotation2d.fromDegrees(120)),
-                         [Pose2d(15, 7, Rotation2d.fromDegrees(120)),
-                        Pose2d(14, 7, Rotation2d.fromDegrees(180))]),
-            "Left",
-        )
-        putCommandOnDashboard(
-            "Drivetrain",
-            DriveToPoses(self.drivetrain,
-                         Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(120)),
-                         [Pose2d(15, 7, Rotation2d.fromDegrees(120)),
-                          Pose2d(15, 7, Rotation2d.fromDegrees(180)),
-                          Pose2d(14, 7, Rotation2d.fromDegrees(180))]),
-            "Left Rotation",
-        )
-        putCommandOnDashboard(
-            "Drivetrain",
-            DriveToPoses(self.drivetrain,
-                         Pose2d(16.08-0.22, 4.77-0.385, Rotation2d.fromDegrees(60)),
-                         [Pose2d(15, 4.1, Rotation2d.fromDegrees(30)),
-                          Pose2d(14, 4.1, Rotation2d(0))]),
-            "Right",
-        )
 
         putCommandOnDashboard(
             "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)

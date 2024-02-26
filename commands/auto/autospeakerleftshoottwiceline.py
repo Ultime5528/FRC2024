@@ -13,6 +13,7 @@ from utils.safecommand import SafeMixin
 from commands.shooter.shoot import Shoot
 from commands.pivot.movepivot import MovePivot
 from commands.drivetoposes import DriveToPoses
+from commands.drivetrain.resetpose import ResetPose
 
 
 class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
@@ -22,13 +23,13 @@ class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup)
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
+            ResetPose(drivetrain, Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(120))),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
             ParallelCommandGroup(
                 DriveToPoses(
                     drivetrain,
-                    Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(120)),
                     [Pose2d(15, 7, Rotation2d.fromDegrees(150)),
                      Pose2d(14, 7, Rotation2d.fromDegrees(180))]
                 ),

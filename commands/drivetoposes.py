@@ -30,17 +30,15 @@ class DriveToPoses(SafeCommand):
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, drivetrain: Drivetrain, starting_pos: Pose2d, goals: List[Pose2d]):
+    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.starting_pos = starting_pos
-        self.goals = [self.starting_pos, *goals]
+        self.goals = goals
 
     def initialize(self):
-        self.drivetrain.resetToPose(self.goals[0])
 
-        self.currGoal = 1
+        self.currGoal = 0
         currentGoal = self.goals[self.currGoal]
 
         self.pid_x = PIDController(self.xy_p, self.xy_i, self.xy_d)
