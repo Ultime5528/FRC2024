@@ -2,8 +2,24 @@ from typing import List, Tuple
 
 
 class LinearInterpolator:
-    def __init__(self, points: List[Tuple[float, float]]):
-        self._points = points
+    def __init__(self, point_x: List[float], point_y: List[float]):
+        self._points = list(zip(point_x, point_y))
+        self._points_x = point_x
+        self._points_y = point_y
+
+    def setPointsX(self, x_points: List[float]):
+        self._points_x = x_points
+        self._points = list(zip(x_points, self._points_y))
+
+    def setPointsY(self, y_points: List[float]):
+        self._points_y = y_points
+        self._points = list(zip(self._points_x, y_points))
+
+    def getPointsX(self) -> List[float]:
+        return self._points_x
+
+    def getPointsY(self) -> List[float]:
+        return self._points_y
 
     def interpolate(self, x):
         i = 1
