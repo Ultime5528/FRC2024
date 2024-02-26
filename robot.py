@@ -3,6 +3,7 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from commands2.cmd import sequence
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
@@ -23,6 +24,7 @@ from commands.climber.unlockratchet import UnlockRatchet
 from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.drive import DriveField, Drive
 from commands.drivetrain.resetgyro import ResetGyro
+from commands.drivetrain.resetpose import ResetPose
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
@@ -197,6 +199,24 @@ class Robot(commands2.TimedCommandRobot):
             AlignWithTag2D.toSpeaker(
                 self.drivetrain, self.vision, self.xbox_controller
             ),
+        )
+
+        putCommandOnDashboard(
+            "Drivetrain",
+            sequence(
+                ResetPose(
+                    self.drivetrain,
+                    Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(120)),
+                ),
+                DriveToPoses(
+                    self.drivetrain,
+                    [
+                        Pose2d(15, 7, Rotation2d.fromDegrees(150)),
+                        Pose2d(14, 7, Rotation2d.fromDegrees(180)),
+                    ],
+                ),
+            ),
+            "Left",
         )
 
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
