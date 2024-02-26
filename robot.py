@@ -6,15 +6,21 @@ import wpilib
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
+from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
+from commands.auto.autospeakercentershoottwiceline import AutoSpeakerCenterShootTwiceLine
+from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
+from commands.auto.autospeakerleftshoottwiceline import AutoSpeakerLeftShootTwiceLine
+from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine
+from commands.auto.autospeakerrightshoottwiceline import AutoSpeakerRightShootTwiceLine
+from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
-from commands.drivetrain.drive import DriveField, Drive
-from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.drive import DriveField, Drive
+from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
