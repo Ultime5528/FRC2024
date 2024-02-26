@@ -25,8 +25,5 @@ class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
-            DriveToPoses(
-                drivetrain,
-                [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))]
-            ),
+            DriveToPoses(drivetrain, [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))]),
         )

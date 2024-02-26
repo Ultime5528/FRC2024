@@ -23,7 +23,12 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
     position_pivot = autoproperty(45)
 
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
+        self,
+        drivetrain: Drivetrain,
+        shooter: Shooter,
+        pivot: Pivot,
+        intake: Intake,
+        vision: Vision,
     ):
         super().__init__(
             ResetPose(drivetrain, Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180))),
@@ -35,33 +40,32 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                     parallel(
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(13.5, 5.55, Rotation2d.fromDegrees(180))]
+                            [Pose2d(13.5, 5.55, Rotation2d.fromDegrees(180))],
                         ),
                         PickUp(intake),
                     ),
                     DriveToPoses(
-                        drivetrain,
-                        [Pose2d(15, 6.5, Rotation2d.fromDegrees(-26.57))]
+                        drivetrain, [Pose2d(15, 6.5, Rotation2d.fromDegrees(-26.57))]
                     ),
                     Shoot(shooter, pivot, intake),
-
                     parallel(
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(13.5, 7, Rotation2d.fromDegrees((-26.57)))]
+                            [Pose2d(13.5, 7, Rotation2d.fromDegrees((-26.57)))],
                         ),
                         PickUp(intake),
                     ),
                     Shoot(shooter, pivot, intake),
-
                     parallel(
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(15, 4.6, Rotation2d.fromDegrees(26.57)),
-                             Pose2d(13.5, 4.1, Rotation2d.fromDegrees(26.57))]
+                            [
+                                Pose2d(15, 4.6, Rotation2d.fromDegrees(26.57)),
+                                Pose2d(13.5, 4.1, Rotation2d.fromDegrees(26.57)),
+                            ],
                         )
                     ),
-                    Shoot(shooter, pivot, intake)
-                )
-            )
+                    Shoot(shooter, pivot, intake),
+                ),
+            ),
         )

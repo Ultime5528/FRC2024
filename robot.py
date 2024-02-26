@@ -7,7 +7,9 @@ from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
 from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
-from commands.auto.autospeakercentershoottwiceline import AutoSpeakerCenterShootTwiceLine
+from commands.auto.autospeakercentershoottwiceline import (
+    AutoSpeakerCenterShootTwiceLine,
+)
 from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
 from commands.auto.autospeakerleftshoottwiceline import AutoSpeakerLeftShootTwiceLine
 from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine

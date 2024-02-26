@@ -23,15 +23,20 @@ class AutoSpeakerRightShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
-            ResetPose(drivetrain, Pose2d(16.08 - 0.22, 4.77 - 0.385, Rotation2d.fromDegrees(-120))),
+            ResetPose(
+                drivetrain,
+                Pose2d(16.08 - 0.22, 4.77 - 0.385, Rotation2d.fromDegrees(-120)),
+            ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
             ParallelCommandGroup(
                 DriveToPoses(
                     drivetrain,
-                    [Pose2d(15, 4.1, Rotation2d.fromDegrees(-150)),
-                     Pose2d(14, 4.1, Rotation2d(-180))]
+                    [
+                        Pose2d(15, 4.1, Rotation2d.fromDegrees(-150)),
+                        Pose2d(14, 4.1, Rotation2d(-180)),
+                    ],
                 ),
                 PickUp(intake),
                 MovePivot.toSpeakerFar(pivot),

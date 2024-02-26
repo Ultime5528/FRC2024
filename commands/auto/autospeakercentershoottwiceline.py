@@ -30,8 +30,10 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
             ParallelCommandGroup(
                 DriveToPoses(
                     drivetrain,
-                    [Pose2d(13.5, 5.55, Rotation2d.fromDegrees(180)),
-                     Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180))]
+                    [
+                        Pose2d(13.5, 5.55, Rotation2d.fromDegrees(180)),
+                        Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180)),
+                    ],
                 ),
                 PickUp(intake),
                 MovePivot.toSpeakerClose(pivot),
