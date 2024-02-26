@@ -1,7 +1,8 @@
 import math
 from typing import List
 
-from wpimath.geometry import Pose2d
+import wpilib
+from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.affinecontroller import AffineController
@@ -25,11 +26,22 @@ class DriveToPoses(SafeCommand):
 
     max_speed = autoproperty(1.0)
 
-    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
+    def __init__(self, drivetrain: Drivetrain, goals_red_alliance: List[Pose2d]):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.goals = goals
+        self.goals = goals_red_alliance
+
+        alliance = wpilib.DriverStation.getAlliance()
+        if alliance == wpilib.DriverStation.Alliance.kRed:
+            pass
+        elif alliance == wpilib.DriverStation.Alliance.kBlue:
+            for i in range(len(self.goals)):
+                current = self.goals[i]
+                new_goal = Pose2d(16.541 - current.x, 8.211 - current.y, Rotation2d.fromDegrees(180.0 - current.rotation().degrees()))
+                self.goals[i] = new_goal
+        else:
+            wpilib.reportError("Alliance is invalid")
 
     def initialize(self):
 

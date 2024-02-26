@@ -18,7 +18,6 @@ from commands.pivot.movepivot import MovePivot
 from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.resetpose import ResetPose
 
-
 class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
     position_pivot = autoproperty(45)
 
@@ -31,37 +30,38 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
         vision: Vision,
     ):
         super().__init__(
-            ResetPose(drivetrain, Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180))),
+            ResetPose(drivetrain, Pose2d(15.2029, 5.553, Rotation2d.fromDegrees(180))),
             ResetPivotDown(pivot),
             parallel(
                 MovePivotContinuous(pivot, vision),
                 sequence(
                     Shoot(shooter, pivot, intake),
                     parallel(
+                        PickUp(intake),
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(13, 5.55, Rotation2d.fromDegrees(180))],
-                        ),
-                        PickUp(intake),
+                            [Pose2d(13.645, 5.553, Rotation2d.fromDegrees(180))],
+                        )
                     ),
                     DriveToPoses(
-                        drivetrain, [Pose2d(15, 6.5, Rotation2d.fromDegrees(180-26.57))]
+                        drivetrain, [Pose2d(14.1, 6.772, Rotation2d.fromDegrees(153.36))]
                     ),
                     Shoot(shooter, pivot, intake),
                     parallel(
+                        PickUp(intake),
                         DriveToPoses(
                             drivetrain,
-                            [Pose2d(13, 7, Rotation2d.fromDegrees((180-26.57)))],
-                        ),
-                        PickUp(intake),
+                            [Pose2d(13.645, 7.001, Rotation2d.fromDegrees((153.36)))],
+                        )
                     ),
                     Shoot(shooter, pivot, intake),
                     parallel(
+                        PickUp(intake),
                         DriveToPoses(
                             drivetrain,
                             [
-                                Pose2d(15, 4.6, Rotation2d.fromDegrees(26.57-180)),
-                                Pose2d(14, 4.1, Rotation2d.fromDegrees(26.57-180)),
+                                Pose2d(14.1, 4.332, Rotation2d.fromDegrees(-153.51)),
+                                Pose2d(13.645, 4.105, Rotation2d.fromDegrees(-153.51)),
                             ],
                         )
                     ),
