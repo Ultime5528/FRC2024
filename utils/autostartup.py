@@ -1,20 +1,22 @@
-import pygetwindow
+import ctypes
 import os
+import subprocess
 import time
 import webbrowser
 from pathlib import Path
-import psutil
-import subprocess
-import requests
 from threading import Thread
-import ctypes
 
-from wpilib import RobotBase
+import psutil
+import pygetwindow
+import requests
 
 # Kill previous dashboard processes
 
-old_dashboard_processes = [p for p in psutil.process_iter() if
-                           "pynetworktables2js" in p.name() or "chrome.exe" in p.name()]
+old_dashboard_processes = [
+    p
+    for p in psutil.process_iter()
+    if "pynetworktables2js" in p.name() or "chrome.exe" in p.name()
+]
 
 for p in old_dashboard_processes:
     try:
@@ -32,7 +34,7 @@ while not DriverStation:
     try:
         DriverStation = pygetwindow.getWindowsWithTitle("FRC Driver Station")[0]
     except IndexError:
-        print('FRC Driver Station not detected')
+        print("FRC Driver Station not detected")
         time.sleep(1)
 
 DriverStation.moveTo(-8, -8)
@@ -68,7 +70,9 @@ chrome_name = None
 
 while chrome_name is None:
     try:
-        chrome_name = [name for name in pygetwindow.getAllTitles() if "Fancy Web Dashboard" in name][0]
+        chrome_name = [
+            name for name in pygetwindow.getAllTitles() if "Fancy Web Dashboard" in name
+        ][0]
     except IndexError:
         print("Chrome window not found")
         time.sleep(1)
@@ -80,13 +84,16 @@ while Browser is None:
         Browser = pygetwindow.getWindowsWithTitle(chrome_name)[0]
         print(Browser)
     except IndexError:
-        print('Chrome not detected')
+        print("Chrome not detected")
         time.sleep(1)
 
 print("Resizing Chrome")
 time.sleep(3)
 Browser.moveTo(-8, DriverStation.bottom - 8)
-Browser.resizeTo(DriverStation.size.width, ctypes.windll.user32.GetSystemMetrics(1) - DriverStation.size.height + 16)
+Browser.resizeTo(
+    DriverStation.size.width,
+    ctypes.windll.user32.GetSystemMetrics(1) - DriverStation.size.height + 16,
+)
 
 DriverStation.show()
 Browser.show()

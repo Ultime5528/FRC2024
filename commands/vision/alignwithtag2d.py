@@ -1,0 +1,67 @@
+from typing import Union, Callable
+
+from commands2.button import CommandXboxController
+from wpilib.interfaces import GenericHID
+from wpimath.filter import SlewRateLimiter
+
+from commands.drivetrain.drive import apply_center_distance_deadzone, properties
+from subsystems.drivetrain import Drivetrain
+from subsystems.vision import getSpeakerTagIDFromAlliance, Vision
+from utils.property import autoproperty
+from utils.safecommand import SafeCommand
+
+
+class AlignWithTag2D(SafeCommand):
+    p = autoproperty(0.025)
+    horizontal_offset = autoproperty(-5.0)
+
+    @classmethod
+    def toSpeaker(
+        cls, drivetrain: Drivetrain, vision: Vision, xbox_remote: CommandXboxController
+    ):
+        cmd = cls(drivetrain, vision, getSpeakerTagIDFromAlliance, xbox_remote)
+        cmd.setName(cmd.getName() + ".toSpeaker")
+        return cmd
+
+    def __init__(
+        self,
+        drivetrain: Drivetrain,
+        vision: Vision,
+        tag_id: Union[int, Callable[[], int]],
+        xbox_remote: CommandXboxController,
+    ):
+        super().__init__()
+        self.addRequirements(drivetrain)
+        self.drivetrain = drivetrain
+        self.vision = vision
+        self.xbox_remote = xbox_remote
+        self.hid = xbox_remote.getHID()
+        self.get_tag_id = tag_id if callable(tag_id) else lambda: tag_id
+        self.vel_rot = 0
+
+        self.m_xspeedLimiter = SlewRateLimiter(3)
+        self.m_yspeedLimiter = SlewRateLimiter(3)
+
+    def execute(self):
+        target = self.vision.getTargetWithID(self.get_tag_id())
+
+        x_speed, y_speed, _ = apply_center_distance_deadzone(
+            self.xbox_remote.getLeftY() * -1,
+            self.xbox_remote.getLeftX() * -1,
+            properties.moving_deadzone,
+        )
+        x_speed = self.m_xspeedLimiter.calculate(x_speed)
+        y_speed = self.m_yspeedLimiter.calculate(y_speed)
+
+        if target is not None:
+            self.vel_rot = self.p * (self.horizontal_offset - target.getYaw())
+            self.drivetrain.drive(
+                x_speed, y_speed, self.vel_rot, is_field_relative=True
+            )
+        else:
+            self.drivetrain.drive(x_speed, y_speed, 0, is_field_relative=True)
+            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
+
+    def end(self, interrupted: bool):
+        self.drivetrain.stop()
+        self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0)

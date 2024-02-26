@@ -1,11 +1,12 @@
+import wpilib
+
 from subsystems.intake import Intake
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-import wpilib
 
 
 class Drop(SafeCommand):
-    drop_delay = autoproperty(0.75)
+    delay = autoproperty(1.5)
 
     def __init__(self, intake: Intake):
         super().__init__()
@@ -22,7 +23,7 @@ class Drop(SafeCommand):
             self.timer.start()
 
     def isFinished(self) -> bool:
-        return self.timer.get() >= self.drop_delay
+        return self.timer.get() >= self.delay
 
     def end(self, interrupted: bool) -> None:
         self.intake.stop()

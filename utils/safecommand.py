@@ -1,8 +1,9 @@
+from abc import ABCMeta
 from functools import wraps
 
 import commands2
 
-__all__ = ["SafeCommand", "SafeMixin"]
+__all__ = ["AbstractSafeCommandMetaclass", "SafeCommand", "SafeMixin"]
 
 fms = True
 exception_threshold = 3
@@ -23,7 +24,9 @@ def wrapNone(f, name):
             wrapped._exception_count = 0
         except Exception as e:
             if not fms:
-                raise CommandException(f"Exception in command {name}.{f.__name__}()") from e
+                raise CommandException(
+                    f"Exception in command {name}.{f.__name__}()"
+                ) from e
             else:
                 print(f"Exception in command {name}.{f.__name__}():\n", e, sep="")
                 wrapped._exception_count += 1
@@ -42,6 +45,10 @@ class SafeCommandMetaclass(commands2.CommandBase.__class__):
         #     dct["execute"] = wrapNone(dct["execute"], name)
         cls = super().__new__(mcls, name, bases, dct)
         return cls
+
+
+class AbstractSafeCommandMetaclass(ABCMeta, SafeCommandMetaclass):
+    pass
 
 
 class SafeMixin:

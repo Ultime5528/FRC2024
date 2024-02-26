@@ -2,12 +2,14 @@ import random
 from enum import Enum, auto
 import math
 from typing import Callable, Union, Tuple, List
+
+import numpy as np
 import wpilib
 from wpilib import DriverStation
 
-import ports
-import numpy as np
+from wpiutil import SendableBuilder
 
+import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 
@@ -50,7 +52,7 @@ class LEDController(SafeSubsystem):
     speed = autoproperty(0.75)
     white_length = autoproperty(6.0)
     color_period = autoproperty(20.0)
-    brightnessValue = autoproperty(100)
+    brightnessValue = autoproperty(10)
 
     last = 0
 
@@ -236,3 +238,8 @@ class LEDController(SafeSubsystem):
 
         self.led_strip.setData(self.buffer)
         wpilib.SmartDashboard.putNumber("led_time", wpilib.getTime() - start_time)
+
+    def initSendable(self, builder: SendableBuilder) -> None:
+        super().initSendable(builder)
+        builder.addStringProperty("mode", lambda: str(self.mode), lambda _: None)
+        builder.addIntegerProperty("time", lambda: self.time, lambda _: None)
