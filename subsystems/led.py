@@ -129,14 +129,7 @@ class LEDController(SafeSubsystem):
             self.buffer[i].setRGB(*y)
 
     def modeTeleop(self):
-        a = 3
-        color = self.getAllianceColor()
-        i_values = np.arange(self.led_number)
-        y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
-
-        pixel_value = numpy_interpolation(y_values, color, self.white)
-        for i, y in enumerate(pixel_value):
-            self.buffer[i].setRGB(*y)
+        self.commonTeleop(self.getAllianceColor(), self.white, 1.0)
 
     def modeEndgame(self):
         period = 15
@@ -149,22 +142,17 @@ class LEDController(SafeSubsystem):
             self.buffer[i].setRGB(*y)
 
     def modePickUp(self):
-        a = 0.1
-        color = self.getAllianceColor()
-        i_values = np.arange(self.led_number)
-        y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
-
-        pixel_value = numpy_interpolation(y_values, color, self.white)
-        for i, y in enumerate(pixel_value):
-            self.buffer[i].setRGB(*y)
+        self.commonTeleop(self.getAllianceColor(), self.white, 3.0)
 
     def modeNoteLoaded(self):
-        a = -0.5
-        color = self.getAllianceColor()
-        i_values = np.arange(self.led_number)
-        y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
+        self.commonTeleop(self.white, self.getAllianceColor(), 1.0)
 
-        pixel_value = numpy_interpolation(y_values, color, self.white)
+    def commonTeleop(self, color1, color2, speed):
+        a = 3
+        i_values = np.arange(self.led_number)
+        y_values = np.maximum(0, (a + 1) * np.cos((i_values - speed * self.time) / 5) - a)
+
+        pixel_value = numpy_interpolation(y_values, color1, color2)
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
@@ -209,6 +197,11 @@ class LEDController(SafeSubsystem):
         for i in range(self.led_number):
             self.buffer[i].setRGB(r, g, b)
 
+    def rainbow(self):
+        for i in range(self.led_number):
+            hue = (self.time + int(i * 180 / self.led_number)) % 180
+            self.buffer[i].setHSV(hue, 255, 255)
+
     def periodic(self) -> None:
         from commands.intake.pickup import PickUp
 
@@ -221,8 +214,7 @@ class LEDController(SafeSubsystem):
             self.modeAuto()
         elif wpilib.DriverStation.isTeleopEnabled():  # teleop
             if (
-                wpilib.DriverStation.getMatchTime() == -1.0
-                or wpilib.DriverStation.getMatchTime() > 20
+                wpilib.DriverStation.getMatchTime() > 20
             ):
                 if self.robot.shooter.isShooting():
                     self.modeShoot()
@@ -234,7 +226,9 @@ class LEDController(SafeSubsystem):
                     self.modeTeleop()
                     self.timer.stop()
                     self.timer.reset()
-            elif wpilib.DriverStation.getMatchTime() > 1:
+            elif DriverStation.getMatchTime() == -1.0:
+                self.rainbow()
+            else:
                 self.modeEndgame()
         elif wpilib.DriverStation.isDSAttached():
             self.modeConnected()  # connected to driver station
