@@ -38,9 +38,10 @@ class DriveToPoses(SafeCommand):
         elif alliance == wpilib.DriverStation.Alliance.kBlue:
             for i in range(len(self.goals)):
                 current = self.goals[i]
+                # field dimensions: 16.541, 8.211
                 new_goal = Pose2d(
                     16.541 - current.x,
-                    8.211 - current.y,
+                    current.y,
                     Rotation2d.fromDegrees(180.0 - current.rotation().degrees()),
                 )
                 self.goals[i] = new_goal
