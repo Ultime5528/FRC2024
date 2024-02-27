@@ -17,7 +17,10 @@ class AlignWithTag2D(SafeCommand):
 
     @classmethod
     def toSpeaker(
-        cls, drivetrain: Drivetrain, vision: Vision, xbox_remote: Optional[CommandXboxController]=None
+        cls,
+        drivetrain: Drivetrain,
+        vision: Vision,
+        xbox_remote: Optional[CommandXboxController] = None,
     ):
         cmd = cls(drivetrain, vision, getSpeakerTagIDFromAlliance, xbox_remote)
         cmd.setName(cmd.getName() + ".toSpeaker")

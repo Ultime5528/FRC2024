@@ -24,7 +24,12 @@ class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup)
     position_pivot = autoproperty(25)
 
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
+        self,
+        drivetrain: Drivetrain,
+        shooter: Shooter,
+        pivot: Pivot,
+        intake: Intake,
+        vision: Vision,
     ):
         super().__init__(
             ResetPose(
@@ -54,8 +59,8 @@ class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup)
                     ),
                     race(
                         Shoot(shooter, pivot, intake),
-                        AlignWithTag2D.toSpeaker(drivetrain, vision)
-                    )
+                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                    ),
                 ),
             ),
         )

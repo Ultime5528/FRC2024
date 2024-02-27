@@ -99,6 +99,4 @@ class DriveToPoses(SafeCommand):
     def setLastGoalSettings(self):
         self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
         self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-        self.pid_rot.setTolerance(
-            self.rot_tol_pos_last, self.rot_tol_vel_last
-        )
+        self.pid_rot.setTolerance(self.rot_tol_pos_last, self.rot_tol_vel_last)

@@ -47,15 +47,11 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                     race(
                         PrepareShoot(shooter, pivot),
                         sequence(
-                            DriveToPoses(
-                                drivetrain,
-                                [pose(14.1, 6.772, 153.36)]
-                            ),
+                            DriveToPoses(drivetrain, [pose(14.1, 6.772, 153.36)]),
                             WaitShootSpeed(shooter),
-                            Load(intake)
-                        )
+                            Load(intake),
+                        ),
                     ),
-
                     race(  # Second Note Taken Shoot
                         PrepareShoot(shooter, pivot),
                         sequence(
@@ -63,13 +59,15 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 PickUp(intake),
                                 DriveToPoses(
                                     drivetrain,
-                                    [pose(13.5, 7.5, 153.36),#13, 7
-                                     pose(14.1, 6.772, 153.36)]
+                                    [
+                                        pose(13.5, 7.5, 153.36),  # 13, 7
+                                        pose(14.1, 6.772, 153.36),
+                                    ],
                                 ),
                             ),
                             WaitShootSpeed(shooter),
-                            Load(intake)
-                        )
+                            Load(intake),
+                        ),
                     ),
                 ),
             ),
