@@ -15,6 +15,9 @@ class MovePivotContinuous(SafeCommand):
         self.vision = vision
         self.addRequirements(pivot)
 
+    def initialize(self):
+        self.pivot.updateInterpolationPoints()
+
     def execute(self):
         if self.pivot.hasReset():
             target = self.vision.getTargetWithID(getSpeakerTagIDFromAlliance())

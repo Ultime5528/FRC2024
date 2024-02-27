@@ -11,9 +11,6 @@ from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.switch import Switch
 
-# X is height in camera view, y is the subsequent wanted pivot pitch
-interpolation_points_x = [-4.1, 1.45, 5.05, 9.8]
-interpolation_points_y = [28, 48, 55, 64]
 
 class Pivot(SafeSubsystem):
     class State(Enum):
@@ -25,6 +22,8 @@ class Pivot(SafeSubsystem):
         Amp = auto()
         LockedInterpolation = auto()
 
+    interpolation_points_x = autoproperty([-4.1, 1.45, 5.05, 9.8])
+    interpolation_points_y = autoproperty([28, 48, 55, 64])
     speed_up = autoproperty(0.2)
     speed_down = autoproperty(-0.75)
     speed_maintain = autoproperty(-0.25)
@@ -42,7 +41,9 @@ class Pivot(SafeSubsystem):
         self.addChild("motor", self._motor)
         self.addChild("encoder", self._encoder)
 
-        self._interpolator = LinearInterpolator(interpolation_points_x, interpolation_points_y)
+        self._interpolator = LinearInterpolator(
+            interpolation_points_x, interpolation_points_y
+        )
         self._offset = 0.0
         self._has_reset = False
         self._prev_is_down = False
@@ -106,6 +107,10 @@ class Pivot(SafeSubsystem):
     def getInterpolatedPosition(self, target_pitch: float) -> float:
         return self._interpolator.interpolate(target_pitch)
 
+    def updateInterpolationPoints(self):
+        self._interpolator.setPointsX(self.interpolation_points_x)
+        self._interpolator.setPointsY(self.interpolation_points_y)
+
     def isDown(self) -> bool:
         return self._switch_down.isPressed()
 
@@ -142,9 +147,6 @@ class Pivot(SafeSubsystem):
         def setHasReset(value: bool):
             self._has_reset = value
 
-        def getInterpolatorXValues():
-            return [i[0] for i in interpolation_points]
-
         builder.addStringProperty("state", lambda: self.state.name, noop)
         builder.addFloatProperty("motor_input", self._motor.get, noop)
         builder.addFloatProperty("encoder", self._encoder.getDistance, noop)
@@ -156,5 +158,13 @@ class Pivot(SafeSubsystem):
         builder.addBooleanProperty("isUp", self.isUp, noop)
         builder.addBooleanProperty("isDown", self.isDown, noop)
 
-        builder.addFloatArrayProperty("interpolator_x_points", self._interpolator.getPointsX, self._interpolator.setPointsX)
-        builder.addFloatArrayProperty("interpolator_y_points", self._interpolator.getPointsY, self._interpolator.setPointsY)
+        builder.addFloatArrayProperty(
+            "interpolator_x_points",
+            self._interpolator.getPointsX,
+            self._interpolator.setPointsX,
+        )
+        builder.addFloatArrayProperty(
+            "interpolator_y_points",
+            self._interpolator.getPointsY,
+            self._interpolator.setPointsY,
+        )

@@ -3,9 +3,9 @@ from typing import List, Tuple
 
 class LinearInterpolator:
     def __init__(self, point_x: List[float], point_y: List[float]):
-        self._points = list(zip(point_x, point_y))
         self._points_x = point_x
         self._points_y = point_y
+        self._points = list(zip(point_x, point_y))
 
     def setPointsX(self, x_points: List[float]):
         self._points_x = x_points
