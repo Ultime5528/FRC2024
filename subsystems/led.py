@@ -71,7 +71,6 @@ class LEDController(SafeSubsystem):
         self.brightness = max(min(100, self.brightnessValue), 0) / 100
 
         self.timer = wpilib.Timer()
-        self.timer.start()
 
         self.robot = robot
 
@@ -140,13 +139,14 @@ class LEDController(SafeSubsystem):
             self.buffer[i].setRGB(*y)
 
     def modeEndgame(self):
-        pixel_value = abs(round(5 * (math.tan(self.time / 3))))
-        if wpilib.DriverStation.getAlliance() == wpilib.DriverStation.Alliance.kRed:
-            for i in range(self.led_number):
-                self.buffer[i].setRGB(pixel_value, 0, 0)
-        else:
-            for i in range(self.led_number):
-                self.buffer[i].setRGB(0, 0, pixel_value)
+        period = 15
+        color = self.getAllianceColor()
+        i_values = np.arange(self.led_number)
+        y_values = ((i_values - self.time * 1.5) / period) % 1.0
+
+        pixel_value = numpy_interpolation(y_values, color, self.white)
+        for i, y in enumerate(pixel_value):
+            self.buffer[i].setRGB(*y)
 
     def modePickUp(self):
         a = 0.1
@@ -169,12 +169,14 @@ class LEDController(SafeSubsystem):
             self.buffer[i].setRGB(*y)
 
     def modeShoot(self):
-        period = 30
+        self.timer.start()
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
-        y_values = ((i_values - self.time * 1.5) / period) % 1.0
+        y_values = self.brightness * (i_values < (200 * self.timer.get()) % 191).astype(
+            float
+        )
 
-        pixel_value = numpy_interpolation(y_values, color, self.white)
+        pixel_value = numpy_interpolation(y_values, self.black, color)
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
@@ -230,6 +232,8 @@ class LEDController(SafeSubsystem):
                     self.modePickUp()
                 else:
                     self.modeTeleop()
+                    self.timer.stop()
+                    self.timer.reset()
             elif wpilib.DriverStation.getMatchTime() > 1:
                 self.modeEndgame()
         elif wpilib.DriverStation.isDSAttached():
