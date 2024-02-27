@@ -119,9 +119,9 @@ class Robot(commands2.TimedCommandRobot):
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerLeftShootTwiveLine",
+            "AutoSpeakerLeftShootTwiceLine",
             AutoSpeakerLeftShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         self.auto_chooser.addOption(
@@ -133,7 +133,7 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             "AutoSpeakerRightShootTwiceLine",
             AutoSpeakerRightShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         self.auto_chooser.addOption(

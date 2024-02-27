@@ -42,7 +42,7 @@ class Pivot(SafeSubsystem):
         self.addChild("encoder", self._encoder)
 
         self._interpolator = LinearInterpolator(
-            interpolation_points_x, interpolation_points_y
+            self.interpolation_points_x, self.interpolation_points_y
         )
         self._offset = 0.0
         self._has_reset = False

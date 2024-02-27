@@ -2,6 +2,7 @@ import commands2
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetoposes import DriveToPoses
+from commands.drivetrain.resetpose import ResetPose
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.shoot import Shoot
@@ -10,9 +11,6 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.safecommand import SafeMixin
-from commands.shooter.shoot import Shoot
-from commands.pivot.movepivot import MovePivot
-from commands.drivetrain.resetpose import ResetPose
 
 
 class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):

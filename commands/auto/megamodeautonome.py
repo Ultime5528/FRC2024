@@ -1,6 +1,5 @@
 import commands2
-from commands2.cmd import parallel, sequence, race
-from wpimath.geometry import Pose2d, Rotation2d
+from commands2.cmd import parallel, sequence, race, deadline
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
@@ -33,18 +32,18 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
     ):
         super().__init__(
             ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
-            ResetPivotDown(pivot),
+            Shoot(shooter, pivot, intake),
+            parallel(
+                DriveToPoses(
+                    drivetrain,
+                    [pose(13.645, 5.553, 180)],
+                ),
+                ResetPivotDown(pivot),
+                PickUp(intake),
+            ),
             parallel(
                 MovePivotContinuous(pivot, vision),
                 sequence(
-                    Shoot(shooter, pivot, intake),
-                    parallel(
-                        DriveToPoses(
-                            drivetrain,
-                            [pose(13.645, 5.553, 180)],
-                        ),
-                        PickUp(intake),
-                    ),
                     race(
                         PrepareShoot(shooter, pivot),
                         sequence(
@@ -57,57 +56,16 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                         )
                     ),
 
-                    parallel(
-                        DriveToPoses(
-                            drivetrain,
-                            [
-                                pose(13, 7, 153.36),
-                                pose(14.1, 6.772, 153.36)
-                            ],
-                        ),
-                        PickUp(intake)
-                    ),
-                    Shoot(shooter, pivot, intake),
-                    race(
+                    race(  # Second Note Taken Shoot
                         PrepareShoot(shooter, pivot),
                         sequence(
-                            parallel(
+                            deadline(
+                                PickUp(intake),
                                 DriveToPoses(
                                     drivetrain,
-                                    [pose(13, 7, 153.36),
+                                    [pose(13.5, 7.5, 153.36),#13, 7
                                      pose(14.1, 6.772, 153.36)]
                                 ),
-                                PickUp(intake)
-                            ),
-                            WaitShootSpeed(shooter),
-                            Load(intake)
-                        )
-                    ),
-
-                    parallel(
-                        DriveToPoses(
-                            drivetrain,
-                            [
-                                pose(14.1, 4.332, -153.51),
-                                pose(13.645, 4.105, -153.51),
-                            ],
-                        ),
-                        PickUp(intake)
-                    ),
-                    DriveToPoses(
-                        drivetrain,
-                        [pose(14.1, 4.332, -153.51)]
-                    ),
-                    race(
-                        PrepareShoot(shooter, pivot),
-                        sequence(
-                            parallel(
-                                DriveToPoses(
-                                    drivetrain,
-                                    [pose(13.645, 4.105, -153.51),
-                                     pose(14.1, 4.332, -153.51)]
-                                ),
-                                PickUp(intake)
                             ),
                             WaitShootSpeed(shooter),
                             Load(intake)

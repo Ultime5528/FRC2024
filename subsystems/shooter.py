@@ -68,8 +68,8 @@ class Shooter(SafeSubsystem):
         self._reached_speed_right = False
 
     def simulationPeriodic(self):
-        self.left_motor_sim.setVelocity(10000 * self._left_motor.get())
-        self.right_motor_sim.setVelocity(10000 * self._left_motor.get())
+        self.left_motor_sim.setVelocity(15000 * self._left_motor.get())
+        self.right_motor_sim.setVelocity(15000 * self._left_motor.get())
 
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)

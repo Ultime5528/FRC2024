@@ -5,7 +5,6 @@ from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.affinecontroller import AffineController
-from utils.alignbaseutils import clamp
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
@@ -55,6 +54,9 @@ class DriveToPoses(SafeCommand):
         self.pid_rot.enableContinuousInput(-180, 180)
         self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
 
+        if len(self.goals) == 1:
+            self.setLastGoalSettings()
+
     def execute(self):
         current_pos = self.drivetrain.getPose()
 
@@ -62,18 +64,10 @@ class DriveToPoses(SafeCommand):
         vel_y = self.pid_y.calculate(current_pos.y)
         vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
 
-        speed = math.hypot(vel_x, vel_y)
-
-        if not math.isclose(speed, 0):
-            clamped_speed = clamp(speed, -self.max_speed, self.max_speed)
-            speed_factor = clamped_speed / speed
-
-            new_vel_x = vel_x * speed_factor
-            new_vel_y = vel_y * speed_factor
-
+        if not math.isclose(vel_x, 0) or not math.isclose(vel_y, 0):
             self.drivetrain.drive(
-                new_vel_x,
-                new_vel_y,
+                vel_x,
+                vel_y,
                 vel_rot,
                 True,
             )
@@ -87,20 +81,24 @@ class DriveToPoses(SafeCommand):
 
             if self.currGoal < len(self.goals):
                 print(len(self.goals) - 1, self.currGoal)
-                if self.currGoal == len(self.goals) - 1:
-                    self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-                    self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-                    self.pid_rot.setTolerance(
-                        self.rot_tol_pos_last, self.rot_tol_vel_last
-                    )
 
                 currentGoal = self.goals[self.currGoal]
                 self.pid_x.setSetpoint(currentGoal.x)
                 self.pid_y.setSetpoint(currentGoal.y)
                 self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
 
+                if self.currGoal == len(self.goals) - 1:
+                    self.setLastGoalSettings()
+
     def end(self, interrupted):
         self.drivetrain.stop()
 
     def isFinished(self):
         return self.currGoal == len(self.goals)
+
+    def setLastGoalSettings(self):
+        self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
+        self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
+        self.pid_rot.setTolerance(
+            self.rot_tol_pos_last, self.rot_tol_vel_last
+        )
