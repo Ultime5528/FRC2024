@@ -123,7 +123,7 @@ class LEDController(SafeSubsystem):
     def modeAuto(self):
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
-        y_values = 0.5 * np.sin(2 * math.pi ** 2 * (i_values - 3 * self.time) / 200) + 0.5
+        y_values = 0.5 * np.sin(2 * math.pi**2 * (i_values - 3 * self.time) / 200) + 0.5
 
         pixel_value = numpy_interpolation(y_values, color, self.white)
         for i, y in enumerate(pixel_value):
@@ -159,7 +159,7 @@ class LEDController(SafeSubsystem):
             self.buffer[i].setRGB(*y)
 
     def modeNoteLoaded(self):
-        a = - 0.5
+        a = -0.5
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
         y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
@@ -192,7 +192,8 @@ class LEDController(SafeSubsystem):
 
     def modeNotConnected(self):
         pixel_value = round(
-            255 * self.brightness * math.cos(self.time / (18 * math.pi)))
+            255 * self.brightness * math.cos(self.time / (18 * math.pi))
+        )
 
         if pixel_value >= 0:
             r = pixel_value
