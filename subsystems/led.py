@@ -150,7 +150,9 @@ class LEDController(SafeSubsystem):
     def commonTeleop(self, color1, color2, speed):
         a = 3
         i_values = np.arange(self.led_number)
-        y_values = np.maximum(0, (a + 1) * np.cos((i_values - speed * self.time) / 5) - a)
+        y_values = np.maximum(
+            0, (a + 1) * np.cos((i_values - speed * self.time) / 5) - a
+        )
 
         pixel_value = numpy_interpolation(y_values, color1, color2)
         for i, y in enumerate(pixel_value):
@@ -213,9 +215,7 @@ class LEDController(SafeSubsystem):
         elif wpilib.DriverStation.isAutonomousEnabled():  # auto
             self.modeAuto()
         elif wpilib.DriverStation.isTeleopEnabled():  # teleop
-            if (
-                wpilib.DriverStation.getMatchTime() > 20
-            ):
+            if wpilib.DriverStation.getMatchTime() > 20:
                 if self.robot.shooter.isShooting():
                     self.modeShoot()
                 elif self.robot.intake.hasNote():
