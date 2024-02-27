@@ -130,7 +130,7 @@ class LEDController(SafeSubsystem):
             self.buffer[i].setRGB(*y)
 
     def modeTeleop(self):
-        a = 1.5
+        a = 3
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
         y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
@@ -149,7 +149,7 @@ class LEDController(SafeSubsystem):
                 self.buffer[i].setRGB(0, 0, pixel_value)
 
     def modePickUp(self):
-        a = 0
+        a = 0.1
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
         y_values = np.maximum(0, (a + 1) * np.cos((i_values - self.time) / 5) - a)
@@ -172,7 +172,7 @@ class LEDController(SafeSubsystem):
         period = 30
         color = self.getAllianceColor()
         i_values = np.arange(self.led_number)
-        y_values = ((i_values - self.time) / period) % 1.0
+        y_values = ((i_values - self.time * 1.5) / period) % 1.0
 
         pixel_value = numpy_interpolation(y_values, color, self.white)
         for i, y in enumerate(pixel_value):
@@ -222,7 +222,7 @@ class LEDController(SafeSubsystem):
                 or wpilib.DriverStation.getMatchTime() > 20
             ):
                 if self.robot.shooter.isShooting():
-                    self.modePickUp()
+                    self.modeShoot()
                 elif self.robot.intake.hasNote():
                     self.modeNoteLoaded()
                 elif isinstance(self.robot.intake.getCurrentCommand(), PickUp):

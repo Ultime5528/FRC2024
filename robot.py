@@ -67,7 +67,7 @@ class Robot(commands2.TimedCommandRobot):
         self.pivot = Pivot()
         self.shooter = Shooter()
         self.vision = Vision()
-        self.led = LEDController()
+        self.led = LEDController(self)
 
         """
         Default subsystem commands
