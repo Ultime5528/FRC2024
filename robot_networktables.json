@@ -1,5 +1,21 @@
 [
   {
+    "name": "/Properties/Pivot/interpolation_points_x",
+    "type": "double[]",
+    "value": [-6.8, -6.3, -6.1, -4.1, 1.45, 5.05, 9.8],
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Pivot/interpolation_points_y",
+    "type": "int[]",
+    "value": [16, 17, 18, 28, 48, 55, 64],
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/Pivot/speed_up",
     "type": "double",
     "value": 0.2,
@@ -266,7 +282,7 @@
   {
     "name": "/Properties/DriveToPoses/xy_b",
     "type": "double",
-    "value": 0.08,
+    "value": 0.1,
     "properties": {
       "persistent": true
     }
@@ -290,7 +306,15 @@
   {
     "name": "/Properties/DriveToPoses/xy_tol_vel_last",
     "type": "double",
-    "value": 0.1,
+    "value": 10.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_max",
+    "type": "double",
+    "value": 0.4,
     "properties": {
       "persistent": true
     }
@@ -306,7 +330,7 @@
   {
     "name": "/Properties/DriveToPoses/rot_b",
     "type": "double",
-    "value": 0.08,
+    "value": 0.1,
     "properties": {
       "persistent": true
     }
@@ -330,15 +354,15 @@
   {
     "name": "/Properties/DriveToPoses/rot_tol_vel_last",
     "type": "double",
-    "value": 1.0,
+    "value": 10.0,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/DriveToPoses/max_speed",
+    "name": "/Properties/DriveToPoses/rot_max",
     "type": "double",
-    "value": 1.0,
+    "value": 0.4,
     "properties": {
       "persistent": true
     }
@@ -354,7 +378,7 @@
   {
     "name": "/Properties/MovePivot/position_speaker_far",
     "type": "double",
-    "value": 40.0,
+    "value": 30.0,
     "properties": {
       "persistent": true
     }
@@ -410,7 +434,7 @@
   {
     "name": "/Properties/Intake/speed_load",
     "type": "double",
-    "value": 0.75,
+    "value": 1.0,
     "properties": {
       "persistent": true
     }
@@ -696,6 +720,62 @@
     }
   },
   {
+    "name": "/Properties/DriveToPoses/max_speed",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/acceptable_wheel_rotation",
+    "type": "double",
+    "value": 0.51,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drivetrain/wheel_flip_rotation",
+    "type": "double",
+    "value": 0.85,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquares/line_duration",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveSquares/speed",
+    "type": "double",
+    "value": 0.6,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PickUp/delay_time",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Drop/drop_delay",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/DriveToPoses/xy_i",
     "type": "double",
     "value": 0.05,
@@ -931,22 +1011,6 @@
     "name": "/Properties/Drivetrain/use_vision",
     "type": "boolean",
     "value": true,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Drivetrain/acceptable_wheel_rotation",
-    "type": "double",
-    "value": 0.51,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Drivetrain/wheel_flip_rotation",
-    "type": "double",
-    "value": 0.85,
     "properties": {
       "persistent": true
     }
