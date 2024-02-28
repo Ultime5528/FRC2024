@@ -135,9 +135,7 @@ class LEDController(SafeSubsystem):
         self.timer.start()
         color = (self.brightness * self.getAllianceColor()).astype(int)
         i_values = np.arange(self.led_number)
-        y_values = (i_values < (200 * self.timer.get()) % 191).astype(
-            float
-        )
+        y_values = (i_values < (200 * self.timer.get()) % 191).astype(float)
 
         pixel_value = numpy_interpolation(y_values, self.black, color)
         for i, y in enumerate(pixel_value):
