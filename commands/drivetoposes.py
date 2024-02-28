@@ -32,6 +32,7 @@ class DriveToPoses(SafeCommand):
         self.drivetrain = drivetrain
         self.goals = goals_red_alliance
 
+    def initialize(self):
         alliance = wpilib.DriverStation.getAlliance()
         if alliance == wpilib.DriverStation.Alliance.kRed:
             pass
@@ -47,9 +48,6 @@ class DriveToPoses(SafeCommand):
                 self.goals[i] = new_goal
         else:
             wpilib.reportError("Alliance is invalid")
-
-    def initialize(self):
-
         self.currGoal = 0
         currentGoal = self.goals[self.currGoal]
 
@@ -90,9 +88,9 @@ class DriveToPoses(SafeCommand):
             )
 
         if (
-            self.pid_x.atSetpoint()
-            and self.pid_y.atSetpoint()
-            and self.pid_rot.atSetpoint()
+                self.pid_x.atSetpoint()
+                and self.pid_y.atSetpoint()
+                and self.pid_rot.atSetpoint()
         ):
             self.currGoal += 1
 
