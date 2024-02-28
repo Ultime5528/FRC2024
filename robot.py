@@ -117,6 +117,7 @@ class Robot(commands2.TimedCommandRobot):
         self.panel_2.button(5).onTrue(
             ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
         )
+        self.panel_2.button(1).onTrue(MovePivot.toAmp(self.pivot))
         self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
 
     def setupSubsystemOnDashboard(self):
