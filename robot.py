@@ -15,7 +15,6 @@ from commands.drivetrain.resetgyro import ResetGyro
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
-from commands.led.lightall import LightAll
 from commands.pivot.forceresetpivot import ForceResetPivot
 from commands.pivot.maintainpivot import MaintainPivot
 from commands.pivot.movepivot import MovePivot
@@ -67,7 +66,7 @@ class Robot(commands2.TimedCommandRobot):
         self.pivot = Pivot()
         self.shooter = Shooter()
         self.vision = Vision()
-        self.led = LEDController()
+        self.led = LEDController(self)
 
         """
         Default subsystem commands
@@ -182,8 +181,6 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
-
-        putCommandOnDashboard("LED", LightAll(self.led))
 
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
