@@ -1,6 +1,5 @@
 import math
 import weakref
-from enum import Enum, auto
 from typing import Callable, Union, Tuple, List
 
 import numpy as np
@@ -26,68 +25,41 @@ def numpy_interpolation(t: np.ndarray, color1: np.ndarray, color2: np.ndarray):
 Color = Union[np.ndarray, Tuple[int, int, int], List[int]]
 
 
-class ModeLED(Enum):
-    NONE = auto()
-    NOTE = auto()
-    PICKUP = auto()
-
-
 class LEDController(SafeSubsystem):
     # HSV: [Hue(color 0 to 180), Saturation( amount of gray 0 to 255), Value(brightness 0 to 255)
     red_rgb = np.array([255, 0, 0])
     blue_rgb = np.array([0, 0, 255])
-    sky_blue_rgb = np.array([0, 205, 255])
-    purple_rgb = np.array([108, 0, 250])
-    violet_rgb = np.array([205, 0, 255])
-    yellow_rgb = np.array([255, 255, 0])
-    orange_rgb = np.array([255, 150, 50])
     black = np.array([0, 0, 0])
     white = np.array([255, 255, 255])
-    beige_rgb = np.array([225, 198, 153])
-    green_rgb = np.array([0, 255, 0])
 
     led_number = 190
 
-    speed = autoproperty(0.75)
-    white_length = autoproperty(6.0)
-    color_period = autoproperty(20.0)
     brightnessValue = autoproperty(10)
-
-    last = 0
-
-    i_values = np.array(led_number)
 
     def __init__(self, robot):
         super().__init__()
         self.led_strip = wpilib.AddressableLED(ports.led_strip)
         self.buffer = [wpilib.AddressableLED.LEDData() for _ in range(self.led_number)]
         self.led_strip.setLength(len(self.buffer))
-        self.time = 0
-        self.explosiveness = 0.0
         self.led_strip.start()
-        self.mode = ModeLED.NONE
 
-        self.brightness = max(min(100, self.brightnessValue), 0) / 100
-
+        self.time = 0
         self.timer = wpilib.Timer()
 
         # Nécessaire pour que les tests puissent bien libérer la mémoire.
         self.robot = weakref.proxy(robot)
 
-    def setRGB(self, i: int, color: Color):
-        color = (color * self.brightness).astype(int)
-        self.buffer[i].setRGB(*color)
+    @property
+    def brightness(self) -> float:
+        return max(min(100, self.brightnessValue), 0) / 100
 
-    def dim(self, x):
-        return round(x * max(min(1, self.brightnessValue), 0))
+    def setRGB(self, i: int, color: Color):
+        self.buffer[i].setRGB(*color)
 
     def setAll(self, color_func: Callable[[int], Color]):
         a = np.arange(len(self.buffer))
         for i in np.nditer(a):
             self.setRGB(i, color_func(i))
-
-    def setMode(self, mode: ModeLED):
-        self.mode = mode
 
     def getAllianceColor(self):
         alliance = wpilib.DriverStation.getAlliance()
@@ -99,32 +71,29 @@ class LEDController(SafeSubsystem):
             color = self.black
         return color
 
-    def getModeColor(self):
-        if self.mode == ModeLED.NOTE:
-            return self.orange_rgb
-        else:
-            return self.white
-
     def e_stopped(self):
         interval = 10
         flash_time = 20
         state = round(self.time / flash_time) % 2
 
+        red = (self.brightness * self.red_rgb).astype(int)
+
         def getColor(i: int):
             is_color = state - round(i / interval) % 2
             if is_color:
-                return self.red_rgb
+                return red
             else:
                 return self.black
 
         self.setAll(getColor)
 
     def modeAuto(self):
-        color = self.getAllianceColor()
+        color = (self.brightness * self.getAllianceColor()).astype(int)
+        white = (self.brightness * self.white).astype(int)
         i_values = np.arange(self.led_number)
         y_values = 0.5 * np.sin(2 * math.pi**2 * (i_values - 3 * self.time) / 200) + 0.5
 
-        pixel_value = numpy_interpolation(y_values, color, self.white)
+        pixel_value = numpy_interpolation(y_values, color, white)
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
@@ -133,11 +102,12 @@ class LEDController(SafeSubsystem):
 
     def modeEndgame(self):
         period = 15
-        color = self.getAllianceColor()
+        color = (self.brightness * self.getAllianceColor()).astype(int)
+        white = (self.brightness * self.white).astype(int)
         i_values = np.arange(self.led_number)
         y_values = ((i_values - self.time * 1.5) / period) % 1.0
 
-        pixel_value = numpy_interpolation(y_values, color, self.white)
+        pixel_value = numpy_interpolation(y_values, color, white)
         for i, y in enumerate(pixel_value):
             self.buffer[i].setRGB(*y)
 
@@ -148,6 +118,9 @@ class LEDController(SafeSubsystem):
         self.commonTeleop(self.white, self.getAllianceColor(), 1.0)
 
     def commonTeleop(self, color1, color2, speed):
+        color1 = (self.brightness * color1).astype(int)
+        color2 = (self.brightness * color2).astype(int)
+
         a = 3
         i_values = np.arange(self.led_number)
         y_values = np.maximum(
@@ -160,9 +133,9 @@ class LEDController(SafeSubsystem):
 
     def modeShoot(self):
         self.timer.start()
-        color = self.getAllianceColor()
+        color = (self.brightness * self.getAllianceColor()).astype(int)
         i_values = np.arange(self.led_number)
-        y_values = self.brightness * (i_values < (200 * self.timer.get()) % 191).astype(
+        y_values = (i_values < (200 * self.timer.get()) % 191).astype(
             float
         )
 
@@ -202,14 +175,18 @@ class LEDController(SafeSubsystem):
     def rainbow(self):
         for i in range(self.led_number):
             hue = (self.time + int(i * 180 / self.led_number)) % 180
-            self.buffer[i].setHSV(hue, 255, 255)
+            self.buffer[i].setHSV(
+                round(hue * self.brightness),
+                round(255 * self.brightness),
+                round(255 * self.brightness),
+            )
 
     def periodic(self) -> None:
         from commands.intake.pickup import PickUp
 
         start_time = wpilib.getTime()
-
         self.time += 1
+
         if wpilib.DriverStation.isEStopped():
             self.e_stopped()
         elif wpilib.DriverStation.isAutonomousEnabled():  # auto
@@ -240,5 +217,4 @@ class LEDController(SafeSubsystem):
 
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
-        builder.addStringProperty("mode", lambda: str(self.mode), lambda _: None)
         builder.addIntegerProperty("time", lambda: self.time, lambda _: None)
