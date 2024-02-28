@@ -1,12 +1,11 @@
-import random
-from enum import Enum, auto
 import math
+import weakref
+from enum import Enum, auto
 from typing import Callable, Union, Tuple, List
 
 import numpy as np
 import wpilib
 from wpilib import DriverStation
-
 from wpiutil import SendableBuilder
 
 import ports
@@ -72,7 +71,8 @@ class LEDController(SafeSubsystem):
 
         self.timer = wpilib.Timer()
 
-        self.robot = robot
+        # Nécessaire pour que les tests puissent bien libérer la mémoire.
+        self.robot = weakref.proxy(robot)
 
     def setRGB(self, i: int, color: Color):
         color = (color * self.brightness).astype(int)
