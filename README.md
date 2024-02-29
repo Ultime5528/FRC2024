@@ -23,7 +23,7 @@
 | commands/climber/unlockratchet.py                |       24 |        1 |        2 |        1 |     92% |        35 |
 | commands/drivetoposes.py                         |       70 |       38 |       10 |        0 |     40% |38-58, 61-91, 94, 97, 100-102 |
 | commands/drivetrain/\_\_init\_\_.py              |        0 |        0 |        0 |        0 |    100% |           |
-| commands/drivetrain/drive.py                     |       64 |       11 |        6 |        2 |     79% |17, 21-24, 46-60, 63, 105 |
+| commands/drivetrain/drive.py                     |       51 |        9 |       10 |        3 |     74% |18, 22-25, 67-69, 78-79 |
 | commands/drivetrain/drivedistance.py             |       41 |       26 |        4 |        0 |     33% |17-26, 29-37, 46-61, 64, 67 |
 | commands/drivetrain/resetgyro.py                 |       13 |        0 |        0 |        0 |    100% |           |
 | commands/drivetrain/resetpose.py                 |       13 |        2 |        0 |        0 |     85% |    15, 18 |
@@ -45,7 +45,7 @@
 | gyro.py                                          |      122 |       51 |       14 |        5 |     59% |19, 28->exit, 31->exit, 34->exit, 37->exit, 40, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                                         |       28 |        0 |        0 |        0 |    100% |           |
 | properties.py                                    |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                                         |      155 |        3 |       12 |        4 |     96% |284, 288, 299, 303->306 |
+| robot.py                                         |      153 |        3 |       12 |        4 |     96% |278, 282, 293, 297->300 |
 | subsystems/\_\_init\_\_.py                       |        0 |        0 |        0 |        0 |    100% |           |
 | subsystems/climber.py                            |      146 |        4 |       79 |       11 |     93% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 159, 162 |
 | subsystems/drivetrain.py                         |       93 |        7 |        4 |        2 |     91% |94->exit, 113, 133, 136, 145-154 |
@@ -79,7 +79,7 @@
 | utils/swerve.py                                  |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                                  |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                       |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                        **TOTAL** | **2955** |  **534** |  **641** |   **86** | **79%** |           |
+|                                        **TOTAL** | **2940** |  **532** |  **645** |   **87** | **79%** |           |
 
 
 ## Setup coverage badge
