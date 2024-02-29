@@ -74,20 +74,12 @@ class DriveField(SafeCommand):
             * rot_hyp
         )
 
-        self.drivetrain.drive(
-            (
-                -1 * x_speed
-                if DriverStation.getAlliance() == DriverStation.Alliance.kRed
-                else x_speed
-            ),
-            (
-                -1 * y_speed
-                if DriverStation.getAlliance() == DriverStation.Alliance.kRed
-                else y_speed
-            ),
-            rot_speed,
-            True,
-        )
+
+        if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+            x_speed *= -1
+            y_speed *= -1
+
+        self.drivetrain.drive(x_speed, y_speed, rot_speed, True)
 
     def end(self, interrupted: bool) -> None:
         self.drivetrain.stop()
