@@ -183,6 +183,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
+        putCommandOnDashboard("LED", LightAll(self.led))
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerClose(self.pivot))
