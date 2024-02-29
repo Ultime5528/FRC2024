@@ -22,7 +22,7 @@ from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
 from commands.drivetoposes import DriveToPoses
-from commands.drivetrain.drive import DriveField, Drive
+from commands.drivetrain.drive import DriveField
 from commands.drivetrain.resetgyro import ResetGyro
 from commands.drivetrain.resetpose import ResetPose
 from commands.intake.drop import Drop
@@ -188,12 +188,6 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-        putCommandOnDashboard(
-            "Drivetrain", DriveField(self.drivetrain, self.xbox_controller)
-        )
-        putCommandOnDashboard(
-            "Drivetrain", Drive(self.drivetrain, self.xbox_controller)
-        )
         putCommandOnDashboard(
             "Drivetrain",
             AlignWithTag2D.toSpeaker(
