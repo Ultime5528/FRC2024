@@ -65,7 +65,7 @@ class DriveField(SafeCommand):
 
         if not (rot_x == 0 and rot_y == 0):
             self.rot = Rotation2d(math.atan2(rot_x, rot_y) * -1)
-            if DriverStation.getAlliance() == DriverStation.Alliance.kBlue:
+            if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
                 self.rot = Rotation2d.fromDegrees(180 + self.rot.degrees())
 
         rot_speed = (

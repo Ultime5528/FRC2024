@@ -1,6 +1,7 @@
 from typing import Union, Callable, Optional
 
 from commands2.button import CommandXboxController
+from wpilib import DriverStation
 from wpilib.interfaces import GenericHID
 from wpimath.filter import SlewRateLimiter
 
@@ -56,6 +57,11 @@ class AlignWithTag2D(SafeCommand):
             )
             x_speed = self.m_xspeedLimiter.calculate(x_speed)
             y_speed = self.m_yspeedLimiter.calculate(y_speed)
+
+            if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
+                x_speed *= -1
+                y_speed *= -1
+
         else:
             x_speed = 0.0
             y_speed = 0.0
