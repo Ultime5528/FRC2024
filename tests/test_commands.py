@@ -107,4 +107,6 @@ def test_requirements():
                     sub_arg in actual_required_subsystems
                 ), f"{obj.__name__} does not require {sub_arg}"
         else:
-            assert not subsystem_args, f"addRequirements is not called, but should require {subsystem_args}"
+            assert (
+                not subsystem_args
+            ), f"addRequirements is not called, but should require {subsystem_args}"
