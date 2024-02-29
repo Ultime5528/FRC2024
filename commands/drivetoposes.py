@@ -1,10 +1,13 @@
 import math
 from typing import List
 
+from commands2 import ConditionalCommand, Command
+from wpilib import DriverStation
 from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.affinecontroller import AffineController
+from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
@@ -33,6 +36,15 @@ class DriveToPoses(SafeCommand):
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.goals = goals
+
+    @staticmethod
+    def fromRedBluePoints(
+        drivetrain: Drivetrain, red_poses: List[Pose2d], blue_poses: List[Pose2d]
+    ) -> Command:
+        return eitherRedBlue(
+            DriveToPoses(drivetrain, red_poses),
+            DriveToPoses(drivetrain, blue_poses),
+        )
 
     def initialize(self):
         self.currGoal = 0
