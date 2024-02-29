@@ -74,7 +74,6 @@ class DriveField(SafeCommand):
             * rot_hyp
         )
 
-
         if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
             x_speed *= -1
             y_speed *= -1
