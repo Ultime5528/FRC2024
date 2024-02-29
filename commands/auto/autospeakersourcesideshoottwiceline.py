@@ -16,11 +16,12 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
+from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
+class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     position_pivot = autoproperty(25)
 
     def __init__(
@@ -32,9 +33,15 @@ class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup)
         vision: Vision,
     ):
         super().__init__(
-            ResetPose(
-                drivetrain,
-                pose(16.08 - 0.22, 6.33 + 0.385, 120),
+            eitherRedBlue(
+                ResetPose(
+                    drivetrain,
+                    Pose2d(15.86, 4.385, Rotation2d.fromDegrees(-120)),
+                ),
+                ResetPose(
+                    drivetrain,
+                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(-60)),
+                ),
             ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
@@ -44,18 +51,20 @@ class AutoSpeakerLeftShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup)
                 SequentialCommandGroup(
                     deadline(
                         PickUp(intake),
-                        DriveToPoses(
+                        DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                Pose2d(15, 7, Rotation2d.fromDegrees(150)),
-                                Pose2d(13.5, 7, Rotation2d.fromDegrees(180)),
-                                pose(12.5, 8, 153),
+                                pose(15, 4.1, 180),
+                                pose(13.5, 4.1, 180),
+                            ],
+                            [
+                                pose(1.541, 4.1, 0),
+                                pose(3.041, 4.1, 0),
                             ],
                         ),
                     ),
-                    DriveToPoses(
-                        drivetrain,
-                        [pose(15, 6.5, 153)],
+                    DriveToPoses.fromRedBluePoints(
+                        drivetrain, [pose(15, 4.1, -130)], [pose(1.541, 4.1, -50)]
                     ),
                     race(
                         Shoot(shooter, pivot, intake),
