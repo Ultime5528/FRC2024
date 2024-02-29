@@ -1,18 +1,18 @@
-from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.geometry import Pose2d
 
 from subsystems.drivetrain import Drivetrain
 from utils.safecommand import SafeCommand
 
 
-class ResetGyro(SafeCommand):
-    def __init__(self, drivetrain: Drivetrain):
+class ResetPose(SafeCommand):
+    def __init__(self, drivetrain: Drivetrain, pose: Pose2d):
         super().__init__()
+        self.pose = pose
         self.drivetrain = drivetrain
         self.addRequirements(drivetrain)
 
     def initialize(self):
-        current = self.drivetrain.getPose()
-        self.drivetrain.resetToPose(Pose2d(current.translation(), Rotation2d()))
+        self.drivetrain.resetToPose(self.pose)
 
     def isFinished(self) -> bool:
         return True

@@ -3,15 +3,28 @@ from typing import Optional
 
 import commands2.button
 import wpilib
+from commands2.cmd import sequence
+from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
+from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
+from commands.auto.autospeakercentershoottwiceline import (
+    AutoSpeakerCenterShootTwiceLine,
+)
+from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
+from commands.auto.autospeakerleftshoottwiceline import AutoSpeakerLeftShootTwiceLine
+from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine
+from commands.auto.autospeakerrightshoottwiceline import AutoSpeakerRightShootTwiceLine
+from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
 from commands.climber.retractclimber import RetractClimber
 from commands.climber.unlockratchet import UnlockRatchet
+from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.drive import DriveField, Drive
 from commands.drivetrain.resetgyro import ResetGyro
+from commands.drivetrain.resetpose import ResetPose
 from commands.intake.drop import Drop
 from commands.intake.load import Load
 from commands.intake.pickup import PickUp
@@ -23,7 +36,7 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shootandmovepivotloading import ShootAndMovePivotLoading
+from commands.shooter.shoot import ShootAndMovePivotLoading
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
@@ -86,6 +99,48 @@ class Robot(commands2.TimedCommandRobot):
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", None)
+        self.auto_chooser.addOption(
+            "AutoSpeakerCenterShootLine",
+            AutoSpeakerCenterShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerCenterShootTwiceLine",
+            AutoSpeakerCenterShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerLeftShootLine",
+            AutoSpeakerLeftShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerLeftShootTwiceLine",
+            AutoSpeakerLeftShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerRightShootLine",
+            AutoSpeakerRightShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+        self.auto_chooser.addOption(
+            "AutoSpeakerRightShootTwiceLine",
+            AutoSpeakerRightShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+        self.auto_chooser.addOption(
+            "MegaModeAutonome",
+            MegaModeAutonome(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):
@@ -144,6 +199,24 @@ class Robot(commands2.TimedCommandRobot):
             AlignWithTag2D.toSpeaker(
                 self.drivetrain, self.vision, self.xbox_controller
             ),
+        )
+
+        putCommandOnDashboard(
+            "Drivetrain",
+            sequence(
+                ResetPose(
+                    self.drivetrain,
+                    Pose2d(16.08 - 0.22, 6.33 + 0.385, Rotation2d.fromDegrees(120)),
+                ),
+                DriveToPoses(
+                    self.drivetrain,
+                    [
+                        Pose2d(15, 7, Rotation2d.fromDegrees(150)),
+                        Pose2d(14, 7, Rotation2d.fromDegrees(180)),
+                    ],
+                ),
+            ),
+            "Left",
         )
 
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))

@@ -86,7 +86,7 @@ class MovePivot(SafeCommand):
 class _ClassProperties:
     # Pivot Properties #
     position_amp = autoproperty(31.0, subtable=MovePivot.__name__)
-    position_speaker_far = autoproperty(40.0, subtable=MovePivot.__name__)
+    position_speaker_far = autoproperty(30.0, subtable=MovePivot.__name__)
     position_speaker_close = autoproperty(64.0, subtable=MovePivot.__name__)
     position_loading = autoproperty(65.0, subtable=MovePivot.__name__)
 
