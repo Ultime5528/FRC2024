@@ -1,16 +1,25 @@
 import math
 
 import wpilib
+from photonlibpy.estimatedRobotPose import EstimatedRobotPose
 from photonlibpy.photonCamera import PhotonCamera
+from photonlibpy.photonPoseEstimator import PhotonPoseEstimator, PoseStrategy
+from robotpy_apriltag import loadAprilTagLayoutField, AprilTagField
 from wpilib import RobotBase
 from wpimath.estimator import SwerveDrive4PoseEstimator
-from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
+from wpimath.geometry import (
+    Pose2d,
+    Translation2d,
+    Rotation2d,
+    Twist2d,
+    Transform3d,
+    Rotation3d,
+)
 from wpimath.kinematics import (
     ChassisSpeeds,
     SwerveDrive4Kinematics,
     SwerveModuleState,
 )
-
 import ports
 from gyro import ADIS16470
 from utils.property import autoproperty
@@ -19,6 +28,8 @@ from utils.swerve import SwerveModule
 
 
 class Drivetrain(SafeSubsystem):
+    use_vision = autoproperty(True)
+
     width = autoproperty(0.68)
     length = autoproperty(0.68)
     max_angular_speed = autoproperty(25.0)
@@ -90,6 +101,15 @@ class Drivetrain(SafeSubsystem):
         )
 
         self.cam = PhotonCamera("mainCamera")
+        robot_to_camera = Transform3d(
+            0.5, 0, 0.5, Rotation3d(0, 0, 0)
+        )  # Camera is 0.5 m forward, 0.5 m up from robot center
+        self.vision_estimator = PhotonPoseEstimator(
+            loadAprilTagLayoutField(AprilTagField.k2024Crescendo),
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            self.cam,
+            robot_to_camera,
+        )
 
         if RobotBase.isSimulation():
             self.sim_yaw = 0
@@ -194,6 +214,12 @@ class Drivetrain(SafeSubsystem):
             ),
         )
 
+        estimated_vision_pose = self.vision_estimator.update(self.cam.getLatestResult())
+        if estimated_vision_pose is EstimatedRobotPose:
+            self.swerve_estimator.addVisionMeasurement(
+                estimated_vision_pose.estimatedPose,
+                estimated_vision_pose.timestampSeconds,
+            )
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
 
     def simulationPeriodic(self):
