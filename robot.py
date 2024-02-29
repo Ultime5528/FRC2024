@@ -285,6 +285,8 @@ class Robot(commands2.TimedCommandRobot):
     def teleopInit(self):
         if self.auto_command:
             self.auto_command.cancel()
+        else:
+            ResetGyro(self.drivetrain).schedule()
 
     def robotPeriodic(self):
         self.vision.periodic()
