@@ -15,6 +15,7 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
+from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 
@@ -31,12 +32,16 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
         vision: Vision,
     ):
         super().__init__(
-            ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
+            eitherRedBlue(
+                ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
+                ResetPose(drivetrain, pose(1.3381, 5.553, 0)),
+            ),
             Shoot(shooter, pivot, intake),
             parallel(
-                DriveToPoses(
+                DriveToPoses.fromRedBluePoints(
                     drivetrain,
                     [pose(13.645, 5.553, 180)],
+                    [pose(2.896, 5.553, 0)],
                 ),
                 ResetPivotDown(pivot),
                 PickUp(intake),
@@ -47,7 +52,11 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                     race(
                         PrepareShoot(shooter, pivot),
                         sequence(
-                            DriveToPoses(drivetrain, [pose(14.1, 6.772, 153.36)]),
+                            DriveToPoses.fromRedBluePoints(
+                                drivetrain,
+                                [pose(14.1, 6.772, 153.36)],
+                                [pose(2.441, 6.772, 26.64)],
+                            ),
                             WaitShootSpeed(shooter),
                             Load(intake),
                         ),
@@ -57,11 +66,15 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                         sequence(
                             deadline(
                                 PickUp(intake),
-                                DriveToPoses(
+                                DriveToPoses.fromRedBluePoints(
                                     drivetrain,
                                     [
                                         pose(13.5, 7.5, 153.36),  # 13, 7
                                         pose(14.1, 6.772, 153.36),
+                                    ],
+                                    [
+                                        pose(3.041, 7.5, 26.64),  # 13, 7
+                                        pose(2.441, 6.772, 26.64),
                                     ],
                                 ),
                             ),

@@ -10,27 +10,38 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
+from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerRightShootLine(SafeMixin, commands2.SequentialCommandGroup):
+class AutoSpeakerAmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
 
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
-            ResetPose(
-                drivetrain,
-                Pose2d(16.08 - 0.22, 4.77 - 0.385, Rotation2d.fromDegrees(-120)),
+            eitherRedBlue(
+                ResetPose(
+                    drivetrain,
+                    Pose2d(15.86, 6.715, Rotation2d.fromDegrees(120)),
+                ),
+                ResetPose(
+                    drivetrain,
+                    Pose2d(0.681, 6.715, Rotation2d.fromDegrees(60)),
+                ),
             ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
-            DriveToPoses(
+            DriveToPoses.fromRedBluePoints(
                 drivetrain,
                 [
-                    Pose2d(15, 4.1, Rotation2d.fromDegrees(-150)),
-                    Pose2d(14, 4.1, Rotation2d(-180)),
+                    Pose2d(15, 7, Rotation2d.fromDegrees(150)),
+                    Pose2d(14, 7, Rotation2d.fromDegrees(180)),
+                ],
+                [
+                    Pose2d(1.541, 7, Rotation2d.fromDegrees(30)),
+                    Pose2d(2.541, 7, Rotation2d.fromDegrees(0)),
                 ],
             ),
         )

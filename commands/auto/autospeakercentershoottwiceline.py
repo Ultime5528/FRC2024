@@ -11,6 +11,7 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
+from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 
@@ -22,17 +23,21 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
         super().__init__(
-            ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
+            eitherRedBlue(
+                ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
+                ResetPose(drivetrain, pose(1.3381, 5.553, 0)),
+            ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
             ParallelCommandGroup(
-                DriveToPoses(
+                DriveToPoses.fromRedBluePoints(
                     drivetrain,
                     [
                         pose(13.645, 5.553, 180),
                         pose(15.2029, 5.553, 180),
                     ],
+                    [pose(2.896, 5.553, 0), pose(1.3381, 5.553, 0)],
                 ),
                 PickUp(intake),
                 MovePivot.toSpeakerClose(pivot),

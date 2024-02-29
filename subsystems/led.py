@@ -174,8 +174,8 @@ class LEDController(SafeSubsystem):
         for i in range(self.led_number):
             hue = (self.time + int(i * 180 / self.led_number)) % 180
             self.buffer[i].setHSV(
-                round(hue * self.brightness),
-                round(255 * self.brightness),
+                hue,
+                255,
                 round(255 * self.brightness),
             )
 

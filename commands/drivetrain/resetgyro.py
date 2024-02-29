@@ -1,3 +1,4 @@
+from wpilib import DriverStation
 from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain
@@ -12,7 +13,13 @@ class ResetGyro(SafeCommand):
 
     def initialize(self):
         current = self.drivetrain.getPose()
-        self.drivetrain.resetToPose(Pose2d(current.translation(), Rotation2d()))
+
+        if DriverStation.getAlliance() == DriverStation.Alliance.kBlue:
+            new_rot = Rotation2d()
+        else:
+            new_rot = Rotation2d.fromDegrees(180)
+
+        self.drivetrain.resetToPose(Pose2d(current.translation(), new_rot))
 
     def isFinished(self) -> bool:
         return True

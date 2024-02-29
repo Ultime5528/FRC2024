@@ -11,10 +11,14 @@ from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
 from commands.auto.autospeakercentershoottwiceline import (
     AutoSpeakerCenterShootTwiceLine,
 )
-from commands.auto.autospeakerleftshootline import AutoSpeakerLeftShootLine
-from commands.auto.autospeakerleftshoottwiceline import AutoSpeakerLeftShootTwiceLine
-from commands.auto.autospeakerrightshootline import AutoSpeakerRightShootLine
-from commands.auto.autospeakerrightshoottwiceline import AutoSpeakerRightShootTwiceLine
+from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
+from commands.auto.autospeakerampsideshoottwiceline import (
+    AutoSpeakerAmpSideShootTwiceLine,
+)
+from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideShootLine
+from commands.auto.autospeakersourcesideshoottwiceline import (
+    AutoSpeakerSourceSideShootTwiceLine,
+)
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
@@ -98,45 +102,46 @@ class Robot(commands2.TimedCommandRobot):
         self.setupCommandsOnDashboard()
 
     def setupAuto(self):
-        self.auto_chooser.setDefaultOption("Nothing", None)
+        self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
+
         self.auto_chooser.addOption(
-            "AutoSpeakerCenterShootLine",
+            AutoSpeakerCenterShootLine.__name__,
             AutoSpeakerCenterShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerCenterShootTwiceLine",
+            AutoSpeakerCenterShootTwiceLine.__name__,
             AutoSpeakerCenterShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerLeftShootLine",
-            AutoSpeakerLeftShootLine(
+            AutoSpeakerAmpSideShootLine.__name__,
+            AutoSpeakerAmpSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerLeftShootTwiceLine",
-            AutoSpeakerLeftShootTwiceLine(
+            AutoSpeakerAmpSideShootTwiceLine.__name__,
+            AutoSpeakerAmpSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerRightShootLine",
-            AutoSpeakerRightShootLine(
+            AutoSpeakerSourceSideShootLine.__name__,
+            AutoSpeakerSourceSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerRightShootTwiceLine",
-            AutoSpeakerRightShootTwiceLine(
+            AutoSpeakerSourceSideShootTwiceLine.__name__,
+            AutoSpeakerSourceSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         self.auto_chooser.addOption(
-            "MegaModeAutonome",
+            MegaModeAutonome.__name__,
             MegaModeAutonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
@@ -282,6 +287,8 @@ class Robot(commands2.TimedCommandRobot):
     def teleopInit(self):
         if self.auto_command:
             self.auto_command.cancel()
+        else:
+            ResetGyro(self.drivetrain).schedule()
 
     def robotPeriodic(self):
         self.vision.periodic()
