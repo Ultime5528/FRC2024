@@ -27,7 +27,7 @@ class AutoSpeakerSourceSideShootLine(SafeMixin, commands2.SequentialCommandGroup
                 ),
                 ResetPose(
                     drivetrain,
-                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(60)),
+                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(-60)),
                 ),
             ),
             ResetPivotDown(pivot),
@@ -37,11 +37,11 @@ class AutoSpeakerSourceSideShootLine(SafeMixin, commands2.SequentialCommandGroup
                 drivetrain,
                 [
                     Pose2d(15, 4.1, Rotation2d.fromDegrees(-150)),
-                    Pose2d(14, 4.1, Rotation2d(-180)),
+                    Pose2d(14, 4.1, Rotation2d.fromDegrees(-180)),
                 ],
                 [
-                    Pose2d(1.841, 4.1, Rotation2d.fromDegrees(30)),
-                    Pose2d(2.541, 4.1, Rotation2d(0)),
+                    Pose2d(1.841, 4.1, Rotation2d.fromDegrees(-30)),
+                    Pose2d(2.541, 4.1, Rotation2d.fromDegrees(0)),
                 ],
             ),
         )

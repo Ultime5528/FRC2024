@@ -14,7 +14,7 @@ from utils.safecommand import SafeCommand
 
 class AlignWithTag2D(SafeCommand):
     p = autoproperty(0.025)
-    horizontal_offset = autoproperty(-5.0)
+    horizontal_offset = autoproperty(0.0)
 
     @classmethod
     def toSpeaker(

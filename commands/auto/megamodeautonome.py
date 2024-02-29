@@ -69,14 +69,17 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 DriveToPoses.fromRedBluePoints(
                                     drivetrain,
                                     [
-                                        pose(13.5, 7.5, 153.36),  # 13, 7
-                                        pose(14.1, 6.772, 153.36),
+                                        pose(13, 8, 153.36),  # 13, 7
                                     ],
                                     [
-                                        pose(3.041, 7.5, 26.64),  # 13, 7
-                                        pose(2.441, 6.772, 26.64),
+                                        pose(3.5, 8, 26.64),  # 13, 7
                                     ],
                                 ),
+                            ),
+                            DriveToPoses.fromRedBluePoints(
+                                drivetrain,
+                                [pose(14.1, 6.772, 153.36)],
+                                [pose(3, 6.9, 26.64)]
                             ),
                             WaitShootSpeed(shooter),
                             Load(intake),

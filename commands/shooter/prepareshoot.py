@@ -9,7 +9,7 @@ NoReqPivot = NewType("NoReqPivot", Pivot)
 
 
 class PrepareShoot(SafeCommand):
-    speed_amp = autoproperty(300.0)
+    speed_amp = autoproperty(1350.0)
     speed_max = autoproperty(5200.0)
 
     def __init__(self, shooter: Shooter, pivot: NoReqPivot):

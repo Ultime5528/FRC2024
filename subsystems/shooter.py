@@ -15,10 +15,10 @@ def computeVoltage(rpm_goal, rpm_actual, p, ff) -> tuple[float, bool]:
 
 class Shooter(SafeSubsystem):
     p_left = autoproperty(0.0)
-    ff_left = autoproperty(0.0022)
+    ff_left = autoproperty(0.00225)
 
     p_right = autoproperty(0.0)
-    ff_right = autoproperty(0.00205)
+    ff_right = autoproperty(0.00212)
 
     def __init__(self):
         super().__init__()

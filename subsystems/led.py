@@ -34,7 +34,7 @@ class LEDController(SafeSubsystem):
 
     led_number = 190
 
-    brightnessValue = autoproperty(10)
+    brightnessValue = autoproperty(20)
 
     def __init__(self, robot):
         super().__init__()
