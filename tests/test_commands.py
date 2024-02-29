@@ -19,7 +19,9 @@ def get_commands() -> List[Command or None]:
         for _, cls in inspect.getmembers(mod, inspect.isclass):
             if (
                 issubclass(cls, Command)
+                and cls.__name__ != "Command"
                 and cls.__name__ != "SafeCommand"
+                and cls.__name__ != "ConditionalCommand"
                 and cls.__name__ != "SequentialCommandGroup"
                 and cls.__name__ != "ParallelCommandGroup"
             ):
