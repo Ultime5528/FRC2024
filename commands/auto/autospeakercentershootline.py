@@ -30,5 +30,6 @@ class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
             DriveToPoses.fromRedBluePoints(
                 drivetrain,
                 [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))],
-                [Pose2d(2.541, 5.55, Rotation2d.fromDegrees(0))]),
+                [Pose2d(2.541, 5.55, Rotation2d.fromDegrees(0))],
+            ),
         )

@@ -12,9 +12,13 @@ from commands.auto.autospeakercentershoottwiceline import (
     AutoSpeakerCenterShootTwiceLine,
 )
 from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
-from commands.auto.autospeakerampsideshoottwiceline import AutoSpeakerAmpSideShootTwiceLine
+from commands.auto.autospeakerampsideshoottwiceline import (
+    AutoSpeakerAmpSideShootTwiceLine,
+)
 from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideShootLine
-from commands.auto.autospeakersourcesideshoottwiceline import AutoSpeakerSourceSideShootTwiceLine
+from commands.auto.autospeakersourcesideshoottwiceline import (
+    AutoSpeakerSourceSideShootTwiceLine,
+)
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber

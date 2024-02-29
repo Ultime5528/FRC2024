@@ -64,9 +64,9 @@ class DriveField(SafeCommand):
         )
 
         if not (rot_x == 0 and rot_y == 0):
-            self.rot = Rotation2d(math.atan2(rot_x, rot_y)*-1)
+            self.rot = Rotation2d(math.atan2(rot_x, rot_y) * -1)
             if DriverStation.getAlliance() == DriverStation.Alliance.kBlue:
-                self.rot = Rotation2d.fromDegrees(180+self.rot.degrees())
+                self.rot = Rotation2d.fromDegrees(180 + self.rot.degrees())
 
         rot_speed = (
             (self.rot - self.drivetrain.getPose().rotation()).degrees()
@@ -74,7 +74,20 @@ class DriveField(SafeCommand):
             * rot_hyp
         )
 
-        self.drivetrain.drive(-1 * x_speed if DriverStation.getAlliance() == DriverStation.Alliance.kRed else x_speed, -1 * y_speed if DriverStation.getAlliance() == DriverStation.Alliance.kRed else y_speed, rot_speed, True)
+        self.drivetrain.drive(
+            (
+                -1 * x_speed
+                if DriverStation.getAlliance() == DriverStation.Alliance.kRed
+                else x_speed
+            ),
+            (
+                -1 * y_speed
+                if DriverStation.getAlliance() == DriverStation.Alliance.kRed
+                else y_speed
+            ),
+            rot_speed,
+            True,
+        )
 
     def end(self, interrupted: bool) -> None:
         self.drivetrain.stop()

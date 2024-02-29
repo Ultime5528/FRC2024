@@ -62,13 +62,11 @@ class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGro
                                 Pose2d(1.541, 7, Rotation2d.fromDegrees(30)),
                                 Pose2d(3.041, 7, Rotation2d.fromDegrees(0)),
                                 pose(4.041, 8, 27),
-                            ]
+                            ],
                         ),
                     ),
                     DriveToPoses.fromRedBluePoints(
-                        drivetrain,
-                        [pose(15, 6.5, 153)],
-                        [pose(1.541, 6.5, 27)]
+                        drivetrain, [pose(15, 6.5, 153)], [pose(1.541, 6.5, 27)]
                     ),
                     race(
                         Shoot(shooter, pivot, intake),

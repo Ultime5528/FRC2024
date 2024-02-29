@@ -37,10 +37,7 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                         pose(13.645, 5.553, 180),
                         pose(15.2029, 5.553, 180),
                     ],
-                    [
-                        pose(2.896, 5.553, 0),
-                        pose(1.3381, 5.553, 0)
-                    ]
+                    [pose(2.896, 5.553, 0), pose(1.3381, 5.553, 0)],
                 ),
                 PickUp(intake),
                 MovePivot.toSpeakerClose(pivot),
