@@ -1,6 +1,6 @@
 import commands2
 from commands2 import ParallelCommandGroup
-from commands2.cmd import race, parallel
+from commands2.cmd import race, parallel, deadline
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
@@ -31,7 +31,8 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             Shoot(shooter, pivot, intake),
-            race(
+            deadline(
+                PickUp(intake),
                 DriveToPoses.fromRedBluePoints(
                     drivetrain,
                     [
@@ -40,7 +41,6 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                     [
                         pose(4.5, 5.553, 0)],
                 ),
-                PickUp(intake),
             ),
             parallel(
                 DriveToPoses.fromRedBluePoints(
