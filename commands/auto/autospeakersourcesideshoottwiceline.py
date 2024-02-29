@@ -40,7 +40,7 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
                 ),
                 ResetPose(
                     drivetrain,
-                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(60)),
+                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(-60)),
                 ),
             ),
             ResetPivotDown(pivot),
@@ -64,7 +64,7 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
                         ),
                     ),
                     DriveToPoses.fromRedBluePoints(
-                        drivetrain, [pose(15, 4.1, -130)], [pose(1.541, 4.1, 50)]
+                        drivetrain, [pose(15, 4.1, -130)], [pose(1.541, 4.1, -50)]
                     ),
                     race(
                         Shoot(shooter, pivot, intake),

@@ -102,45 +102,46 @@ class Robot(commands2.TimedCommandRobot):
         self.setupCommandsOnDashboard()
 
     def setupAuto(self):
-        self.auto_chooser.setDefaultOption("Nothing", None)
+        self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
+
         self.auto_chooser.addOption(
-            "AutoSpeakerCenterShootLine",
+            AutoSpeakerCenterShootLine.__name__,
             AutoSpeakerCenterShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerCenterShootTwiceLine",
+            AutoSpeakerCenterShootTwiceLine.__name__,
             AutoSpeakerCenterShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerAmpSideShootLine",
+            AutoSpeakerAmpSideShootLine.__name__,
             AutoSpeakerAmpSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerAmpSideShootTwiceLine",
+            AutoSpeakerAmpSideShootTwiceLine.__name__,
             AutoSpeakerAmpSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerSourceSideShootLine",
+            AutoSpeakerSourceSideShootLine.__name__,
             AutoSpeakerSourceSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
         self.auto_chooser.addOption(
-            "AutoSpeakerSourceSideShootTwiceLine",
+            AutoSpeakerSourceSideShootTwiceLine.__name__,
             AutoSpeakerSourceSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
         self.auto_chooser.addOption(
-            "MegaModeAutonome",
+            MegaModeAutonome.__name__,
             MegaModeAutonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
