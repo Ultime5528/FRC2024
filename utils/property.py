@@ -49,7 +49,7 @@ def autoproperty(
     write: Optional[bool] = None,
 ):
     if mode == PropertyMode.LocalOnly:
-        return property(lambda: default_value)
+        return property(lambda _: default_value)
 
     assert full_key is None or (key is None and table is None and subtable is None)
 

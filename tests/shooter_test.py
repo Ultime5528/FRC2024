@@ -5,7 +5,7 @@ from wpilib.simulation import stepTiming
 from commands.pivot.movepivot import MovePivot
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shootandmovepivotloading import ShootAndMovePivotLoading
+from commands.shooter.shoot import ShootAndMovePivotLoading
 from commands.shooter.waitshootspeed import WaitShootSpeed
 from robot import Robot
 

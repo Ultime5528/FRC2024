@@ -107,7 +107,7 @@ class Drivetrain(SafeSubsystem):
 
         if is_field_relative:
             base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(
-                x_speed, y_speed, rot_speed, self._gyro.getRotation2d()
+                x_speed, y_speed, rot_speed, self.getPose().rotation()
             )
         else:
             base_chassis_speed = ChassisSpeeds(x_speed, y_speed, rot_speed)
@@ -125,12 +125,6 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_fr.setDesiredState(swerve_module_states[1])
         self.swerve_module_bl.setDesiredState(swerve_module_states[2])
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
-
-    def getRotation(self):
-        return self._gyro.getRotation2d()
-
-    def getPitch(self):
-        return self._gyro.getPitch()
 
     def getAngle(self):
         """
@@ -216,15 +210,15 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_bl.simulationUpdate(self.period_seconds)
         self.swerve_module_br.simulationUpdate(self.period_seconds)
 
-        self.swerve_estimator.update(
-            self._gyro.getRotation2d(),
-            (
-                self.swerve_module_fl.getPosition(),
-                self.swerve_module_fr.getPosition(),
-                self.swerve_module_bl.getPosition(),
-                self.swerve_module_br.getPosition(),
-            ),
-        )
+        # self.swerve_estimator.update(
+        #     self.getPose().rotation(),
+        #     (
+        #         self.swerve_module_fl.getPosition(),
+        #         self.swerve_module_fr.getPosition(),
+        #         self.swerve_module_bl.getPosition(),
+        #         self.swerve_module_br.getPosition(),
+        #     ),
+        # )
 
         module_states = (
             self.swerve_module_fl.getState(),
@@ -235,13 +229,13 @@ class Drivetrain(SafeSubsystem):
         chassis_speed = self.swervedrive_kinematics.toChassisSpeeds(module_states)
         chassis_rotation_speed = chassis_speed.omega
         self.sim_yaw += chassis_rotation_speed * self.period_seconds
-        self._gyro.setSimAngle(-math.degrees(self.sim_yaw))
+        self._gyro.setSimAngle(math.degrees(self.sim_yaw))
 
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
 
     def resetToPose(self, pose: Pose2d):
         self.swerve_estimator.resetPosition(
-            self.getRotation(),
+            self._gyro.getRotation2d(),
             (
                 self.swerve_module_fl.getPosition(),
                 self.swerve_module_fr.getPosition(),
