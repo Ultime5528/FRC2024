@@ -61,11 +61,15 @@ class Shooter(SafeSubsystem):
     def hasReachedSpeed(self):
         return self._reached_speed_left and self._reached_speed_right
 
+    def isShooting(self):
+        return self._ref_rpm > 0.0
+
     def stop(self):
         self._left_motor.stopMotor()
         self._right_motor.stopMotor()
         self._reached_speed_left = False
         self._reached_speed_right = False
+        self._ref_rpm = 0.0
 
     def simulationPeriodic(self):
         self.left_motor_sim.setVelocity(15000 * self._left_motor.get())
