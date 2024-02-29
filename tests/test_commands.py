@@ -86,7 +86,6 @@ def test_requirements():
                                 addReqs is None
                             ), f"{obj.__name__} calls addRequirements() multiple times"
                             addReqs = c
-        assert addReqs is not None, f"{obj.__name__} does not call addRequirements()"
 
         subsystem_args = {}
         for name, arg in get_arguments(obj).items():
@@ -95,14 +94,17 @@ def test_requirements():
             ):  # if is a class and is subsystem
                 subsystem_args[name] = arg
 
-        actual_required_subsystems = []
-        for arg in addReqs.args:
-            if isinstance(arg, ast.Attribute):
-                actual_required_subsystems.append(arg.attr)
-            elif isinstance(arg, ast.Name):
-                actual_required_subsystems.append(arg.id)
+        if addReqs:
+            actual_required_subsystems = []
+            for arg in addReqs.args:
+                if isinstance(arg, ast.Attribute):
+                    actual_required_subsystems.append(arg.attr)
+                elif isinstance(arg, ast.Name):
+                    actual_required_subsystems.append(arg.id)
 
-        for sub_arg in subsystem_args.keys():
-            assert (
-                sub_arg in actual_required_subsystems
-            ), f"{obj.__name__} does not require {sub_arg}"
+            for sub_arg in subsystem_args.keys():
+                assert (
+                    sub_arg in actual_required_subsystems
+                ), f"{obj.__name__} does not require {sub_arg}"
+        else:
+            assert not subsystem_args, f"addRequirements is not called, but should require {subsystem_args}"
