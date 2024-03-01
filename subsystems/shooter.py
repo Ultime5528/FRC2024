@@ -18,7 +18,7 @@ class Shooter(SafeSubsystem):
     ff_left = autoproperty(0.00225)
 
     p_right = autoproperty(0.0)
-    ff_right = autoproperty(0.00212)
+    ff_right = autoproperty(0.0022)
 
     def __init__(self):
         super().__init__()

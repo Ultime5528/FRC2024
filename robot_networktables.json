@@ -2,7 +2,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_x",
     "type": "double[]",
-    "value": [-8.0, -6.8, -6.3, -6.1, -4.1, 1.45, 5.05, 9.8],
+    "value": [-8.0, -6.8, -6.3, -6.1, -4.1, -0.6, 1.45, 5.05, 9.8],
     "properties": {
       "persistent": true
     }
@@ -10,7 +10,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_y",
     "type": "int[]",
-    "value": [15, 16, 17, 18, 28, 48, 55, 64],
+    "value": [15, 16, 17, 18, 28, 35, 48, 55, 64],
     "properties": {
       "persistent": true
     }
@@ -362,7 +362,7 @@
   {
     "name": "/Properties/MovePivot/position_amp",
     "type": "double",
-    "value": 42.5,
+    "value": 62.0,
     "properties": {
       "persistent": true
     }
@@ -474,7 +474,7 @@
   {
     "name": "/Properties/Shooter/ff_right",
     "type": "double",
-    "value": 0.00212,
+    "value": 0.0022,
     "properties": {
       "persistent": true
     }
@@ -482,7 +482,7 @@
   {
     "name": "/Properties/PrepareShoot/speed_amp",
     "type": "double",
-    "value": 1350.0,
+    "value": 530.0,
     "properties": {
       "persistent": true
     }
