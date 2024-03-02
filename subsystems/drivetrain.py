@@ -95,11 +95,11 @@ class Drivetrain(SafeSubsystem):
             self.sim_yaw = 0
 
     def drive(
-            self,
-            x_speed_input: float,
-            y_speed_input: float,
-            rot_speed: float,
-            is_field_relative: bool,
+        self,
+        x_speed_input: float,
+        y_speed_input: float,
+        rot_speed: float,
+        is_field_relative: bool,
     ):
         x_speed = x_speed_input * self.swerve_module_fr.max_speed
         y_speed = y_speed_input * self.swerve_module_fr.max_speed

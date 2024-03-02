@@ -32,7 +32,9 @@ def test_ShootFar(control, robot: Robot):
         assert not robot.shooter._reached_speed_right
 
         prepare_shoot_properties = PrepareShoot(robot.shooter, robot.pivot)
-        cmd_shoot = PrepareAndShootAndMovePivotLoading(robot.shooter, robot.pivot, robot.intake)
+        cmd_shoot = PrepareAndShootAndMovePivotLoading(
+            robot.shooter, robot.pivot, robot.intake
+        )
         cmd_shoot.schedule()
         control.step_timing(seconds=0.1, autonomous=False, enabled=True)
 

@@ -1,8 +1,6 @@
-import math
 from typing import List
 
-from commands2 import ConditionalCommand, Command
-from wpilib import DriverStation
+from commands2 import Command
 from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain

@@ -8,14 +8,14 @@ from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
 from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
+from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
+from commands.auto.autospeakerampsideshoottwiceline import (
+    AutoSpeakerAmpSideShootTwiceLine,
+)
 from commands.auto.autospeakercentershoot import AutoSpeakerCenterShoot
 from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
 from commands.auto.autospeakercentershoottwiceline import (
     AutoSpeakerCenterShootTwiceLine,
-)
-from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
-from commands.auto.autospeakerampsideshoottwiceline import (
-    AutoSpeakerAmpSideShootTwiceLine,
 )
 from commands.auto.autospeakersourcesideshoot import AutoSpeakerSourceSideShoot
 from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideShootLine
@@ -45,7 +45,6 @@ from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
-    Shoot,
     ShootAndMovePivotLoading,
 )
 from commands.vision.alignwithtag2d import AlignWithTag2D
@@ -115,19 +114,21 @@ class Robot(commands2.TimedCommandRobot):
             AutoSpeakerCenterShoot.__name__,
             AutoSpeakerCenterShoot(
                 self.drivetrain, self.shooter, self.pivot, self.intake
-            )
+            ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShoot.__name__,
             AutoSpeakerAmpSideShoot(
                 self.drivetrain, self.shooter, self.pivot, self.intake
-            )
+            ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShoot.__name__,
             AutoSpeakerSourceSideShoot(
                 self.drivetrain, self.shooter, self.pivot, self.intake
-            )
+            ),
         )
 
         self.auto_chooser.addOption(
@@ -136,42 +137,49 @@ class Robot(commands2.TimedCommandRobot):
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootTwiceLine.__name__,
             AutoSpeakerCenterShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShootLine.__name__,
             AutoSpeakerAmpSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShootTwiceLine.__name__,
             AutoSpeakerAmpSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootLine.__name__,
             AutoSpeakerSourceSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootTwiceLine.__name__,
             AutoSpeakerSourceSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
+
         self.auto_chooser.addOption(
             MegaModeAutonome.__name__,
             MegaModeAutonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
+
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):

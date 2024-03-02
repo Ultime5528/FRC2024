@@ -1,7 +1,6 @@
 import commands2
 from wpimath.geometry import Pose2d, Rotation2d
 
-from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.resetpose import ResetPose
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown

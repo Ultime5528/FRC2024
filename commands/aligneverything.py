@@ -23,5 +23,5 @@ class AlignEverything(SafeMixin, ParallelCommandGroup):
         super().__init__(
             AlignWithTag2D.toSpeaker(drivetrain, vision, xbox_remote),
             MovePivotContinuous(pivot, vision),
-            PrepareShoot(shooter, pivot)
+            PrepareShoot(shooter, pivot),
         )
