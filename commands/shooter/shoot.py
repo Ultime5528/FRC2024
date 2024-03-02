@@ -12,17 +12,22 @@ from subsystems.shooter import Shooter
 from utils.safecommand import SafeMixin
 
 
-class Shoot(ParallelRaceGroup, SafeMixin):
+class Shoot(SafeMixin, SequentialCommandGroup):
+    def __init__(self, shooter: Shooter, intake: Intake):
+        super().__init__(
+            WaitShootSpeed(shooter),
+            Load(intake),
+        )
+
+class PrepareAndShoot(SafeMixin, ParallelRaceGroup):
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
-            ParallelRaceGroup(
-                PrepareShoot(shooter, pivot),
-                SequentialCommandGroup(WaitShootSpeed(shooter), Load(intake)),
-            )
+            PrepareShoot(shooter, pivot),
+            Shoot(shooter, intake),
         )
 
 
-class ShootAndMovePivotLoading(SafeMixin, SequentialCommandGroup):
+class PrepareAndShootAndMovePivotLoading(SafeMixin, SequentialCommandGroup):
     """
     La commande Shoot ne requiert pas le Pivot, il lit seulement sa hauteur.
 
@@ -37,6 +42,6 @@ class ShootAndMovePivotLoading(SafeMixin, SequentialCommandGroup):
 
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):
         super().__init__(
-            Shoot(shooter, pivot, intake),
+            PrepareAndShoot(shooter, pivot, intake),
             ProxyCommand(MovePivot.toLoading(pivot)),
         )

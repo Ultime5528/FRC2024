@@ -40,7 +40,7 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shoot import ShootAndMovePivotLoading
+from commands.shooter.shoot import PrepareAndShootAndMovePivotLoading, Shoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
@@ -98,7 +98,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.setupAuto()
         self.setupButtons()
-        self.setupSubsystemOnDashboard()
+        # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
 
     def setupAuto(self):
@@ -154,7 +154,11 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.xbox_controller.rightTrigger().whileTrue(
             AlignEverything(
-                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+                self.drivetrain,
+                self.pivot,
+                self.shooter,
+                self.vision,
+                self.xbox_controller,
             )
         )
         self.xbox_controller.leftTrigger().whileTrue(
@@ -172,10 +176,10 @@ class Robot(commands2.TimedCommandRobot):
             ExtendClimber(self.climber_right)
         )
         AxisTrigger(self.panel_2, 1, "up").whileTrue(RetractClimber(self.climber_right))
-        self.panel_2.button(2).onTrue(MovePivot.toSpeakerFar(self.pivot))
-        self.panel_2.button(5).onTrue(
-            ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+        self.panel_2.button(2).onTrue(
+            PrepareAndShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
         )
+        self.panel_2.button(5).onTrue(Shoot(self.shooter, self.intake))
         self.panel_2.button(1).onTrue(MovePivot.toAmp(self.pivot))
         self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
 
@@ -266,7 +270,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
 
         putCommandOnDashboard(
-            "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+            "Shooter",
+            PrepareAndShootAndMovePivotLoading(self.shooter, self.pivot, self.intake),
         )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
@@ -274,7 +279,11 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Vision",
             AlignEverything(
-                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+                self.drivetrain,
+                self.pivot,
+                self.shooter,
+                self.vision,
+                self.xbox_controller,
             ),
         )
 

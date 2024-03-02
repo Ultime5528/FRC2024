@@ -8,7 +8,7 @@ from commands.intake.pickup import PickUp
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shoot import Shoot
+from commands.shooter.shoot import PrepareAndShoot
 from commands.shooter.waitshootspeed import WaitShootSpeed
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
@@ -36,7 +36,7 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                 ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
                 ResetPose(drivetrain, pose(1.3381, 5.553, 0)),
             ),
-            Shoot(shooter, pivot, intake),
+            PrepareAndShoot(shooter, pivot, intake),
             parallel(
                 DriveToPoses.fromRedBluePoints(
                     drivetrain,

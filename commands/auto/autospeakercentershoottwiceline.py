@@ -7,7 +7,7 @@ from commands.drivetrain.resetpose import ResetPose
 from commands.intake.pickup import PickUp
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
-from commands.shooter.shoot import Shoot
+from commands.shooter.shoot import PrepareAndShoot
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -30,7 +30,7 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
             ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
-            Shoot(shooter, pivot, intake),
+            PrepareAndShoot(shooter, pivot, intake),
             deadline(
                 PickUp(intake),
                 DriveToPoses.fromRedBluePoints(
@@ -50,5 +50,5 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                 ),
                 MovePivot.toSpeakerClose(pivot),
             ),
-            Shoot(shooter, pivot, intake),
+            PrepareAndShoot(shooter, pivot, intake),
         )
