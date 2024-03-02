@@ -9,7 +9,20 @@ from commands.shooter.waitshootspeed import WaitShootSpeed
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
-from utils.safecommand import SafeMixin
+from utils.safecommand import SafeMixin, SafeCommand
+
+
+class StopShoot(SafeCommand):
+    def __init__(self, shooter: Shooter):
+        super().__init__()
+        self._shooter = shooter
+        self.addRequirements(shooter)
+
+    def initialize(self):
+        self._shooter.stop()
+
+    def isFinished(self) -> bool:
+        return True
 
 
 class Shoot(SafeMixin, SequentialCommandGroup):
@@ -17,7 +30,17 @@ class Shoot(SafeMixin, SequentialCommandGroup):
         super().__init__(
             WaitShootSpeed(shooter),
             Load(intake),
+            # ProxyCommand(StopShoot(shooter)),
         )
+
+
+class ShootAndMovePivotLoading(SafeMixin, SequentialCommandGroup):
+    def __init__(self, shooter: Shooter, intake: Intake, pivot: Pivot):
+        super().__init__(
+            Shoot(shooter, intake),
+            ProxyCommand(MovePivot.toLoading(pivot))
+        )
+
 
 class PrepareAndShoot(SafeMixin, ParallelRaceGroup):
     def __init__(self, shooter: Shooter, pivot: Pivot, intake: Intake):

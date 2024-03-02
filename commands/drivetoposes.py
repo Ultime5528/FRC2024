@@ -79,13 +79,12 @@ class DriveToPoses(SafeCommand):
         vel_y = self.pid_y.calculate(current_pos.y)
         vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
 
-        if not math.isclose(vel_x, 0) or not math.isclose(vel_y, 0):
-            self.drivetrain.driveRaw(
-                vel_x * self.max_speed,
-                vel_y * self.max_speed,
-                vel_rot * self.max_angular_speed,
-                True,
-            )
+        self.drivetrain.driveRaw(
+            vel_x * self.max_speed,
+            vel_y * self.max_speed,
+            vel_rot * self.max_angular_speed,
+            True,
+        )
 
         if (
             self.pid_x.atSetpoint()
