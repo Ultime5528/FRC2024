@@ -44,7 +44,7 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             PrepareAndShoot(shooter, pivot, intake),
-            ParallelCommandGroup(
+            race(
                 MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
                     deadline(

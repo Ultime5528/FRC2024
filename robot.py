@@ -9,6 +9,12 @@ from wpimath.geometry import Pose2d, Rotation2d
 from commands.aligneverything import AlignEverything
 from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
 from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
+from commands.auto.autospeakerampsideshoottwicefar import (
+    AutoSpeakerAmpSideShootTwiceFar,
+)
+from commands.auto.autospeakersourcesideshoottwicefar import (
+    AutoSpeakerSourceSideShootTwiceFar,
+)
 from commands.auto.autospeakerampsideshoottwiceline import (
     AutoSpeakerAmpSideShootTwiceLine,
 )
@@ -162,6 +168,13 @@ class Robot(commands2.TimedCommandRobot):
         )
 
         self.auto_chooser.addOption(
+            AutoSpeakerSourceSideShootTwiceFar.__name__,
+            AutoSpeakerSourceSideShootTwiceFar(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootLine.__name__,
             AutoSpeakerSourceSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
@@ -171,6 +184,13 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootTwiceLine.__name__,
             AutoSpeakerSourceSideShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            AutoSpeakerAmpSideShootTwiceFar.__name__,
+            AutoSpeakerAmpSideShootTwiceFar(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
