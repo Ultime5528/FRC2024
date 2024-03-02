@@ -104,7 +104,15 @@ class Drivetrain(SafeSubsystem):
         x_speed = x_speed_input * self.swerve_module_fr.max_speed
         y_speed = y_speed_input * self.swerve_module_fr.max_speed
         rot_speed = rot_speed * self.max_angular_speed
+        self.driveRaw(x_speed, y_speed, rot_speed, is_field_relative)
 
+    def driveRaw(
+        self,
+        x_speed: float,
+        y_speed: float,
+        rot_speed: float,
+        is_field_relative: bool,
+    ):
         if is_field_relative:
             base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(
                 x_speed, y_speed, rot_speed, self.getPose().rotation()

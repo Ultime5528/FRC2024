@@ -9,7 +9,7 @@ from commands.intake.pickup import PickUp
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
-from commands.shooter.shoot import Shoot
+from commands.shooter.shoot import PrepareAndShoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
@@ -22,8 +22,6 @@ from utils.safecommand import SafeMixin
 
 
 class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
-    position_pivot = autoproperty(25)
-
     def __init__(
         self,
         drivetrain: Drivetrain,
@@ -45,7 +43,7 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
             ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
-            Shoot(shooter, pivot, intake),
+            PrepareAndShoot(shooter, pivot, intake),
             ParallelCommandGroup(
                 MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
@@ -67,7 +65,7 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
                         drivetrain, [pose(15, 4.1, -130)], [pose(1.541, 4.1, -50)]
                     ),
                     race(
-                        Shoot(shooter, pivot, intake),
+                        PrepareAndShoot(shooter, pivot, intake),
                         AlignWithTag2D.toSpeaker(drivetrain, vision),
                     ),
                 ),

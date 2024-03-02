@@ -11,7 +11,7 @@ def getSpeakerTagIDFromAlliance() -> Optional[int]:
     if alliance == wpilib.DriverStation.Alliance.kRed:
         return 4
     elif alliance == wpilib.DriverStation.Alliance.kBlue:
-        return 8
+        return 7
     else:
         wpilib.reportError("Alliance is invalid")
         return None

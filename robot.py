@@ -7,14 +7,17 @@ from commands2.cmd import sequence
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
-from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
-from commands.auto.autospeakercentershoottwiceline import (
-    AutoSpeakerCenterShootTwiceLine,
-)
+from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
 from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
 from commands.auto.autospeakerampsideshoottwiceline import (
     AutoSpeakerAmpSideShootTwiceLine,
 )
+from commands.auto.autospeakercentershoot import AutoSpeakerCenterShoot
+from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
+from commands.auto.autospeakercentershoottwiceline import (
+    AutoSpeakerCenterShootTwiceLine,
+)
+from commands.auto.autospeakersourcesideshoot import AutoSpeakerSourceSideShoot
 from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideShootLine
 from commands.auto.autospeakersourcesideshoottwiceline import (
     AutoSpeakerSourceSideShootTwiceLine,
@@ -40,7 +43,10 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.pivot.resetpivotup import ResetPivotUp
 from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
-from commands.shooter.shoot import ShootAndMovePivotLoading
+from commands.shooter.shoot import (
+    PrepareAndShootAndMovePivotLoading,
+    ShootAndMovePivotLoading,
+)
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
@@ -98,11 +104,32 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.setupAuto()
         self.setupButtons()
-        self.setupSubsystemOnDashboard()
+        # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
+
+        self.auto_chooser.addOption(
+            AutoSpeakerCenterShoot.__name__,
+            AutoSpeakerCenterShoot(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            AutoSpeakerAmpSideShoot.__name__,
+            AutoSpeakerAmpSideShoot(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            AutoSpeakerSourceSideShoot.__name__,
+            AutoSpeakerSourceSideShoot(
+                self.drivetrain, self.shooter, self.pivot, self.intake
+            ),
+        )
 
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootLine.__name__,
@@ -110,42 +137,49 @@ class Robot(commands2.TimedCommandRobot):
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootTwiceLine.__name__,
             AutoSpeakerCenterShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShootLine.__name__,
             AutoSpeakerAmpSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShootTwiceLine.__name__,
             AutoSpeakerAmpSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootLine.__name__,
             AutoSpeakerSourceSideShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake
             ),
         )
+
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootTwiceLine.__name__,
             AutoSpeakerSourceSideShootTwiceLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
+
         self.auto_chooser.addOption(
             MegaModeAutonome.__name__,
             MegaModeAutonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
+
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):
@@ -154,7 +188,11 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.xbox_controller.rightTrigger().whileTrue(
             AlignEverything(
-                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+                self.drivetrain,
+                self.pivot,
+                self.shooter,
+                self.vision,
+                self.xbox_controller,
             )
         )
         self.xbox_controller.leftTrigger().whileTrue(
@@ -172,10 +210,13 @@ class Robot(commands2.TimedCommandRobot):
             ExtendClimber(self.climber_right)
         )
         AxisTrigger(self.panel_2, 1, "up").whileTrue(RetractClimber(self.climber_right))
-        self.panel_2.button(2).onTrue(MovePivot.toSpeakerFar(self.pivot))
-        self.panel_2.button(5).onTrue(
-            ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+        self.panel_2.button(2).onTrue(
+            PrepareAndShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
         )
+        self.panel_2.button(5).onTrue(
+            ShootAndMovePivotLoading(self.shooter, self.intake, self.pivot)
+        )
+        self.panel_2.button(1).onTrue(MovePivot.toAmp(self.pivot))
         self.panel_2.button(4).onTrue(ResetPivotDown(self.pivot))
 
     def setupSubsystemOnDashboard(self):
@@ -265,7 +306,8 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
 
         putCommandOnDashboard(
-            "Shooter", ShootAndMovePivotLoading(self.shooter, self.pivot, self.intake)
+            "Shooter",
+            PrepareAndShootAndMovePivotLoading(self.shooter, self.pivot, self.intake),
         )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
@@ -273,7 +315,11 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Vision",
             AlignEverything(
-                self.drivetrain, self.pivot, self.vision, self.xbox_controller
+                self.drivetrain,
+                self.pivot,
+                self.shooter,
+                self.vision,
+                self.xbox_controller,
             ),
         )
 

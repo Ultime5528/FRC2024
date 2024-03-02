@@ -1,7 +1,6 @@
 import commands2
 from wpimath.geometry import Pose2d, Rotation2d
 
-from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.resetpose import ResetPose
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
@@ -14,7 +13,7 @@ from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
+class AutoSpeakerCenterShoot(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
@@ -26,9 +25,4 @@ class AutoSpeakerCenterShootLine(SafeMixin, commands2.SequentialCommandGroup):
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
             PrepareAndShoot(shooter, pivot, intake),
-            DriveToPoses.fromRedBluePoints(
-                drivetrain,
-                [Pose2d(14, 5.55, Rotation2d.fromDegrees(180))],
-                [Pose2d(2.541, 5.55, Rotation2d.fromDegrees(0))],
-            ),
         )

@@ -1,4 +1,5 @@
 import rev
+import wpilib
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
@@ -15,10 +16,12 @@ def computeVoltage(rpm_goal, rpm_actual, p, ff) -> tuple[float, bool]:
 
 class Shooter(SafeSubsystem):
     p_left = autoproperty(0.0)
-    ff_left = autoproperty(0.0022)
+    ff_left = autoproperty(0.00225)
 
     p_right = autoproperty(0.0)
-    ff_right = autoproperty(0.00205)
+    ff_right = autoproperty(0.0022)
+
+    delay_shoot = autoproperty(0.75)
 
     def __init__(self):
         super().__init__()
@@ -40,6 +43,7 @@ class Shooter(SafeSubsystem):
         self._ref_rpm = 0.0
         self._reached_speed_left = False
         self._reached_speed_right = False
+        self._reached_timer = wpilib.Timer()
 
         if RobotBase.isSimulation():
             self.left_motor_sim = SparkMaxSim(self._left_motor)
@@ -59,7 +63,14 @@ class Shooter(SafeSubsystem):
         self._ref_rpm = rpm
 
     def hasReachedSpeed(self):
-        return self._reached_speed_left and self._reached_speed_right
+        return self._reached_timer.get() >= self.delay_shoot
+
+    def periodic(self) -> None:
+        if self._reached_speed_left and self._reached_speed_right:
+            self._reached_timer.start()
+        else:
+            self._reached_timer.stop()
+            self._reached_timer.reset()
 
     def isShooting(self):
         return self._ref_rpm > 0.0

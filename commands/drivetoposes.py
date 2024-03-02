@@ -1,8 +1,6 @@
-import math
 from typing import List
 
-from commands2 import ConditionalCommand, Command
-from wpilib import DriverStation
+from commands2 import Command
 from wpimath.geometry import Pose2d, Rotation2d
 
 from subsystems.drivetrain import Drivetrain
@@ -17,6 +15,9 @@ def pose(x: float, y: float, deg: float) -> Pose2d:
 
 
 class DriveToPoses(SafeCommand):
+    max_speed = autoproperty(15.0)
+    max_angular_speed = autoproperty(25.0)
+
     xy_p = autoproperty(0.4)
     xy_b = autoproperty(0.1)
     xy_tol_pos = autoproperty(0.5)
@@ -76,13 +77,12 @@ class DriveToPoses(SafeCommand):
         vel_y = self.pid_y.calculate(current_pos.y)
         vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
 
-        if not math.isclose(vel_x, 0) or not math.isclose(vel_y, 0):
-            self.drivetrain.drive(
-                vel_x,
-                vel_y,
-                vel_rot,
-                True,
-            )
+        self.drivetrain.driveRaw(
+            vel_x * self.max_speed,
+            vel_y * self.max_speed,
+            vel_rot * self.max_angular_speed,
+            True,
+        )
 
         if (
             self.pid_x.atSetpoint()

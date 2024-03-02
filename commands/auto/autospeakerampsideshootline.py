@@ -5,7 +5,7 @@ from commands.drivetoposes import DriveToPoses
 from commands.drivetrain.resetpose import ResetPose
 from commands.pivot.movepivot import MovePivot
 from commands.pivot.resetpivotdown import ResetPivotDown
-from commands.shooter.shoot import Shoot
+from commands.shooter.shoot import PrepareAndShoot
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -15,7 +15,6 @@ from utils.safecommand import SafeMixin
 
 
 class AutoSpeakerAmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
-
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):
@@ -32,7 +31,7 @@ class AutoSpeakerAmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
             ),
             ResetPivotDown(pivot),
             MovePivot.toSpeakerClose(pivot),
-            Shoot(shooter, pivot, intake),
+            PrepareAndShoot(shooter, pivot, intake),
             DriveToPoses.fromRedBluePoints(
                 drivetrain,
                 [
