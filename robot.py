@@ -22,6 +22,8 @@ from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideSh
 from commands.auto.autospeakersourcesideshoottwiceline import (
     AutoSpeakerSourceSideShootTwiceLine,
 )
+from commands.auto.farmodeautonome import FarModeautonome
+
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
@@ -176,6 +178,13 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             MegaModeAutonome.__name__,
             MegaModeAutonome(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            FarModeautonome.__name__,
+            FarModeautonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
