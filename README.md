@@ -5,23 +5,26 @@
 | Name                                                 |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | commands/\_\_init\_\_.py                             |        0 |        0 |        0 |        0 |    100% |           |
-| commands/aligneverything.py                          |       11 |        0 |        0 |        0 |    100% |           |
+| commands/aligneverything.py                          |       13 |        0 |        0 |        0 |    100% |           |
 | commands/auto/\_\_init\_\_.py                        |        0 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakerampsideshoot.py             |       15 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakerampsideshootline.py         |       16 |        0 |        0 |        0 |    100% |           |
-| commands/auto/autospeakerampsideshoottwiceline.py    |       24 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakerampsideshoottwiceline.py    |       22 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakercentershoot.py              |       15 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakercentershootline.py          |       16 |        0 |        0 |        0 |    100% |           |
-| commands/auto/autospeakercentershoottwiceline.py     |       19 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakercentershoottwiceline.py     |       17 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakersourcesideshoot.py          |       15 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakersourcesideshootline.py      |       16 |        0 |        0 |        0 |    100% |           |
-| commands/auto/autospeakersourcesideshoottwiceline.py |       24 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakersourcesideshoottwiceline.py |       23 |        0 |        0 |        0 |    100% |           |
 | commands/auto/drivesquares.py                        |       28 |       16 |        8 |        0 |     33% |13-17, 20, 23-32, 35, 38 |
-| commands/auto/megamodeautonome.py                    |       23 |        0 |        0 |        0 |    100% |           |
+| commands/auto/megamodeautonome.py                    |       21 |        0 |        0 |        0 |    100% |           |
 | commands/climber/\_\_init\_\_.py                     |        0 |        0 |        0 |        0 |    100% |           |
 | commands/climber/extendclimber.py                    |       18 |        0 |        0 |        0 |    100% |           |
 | commands/climber/forceresetclimber.py                |       23 |        0 |        8 |        1 |     97% |  15->exit |
 | commands/climber/lockratchet.py                      |       22 |        1 |        2 |        1 |     92% |        33 |
 | commands/climber/retractclimber.py                   |       18 |        0 |        0 |        0 |    100% |           |
 | commands/climber/unlockratchet.py                    |       24 |        1 |        2 |        1 |     92% |        35 |
-| commands/drivetoposes.py                             |       76 |       38 |       12 |        0 |     45% |50-70, 73-103, 106, 109, 112-114 |
+| commands/drivetoposes.py                             |       75 |       37 |       10 |        0 |     47% |51-71, 74-103, 106, 109, 112-114 |
 | commands/drivetrain/\_\_init\_\_.py                  |        0 |        0 |        0 |        0 |    100% |           |
 | commands/drivetrain/drive.py                         |       51 |        9 |       10 |        3 |     74% |18, 22-25, 67-69, 78-79 |
 | commands/drivetrain/drivedistance.py                 |       41 |       26 |        4 |        0 |     33% |17-26, 29-37, 46-61, 64, 67 |
@@ -39,21 +42,21 @@
 | commands/pivot/resetpivotup.py                       |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
 | commands/shooter/manualshoot.py                      |       13 |        2 |        0 |        0 |     85% |    15, 18 |
 | commands/shooter/prepareshoot.py                     |       20 |        2 |        2 |        1 |     86% |    23, 28 |
-| commands/shooter/shoot.py                            |       17 |        0 |        0 |        0 |    100% |           |
+| commands/shooter/shoot.py                            |       23 |        0 |        0 |        0 |    100% |           |
 | commands/shooter/waitshootspeed.py                   |       23 |        0 |        2 |        0 |    100% |           |
-| commands/vision/alignwithtag2d.py                    |       46 |       16 |       12 |        1 |     57% |42->exit, 49-70, 73-75 |
+| commands/vision/alignwithtag2d.py                    |       50 |       19 |       14 |        1 |     53% |43->exit, 50-76, 79-81 |
 | gyro.py                                              |      122 |       51 |       14 |        5 |     59% |19, 28->exit, 31->exit, 34->exit, 37->exit, 40, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                                             |       28 |        0 |        0 |        0 |    100% |           |
 | properties.py                                        |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                                             |      154 |        1 |       12 |        3 |     98% |282->exit, 300, 304->307 |
+| robot.py                                             |      160 |        9 |       12 |        3 |     93% |223-230, 328->exit, 346, 350->353 |
 | subsystems/\_\_init\_\_.py                           |        0 |        0 |        0 |        0 |    100% |           |
-| subsystems/climber.py                                |      146 |        4 |       79 |       11 |     93% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 159, 162 |
-| subsystems/drivetrain.py                             |       93 |        7 |        4 |        2 |     91% |94->exit, 113, 133, 136, 145-154 |
-| subsystems/intake.py                                 |       30 |        1 |        0 |        0 |     97% |        45 |
-| subsystems/led.py                                    |      153 |       21 |       50 |        8 |     82% |16-17, 67, 69, 150-151, 166-168, 189, 194-203, 207, 211 |
-| subsystems/pivot.py                                  |      110 |        6 |       18 |        1 |     95% |53->exit, 108, 111-112, 142, 145, 148 |
-| subsystems/shooter.py                                |       59 |        7 |        8 |        1 |     88% |44->exit, 65, 68-72, 82 |
-| subsystems/vision.py                                 |       41 |        7 |       12 |        5 |     74% |12, 14, 32-33, 38, 43, 49 |
+| subsystems/climber.py                                |      146 |       18 |       79 |       11 |     85% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 156-174 |
+| subsystems/drivetrain.py                             |       95 |        7 |        4 |        2 |     91% |94->exit, 121, 141, 144, 153-162 |
+| subsystems/intake.py                                 |       30 |        5 |        0 |        0 |     83% |     42-48 |
+| subsystems/led.py                                    |      153 |       23 |       50 |        8 |     80% |16-17, 67, 69, 150-151, 166-168, 189, 194-203, 207, 211, 217-218 |
+| subsystems/pivot.py                                  |      110 |       22 |       18 |        1 |     77% |55->exit, 110, 113-114, 141-168 |
+| subsystems/shooter.py                                |       67 |       14 |       10 |        1 |     73% |48->exit, 76, 79-83, 90-105 |
+| subsystems/vision.py                                 |       41 |       25 |       12 |        0 |     30% |10-17, 31-34, 37-53 |
 | tests/climber\_test.py                               |       92 |        0 |       24 |        0 |    100% |           |
 | tests/drive\_test.py                                 |       10 |        0 |        2 |        0 |    100% |           |
 | tests/intake\_test.py                                |       58 |        0 |       10 |        0 |    100% |           |
@@ -71,16 +74,16 @@
 | utils/auto.py                                        |        5 |        0 |        2 |        1 |     86% |   7->exit |
 | utils/autostartup.py                                 |       64 |       64 |       12 |        0 |      0% |      1-99 |
 | utils/axistrigger.py                                 |        8 |        1 |        4 |        1 |     83% |        15 |
-| utils/linearinterpolator.py                          |       25 |       12 |        6 |        0 |     42% |11-12, 15-16, 25-36 |
+| utils/linearinterpolator.py                          |       25 |       14 |        6 |        0 |     35% |11-12, 15-16, 19, 22, 25-36 |
 | utils/property.py                                    |       62 |        5 |       32 |       10 |     80% |36, 40, 52, 60->82, 61->64, 64->67, 67->70, 73->76, 76->80, 85, 105 |
 | utils/safecommand.py                                 |       40 |       19 |        8 |        0 |     44% | 14, 18-39 |
-| utils/safesubsystem.py                               |       23 |        1 |        4 |        0 |     96% |        28 |
+| utils/safesubsystem.py                               |       23 |       16 |        4 |        0 |     26% |     11-32 |
 | utils/sparkmaxsim.py                                 |       20 |        2 |        0 |        0 |     90% |    25, 28 |
 | utils/sparkmaxutils.py                               |       38 |       10 |       12 |        4 |     72% |14, 37-56, 70, 76, 88 |
 | utils/swerve.py                                      |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                                      |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                           |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                            **TOTAL** | **2963** |  **531** |  **651** |   **88** | **79%** |           |
+|                                            **TOTAL** | **3028** |  **619** |  **653** |   **83** | **77%** |           |
 
 
 ## Setup coverage badge
