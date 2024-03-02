@@ -16,13 +16,10 @@ from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.auto import eitherRedBlue
-from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 
 
 class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
-    position_pivot = autoproperty(45)
-
     def __init__(
         self,
         drivetrain: Drivetrain,

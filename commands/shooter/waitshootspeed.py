@@ -28,7 +28,6 @@ class WaitShootSpeed(SafeCommand):
             self.timer.reset()
 
     def isFinished(self) -> bool:
-        # return self.timer.get() >= self.delay
         return self._shooter.hasReachedSpeed()
 
     def end(self, interrupted: bool):
