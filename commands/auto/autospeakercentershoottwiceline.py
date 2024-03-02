@@ -12,13 +12,10 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from utils.auto import eitherRedBlue
-from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 
 
 class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
-    position_pivot = autoproperty(45)
-
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):

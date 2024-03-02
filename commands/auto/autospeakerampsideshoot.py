@@ -14,7 +14,6 @@ from utils.safecommand import SafeMixin
 
 
 class AutoSpeakerAmpSideShoot(SafeMixin, commands2.SequentialCommandGroup):
-
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
     ):

@@ -22,8 +22,6 @@ from utils.safecommand import SafeMixin
 
 
 class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
-    position_pivot = autoproperty(25)
-
     def __init__(
         self,
         drivetrain: Drivetrain,
