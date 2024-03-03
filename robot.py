@@ -7,6 +7,7 @@ from commands2.cmd import sequence
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
+from commands.auto.autofarwest import AutoFarWest
 from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
 from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
 from commands.auto.autospeakerampsideshoottwicefar import (
@@ -117,6 +118,13 @@ class Robot(commands2.TimedCommandRobot):
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
+
+        self.auto_chooser.addOption(
+            AutoFarWest.__name__,
+            AutoFarWest(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
 
         self.auto_chooser.addOption(
             AutoSpeakerCenterShoot.__name__,
