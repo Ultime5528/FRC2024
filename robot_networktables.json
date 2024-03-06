@@ -2,7 +2,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_x",
     "type": "double[]",
-    "value": [-8.0, -6.8, -6.3, -6.1, -4.1, -0.6, 1.45, 5.05, 9.8],
+    "value": [-7.9, -6.8, -6.1, -4.1, -0.6, 2.5, 5.05, 9.8],
     "properties": {
       "persistent": true
     }
@@ -10,7 +10,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_y",
     "type": "int[]",
-    "value": [15, 16, 17, 18, 28, 35, 48, 55, 64],
+    "value": [14, 14, 15, 22, 32, 43, 53, 64],
     "properties": {
       "persistent": true
     }
@@ -56,6 +56,62 @@
     }
   },
   {
+    "name": "/Properties/Shooter/p_left",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/ff_left",
+    "type": "double",
+    "value": 0.0023,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/p_right",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/ff_right",
+    "type": "double",
+    "value": 0.00225,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Shooter/delay_shoot",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_amp",
+    "type": "double",
+    "value": 525.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/PrepareShoot/speed_max",
+    "type": "double",
+    "value": 5200.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/ADIS16470/pitch_offset",
     "type": "double",
     "value": 4.1,
@@ -66,7 +122,7 @@
   {
     "name": "/Properties/SwerveModule/max_speed",
     "type": "double",
-    "value": 15.0,
+    "value": 25.0,
     "properties": {
       "persistent": true
     }
@@ -264,6 +320,118 @@
     }
   },
   {
+    "name": "/Properties/MovePivot/position_amp",
+    "type": "double",
+    "value": 62.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_speaker_far",
+    "type": "double",
+    "value": 30.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_speaker_close",
+    "type": "double",
+    "value": 64.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/position_loading",
+    "type": "double",
+    "value": 65.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/speed_min",
+    "type": "double",
+    "value": 0.5,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/speed_max",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MovePivot/accel",
+    "type": "double",
+    "value": 0.01,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_in",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_load",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_out",
+    "type": "double",
+    "value": -0.9,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Load/delay",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/WaitShootSpeed/delay",
+    "type": "double",
+    "value": 0.75,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_speed",
+    "type": "double",
+    "value": 15.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_angular_speed",
+    "type": "double",
+    "value": 25.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/DriveToPoses/xy_p",
     "type": "double",
     "value": 0.4,
@@ -360,150 +528,6 @@
     }
   },
   {
-    "name": "/Properties/MovePivot/position_amp",
-    "type": "double",
-    "value": 62.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/position_speaker_far",
-    "type": "double",
-    "value": 30.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/position_speaker_close",
-    "type": "double",
-    "value": 64.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/position_loading",
-    "type": "double",
-    "value": 65.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/speed_min",
-    "type": "double",
-    "value": 0.5,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/speed_max",
-    "type": "double",
-    "value": 0.8,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MovePivot/accel",
-    "type": "double",
-    "value": 0.01,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_in",
-    "type": "double",
-    "value": 0.8,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_load",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_out",
-    "type": "double",
-    "value": -0.9,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Load/delay",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/p_left",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/ff_left",
-    "type": "double",
-    "value": 0.00225,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/p_right",
-    "type": "double",
-    "value": 0.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Shooter/ff_right",
-    "type": "double",
-    "value": 0.0022,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/PrepareShoot/speed_amp",
-    "type": "double",
-    "value": 530.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/PrepareShoot/speed_max",
-    "type": "double",
-    "value": 5200.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/WaitShootSpeed/delay",
-    "type": "double",
-    "value": 0.75,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
     "name": "/Properties/PickUp/delay",
     "type": "double",
     "value": 0.0,
@@ -512,41 +536,9 @@
     }
   },
   {
-    "name": "/Properties/AutoSpeakerCenterShootTwiceLine/position_pivot",
-    "type": "int",
-    "value": 45,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/AutoSpeakerAmpSideShootTwiceLine/position_pivot",
-    "type": "int",
-    "value": 25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/AutoSpeakerSourceSideShootTwiceLine/position_pivot",
-    "type": "int",
-    "value": 25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/MegaModeAutonome/position_pivot",
-    "type": "int",
-    "value": 45,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
     "name": "/Properties/Climber/speed_up",
     "type": "double",
-    "value": 0.6,
+    "value": 0.9,
     "properties": {
       "persistent": true
     }
@@ -554,7 +546,7 @@
   {
     "name": "/Properties/Climber/speed_down",
     "type": "double",
-    "value": -0.6,
+    "value": -0.9,
     "properties": {
       "persistent": true
     }
@@ -688,6 +680,38 @@
     }
   },
   {
+    "name": "/Properties/AutoSpeakerCenterShootTwiceLine/position_pivot",
+    "type": "int",
+    "value": 45,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerAmpSideShootTwiceLine/position_pivot",
+    "type": "int",
+    "value": 25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/AutoSpeakerSourceSideShootTwiceLine/position_pivot",
+    "type": "int",
+    "value": 25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/MegaModeAutonome/position_pivot",
+    "type": "int",
+    "value": 45,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/AutoSpeakerLeftShootTwiceLine/position_pivot",
     "type": "int",
     "value": 25,
@@ -739,14 +763,6 @@
     "name": "/Properties/LEDController/color_period",
     "type": "double",
     "value": 20.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/max_speed",
-    "type": "double",
-    "value": 1.0,
     "properties": {
       "persistent": true
     }

@@ -36,7 +36,7 @@ turning_encoder_position_PID_max_input = turning_encoder_position_conversion_fac
 
 
 class SwerveModule:
-    max_speed = autoproperty(15.0)
+    max_speed = autoproperty(25.0)
 
     driving_PID_P = autoproperty(0.04)
     driving_PID_I = autoproperty(0.0)
