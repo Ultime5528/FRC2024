@@ -51,8 +51,8 @@ class RatchetState(Enum):
 
 
 class Climber(SafeSubsystem):
-    speed_up = autoproperty(0.9)
-    speed_down = autoproperty(-0.9)
+    speed_up = autoproperty(0.6)
+    speed_down = autoproperty(-0.6)
     speed_unload = autoproperty(-0.1)
 
     sim_max_height = 100.0
