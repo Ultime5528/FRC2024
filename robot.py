@@ -47,6 +47,7 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
+from commands.vibrateremote import VibrateRemote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
@@ -202,7 +203,7 @@ class Robot(commands2.TimedCommandRobot):
         # Copilot's panel
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
         AxisTrigger(self.panel_1, 1, "up").whileTrue(RetractClimber(self.climber_left))
-        self.panel_1.button(3).onTrue(PickUp(self.intake))
+        self.panel_1.button(3).onTrue(PickUp(self.intake, self.xbox_controller))
         self.panel_1.button(2).onTrue(Drop(self.intake))
         self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
 
@@ -292,7 +293,7 @@ class Robot(commands2.TimedCommandRobot):
             )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
-        putCommandOnDashboard("Intake", PickUp(self.intake))
+        putCommandOnDashboard("Intake", PickUp(self.intake, self.xbox_controller))
         putCommandOnDashboard("Intake", Load(self.intake))
 
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
