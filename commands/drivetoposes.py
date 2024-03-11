@@ -8,6 +8,8 @@ from utils.affinecontroller import AffineController
 from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
+from enum import Enum, auto
+from typing import Optional
 
 
 def pose(x: float, y: float, deg: float) -> Pose2d:
@@ -15,7 +17,13 @@ def pose(x: float, y: float, deg: float) -> Pose2d:
 
 
 class DriveToPoses(SafeCommand):
-    max_speed = autoproperty(15.0)
+
+    class SpeedMode(Enum):
+        Precise = auto()
+        Fast = auto()
+
+    max_speed_precise = autoproperty(15.0)
+    max_speed_fast = autoproperty(25.0)
     max_angular_speed = autoproperty(25.0)
 
     xy_p = autoproperty(0.4)
@@ -32,19 +40,20 @@ class DriveToPoses(SafeCommand):
     rot_tol_vel_last = autoproperty(10.0)
     rot_max = autoproperty(0.4)
 
-    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
+    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d], speedMode: Optional[SpeedMode] = SpeedMode.Precise):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.goals = goals
+        self.speedMode = speedMode
 
     @staticmethod
     def fromRedBluePoints(
-        drivetrain: Drivetrain, red_poses: List[Pose2d], blue_poses: List[Pose2d]
+        drivetrain: Drivetrain, red_poses: List[Pose2d], blue_poses: List[Pose2d], speedMode: Optional[SpeedMode] = SpeedMode.Precise
     ) -> Command:
         return eitherRedBlue(
-            DriveToPoses(drivetrain, red_poses),
-            DriveToPoses(drivetrain, blue_poses),
+            DriveToPoses(drivetrain, red_poses, speedMode),
+            DriveToPoses(drivetrain, blue_poses, speedMode),
         )
 
     def initialize(self):
@@ -77,12 +86,20 @@ class DriveToPoses(SafeCommand):
         vel_y = self.pid_y.calculate(current_pos.y)
         vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
 
-        self.drivetrain.driveRaw(
-            vel_x * self.max_speed,
-            vel_y * self.max_speed,
-            vel_rot * self.max_angular_speed,
-            True,
-        )
+        if(self.speedMode is DriveToPoses.SpeedMode.Precise):
+            self.drivetrain.driveRaw(
+                vel_x * self.max_speed_precise,
+                vel_y * self.max_speed_precise,
+                vel_rot * self.max_angular_speed,
+                True,
+            )
+        else:
+            self.drivetrain.driveRaw(
+                vel_x * self.max_speed_fast,
+                vel_y * self.max_speed_fast,
+                vel_rot * self.max_angular_speed,
+                True,
+            )
 
         if (
             self.pid_x.atSetpoint()

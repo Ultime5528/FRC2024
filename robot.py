@@ -9,6 +9,12 @@ from wpimath.geometry import Pose2d, Rotation2d
 from commands.aligneverything import AlignEverything
 from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
 from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
+from commands.auto.autospeakerampsideshoottwicefar import (
+    AutoSpeakerAmpSideShootTwiceFar,
+)
+from commands.auto.autospeakersourcesideshoottwicefar import (
+    AutoSpeakerSourceSideShootTwiceFar,
+)
 from commands.auto.autospeakerampsideshoottwiceline import (
     AutoSpeakerAmpSideShootTwiceLine,
 )
@@ -22,6 +28,8 @@ from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideSh
 from commands.auto.autospeakersourcesideshoottwiceline import (
     AutoSpeakerSourceSideShootTwiceLine,
 )
+from commands.auto.farmodeautonome import FarModeautonome
+
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
@@ -114,42 +122,42 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             AutoSpeakerCenterShoot.__name__,
             AutoSpeakerCenterShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShoot.__name__,
             AutoSpeakerAmpSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShoot.__name__,
             AutoSpeakerSourceSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootLine.__name__,
             AutoSpeakerCenterShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootTwiceLine.__name__,
             AutoSpeakerCenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShootLine.__name__,
             AutoSpeakerAmpSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
@@ -161,9 +169,16 @@ class Robot(commands2.TimedCommandRobot):
         )
 
         self.auto_chooser.addOption(
+            AutoSpeakerSourceSideShootTwiceFar.__name__,
+            AutoSpeakerSourceSideShootTwiceFar(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootLine.__name__,
             AutoSpeakerSourceSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
@@ -175,8 +190,22 @@ class Robot(commands2.TimedCommandRobot):
         )
 
         self.auto_chooser.addOption(
+            AutoSpeakerAmpSideShootTwiceFar.__name__,
+            AutoSpeakerAmpSideShootTwiceFar(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
             MegaModeAutonome.__name__,
             MegaModeAutonome(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            FarModeautonome.__name__,
+            FarModeautonome(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )

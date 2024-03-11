@@ -1,4 +1,5 @@
 import commands2
+from commands2.cmd import race
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetrain.resetpose import ResetPose
@@ -12,10 +13,13 @@ from subsystems.shooter import Shooter
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
+from commands.pivot.movepivotcontinuous import MovePivotContinuous
+from subsystems.vision import Vision
+from commands.vision.alignwithtag2d import AlignWithTag2D
 
 class AutoSpeakerSourceSideShoot(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
+        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):
         super().__init__(
             eitherRedBlue(
@@ -29,6 +33,9 @@ class AutoSpeakerSourceSideShoot(SafeMixin, commands2.SequentialCommandGroup):
                 ),
             ),
             ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
+            race(
+                PrepareAndShoot(shooter, pivot, intake),
+                MovePivotContinuous(pivot, vision),
+                AlignWithTag2D.toSpeaker(drivetrain, vision)
+            )
         )

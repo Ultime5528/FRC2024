@@ -18,6 +18,8 @@ from subsystems.vision import Vision
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
+from commands.vision.alignwithtag2d import AlignWithTag2D
+
 
 class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
@@ -54,8 +56,13 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 [pose(14.1, 6.772, 153.36)],
                                 [pose(2.441, 6.772, 26.64)],
                             ),
-                            WaitShootSpeed(shooter),
-                            Load(intake),
+                            race(
+                                sequence(
+                                    WaitShootSpeed(shooter),
+                                    Load(intake)
+                                ),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision)
+                            )
                         ),
                     ),
                     race(  # Second Note Taken Shoot
@@ -78,8 +85,11 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 [pose(14.1, 6.772, 153.36)],
                                 [pose(3, 6.9, 26.64)],
                             ),
-                            WaitShootSpeed(shooter),
-                            Load(intake),
+                            race(
+                                WaitShootSpeed(shooter),
+                                Load(intake),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision)
+                            )
                         ),
                     ),
                 ),

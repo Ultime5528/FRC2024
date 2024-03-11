@@ -1,4 +1,5 @@
 import commands2
+from commands2.cmd import deadline
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetoposes import DriveToPoses
@@ -13,25 +14,17 @@ from subsystems.shooter import Shooter
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
+from commands.pivot.movepivotcontinuous import MovePivotContinuous
+from subsystems.vision import Vision
+from commands.vision.alignwithtag2d import AlignWithTag2D
+from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
 
 class AutoSpeakerAmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
+        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):
         super().__init__(
-            eitherRedBlue(
-                ResetPose(
-                    drivetrain,
-                    Pose2d(15.86, 6.715, Rotation2d.fromDegrees(120)),
-                ),
-                ResetPose(
-                    drivetrain,
-                    Pose2d(0.681, 6.715, Rotation2d.fromDegrees(60)),
-                ),
-            ),
-            ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
+            AutoSpeakerAmpSideShoot(drivetrain, shooter, pivot, intake, vision),
             DriveToPoses.fromRedBluePoints(
                 drivetrain,
                 [

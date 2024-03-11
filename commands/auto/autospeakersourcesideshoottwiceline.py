@@ -42,11 +42,13 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
                 ),
             ),
             ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
-            ParallelCommandGroup(
+            race(
                 MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
+                    race(
+                        PrepareAndShoot(shooter, pivot, intake),
+                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                    ),
                     deadline(
                         PickUp(intake),
                         DriveToPoses.fromRedBluePoints(

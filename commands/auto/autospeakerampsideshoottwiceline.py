@@ -41,11 +41,13 @@ class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGro
                 ),
             ),
             ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
-            ParallelCommandGroup(
+            race(
                 MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
+                    race(
+                        PrepareAndShoot(shooter, pivot, intake),
+                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                    ),
                     deadline(
                         PickUp(intake),
                         DriveToPoses.fromRedBluePoints(
