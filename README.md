@@ -9,14 +9,17 @@
 | commands/auto/\_\_init\_\_.py                        |        0 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakerampsideshoot.py             |       15 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakerampsideshootline.py         |       16 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakerampsideshoottwicefar.py     |       23 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakerampsideshoottwiceline.py    |       22 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakercentershoot.py              |       15 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakercentershootline.py          |       16 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakercentershoottwiceline.py     |       17 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakersourcesideshoot.py          |       15 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakersourcesideshootline.py      |       16 |        0 |        0 |        0 |    100% |           |
+| commands/auto/autospeakersourcesideshoottwicefar.py  |       23 |        0 |        0 |        0 |    100% |           |
 | commands/auto/autospeakersourcesideshoottwiceline.py |       23 |        0 |        0 |        0 |    100% |           |
 | commands/auto/drivesquares.py                        |       28 |       16 |        8 |        0 |     33% |13-17, 20, 23-32, 35, 38 |
+| commands/auto/farmodeautonome.py                     |       19 |        0 |        0 |        0 |    100% |           |
 | commands/auto/megamodeautonome.py                    |       21 |        0 |        0 |        0 |    100% |           |
 | commands/climber/\_\_init\_\_.py                     |        0 |        0 |        0 |        0 |    100% |           |
 | commands/climber/extendclimber.py                    |       18 |        0 |        0 |        0 |    100% |           |
@@ -48,7 +51,7 @@
 | gyro.py                                              |      122 |       51 |       14 |        5 |     59% |19, 28->exit, 31->exit, 34->exit, 37->exit, 40, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                                             |       28 |        0 |        0 |        0 |    100% |           |
 | properties.py                                        |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                                             |      160 |        9 |       12 |        3 |     93% |223-230, 328->exit, 346, 350->353 |
+| robot.py                                             |      166 |        9 |       12 |        3 |     93% |252-259, 357->exit, 375, 379->382 |
 | subsystems/\_\_init\_\_.py                           |        0 |        0 |        0 |        0 |    100% |           |
 | subsystems/climber.py                                |      146 |       18 |       79 |       11 |     85% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 156-174 |
 | subsystems/drivetrain.py                             |       95 |        7 |        4 |        2 |     91% |94->exit, 121, 141, 144, 153-162 |
@@ -83,7 +86,7 @@
 | utils/swerve.py                                      |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                                      |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                           |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                            **TOTAL** | **3028** |  **619** |  **653** |   **83** | **77%** |           |
+|                                            **TOTAL** | **3099** |  **619** |  **653** |   **83** | **77%** |           |
 
 
 ## Setup coverage badge
