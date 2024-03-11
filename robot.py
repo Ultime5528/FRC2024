@@ -121,42 +121,42 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             AutoSpeakerCenterShoot.__name__,
             AutoSpeakerCenterShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShoot.__name__,
             AutoSpeakerAmpSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShoot.__name__,
             AutoSpeakerSourceSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootLine.__name__,
             AutoSpeakerCenterShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerCenterShootTwiceLine.__name__,
             AutoSpeakerCenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
             AutoSpeakerAmpSideShootLine.__name__,
             AutoSpeakerAmpSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
@@ -177,7 +177,7 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             AutoSpeakerSourceSideShootLine.__name__,
             AutoSpeakerSourceSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 

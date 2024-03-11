@@ -45,6 +45,7 @@ class AutoSpeakerSourceSideShootTwiceFar(SafeMixin, commands2.SequentialCommandG
                         pose(8.27, 0.7527, -180),
                     ],  # Point intermediaire 1
                     [pose(1.7885, 2.4291, 0), pose(8.27, 0.7527, 0)],
+                    DriveToPoses.SpeedMode.Fast
                 ),
             ),
         )

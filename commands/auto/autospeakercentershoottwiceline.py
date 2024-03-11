@@ -1,5 +1,5 @@
 import commands2
-from commands2.cmd import parallel, deadline
+from commands2.cmd import parallel, deadline, race
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
@@ -14,10 +14,14 @@ from subsystems.shooter import Shooter
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
+from commands.pivot.movepivotcontinuous import MovePivotContinuous
+from subsystems.vision import Vision
+from commands.vision.alignwithtag2d import AlignWithTag2D
+
 
 class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
+        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):
         super().__init__(
             eitherRedBlue(
@@ -25,8 +29,11 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                 ResetPose(drivetrain, pose(1.3381, 5.553, 0)),
             ),
             ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
+            race(
+                PrepareAndShoot(shooter, pivot, intake),
+                MovePivotContinuous(pivot, vision),
+                AlignWithTag2D.toSpeaker(drivetrain, vision)
+            ),
             deadline(
                 PickUp(intake),
                 DriveToPoses.fromRedBluePoints(
@@ -37,11 +44,12 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                     [pose(4.5, 5.553, 0)],
                 ),
             ),
-            parallel(
-                DriveToPoses.fromRedBluePoints(
-                    drivetrain, [pose(15.2029, 5.553, 180)], [pose(1.3381, 5.553, 0)]
-                ),
-                MovePivot.toSpeakerClose(pivot),
+            DriveToPoses.fromRedBluePoints(
+                drivetrain, [pose(15.2029, 5.553, 180)], [pose(1.3381, 5.553, 0)]
             ),
-            PrepareAndShoot(shooter, pivot, intake),
+            race(
+                PrepareAndShoot(shooter, pivot, intake),
+                MovePivotContinuous(pivot, vision),
+                AlignWithTag2D.toSpeaker(drivetrain, vision)
+            ),
         )

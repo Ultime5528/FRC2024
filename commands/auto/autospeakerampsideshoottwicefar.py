@@ -45,6 +45,7 @@ class AutoSpeakerAmpSideShootTwiceFar(SafeMixin, commands2.SequentialCommandGrou
                         pose(8.27, 7.4583, -180),
                     ],
                     [pose(1.7885, 7.4583, 0), pose(8.27, 7.4583, 0)],
+                    DriveToPoses.SpeedMode.Fast
                 ),
             ),
         )

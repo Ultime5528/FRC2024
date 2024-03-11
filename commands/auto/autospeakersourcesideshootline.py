@@ -13,25 +13,16 @@ from subsystems.shooter import Shooter
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
+from commands.auto.autospeakersourcesideshoot import AutoSpeakerSourceSideShoot
+from subsystems.vision import Vision
+
 
 class AutoSpeakerSourceSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake
+        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):
         super().__init__(
-            eitherRedBlue(
-                ResetPose(
-                    drivetrain,
-                    Pose2d(15.86, 4.385, Rotation2d.fromDegrees(-120)),
-                ),
-                ResetPose(
-                    drivetrain,
-                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(-60)),
-                ),
-            ),
-            ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
+            AutoSpeakerSourceSideShoot(drivetrain, shooter, pivot, intake, vision),
             DriveToPoses.fromRedBluePoints(
                 drivetrain,
                 [
