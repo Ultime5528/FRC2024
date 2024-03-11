@@ -1,15 +1,16 @@
 from wpilib import Timer
 from wpilib.interfaces import GenericHID
 
+from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 import commands2.button
 
 
 class VibrateRemote(SafeCommand):
-    def __init__(self, xbox_remote: commands2.button.CommandXboxController, seconds: float):
+    seconds = autoproperty(1)
+    def __init__(self, xbox_remote: commands2.button.CommandXboxController):
         super().__init__()
         self.hid = xbox_remote.getHID()
-        self.seconds = seconds
         self.timer = Timer()
 
     def initialize(self):

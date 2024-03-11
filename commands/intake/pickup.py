@@ -33,4 +33,4 @@ class PickUp(SafeCommand):
         self.timer.stop()
         self.intake.stop()
         if self.xbox_remote is not None:
-            VibrateRemote(self.xbox_remote, 3).schedule()
+            VibrateRemote(self.xbox_remote).schedule()
