@@ -2,7 +2,8 @@ import commands2.button
 import wpilib
 from wpilib.interfaces import GenericHID
 
-from commands.vibrateremote import VibrateRemote
+from commands.vibratenote import VibrateNote
+from subsystems.controller import Controller
 from subsystems.intake import Intake
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
@@ -11,10 +12,9 @@ from utils.safecommand import SafeCommand
 class PickUp(SafeCommand):
     delay = autoproperty(0.0)
 
-    def __init__(self, intake: Intake, xbox_remote: commands2.button.CommandXboxController = None):
+    def __init__(self, intake: Intake):
         super().__init__()
         self.addRequirements(intake)
-        self.xbox_remote = xbox_remote
         self.intake = intake
         self.timer = wpilib.Timer()
 
@@ -32,5 +32,3 @@ class PickUp(SafeCommand):
     def end(self, interrupted: bool) -> None:
         self.timer.stop()
         self.intake.stop()
-        if self.xbox_remote is not None:
-            VibrateRemote(self.xbox_remote).schedule()

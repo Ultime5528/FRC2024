@@ -47,7 +47,7 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
-from commands.vibrateremote import VibrateRemote
+from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
