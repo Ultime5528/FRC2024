@@ -57,12 +57,9 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 [pose(2.441, 6.772, 26.64)],
                             ),
                             race(
-                                sequence(
-                                    WaitShootSpeed(shooter),
-                                    Load(intake)
-                                ),
-                                AlignWithTag2D.toSpeaker(drivetrain, vision)
-                            )
+                                sequence(WaitShootSpeed(shooter), Load(intake)),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision),
+                            ),
                         ),
                     ),
                     race(  # Second Note Taken Shoot
@@ -82,12 +79,14 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                             ),
                             DriveToPoses.fromRedBluePoints(
                                 drivetrain,
-                                [pose(14.1, 6.772, 153.36)],
-                                [pose(3, 6.9, 26.64)],
+                                [pose(14.78, 6.43, 153.36)],
+                                [pose(1.75, 6.43, 26.64)],
                             ),
-                            race(
-                                WaitShootSpeed(shooter),
-                                Load(intake),
+                            deadline(
+                                sequence(
+                                    WaitShootSpeed(shooter),
+                                    Load(intake)
+                                ),
                                 AlignWithTag2D.toSpeaker(drivetrain, vision)
                             )
                         ),

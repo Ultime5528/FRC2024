@@ -17,15 +17,6 @@ def pose(x: float, y: float, deg: float) -> Pose2d:
 
 
 class DriveToPoses(SafeCommand):
-
-    class SpeedMode(Enum):
-        Precise = auto()
-        Fast = auto()
-
-    max_speed_precise = autoproperty(15.0)
-    max_speed_fast = autoproperty(25.0)
-    max_angular_speed = autoproperty(25.0)
-
     xy_p = autoproperty(0.4)
     xy_b = autoproperty(0.1)
     xy_tol_pos = autoproperty(0.5)
@@ -40,20 +31,19 @@ class DriveToPoses(SafeCommand):
     rot_tol_vel_last = autoproperty(10.0)
     rot_max = autoproperty(0.4)
 
-    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d], speedMode: Optional[SpeedMode] = SpeedMode.Precise):
+    def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.goals = goals
-        self.speedMode = speedMode
 
     @staticmethod
     def fromRedBluePoints(
-        drivetrain: Drivetrain, red_poses: List[Pose2d], blue_poses: List[Pose2d], speedMode: Optional[SpeedMode] = SpeedMode.Precise
+        drivetrain: Drivetrain, red_poses: List[Pose2d], blue_poses: List[Pose2d]
     ) -> Command:
         return eitherRedBlue(
-            DriveToPoses(drivetrain, red_poses, speedMode),
-            DriveToPoses(drivetrain, blue_poses, speedMode),
+            DriveToPoses(drivetrain, red_poses),
+            DriveToPoses(drivetrain, blue_poses),
         )
 
     def initialize(self):
@@ -86,20 +76,12 @@ class DriveToPoses(SafeCommand):
         vel_y = self.pid_y.calculate(current_pos.y)
         vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
 
-        if(self.speedMode is DriveToPoses.SpeedMode.Precise):
-            self.drivetrain.driveRaw(
-                vel_x * self.max_speed_precise,
-                vel_y * self.max_speed_precise,
-                vel_rot * self.max_angular_speed,
-                True,
-            )
-        else:
-            self.drivetrain.driveRaw(
-                vel_x * self.max_speed_fast,
-                vel_y * self.max_speed_fast,
-                vel_rot * self.max_angular_speed,
-                True,
-            )
+        self.drivetrain.driveRaw(
+            vel_x,
+            vel_y,
+            vel_rot,
+            True,
+        )
 
         if (
             self.pid_x.atSetpoint()

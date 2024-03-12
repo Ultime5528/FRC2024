@@ -17,7 +17,7 @@ from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from subsystems.vision import Vision
 from commands.vision.alignwithtag2d import AlignWithTag2D
 
-class AutoSpeakerAmpSideShoot(SafeMixin, commands2.SequentialCommandGroup):
+class AmpSideShoot(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):

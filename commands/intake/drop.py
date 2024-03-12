@@ -6,7 +6,7 @@ from utils.safecommand import SafeCommand
 
 
 class Drop(SafeCommand):
-    delay = autoproperty(1.5)
+    delay = autoproperty(0.5)
 
     def __init__(self, intake: Intake):
         super().__init__()
@@ -15,12 +15,10 @@ class Drop(SafeCommand):
         self.timer = wpilib.Timer()
 
     def initialize(self):
-        self.timer.reset()
+        self.timer.restart()
 
     def execute(self) -> None:
         self.intake.drop()
-        if not self.intake.hasNote():
-            self.timer.start()
 
     def isFinished(self) -> bool:
         return self.timer.get() >= self.delay

@@ -19,7 +19,7 @@ from subsystems.vision import Vision
 from commands.vision.alignwithtag2d import AlignWithTag2D
 
 
-class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
+class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):
@@ -41,7 +41,8 @@ class AutoSpeakerCenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGrou
                     [
                         pose(12.5, 5.553, 180),
                     ],
-                    [pose(4.5, 5.553, 0)],
+                    [pose(3.8, 5.553, 0),
+                                pose(4.5, 5.553, 0)],
                 ),
             ),
             DriveToPoses.fromRedBluePoints(

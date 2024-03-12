@@ -21,7 +21,7 @@ from utils.property import autoproperty
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
+class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self,
         drivetrain: Drivetrain,
@@ -34,11 +34,11 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
             eitherRedBlue(
                 ResetPose(
                     drivetrain,
-                    Pose2d(15.86, 4.385, Rotation2d.fromDegrees(-120)),
+                    Pose2d(15.783, 4.385, Rotation2d.fromDegrees(-120)),
                 ),
                 ResetPose(
                     drivetrain,
-                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(-60)),
+                    Pose2d(0.758, 4.385, Rotation2d.fromDegrees(-60)),
                 ),
             ),
             ResetPivotDown(pivot),

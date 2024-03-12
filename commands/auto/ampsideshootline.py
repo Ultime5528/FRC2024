@@ -17,14 +17,14 @@ from utils.safecommand import SafeMixin
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from subsystems.vision import Vision
 from commands.vision.alignwithtag2d import AlignWithTag2D
-from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
+from commands.auto.ampsideshoot import AmpSideShoot
 
-class AutoSpeakerAmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
+class AmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
     ):
         super().__init__(
-            AutoSpeakerAmpSideShoot(drivetrain, shooter, pivot, intake, vision),
+            AmpSideShoot(drivetrain, shooter, pivot, intake, vision),
             DriveToPoses.fromRedBluePoints(
                 drivetrain,
                 [

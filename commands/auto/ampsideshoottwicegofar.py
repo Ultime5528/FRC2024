@@ -18,12 +18,12 @@ from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
-from commands.auto.autospeakerampsideshoottwiceline import (
-    AutoSpeakerAmpSideShootTwiceLine,
+from commands.auto.ampsideshoottwiceline import (
+    AmpSideShootTwiceLine,
 )
 
 
-class AutoSpeakerAmpSideShootTwiceFar(SafeMixin, commands2.SequentialCommandGroup):
+class AmpSideShootTwiceGoFar(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self,
         drivetrain: Drivetrain,
@@ -33,7 +33,7 @@ class AutoSpeakerAmpSideShootTwiceFar(SafeMixin, commands2.SequentialCommandGrou
         vision: Vision,
     ):
         super().__init__(
-            AutoSpeakerAmpSideShootTwiceLine(
+            AmpSideShootTwiceLine(
                 drivetrain, shooter, pivot, intake, vision
             ),
             deadline(
@@ -44,8 +44,7 @@ class AutoSpeakerAmpSideShootTwiceFar(SafeMixin, commands2.SequentialCommandGrou
                         pose(14.7524, 7.4583, -180),
                         pose(8.27, 7.4583, -180),
                     ],
-                    [pose(1.7885, 7.4583, 0), pose(8.27, 7.4583, 0)],
-                    DriveToPoses.SpeedMode.Fast
+                    [pose(1.7885, 7.4583, 0), pose(8.27, 7.4583, 0)]
                 ),
             ),
         )

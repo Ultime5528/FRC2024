@@ -20,7 +20,7 @@ from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
+class AmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self,
         drivetrain: Drivetrain,
@@ -33,11 +33,11 @@ class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGro
             eitherRedBlue(
                 ResetPose(
                     drivetrain,
-                    pose(15.86, 6.715, 120),
+                    pose(15.783, 6.759, 120),
                 ),
                 ResetPose(
                     drivetrain,
-                    pose(0.681, 6.715, 60),
+                    pose(0.758, 6.759, 60),
                 ),
             ),
             ResetPivotDown(pivot),
@@ -53,13 +53,13 @@ class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGro
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                Pose2d(15, 7, Rotation2d.fromDegrees(150)),
-                                Pose2d(13.5, 7, Rotation2d.fromDegrees(180)),
+                                Pose2d(15, 7.3, Rotation2d.fromDegrees(150)),
+                                Pose2d(13.5, 7.3, Rotation2d.fromDegrees(180)),
                                 pose(12.5, 8, 153),
                             ],
                             [
-                                Pose2d(1.541, 7, Rotation2d.fromDegrees(30)),
-                                Pose2d(3.041, 7, Rotation2d.fromDegrees(0)),
+                                Pose2d(1.541, 7.3, Rotation2d.fromDegrees(30)),
+                                Pose2d(3.041, 7.3, Rotation2d.fromDegrees(0)),
                                 pose(4.041, 8, 27),
                             ],
                         ),
