@@ -2,16 +2,15 @@ import contextlib
 import inspect
 import os
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, auto
 from typing import Optional, Union, Callable
 
 from ntcore.util import ntproperty as _old_ntproperty
 
 
 class PropertyMode(Enum):
-    Dashboard = "Dashboard"
-    ForceDefault = "ForceDefault"
-    LocalOnly = "LocalOnly"
+    Dashboard = auto()
+    Local = auto()
 
 
 @dataclass
@@ -22,7 +21,7 @@ class AutopropertyCall:
     col_offset: int
 
 
-mode = PropertyMode.ForceDefault
+mode = PropertyMode.Dashboard
 
 registry: list[AutopropertyCall] = []
 
@@ -46,9 +45,9 @@ def autoproperty(
     table: Optional[str] = None,
     subtable: Optional[str] = _DEFAULT_CLASS_NAME,
     full_key: Optional[str] = None,
-    write: Optional[bool] = None,
+    write: bool = False,
 ):
-    if mode == PropertyMode.LocalOnly:
+    if mode == PropertyMode.Local:
         return property(lambda _: default_value)
 
     assert full_key is None or (key is None and table is None and subtable is None)
@@ -78,11 +77,6 @@ def autoproperty(
             key = code_line.split("=")[0].strip()
 
         full_key = table + key
-
-    if mode == PropertyMode.ForceDefault:
-        write = True
-    else:  # PropertyMode.Dashboard, default False (keep saved)
-        write = write if write is not None else False
 
     registry.append(
         AutopropertyCall(

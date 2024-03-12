@@ -6,8 +6,20 @@ from datetime import datetime
 
 from ntcore import NetworkTableInstance
 
-from robot import Robot
+from robot import Robot, entry_name_check_time, entry_name_check_mirror, loop_delay
 from utils.property import registry
+
+
+def getNTInst() -> NetworkTableInstance:
+    inst = NetworkTableInstance.getDefault()
+
+    inst.stopLocal()
+    inst.startClient4("clear")
+    inst.setServerTeam(5528)
+    inst.startDSClient()
+    # inst.setServer("localhost")
+
+    return inst
 
 
 def clear():
@@ -19,16 +31,12 @@ def clear():
     """
     print("Connecting to robot...")
 
-    inst = NetworkTableInstance.getDefault()
-    inst.stopLocal()
-    inst.startClient4("clear")
-    inst.setServerTeam(5528)
-    inst.startDSClient()
+    inst = getNTInst()
 
     robot = Robot()
     robot.robotInit()
 
-    topics = NetworkTableInstance.getDefault().getTopics()
+    topics = inst.getTopics()
     registry_keys = list(map(lambda x: x.key, registry))
 
     print("Found", len(registry_keys), "properties")
@@ -38,14 +46,29 @@ def clear():
         if name.startswith("/Properties/"):
             print(name)
             if name not in registry_keys:
-                topic.setPersistent(False)
+                entry = inst.getEntry(topic.getName())
+                entry.clearPersistent()
+                entry.unpublish()
                 print("Deleted unused persistent property:", name)
 
 
 def save_loop():
-    while True:
-        save_once()
-        time.sleep(30.0)
+    inst = getNTInst()
+
+    entry_time = inst.getEntry(entry_name_check_time)
+    entry_mirror = inst.getEntry(entry_name_check_mirror)
+    last_save_time = time.time()
+
+    try:
+        while True:
+            save_once()
+            current_time = time.time()
+            while current_time - last_save_time <= loop_delay:
+                entry_mirror.setDouble(entry_time.getDouble(current_time))
+                time.sleep(1.0)
+            last_save_time = current_time
+    except KeyboardInterrupt:
+        print("Save loop interrupted")
 
 
 def save_once():
