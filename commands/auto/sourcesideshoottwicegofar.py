@@ -42,9 +42,9 @@ class SourceSideShootTwiceGoFar(SafeMixin, commands2.SequentialCommandGroup):
                     drivetrain,
                     [
                         pose(14.7524, 2.4291, -180),
-                        pose(8.27, 0.7527, -180),
+                        pose(8.27, 2.4291, -180),
                     ],  # Point intermediaire 1
-                    [pose(1.7885, 2.4291, 0), pose(8.27, 0.7527, 0)],
+                    [pose(1.7885, 2.4291, 0), pose(8.27, 2.4291, 0)],
                 ),
             ),
         )

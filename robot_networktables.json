@@ -10,7 +10,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_y",
     "type": "int[]",
-    "value": [8, 15, 19, 35, 41, 64],
+    "value": [8, 15, 19, 33, 38, 64],
     "properties": {
       "persistent": true
     }

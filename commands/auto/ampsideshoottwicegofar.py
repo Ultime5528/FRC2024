@@ -41,10 +41,10 @@ class AmpSideShootTwiceGoFar(SafeMixin, commands2.SequentialCommandGroup):
                 DriveToPoses.fromRedBluePoints(
                     drivetrain,
                     [
-                        pose(14.7524, 7.4583, -180),
-                        pose(8.27, 7.4583, -180),
+                        pose(14.7524, 6.85, -180),
+                        pose(8.27, 6.85, -180),
                     ],
-                    [pose(1.7885, 7.4583, 0), pose(8.27, 7.4583, 0)]
+                    [pose(1.7885, 6.85, 0), pose(8.27, 6.85, 0)]
                 ),
             ),
         )

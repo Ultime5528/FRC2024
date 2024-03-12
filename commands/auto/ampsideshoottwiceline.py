@@ -59,7 +59,7 @@ class AmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                             ],
                             [
                                 Pose2d(1.541, 7.3, Rotation2d.fromDegrees(30)),
-                                Pose2d(3.041, 7.3, Rotation2d.fromDegrees(0)),
+                                Pose2d(3.4, 7.3, Rotation2d.fromDegrees(0)),
                                 pose(4.041, 8, 27),
                             ],
                         ),

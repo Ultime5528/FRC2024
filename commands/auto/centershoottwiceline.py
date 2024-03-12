@@ -39,10 +39,11 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                 DriveToPoses.fromRedBluePoints(
                     drivetrain,
                     [
-                        pose(12.5, 5.553, 180),
+                        pose(13.5, 5.553, 180),
+                        pose(13, 5.553, 180),
                     ],
-                    [pose(3.8, 5.553, 0),
-                                pose(4.5, 5.553, 0)],
+                    [pose(3.141, 5.553, 0),
+                                pose(3.641, 5.553, 0)],
                 ),
             ),
             DriveToPoses.fromRedBluePoints(

@@ -23,7 +23,7 @@ class Pivot(SafeSubsystem):
         LockedInterpolation = auto()
 
     interpolation_points_x = autoproperty([-6.8, -6.1, -4.1, -0.6, 1.45, 9.8])
-    interpolation_points_y = autoproperty([8, 15, 19, 35, 41, 64])
+    interpolation_points_y = autoproperty([8, 15, 19, 33, 38, 64])
     speed_up = autoproperty(0.2)
     speed_down = autoproperty(-0.8)
     speed_maintain = autoproperty(-0.25)
