@@ -83,12 +83,9 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 [pose(1.75, 6.43, 26.64)],
                             ),
                             deadline(
-                                sequence(
-                                    WaitShootSpeed(shooter),
-                                    Load(intake)
-                                ),
-                                AlignWithTag2D.toSpeaker(drivetrain, vision)
-                            )
+                                sequence(WaitShootSpeed(shooter), Load(intake)),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision),
+                            ),
                         ),
                     ),
                 ),

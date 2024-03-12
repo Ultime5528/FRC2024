@@ -21,7 +21,12 @@ from commands.vision.alignwithtag2d import AlignWithTag2D
 
 class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
+        self,
+        drivetrain: Drivetrain,
+        shooter: Shooter,
+        pivot: Pivot,
+        intake: Intake,
+        vision: Vision,
     ):
         super().__init__(
             eitherRedBlue(
@@ -32,7 +37,7 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
             race(
                 PrepareAndShoot(shooter, pivot, intake),
                 MovePivotContinuous(pivot, vision),
-                AlignWithTag2D.toSpeaker(drivetrain, vision)
+                AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
             deadline(
                 PickUp(intake),
@@ -42,8 +47,7 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                         pose(13.5, 5.553, 180),
                         pose(13, 5.553, 180),
                     ],
-                    [pose(3.141, 5.553, 0),
-                                pose(3.641, 5.553, 0)],
+                    [pose(3.141, 5.553, 0), pose(3.641, 5.553, 0)],
                 ),
             ),
             DriveToPoses.fromRedBluePoints(
@@ -52,6 +56,6 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
             race(
                 PrepareAndShoot(shooter, pivot, intake),
                 MovePivotContinuous(pivot, vision),
-                AlignWithTag2D.toSpeaker(drivetrain, vision)
+                AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
         )

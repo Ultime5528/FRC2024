@@ -19,9 +19,15 @@ from subsystems.vision import Vision
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from commands.auto.ampsideshoot import AmpSideShoot
 
+
 class AmpSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
+        self,
+        drivetrain: Drivetrain,
+        shooter: Shooter,
+        pivot: Pivot,
+        intake: Intake,
+        vision: Vision,
     ):
         super().__init__(
             AmpSideShoot(drivetrain, shooter, pivot, intake, vision),

@@ -33,9 +33,7 @@ class AmpSideShootTwiceGoFar(SafeMixin, commands2.SequentialCommandGroup):
         vision: Vision,
     ):
         super().__init__(
-            AmpSideShootTwiceLine(
-                drivetrain, shooter, pivot, intake, vision
-            ),
+            AmpSideShootTwiceLine(drivetrain, shooter, pivot, intake, vision),
             deadline(
                 PickUp(intake),
                 DriveToPoses.fromRedBluePoints(
@@ -44,7 +42,7 @@ class AmpSideShootTwiceGoFar(SafeMixin, commands2.SequentialCommandGroup):
                         pose(14.7524, 6.85, -180),
                         pose(8.27, 6.85, -180),
                     ],
-                    [pose(1.7885, 6.85, 0), pose(8.27, 6.85, 0)]
+                    [pose(1.7885, 6.85, 0), pose(8.27, 6.85, 0)],
                 ),
             ),
         )

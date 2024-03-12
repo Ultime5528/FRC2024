@@ -19,7 +19,12 @@ from subsystems.vision import Vision
 
 class SourceSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
-        self, drivetrain: Drivetrain, shooter: Shooter, pivot: Pivot, intake: Intake, vision: Vision
+        self,
+        drivetrain: Drivetrain,
+        shooter: Shooter,
+        pivot: Pivot,
+        intake: Intake,
+        vision: Vision,
     ):
         super().__init__(
             SourceSideShoot(drivetrain, shooter, pivot, intake, vision),

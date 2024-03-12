@@ -11,7 +11,9 @@ from utils.safecommand import SafeCommand
 class PickUp(SafeCommand):
     delay = autoproperty(0.0)
 
-    def __init__(self, intake: Intake, xbox_remote: commands2.button.CommandXboxController = None):
+    def __init__(
+        self, intake: Intake, xbox_remote: commands2.button.CommandXboxController = None
+    ):
         super().__init__()
         self.addRequirements(intake)
         self.xbox_remote = xbox_remote

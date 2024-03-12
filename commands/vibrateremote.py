@@ -8,6 +8,7 @@ import commands2.button
 
 class VibrateRemote(SafeCommand):
     seconds = autoproperty(1)
+
     def __init__(self, xbox_remote: commands2.button.CommandXboxController):
         super().__init__()
         self.hid = xbox_remote.getHID()

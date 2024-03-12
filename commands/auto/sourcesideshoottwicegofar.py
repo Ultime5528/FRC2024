@@ -33,9 +33,7 @@ class SourceSideShootTwiceGoFar(SafeMixin, commands2.SequentialCommandGroup):
         vision: Vision,
     ):
         super().__init__(
-            SourceSideShootTwiceLine(
-                drivetrain, shooter, pivot, intake, vision
-            ),
+            SourceSideShootTwiceLine(drivetrain, shooter, pivot, intake, vision),
             deadline(
                 PickUp(intake),
                 DriveToPoses.fromRedBluePoints(
