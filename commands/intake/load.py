@@ -6,7 +6,7 @@ from utils.safecommand import SafeCommand
 
 
 class Load(SafeCommand):
-    delay = autoproperty(1.0)
+    delay = autoproperty(0.25)
 
     def __init__(self, intake: Intake):
         super().__init__()
