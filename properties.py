@@ -108,11 +108,21 @@ def update_files():
             atok = ASTTokens(file_content, parse=True)
 
             # ast.Call of every function call to autoproperty
-            calls = AstSelector("ClassDef Assign[value is Call].value[func is Name].func[id=autoproperty] $Assign.value", atok.tree).all()
+            calls = AstSelector(
+                "ClassDef Assign[value is Call].value[func is Name].func[id=autoproperty] $Assign.value",
+                atok.tree,
+            ).all()
 
             # Finding the call for the current autoproperty
-            matched_calls = [call for call in calls if call.lineno == matched_prop.lineno and call.col_offset == matched_prop.col_offset]
-            assert len(matched_calls) == 1, f"There should be only be one Call at the specified location"
+            matched_calls = [
+                call
+                for call in calls
+                if call.lineno == matched_prop.lineno
+                and call.col_offset == matched_prop.col_offset
+            ]
+            assert (
+                len(matched_calls) == 1
+            ), f"There should be only be one Call at the specified location"
             call = matched_calls[0]
 
             # Replace value

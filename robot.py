@@ -388,7 +388,9 @@ class Robot(commands2.TimedCommandRobot):
         if mode != PropertyMode.Local:
             if DriverStation.isFMSAttached():
                 if self.timer_check.advanceIfElapsed(10.0):
-                    wpilib.reportWarning(f"FMS is connected, but PropertyMode is not Local: {mode}")
+                    wpilib.reportWarning(
+                        f"FMS is connected, but PropertyMode is not Local: {mode}"
+                    )
             elif DriverStation.isDSAttached():
                 self.timer_check.start()
                 current_time = wpilib.getTime()
@@ -398,7 +400,9 @@ class Robot(commands2.TimedCommandRobot):
                     if current_time - mirror_time < 20.0:
                         print("Save loop running")
                     else:
-                        raise RuntimeError(f"Save loop is not running ({current_time=:.2f}, {mirror_time=:.2f})")
+                        raise RuntimeError(
+                            f"Save loop is not running ({current_time=:.2f}, {mirror_time=:.2f})"
+                        )
 
 
 def putCommandOnDashboard(
