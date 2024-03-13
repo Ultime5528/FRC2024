@@ -56,9 +56,11 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
+from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
+from subsystems.controller import Controller
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.led import LEDController
@@ -99,6 +101,7 @@ class Robot(commands2.TimedCommandRobot):
         self.shooter = Shooter()
         self.vision = Vision()
         self.led = LEDController(self)
+        self.controller = Controller(self.xbox_controller.getHID())
 
         """
         Default subsystem commands
@@ -107,6 +110,7 @@ class Robot(commands2.TimedCommandRobot):
             DriveField(self.drivetrain, self.xbox_controller)
         )
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
+        self.controller.setDefaultCommand(VibrateNote(self.controller, self.intake))
 
         """
         Setups
@@ -265,6 +269,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Shooter", self.shooter)
         wpilib.SmartDashboard.putData("Vision", self.vision)
         wpilib.SmartDashboard.putData("LED", self.led)
+        wpilib.SmartDashboard.putData("Controller", self.controller)
 
     def setupCommandsOnDashboard(self):
         """
