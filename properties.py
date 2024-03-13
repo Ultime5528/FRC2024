@@ -16,7 +16,7 @@ def getNTInst() -> NetworkTableInstance:
     inst = NetworkTableInstance.getDefault()
 
     inst.stopLocal()
-    inst.startClient4("clear")
+    inst.startClient4("properties-py")
     inst.setServerTeam(5528)
     inst.startDSClient()
     # inst.setServer("localhost")
