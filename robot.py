@@ -117,7 +117,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         self.setupAuto()
         self.setupButtons()
-        # self.setupSubsystemOnDashboard()
+        self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
 
     def setupAuto(self):
