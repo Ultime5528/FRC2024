@@ -397,7 +397,7 @@ class Robot(commands2.TimedCommandRobot):
                 self.entry_check_time.setDouble(current_time)
                 if self.timer_check.advanceIfElapsed(15.0):
                     mirror_time = self.entry_check_mirror.getDouble(0.0)
-                    if current_time - mirror_time < 20.0:
+                    if current_time - mirror_time < 5.0:
                         print("Save loop running")
                     else:
                         raise RuntimeError(
