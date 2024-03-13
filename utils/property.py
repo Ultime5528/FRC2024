@@ -17,7 +17,7 @@ class PropertyMode(Enum):
 class AutopropertyCall:
     key: str
     filename: str
-    line_no: int
+    lineno: int
     col_offset: int
 
 
@@ -82,7 +82,7 @@ def autoproperty(
         AutopropertyCall(
             full_key,
             calframe.filename,
-            calframe.positions.lineno - 1,
+            calframe.positions.lineno,
             calframe.positions.col_offset,
         )
     )

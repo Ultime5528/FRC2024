@@ -4,6 +4,8 @@ import subprocess
 import time
 from datetime import datetime
 
+from ast_selector import AstSelector
+from asttokens import ASTTokens
 from ntcore import NetworkTableInstance
 
 from robot import Robot, entry_name_check_time, entry_name_check_mirror, loop_delay
@@ -101,29 +103,27 @@ def update_files():
             print("Updating", entry["name"])
 
             with open(matched_prop.filename, "r") as f:
-                lines = f.readlines()
+                file_content = f.read()
 
-            line = lines[matched_prop.line_no]
+            atok = ASTTokens(file_content, parse=True)
 
-            # Replace characters after (
-            idx_start = line.index("(", matched_prop.col_offset) + 1
+            # ast.Call of every function call to autoproperty
+            calls = AstSelector("ClassDef Assign[value is Call].value[func is Name].func[id=autoproperty] $Assign.value", atok.tree).all()
 
-            # Replace before ) or ,
-            idx_end = line.index(")", matched_prop.col_offset)
-            try:
-                idx_end = line.index(",", matched_prop.col_offset)
-            except ValueError:
-                pass
+            # Finding the call for the current autoproperty
+            matched_calls = [call for call in calls if call.lineno == matched_prop.lineno and call.col_offset == matched_prop.col_offset]
+            assert len(matched_calls) == 1, f"There should be only be one Call at the specified location"
+            call = matched_calls[0]
 
-            # Replace old value by new
-            line = line[:idx_start] + str(entry["value"]) + line[idx_end:]
-
-            # Replace line
-            lines[matched_prop.line_no] = line
+            # Replace value
+            value_expr = call.args[0]
+            start = value_expr.first_token.startpos
+            end = value_expr.last_token.endpos
+            new_file = atok.text[:start] + str(entry["value"]) + atok.text[end:]
 
             # Rewrite file
             with open(matched_prop.filename, "w") as f:
-                f.writelines(lines)
+                f.write(new_file)
 
 
 if __name__ == "__main__":
