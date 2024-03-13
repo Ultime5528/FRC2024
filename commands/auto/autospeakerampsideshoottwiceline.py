@@ -1,5 +1,5 @@
 import commands2
-from commands2 import ParallelCommandGroup, SequentialCommandGroup
+from commands2 import SequentialCommandGroup
 from commands2.cmd import race, deadline
 from wpimath.geometry import Pose2d, Rotation2d
 
