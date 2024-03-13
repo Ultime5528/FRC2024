@@ -1,9 +1,5 @@
-import commands2.button
 import wpilib
-from wpilib.interfaces import GenericHID
 
-from commands.vibratenote import VibrateNote
-from subsystems.controller import Controller
 from subsystems.intake import Intake
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand

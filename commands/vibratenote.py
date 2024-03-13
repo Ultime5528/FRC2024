@@ -7,7 +7,6 @@ from subsystems.intake import Intake
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
-
 NoReqIntake = NewType("NoReqIntake", Intake)
 
 
@@ -30,7 +29,7 @@ class VibrateNote(SafeCommand):
         if self.intake.hasNote():
             if self.timer.get() < self.delay_vibrate:
                 self.controller.vibrate(self.rumble_force)
-            elif self.timer.get() > self.delay_vibrate+self.delay_wait:
+            elif self.timer.get() > self.delay_vibrate + self.delay_wait:
                 self.timer.restart()
             else:
                 self.controller.vibrate(0)
