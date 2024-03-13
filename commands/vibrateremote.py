@@ -1,9 +1,9 @@
+import commands2.button
 from wpilib import Timer
 from wpilib.interfaces import GenericHID
 
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-import commands2.button
 
 
 class VibrateRemote(SafeCommand):

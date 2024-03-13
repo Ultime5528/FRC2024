@@ -8,8 +8,6 @@ from utils.affinecontroller import AffineController
 from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
-from enum import Enum, auto
-from typing import Optional
 
 
 def pose(x: float, y: float, deg: float) -> Pose2d:

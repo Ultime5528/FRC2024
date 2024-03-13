@@ -12,9 +12,6 @@ from commands.auto.ampsideshootline import AmpSideShootLine
 from commands.auto.ampsideshoottwicegofar import (
     AmpSideShootTwiceGoFar,
 )
-from commands.auto.sourcesideshoottwicegofar import (
-    SourceSideShootTwiceGoFar,
-)
 from commands.auto.ampsideshoottwiceline import (
     AmpSideShootTwiceLine,
 )
@@ -23,14 +20,16 @@ from commands.auto.centershootline import CenterShootLine
 from commands.auto.centershoottwiceline import (
     CenterShootTwiceLine,
 )
+from commands.auto.farmodeautonome import FarModeautonome
+from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.auto.sourcesideshoot import SourceSideShoot
 from commands.auto.sourcesideshootline import SourceSideShootLine
+from commands.auto.sourcesideshoottwicegofar import (
+    SourceSideShootTwiceGoFar,
+)
 from commands.auto.sourcesideshoottwiceline import (
     SourceSideShootTwiceLine,
 )
-from commands.auto.farmodeautonome import FarModeautonome
-
-from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -55,7 +54,6 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
-from commands.vibrateremote import VibrateRemote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties

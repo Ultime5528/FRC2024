@@ -10,6 +10,7 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import PrepareAndShoot
 from commands.shooter.waitshootspeed import WaitShootSpeed
+from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -17,8 +18,6 @@ from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
-
-from commands.vision.alignwithtag2d import AlignWithTag2D
 
 
 class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):

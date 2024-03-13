@@ -1,6 +1,5 @@
 import commands2.button
 import wpilib
-from wpilib.interfaces import GenericHID
 
 from commands.vibrateremote import VibrateRemote
 from subsystems.intake import Intake

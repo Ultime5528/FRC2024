@@ -1,20 +1,14 @@
 import commands2
 from wpimath.geometry import Pose2d, Rotation2d
 
+from commands.auto.sourcesideshoot import SourceSideShoot
 from commands.drivetoposes import DriveToPoses
-from commands.drivetrain.resetpose import ResetPose
-from commands.pivot.movepivot import MovePivot
-from commands.pivot.resetpivotdown import ResetPivotDown
-from commands.shooter.shoot import PrepareAndShoot
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
-from utils.auto import eitherRedBlue
-from utils.safecommand import SafeMixin
-
-from commands.auto.sourcesideshoot import SourceSideShoot
 from subsystems.vision import Vision
+from utils.safecommand import SafeMixin
 
 
 class SourceSideShootLine(SafeMixin, commands2.SequentialCommandGroup):
