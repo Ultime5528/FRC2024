@@ -58,10 +58,10 @@ class DriveDistance(SafeCommand):
         if self.motion_y.isFinished():
             vy = 0
 
-        self.drivetrain.drive(vx, vy, 0, is_field_relative=False, rate_limiter=False)
+        self.drivetrain.drive(vx, vy, 0, is_field_relative=False)
 
     def isFinished(self) -> bool:
         return self.motion_x.isFinished() and self.motion_y.isFinished()
 
     def end(self, interrupted):
-        self.drivetrain.drive(0, 0, 0)
+        self.drivetrain.drive(0, 0, 0, True)

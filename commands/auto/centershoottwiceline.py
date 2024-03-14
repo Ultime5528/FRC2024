@@ -1,10 +1,8 @@
 import commands2
 from commands2.cmd import deadline, race
 
-from commands.auto.autospeakersourcesideshoottwiceline import (
-    AutoSpeakerSourceSideShootTwiceLine,
-)
 from commands.drivetoposes import DriveToPoses, pose
+from commands.drivetrain.resetpose import ResetPose
 from commands.intake.pickup import PickUp
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
@@ -15,6 +13,7 @@ from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
+from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
 
