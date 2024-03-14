@@ -1,12 +1,11 @@
 import commands2
-from commands2 import ParallelCommandGroup, SequentialCommandGroup
+from commands2 import SequentialCommandGroup
 from commands2.cmd import race, deadline
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
 from commands.intake.pickup import PickUp
-from commands.pivot.movepivot import MovePivot
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.shoot import PrepareAndShoot
@@ -20,7 +19,7 @@ from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
+class AmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self,
         drivetrain: Drivetrain,
@@ -33,31 +32,33 @@ class AutoSpeakerAmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGro
             eitherRedBlue(
                 ResetPose(
                     drivetrain,
-                    pose(15.86, 6.715, 120),
+                    pose(15.783, 6.759, 120),
                 ),
                 ResetPose(
                     drivetrain,
-                    pose(0.681, 6.715, 60),
+                    pose(0.758, 6.759, 60),
                 ),
             ),
             ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
-            ParallelCommandGroup(
+            race(
                 MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
+                    race(
+                        PrepareAndShoot(shooter, pivot, intake),
+                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                    ),
                     deadline(
                         PickUp(intake),
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                Pose2d(15, 7, Rotation2d.fromDegrees(150)),
-                                Pose2d(13.5, 7, Rotation2d.fromDegrees(180)),
+                                Pose2d(15, 7.3, Rotation2d.fromDegrees(150)),
+                                Pose2d(13.5, 7.3, Rotation2d.fromDegrees(180)),
                                 pose(12.5, 8, 153),
                             ],
                             [
-                                Pose2d(1.541, 7, Rotation2d.fromDegrees(30)),
-                                Pose2d(3.041, 7, Rotation2d.fromDegrees(0)),
+                                Pose2d(1.541, 7.3, Rotation2d.fromDegrees(30)),
+                                Pose2d(3.4, 7.3, Rotation2d.fromDegrees(0)),
                                 pose(4.041, 8, 27),
                             ],
                         ),
