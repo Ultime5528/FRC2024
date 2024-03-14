@@ -320,6 +320,38 @@
     }
   },
   {
+    "name": "/Properties/Intake/speed_in",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_load",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Intake/speed_out",
+    "type": "double",
+    "value": -0.3,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/Load/delay",
+    "type": "double",
+    "value": 0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/MovePivot/position_amp",
     "type": "double",
     "value": 62.0,
@@ -371,38 +403,6 @@
     "name": "/Properties/MovePivot/accel",
     "type": "double",
     "value": 0.01,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_in",
-    "type": "double",
-    "value": 0.8,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_load",
-    "type": "double",
-    "value": 1.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Intake/speed_out",
-    "type": "double",
-    "value": -0.3,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/Load/delay",
-    "type": "double",
-    "value": 0.25,
     "properties": {
       "persistent": true
     }
@@ -507,14 +507,6 @@
     "name": "/Properties/DriveToPoses/rot_max",
     "type": "double",
     "value": 10.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/VibrateRemote/seconds",
-    "type": "int",
-    "value": 1,
     "properties": {
       "persistent": true
     }
@@ -664,9 +656,73 @@
     }
   },
   {
+    "name": "/Properties/VibrateNote/first_rumble_delay",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/VibrateNote/first_rumble_force",
+    "type": "double",
+    "value": 0.8,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/VibrateNote/rumble_wait",
+    "type": "double",
+    "value": 0.7,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/VibrateNote/next_rumble_delay",
+    "type": "double",
+    "value": 0.15,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/VibrateNote/next_rumble_force",
+    "type": "double",
+    "value": 0.3,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
     "name": "/Properties/LEDController/brightnessValue",
     "type": "int",
     "value": 20,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_speed",
+    "type": "double",
+    "value": 15.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_angular_speed",
+    "type": "double",
+    "value": 25.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/VibrateRemote/seconds",
+    "type": "int",
+    "value": 1,
     "properties": {
       "persistent": true
     }
@@ -681,14 +737,6 @@
   },
   {
     "name": "/Properties/DriveToPoses/max_speed_fast",
-    "type": "double",
-    "value": 25.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/max_angular_speed",
     "type": "double",
     "value": 25.0,
     "properties": {
