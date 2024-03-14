@@ -18,7 +18,7 @@ from utils.sparkmaxutils import waitForCAN
 drive_motor_pinion_teeth = 13
 drive_motor_gear_ratio = (45.0 * 22) / (drive_motor_pinion_teeth * 15)
 
-wheel_radius = 0.0762  # meters
+wheel_radius = 0.0725  # meters
 drive_encoder_position_conversion_factor = (
     math.pi * wheel_radius / drive_motor_gear_ratio
 )  # meters
@@ -36,7 +36,7 @@ turning_encoder_position_PID_max_input = turning_encoder_position_conversion_fac
 
 
 class SwerveModule:
-    max_speed = autoproperty(15.0)
+    max_speed = autoproperty(35.0)
 
     driving_PID_P = autoproperty(0.04)
     driving_PID_I = autoproperty(0.0)

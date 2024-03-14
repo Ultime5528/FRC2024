@@ -4,34 +4,34 @@ from typing import Optional
 import commands2.button
 import wpilib
 from commands2.cmd import sequence
+from ntcore import NetworkTableInstance
+from wpilib import DriverStation, Timer
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
-from commands.auto.autofarwest import AutoFarWest
-from commands.auto.autospeakerampsideshoot import AutoSpeakerAmpSideShoot
-from commands.auto.autospeakerampsideshootline import AutoSpeakerAmpSideShootLine
-from commands.auto.autospeakerampsideshoottwicefar import (
-    AutoSpeakerAmpSideShootTwiceFar,
+from commands.auto.ampsideshoot import AmpSideShoot
+from commands.auto.ampsideshootline import AmpSideShootLine
+from commands.auto.ampsideshoottwicegofar import (
+    AmpSideShootTwiceGoFar,
 )
-from commands.auto.autospeakersourcesideshoottwicefar import (
-    AutoSpeakerSourceSideShootTwiceFar,
+from commands.auto.ampsideshoottwiceline import (
+    AmpSideShootTwiceLine,
 )
-from commands.auto.autospeakerampsideshoottwiceline import (
-    AutoSpeakerAmpSideShootTwiceLine,
-)
-from commands.auto.autospeakercentershoot import AutoSpeakerCenterShoot
-from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
-from commands.auto.autospeakercentershoottwiceline import (
-    AutoSpeakerCenterShootTwiceLine,
-)
-from commands.auto.autospeakersourcesideshoot import AutoSpeakerSourceSideShoot
-from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideShootLine
-from commands.auto.autospeakersourcesideshoottwiceline import (
-    AutoSpeakerSourceSideShootTwiceLine,
+from commands.auto.centershoot import CenterShoot
+from commands.auto.centershootline import CenterShootLine
+from commands.auto.centershoottwiceline import (
+    CenterShootTwiceLine,
 )
 from commands.auto.farmodeautonome import FarModeautonome
-
 from commands.auto.megamodeautonome import MegaModeAutonome
+from commands.auto.sourcesideshoot import SourceSideShoot
+from commands.auto.sourcesideshootline import SourceSideShootLine
+from commands.auto.sourcesideshoottwicegofar import (
+    SourceSideShootTwiceGoFar,
+)
+from commands.auto.sourcesideshoottwiceline import (
+    SourceSideShootTwiceLine,
+)
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -68,6 +68,10 @@ from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.axistrigger import AxisTrigger
+
+loop_delay = 30.0
+entry_name_check_time = "/CheckSaveLoop/time"
+entry_name_check_mirror = "/CheckSaveLoop/mirror"
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -113,96 +117,98 @@ class Robot(commands2.TimedCommandRobot):
         self.controller.setDefaultCommand(VibrateNote(self.controller, self.intake))
 
         """
+        NetworkTables entries for properties save loop check
+        """
+        inst = NetworkTableInstance.getDefault()
+        self.entry_check_time = inst.getEntry(entry_name_check_time)
+        self.entry_check_mirror = inst.getEntry(entry_name_check_mirror)
+        self.timer_check = Timer()
+        self.timer_check.start()
+
+        """
         Setups
         """
         self.setupAuto()
         self.setupButtons()
-        self.setupSubsystemOnDashboard()
+        # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
 
         self.auto_chooser.addOption(
-            AutoFarWest.__name__,
-            AutoFarWest(
+            CenterShoot.__name__,
+            CenterShoot(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
-            AutoSpeakerCenterShoot.__name__,
-            AutoSpeakerCenterShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerAmpSideShoot.__name__,
-            AutoSpeakerAmpSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerSourceSideShoot.__name__,
-            AutoSpeakerSourceSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerCenterShootLine.__name__,
-            AutoSpeakerCenterShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerCenterShootTwiceLine.__name__,
-            AutoSpeakerCenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerAmpSideShootLine.__name__,
-            AutoSpeakerAmpSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerAmpSideShootTwiceLine.__name__,
-            AutoSpeakerAmpSideShootTwiceLine(
+            AmpSideShoot.__name__,
+            AmpSideShoot(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
-            AutoSpeakerSourceSideShootTwiceFar.__name__,
-            AutoSpeakerSourceSideShootTwiceFar(
+            SourceSideShoot.__name__,
+            SourceSideShoot(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
-            AutoSpeakerSourceSideShootLine.__name__,
-            AutoSpeakerSourceSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AutoSpeakerSourceSideShootTwiceLine.__name__,
-            AutoSpeakerSourceSideShootTwiceLine(
+            CenterShootLine.__name__,
+            CenterShootLine(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
 
         self.auto_chooser.addOption(
-            AutoSpeakerAmpSideShootTwiceFar.__name__,
-            AutoSpeakerAmpSideShootTwiceFar(
+            CenterShootTwiceLine.__name__,
+            CenterShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            AmpSideShootLine.__name__,
+            AmpSideShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            AmpSideShootTwiceLine.__name__,
+            AmpSideShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            SourceSideShootTwiceGoFar.__name__,
+            SourceSideShootTwiceGoFar(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            SourceSideShootLine.__name__,
+            SourceSideShootLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            SourceSideShootTwiceLine.__name__,
+            SourceSideShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
+
+        self.auto_chooser.addOption(
+            AmpSideShootTwiceGoFar.__name__,
+            AmpSideShootTwiceGoFar(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )
@@ -377,8 +383,31 @@ class Robot(commands2.TimedCommandRobot):
             ResetGyro(self.drivetrain).schedule()
 
     def robotPeriodic(self):
+        self.checkPropertiesSaveLoop()
         self.vision.periodic()
         super().robotPeriodic()
+
+    def checkPropertiesSaveLoop(self):
+        from utils.property import mode, PropertyMode
+
+        if mode != PropertyMode.Local:
+            if DriverStation.isFMSAttached():
+                if self.timer_check.advanceIfElapsed(10.0):
+                    wpilib.reportWarning(
+                        f"FMS is connected, but PropertyMode is not Local: {mode}"
+                    )
+            elif DriverStation.isDSAttached():
+                self.timer_check.start()
+                current_time = wpilib.getTime()
+                self.entry_check_time.setDouble(current_time)
+                if self.timer_check.advanceIfElapsed(loop_delay):
+                    mirror_time = self.entry_check_mirror.getDouble(0.0)
+                    if current_time - mirror_time < 5.0:
+                        print("Save loop running")
+                    else:
+                        raise RuntimeError(
+                            f"Save loop is not running ({current_time=:.2f}, {mirror_time=:.2f})"
+                        )
 
 
 def putCommandOnDashboard(

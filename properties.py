@@ -4,10 +4,24 @@ import subprocess
 import time
 from datetime import datetime
 
+from ast_selector import AstSelector
+from asttokens import ASTTokens
 from ntcore import NetworkTableInstance
 
-from robot import Robot
+from robot import Robot, entry_name_check_time, entry_name_check_mirror, loop_delay
 from utils.property import registry
+
+
+def getNTInst() -> NetworkTableInstance:
+    inst = NetworkTableInstance.getDefault()
+
+    inst.stopLocal()
+    inst.startClient4("properties-py")
+    inst.setServerTeam(5528)
+    inst.startDSClient()
+    # inst.setServer("localhost")
+
+    return inst
 
 
 def clear():
@@ -19,16 +33,12 @@ def clear():
     """
     print("Connecting to robot...")
 
-    inst = NetworkTableInstance.getDefault()
-    inst.stopLocal()
-    inst.startClient4("clear")
-    inst.setServerTeam(5528)
-    inst.startDSClient()
+    inst = getNTInst()
 
     robot = Robot()
     robot.robotInit()
 
-    topics = NetworkTableInstance.getDefault().getTopics()
+    topics = inst.getTopics()
     registry_keys = list(map(lambda x: x.key, registry))
 
     print("Found", len(registry_keys), "properties")
@@ -38,14 +48,30 @@ def clear():
         if name.startswith("/Properties/"):
             print(name)
             if name not in registry_keys:
-                topic.setPersistent(False)
+                entry = inst.getEntry(topic.getName())
+                entry.clearPersistent()
+                entry.unpublish()
                 print("Deleted unused persistent property:", name)
 
 
 def save_loop():
-    while True:
-        save_once()
-        time.sleep(30.0)
+    inst = getNTInst()
+
+    entry_time = inst.getEntry(entry_name_check_time)
+    entry_mirror = inst.getEntry(entry_name_check_mirror)
+    last_save_time = time.time()
+
+    try:
+        while True:
+            save_once()
+            current_time = time.time()
+            while current_time - last_save_time < loop_delay:
+                entry_mirror.setDouble(entry_time.getDouble(current_time))
+                time.sleep(1.0)
+                current_time = time.time()
+            last_save_time = current_time
+    except KeyboardInterrupt:
+        print("Save loop interrupted")
 
 
 def save_once():
@@ -78,29 +104,37 @@ def update_files():
             print("Updating", entry["name"])
 
             with open(matched_prop.filename, "r") as f:
-                lines = f.readlines()
+                file_content = f.read()
 
-            line = lines[matched_prop.line_no]
+            atok = ASTTokens(file_content, parse=True)
 
-            # Replace characters after (
-            idx_start = line.index("(", matched_prop.col_offset) + 1
+            # ast.Call of every function call to autoproperty
+            calls = AstSelector(
+                "ClassDef Assign[value is Call].value[func is Name].func[id=autoproperty] $Assign.value",
+                atok.tree,
+            ).all()
 
-            # Replace before ) or ,
-            idx_end = line.index(")", matched_prop.col_offset)
-            try:
-                idx_end = line.index(",", matched_prop.col_offset)
-            except ValueError:
-                pass
+            # Finding the call for the current autoproperty
+            matched_calls = [
+                call
+                for call in calls
+                if call.lineno == matched_prop.lineno
+                and call.col_offset == matched_prop.col_offset
+            ]
+            assert (
+                len(matched_calls) == 1
+            ), f"There should be only be one Call at the specified location"
+            call = matched_calls[0]
 
-            # Replace old value by new
-            line = line[:idx_start] + str(entry["value"]) + line[idx_end:]
-
-            # Replace line
-            lines[matched_prop.line_no] = line
+            # Replace value
+            value_expr = call.args[0]
+            start = value_expr.first_token.startpos
+            end = value_expr.last_token.endpos
+            new_file = atok.text[:start] + str(entry["value"]) + atok.text[end:]
 
             # Rewrite file
             with open(matched_prop.filename, "w") as f:
-                f.writelines(lines)
+                f.write(new_file)
 
 
 if __name__ == "__main__":

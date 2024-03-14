@@ -54,10 +54,10 @@ class AffineController(Sendable):
         return self.b
 
     def getPositionError(self) -> float:
-        self._position_error
+        return self._position_error
 
     def getVelocityError(self) -> float:
-        self._velocity_error
+        return self._velocity_error
 
     def setTolerance(
         self, position_tolerance: float, velocity_tolerance=float("inf")
@@ -111,7 +111,8 @@ class AffineController(Sendable):
             output = 0.0
         else:
             abs_output = (
-                self._p * abs(self._position_error - self._position_tolerance) + self._b
+                self._p * (abs(self._position_error) - self._position_tolerance)
+                + self._b
             )
             abs_output = min(abs_output, self._maximum_output)
             output = math.copysign(abs_output, self._position_error)

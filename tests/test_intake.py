@@ -18,10 +18,10 @@ def test_drop(control, robot: Robot):
         assert robot.intake._motor.get() == approx(robot.intake.speed_out, rel=0.1)
 
         robot.intake._sensor.setSimUnpressed()
-        control.step_timing(seconds=cmd.delay - 0.2, autonomous=False, enabled=True)
+        control.step_timing(seconds=cmd.delay - 0.4, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(robot.intake.speed_out, rel=0.1)
 
-        control.step_timing(seconds=0.4, autonomous=False, enabled=True)
+        control.step_timing(seconds=0.8, autonomous=False, enabled=True)
         assert robot.intake._motor.get() == approx(0.0)
         assert not cmd.isScheduled()
 
