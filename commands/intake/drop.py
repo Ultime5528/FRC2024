@@ -15,12 +15,10 @@ class Drop(SafeCommand):
         self.timer = wpilib.Timer()
 
     def initialize(self):
-        self.timer.reset()
+        self.timer.restart()
 
     def execute(self) -> None:
         self.intake.drop()
-        if not self.intake.hasNote():
-            self.timer.start()
 
     def isFinished(self) -> bool:
         return self.timer.get() >= self.delay
