@@ -6,7 +6,6 @@ from wpimath.geometry import Pose2d, Rotation2d
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
 from commands.intake.pickup import PickUp
-from commands.pivot.movepivot import MovePivot
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.shoot import PrepareAndShoot
@@ -20,7 +19,7 @@ from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
 
 
-class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
+class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self,
         drivetrain: Drivetrain,
@@ -33,19 +32,21 @@ class AutoSpeakerSourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommand
             eitherRedBlue(
                 ResetPose(
                     drivetrain,
-                    Pose2d(15.86, 4.385, Rotation2d.fromDegrees(-120)),
+                    Pose2d(15.783, 4.385, Rotation2d.fromDegrees(-120)),
                 ),
                 ResetPose(
                     drivetrain,
-                    Pose2d(0.681, 4.385, Rotation2d.fromDegrees(-60)),
+                    Pose2d(0.758, 4.385, Rotation2d.fromDegrees(-60)),
                 ),
             ),
             ResetPivotDown(pivot),
-            MovePivot.toSpeakerClose(pivot),
-            PrepareAndShoot(shooter, pivot, intake),
             race(
                 MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
+                    race(
+                        PrepareAndShoot(shooter, pivot, intake),
+                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                    ),
                     deadline(
                         PickUp(intake),
                         DriveToPoses.fromRedBluePoints(

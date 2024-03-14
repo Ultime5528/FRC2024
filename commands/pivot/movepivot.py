@@ -88,7 +88,7 @@ class _ClassProperties:
     position_amp = autoproperty(62.0, subtable=MovePivot.__name__)
     position_speaker_far = autoproperty(30.0, subtable=MovePivot.__name__)
     position_speaker_close = autoproperty(64.0, subtable=MovePivot.__name__)
-    position_loading = autoproperty(65.0, subtable=MovePivot.__name__)
+    position_loading = autoproperty(64.0, subtable=MovePivot.__name__)
 
     speed_min = autoproperty(0.5, subtable=MovePivot.__name__)
     speed_max = autoproperty(0.8, subtable=MovePivot.__name__)
