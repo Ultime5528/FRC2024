@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for subsystems/shooter.py: 73%</title>
+    <title>Coverage for subsystems/shooter.py: 90%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="coverage_html.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>subsystems/shooter.py</b>:
-            <span class="pc_cov">73%</span>
+            <span class="pc_cov">90%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -56,8 +56,8 @@
         </aside>
         <h2>
             <span class="text">67 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">53<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">14<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">60<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">7<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">1<span class="text"> partial</span></button>
         </h2>
@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="d_957ef5a5b21dc6e3_vision_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-03-11 22:46 +0000
+            created at 2024-03-14 03:22 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -100,10 +100,10 @@
     <p class="pln"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t"><span class="key">class</span> <span class="nam">Shooter</span><span class="op">(</span><span class="nam">SafeSubsystem</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t18" href="#t18">18</a></span><span class="t">    <span class="nam">p_left</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.0</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t">    <span class="nam">ff_left</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.00225</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t">    <span class="nam">ff_left</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.0028</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t">    <span class="nam">p_right</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.0</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">ff_right</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.0022</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">ff_right</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.0021</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">    <span class="nam">delay_shoot</span> <span class="op">=</span> <span class="nam">autoproperty</span><span class="op">(</span><span class="num">0.75</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -171,22 +171,22 @@
     <p class="run"><span class="n"><a id="t87" href="#t87">87</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">right_motor_sim</span><span class="op">.</span><span class="nam">setVelocity</span><span class="op">(</span><span class="num">15000</span> <span class="op">*</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_left_motor</span><span class="op">.</span><span class="nam">get</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t88" href="#t88">88</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">    <span class="key">def</span> <span class="nam">initSendable</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">builder</span><span class="op">:</span> <span class="nam">SendableBuilder</span><span class="op">)</span> <span class="op">-></span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">        <span class="nam">super</span><span class="op">(</span><span class="op">)</span><span class="op">.</span><span class="nam">initSendable</span><span class="op">(</span><span class="nam">builder</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">        <span class="nam">super</span><span class="op">(</span><span class="op">)</span><span class="op">.</span><span class="nam">initSendable</span><span class="op">(</span><span class="nam">builder</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">        <span class="key">def</span> <span class="nam">noop</span><span class="op">(</span><span class="nam">_</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">        <span class="key">def</span> <span class="nam">noop</span><span class="op">(</span><span class="nam">_</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">            <span class="key">pass</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addBooleanProperty</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addBooleanProperty</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">            <span class="str">"reached_speed_left"</span><span class="op">,</span> <span class="key">lambda</span><span class="op">:</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_reached_speed_left</span><span class="op">,</span> <span class="nam">noop</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addBooleanProperty</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addBooleanProperty</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">            <span class="str">"reached_speed_right"</span><span class="op">,</span> <span class="key">lambda</span><span class="op">:</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_reached_speed_right</span><span class="op">,</span> <span class="nam">noop</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addFloatProperty</span><span class="op">(</span><span class="str">"velocity_left"</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_encoder_left</span><span class="op">.</span><span class="nam">getVelocity</span><span class="op">,</span> <span class="nam">noop</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addFloatProperty</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addFloatProperty</span><span class="op">(</span><span class="str">"velocity_left"</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_encoder_left</span><span class="op">.</span><span class="nam">getVelocity</span><span class="op">,</span> <span class="nam">noop</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addFloatProperty</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">            <span class="str">"velocity_right"</span><span class="op">,</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_encoder_right</span><span class="op">.</span><span class="nam">getVelocity</span><span class="op">,</span> <span class="nam">noop</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addFloatProperty</span><span class="op">(</span><span class="str">"ref_rpm"</span><span class="op">,</span> <span class="key">lambda</span><span class="op">:</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_ref_rpm</span><span class="op">,</span> <span class="nam">noop</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">        <span class="nam">builder</span><span class="op">.</span><span class="nam">addFloatProperty</span><span class="op">(</span><span class="str">"ref_rpm"</span><span class="op">,</span> <span class="key">lambda</span><span class="op">:</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_ref_rpm</span><span class="op">,</span> <span class="nam">noop</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -196,7 +196,7 @@
             <a id="nextFileLink" class="nav" href="d_957ef5a5b21dc6e3_vision_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-03-11 22:46 +0000
+            created at 2024-03-14 03:22 +0000
         </p>
     </div>
 </footer>
