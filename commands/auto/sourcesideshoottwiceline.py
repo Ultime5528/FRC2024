@@ -1,7 +1,6 @@
 import commands2
 from commands2 import SequentialCommandGroup
 from commands2.cmd import race, deadline
-from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
