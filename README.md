@@ -51,8 +51,8 @@
 | commands/vision/alignwithtag2d.py          |       50 |       19 |       14 |        1 |     53% |43->exit, 50-76, 79-81 |
 | gyro.py                                    |      122 |       51 |       14 |        5 |     59% |19, 28->exit, 31->exit, 34->exit, 37->exit, 40, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                                   |       28 |        0 |        0 |        0 |    100% |           |
-| properties.py                              |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                                   |      172 |        1 |       12 |        3 |     98% |361->exit, 379, 383->386 |
+| properties.py                              |       90 |       90 |       26 |        0 |      0% |     1-175 |
+| robot.py                                   |      199 |       13 |       24 |        4 |     88% |376->exit, 394-408, 417, 421->424 |
 | subsystems/\_\_init\_\_.py                 |        0 |        0 |        0 |        0 |    100% |           |
 | subsystems/climber.py                      |      146 |        4 |       79 |       11 |     93% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 159, 162 |
 | subsystems/controller.py                   |       16 |        1 |        2 |        0 |     94% |        21 |
@@ -62,6 +62,7 @@
 | subsystems/pivot.py                        |      110 |        8 |       18 |        3 |     91% |54->exit, 85, 101, 109, 112-113, 143, 146, 149 |
 | subsystems/shooter.py                      |       67 |        7 |       10 |        1 |     90% |48->exit, 76, 79-83, 93 |
 | subsystems/vision.py                       |       41 |        7 |       12 |        5 |     74% |12, 14, 32-33, 38, 43, 49 |
+| tests/properties\_test.py                  |        3 |        0 |        0 |        0 |    100% |           |
 | tests/test\_climber.py                     |       92 |        0 |       24 |        0 |    100% |           |
 | tests/test\_commands.py                    |       80 |        6 |       62 |        6 |     92% |70->62, 72-75, 84-87, 88->78, 90-93, 107->104 |
 | tests/test\_drive.py                       |       10 |        0 |        2 |        0 |    100% |           |
@@ -81,7 +82,7 @@
 | utils/axistrigger.py                       |        8 |        1 |        4 |        1 |     83% |        15 |
 | utils/coroutinecommand.py                  |       27 |        6 |        6 |        2 |     76% |14, 19, 32->exit, 34-35, 38, 41 |
 | utils/linearinterpolator.py                |       25 |       12 |        6 |        0 |     42% |11-12, 15-16, 25-36 |
-| utils/property.py                          |       62 |       34 |       32 |        2 |     36% |36, 40, 54-108 |
+| utils/property.py                          |       58 |       31 |       30 |        2 |     38% |35, 39, 53-102 |
 | utils/safecommand.py                       |       40 |       19 |        8 |        0 |     44% | 14, 18-39 |
 | utils/safesubsystem.py                     |       23 |        1 |        4 |        0 |     96% |        28 |
 | utils/sparkmaxsim.py                       |       20 |        2 |        0 |        0 |     90% |    25, 28 |
@@ -89,7 +90,7 @@
 | utils/swerve.py                            |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                            |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                 |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                  **TOTAL** | **3177** |  **580** |  **671** |   **85** | **79%** |           |
+|                                  **TOTAL** | **3222** |  **608** |  **683** |   **86** | **78%** |           |
 
 
 ## Setup coverage badge
