@@ -52,14 +52,12 @@ class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                pose(15, 3.844, -150),
-                                pose(13.5, 3.844, -180),
-                                pose(12.5, 3.144, -153),
+                                pose(14.5, 4.1, -180),
+                                pose(13.5, 4.1, -180),
                             ],
                             [
-                                pose(1.541, 3.844, -30),
-                                pose(3.041, 3.844, 0),
-                                pose(4.041, 3.144, -27),
+                                pose(2.0, 4.1, 0),
+                                pose(3.0, 4.1, 0),
                             ],
                         ),
                     ),
