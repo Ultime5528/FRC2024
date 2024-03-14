@@ -10,6 +10,7 @@ from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import PrepareAndShoot
 from commands.shooter.waitshootspeed import WaitShootSpeed
+from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
@@ -54,8 +55,10 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                                 [pose(14.1, 6.772, 153.36)],
                                 [pose(2.441, 6.772, 26.64)],
                             ),
-                            WaitShootSpeed(shooter),
-                            Load(intake),
+                            race(
+                                sequence(WaitShootSpeed(shooter), Load(intake)),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision),
+                            ),
                         ),
                     ),
                     race(  # Second Note Taken Shoot
@@ -75,11 +78,13 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                             ),
                             DriveToPoses.fromRedBluePoints(
                                 drivetrain,
-                                [pose(14.1, 6.772, 153.36)],
-                                [pose(3, 6.9, 26.64)],
+                                [pose(14.78, 6.43, 153.36)],
+                                [pose(1.75, 6.43, 26.64)],
                             ),
-                            WaitShootSpeed(shooter),
-                            Load(intake),
+                            deadline(
+                                sequence(WaitShootSpeed(shooter), Load(intake)),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision),
+                            ),
                         ),
                     ),
                 ),

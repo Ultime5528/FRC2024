@@ -2,7 +2,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_x",
     "type": "double[]",
-    "value": [-8.0, -6.8, -6.3, -6.1, -4.1, -0.6, 1.45, 5.05, 9.8],
+    "value": [-6.8, -6.1, -4.1, -0.6, 1.45, 9.8],
     "properties": {
       "persistent": true
     }
@@ -10,7 +10,7 @@
   {
     "name": "/Properties/Pivot/interpolation_points_y",
     "type": "int[]",
-    "value": [15, 16, 17, 18, 28, 35, 48, 55, 64],
+    "value": [8, 15, 19, 33, 38, 64],
     "properties": {
       "persistent": true
     }
@@ -66,7 +66,7 @@
   {
     "name": "/Properties/Shooter/ff_left",
     "type": "double",
-    "value": 0.00225,
+    "value": 0.0028,
     "properties": {
       "persistent": true
     }
@@ -82,7 +82,7 @@
   {
     "name": "/Properties/Shooter/ff_right",
     "type": "double",
-    "value": 0.0022,
+    "value": 0.0021,
     "properties": {
       "persistent": true
     }
@@ -346,7 +346,7 @@
   {
     "name": "/Properties/MovePivot/position_loading",
     "type": "double",
-    "value": 65.0,
+    "value": 64.0,
     "properties": {
       "persistent": true
     }
@@ -394,7 +394,7 @@
   {
     "name": "/Properties/Intake/speed_out",
     "type": "double",
-    "value": -0.9,
+    "value": -0.3,
     "properties": {
       "persistent": true
     }
@@ -402,7 +402,7 @@
   {
     "name": "/Properties/Load/delay",
     "type": "double",
-    "value": 1.0,
+    "value": 0.25,
     "properties": {
       "persistent": true
     }
@@ -416,25 +416,9 @@
     }
   },
   {
-    "name": "/Properties/DriveToPoses/max_speed",
-    "type": "double",
-    "value": 15.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/max_angular_speed",
-    "type": "double",
-    "value": 25.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
     "name": "/Properties/DriveToPoses/xy_p",
     "type": "double",
-    "value": 0.4,
+    "value": 10.0,
     "properties": {
       "persistent": true
     }
@@ -442,7 +426,7 @@
   {
     "name": "/Properties/DriveToPoses/xy_b",
     "type": "double",
-    "value": 0.1,
+    "value": 1.25,
     "properties": {
       "persistent": true
     }
@@ -474,7 +458,7 @@
   {
     "name": "/Properties/DriveToPoses/xy_max",
     "type": "double",
-    "value": 0.4,
+    "value": 25.0,
     "properties": {
       "persistent": true
     }
@@ -482,7 +466,7 @@
   {
     "name": "/Properties/DriveToPoses/rot_p",
     "type": "double",
-    "value": 0.008,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
@@ -490,7 +474,7 @@
   {
     "name": "/Properties/DriveToPoses/rot_b",
     "type": "double",
-    "value": 0.1,
+    "value": 1.0,
     "properties": {
       "persistent": true
     }
@@ -506,7 +490,7 @@
   {
     "name": "/Properties/DriveToPoses/rot_tol_pos_last",
     "type": "double",
-    "value": 2.0,
+    "value": 5.0,
     "properties": {
       "persistent": true
     }
@@ -522,7 +506,15 @@
   {
     "name": "/Properties/DriveToPoses/rot_max",
     "type": "double",
-    "value": 0.4,
+    "value": 10.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/VibrateRemote/seconds",
+    "type": "int",
+    "value": 1,
     "properties": {
       "persistent": true
     }
@@ -538,7 +530,7 @@
   {
     "name": "/Properties/Climber/speed_up",
     "type": "double",
-    "value": 0.6,
+    "value": 1.0,
     "properties": {
       "persistent": true
     }
@@ -546,7 +538,7 @@
   {
     "name": "/Properties/Climber/speed_down",
     "type": "double",
-    "value": -0.6,
+    "value": -1.0,
     "properties": {
       "persistent": true
     }
@@ -675,6 +667,30 @@
     "name": "/Properties/LEDController/brightnessValue",
     "type": "int",
     "value": 20,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_speed_precise",
+    "type": "double",
+    "value": 15.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_speed_fast",
+    "type": "double",
+    "value": 25.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/max_angular_speed",
+    "type": "double",
+    "value": 25.0,
     "properties": {
       "persistent": true
     }
