@@ -61,16 +61,16 @@
 | subsystems/pivot.py                        |      110 |        8 |       18 |        3 |     91% |54->exit, 85, 101, 109, 112-113, 143, 146, 149 |
 | subsystems/shooter.py                      |       67 |        7 |       10 |        1 |     90% |48->exit, 76, 79-83, 93 |
 | subsystems/vision.py                       |       41 |        7 |       12 |        5 |     74% |12, 14, 32-33, 38, 43, 49 |
-| tests/climber\_test.py                     |       92 |        0 |       24 |        0 |    100% |           |
-| tests/drive\_test.py                       |       10 |        0 |        2 |        0 |    100% |           |
-| tests/intake\_test.py                      |       58 |        0 |       10 |        0 |    100% |           |
-| tests/led\_test.py                         |       17 |        0 |        2 |        0 |    100% |           |
-| tests/pivot\_test.py                       |      108 |        2 |       20 |        1 |     98% |     46-47 |
-| tests/pyfrc\_test.py                       |        1 |        0 |        0 |        0 |    100% |           |
-| tests/shooter\_test.py                     |       64 |        0 |       14 |        0 |    100% |           |
-| tests/switch\_test.py                      |       33 |        0 |        2 |        0 |    100% |           |
-| tests/test\_commands.py                    |       68 |        6 |       58 |        6 |     90% |67->59, 69-72, 81-84, 85->75, 87-90, 104->101 |
+| tests/test\_climber.py                     |       92 |        0 |       24 |        0 |    100% |           |
+| tests/test\_commands.py                    |       80 |        6 |       62 |        6 |     92% |70->62, 72-75, 84-87, 88->78, 90-93, 107->104 |
+| tests/test\_drive.py                       |       10 |        0 |        2 |        0 |    100% |           |
+| tests/test\_intake.py                      |       58 |        0 |       10 |        0 |    100% |           |
+| tests/test\_led.py                         |       17 |        0 |        2 |        0 |    100% |           |
+| tests/test\_pivot.py                       |      108 |        2 |       20 |        1 |     98% |     46-47 |
+| tests/test\_pyfrc.py                       |        1 |        0 |        0 |        0 |    100% |           |
+| tests/test\_shooter.py                     |       64 |        0 |       14 |        0 |    100% |           |
 | tests/test\_subsystems.py                  |       17 |        0 |        8 |        0 |    100% |           |
+| tests/test\_switch.py                      |       33 |        0 |        2 |        0 |    100% |           |
 | tests/utils.py                             |       17 |        2 |        6 |        0 |     91% |     21-22 |
 | utils/\_\_init\_\_.py                      |        0 |        0 |        0 |        0 |    100% |           |
 | utils/affinecontroller.py                  |       79 |       57 |        4 |        0 |     27% |7-17, 22-42, 45, 48, 51, 54, 57, 60, 65-66, 69, 72, 75, 78, 81-82, 85, 88-90, 93, 96-120, 123 |
@@ -87,7 +87,7 @@
 | utils/swerve.py                            |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                            |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                 |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                  **TOTAL** | **3103** |  **573** |  **653** |   **83** | **79%** |           |
+|                                  **TOTAL** | **3115** |  **573** |  **657** |   **83** | **79%** |           |
 
 
 ## Setup coverage badge
