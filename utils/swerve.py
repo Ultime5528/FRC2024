@@ -18,7 +18,7 @@ from utils.sparkmaxutils import waitForCAN
 drive_motor_pinion_teeth = 13
 drive_motor_gear_ratio = (45.0 * 22) / (drive_motor_pinion_teeth * 15)
 
-wheel_radius = 0.0762  # meters
+wheel_radius = 0.0725  # meters
 drive_encoder_position_conversion_factor = (
     math.pi * wheel_radius / drive_motor_gear_ratio
 )  # meters
