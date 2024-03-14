@@ -54,10 +54,10 @@ class AffineController(Sendable):
         return self.b
 
     def getPositionError(self) -> float:
-        self._position_error
+        return self._position_error
 
     def getVelocityError(self) -> float:
-        self._velocity_error
+        return self._velocity_error
 
     def setTolerance(
         self, position_tolerance: float, velocity_tolerance=float("inf")

@@ -4,6 +4,8 @@ from typing import Optional
 import commands2.button
 import wpilib
 from commands2.cmd import sequence
+from ntcore import NetworkTableInstance
+from wpilib import DriverStation, Timer
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
@@ -54,9 +56,11 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
+from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
+from subsystems.controller import Controller
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.led import LEDController
@@ -64,6 +68,10 @@ from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.axistrigger import AxisTrigger
+
+loop_delay = 30.0
+entry_name_check_time = "/CheckSaveLoop/time"
+entry_name_check_mirror = "/CheckSaveLoop/mirror"
 
 
 class Robot(commands2.TimedCommandRobot):
@@ -97,6 +105,7 @@ class Robot(commands2.TimedCommandRobot):
         self.shooter = Shooter()
         self.vision = Vision()
         self.led = LEDController(self)
+        self.controller = Controller(self.xbox_controller.getHID())
 
         """
         Default subsystem commands
@@ -105,6 +114,16 @@ class Robot(commands2.TimedCommandRobot):
             DriveField(self.drivetrain, self.xbox_controller)
         )
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
+        self.controller.setDefaultCommand(VibrateNote(self.controller, self.intake))
+
+        """
+        NetworkTables entries for properties save loop check
+        """
+        inst = NetworkTableInstance.getDefault()
+        self.entry_check_time = inst.getEntry(entry_name_check_time)
+        self.entry_check_mirror = inst.getEntry(entry_name_check_mirror)
+        self.timer_check = Timer()
+        self.timer_check.start()
 
         """
         Setups
@@ -230,7 +249,7 @@ class Robot(commands2.TimedCommandRobot):
         # Copilot's panel
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
         AxisTrigger(self.panel_1, 1, "up").whileTrue(RetractClimber(self.climber_left))
-        self.panel_1.button(3).onTrue(PickUp(self.intake, self.xbox_controller))
+        self.panel_1.button(3).onTrue(PickUp(self.intake))
         self.panel_1.button(2).onTrue(Drop(self.intake))
         self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
 
@@ -256,6 +275,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Shooter", self.shooter)
         wpilib.SmartDashboard.putData("Vision", self.vision)
         wpilib.SmartDashboard.putData("LED", self.led)
+        wpilib.SmartDashboard.putData("Controller", self.controller)
 
     def setupCommandsOnDashboard(self):
         """
@@ -320,7 +340,7 @@ class Robot(commands2.TimedCommandRobot):
             )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
-        putCommandOnDashboard("Intake", PickUp(self.intake, self.xbox_controller))
+        putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
@@ -363,8 +383,31 @@ class Robot(commands2.TimedCommandRobot):
             ResetGyro(self.drivetrain).schedule()
 
     def robotPeriodic(self):
+        self.checkPropertiesSaveLoop()
         self.vision.periodic()
         super().robotPeriodic()
+
+    def checkPropertiesSaveLoop(self):
+        from utils.property import mode, PropertyMode
+
+        if mode != PropertyMode.Local:
+            if DriverStation.isFMSAttached():
+                if self.timer_check.advanceIfElapsed(10.0):
+                    wpilib.reportWarning(
+                        f"FMS is connected, but PropertyMode is not Local: {mode}"
+                    )
+            elif DriverStation.isDSAttached():
+                self.timer_check.start()
+                current_time = wpilib.getTime()
+                self.entry_check_time.setDouble(current_time)
+                if self.timer_check.advanceIfElapsed(loop_delay):
+                    mirror_time = self.entry_check_mirror.getDouble(0.0)
+                    if current_time - mirror_time < 5.0:
+                        print("Save loop running")
+                    else:
+                        raise RuntimeError(
+                            f"Save loop is not running ({current_time=:.2f}, {mirror_time=:.2f})"
+                        )
 
 
 def putCommandOnDashboard(

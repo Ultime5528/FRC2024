@@ -21,13 +21,13 @@ class DriveSquares(SafeCommand):
 
     def execute(self):
         if self.timer.get() < self.line_duration:
-            self.drivetrain.drive(0.0, self.speed, 0.0)
+            self.drivetrain.drive(0.0, self.speed, 0.0, is_field_relative=False)
         elif self.timer.get() < 2 * self.line_duration:
-            self.drivetrain.drive(self.speed, 0.0, 0.0)
+            self.drivetrain.drive(self.speed, 0.0, 0.0, is_field_relative=False)
         elif self.timer.get() < 3 * self.line_duration:
-            self.drivetrain.drive(0.0, -self.speed, 0.0)
+            self.drivetrain.drive(0.0, -self.speed, 0.0, is_field_relative=False)
         elif self.timer.get() < 4 * self.line_duration:
-            self.drivetrain.drive(-self.speed, 0.0, 0.0)
+            self.drivetrain.drive(-self.speed, 0.0, 0.0, is_field_relative=False)
         else:
             self.timer.restart()
 
