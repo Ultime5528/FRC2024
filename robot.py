@@ -54,9 +54,11 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
+from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
+from subsystems.controller import Controller
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.led import LEDController
@@ -97,6 +99,7 @@ class Robot(commands2.TimedCommandRobot):
         self.shooter = Shooter()
         self.vision = Vision()
         self.led = LEDController(self)
+        self.controller = Controller(self.xbox_controller.getHID())
 
         """
         Default subsystem commands
@@ -105,6 +108,7 @@ class Robot(commands2.TimedCommandRobot):
             DriveField(self.drivetrain, self.xbox_controller)
         )
         self.pivot.setDefaultCommand(MaintainPivot(self.pivot))
+        self.controller.setDefaultCommand(VibrateNote(self.controller, self.intake))
 
         """
         Setups
@@ -230,7 +234,7 @@ class Robot(commands2.TimedCommandRobot):
         # Copilot's panel
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
         AxisTrigger(self.panel_1, 1, "up").whileTrue(RetractClimber(self.climber_left))
-        self.panel_1.button(3).onTrue(PickUp(self.intake, self.xbox_controller))
+        self.panel_1.button(3).onTrue(PickUp(self.intake))
         self.panel_1.button(2).onTrue(Drop(self.intake))
         self.panel_1.button(1).onTrue(MovePivot.toSpeakerClose(self.pivot))
 
@@ -256,6 +260,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.SmartDashboard.putData("Shooter", self.shooter)
         wpilib.SmartDashboard.putData("Vision", self.vision)
         wpilib.SmartDashboard.putData("LED", self.led)
+        wpilib.SmartDashboard.putData("Controller", self.controller)
 
     def setupCommandsOnDashboard(self):
         """
@@ -320,7 +325,7 @@ class Robot(commands2.TimedCommandRobot):
             )
 
         putCommandOnDashboard("Intake", Drop(self.intake))
-        putCommandOnDashboard("Intake", PickUp(self.intake, self.xbox_controller))
+        putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
 
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
