@@ -1,9 +1,6 @@
 import commands2
 from commands2.cmd import deadline, race
 
-from commands.auto.autospeakersourcesideshoottwiceline import (
-    AutoSpeakerSourceSideShootTwiceLine,
-)
 from commands.drivetoposes import DriveToPoses, pose
 from commands.intake.pickup import PickUp
 from commands.pivot.movepivotcontinuous import MovePivotContinuous

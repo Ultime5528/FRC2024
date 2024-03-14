@@ -19,21 +19,6 @@ from commands.auto.centershoot import CenterShoot
 from commands.auto.centershootline import CenterShootLine
 from commands.auto.centershoottwiceline import (
     CenterShootTwiceLine,
-from commands.auto.autospeakerampsideshoottwiceline import (
-    AutoSpeakerAmpSideShootTwiceLine,
-)
-from commands.auto.autospeakercentershoot import AutoSpeakerCenterShoot
-from commands.auto.autospeakercentershootline import AutoSpeakerCenterShootLine
-from commands.auto.autospeakercentershoottwiceline import (
-    AutoSpeakerCenterShootTwiceLine,
-)
-from commands.auto.autospeakersourcesideshoot import AutoSpeakerSourceSideShoot
-from commands.auto.autospeakersourcesideshootline import AutoSpeakerSourceSideShootLine
-from commands.auto.autospeakersourcesideshoottwicefar import (
-    AutoSpeakerSourceSideShootTwiceFar,
-)
-from commands.auto.autospeakersourcesideshoottwiceline import (
-    AutoSpeakerSourceSideShootTwiceLine,
 )
 from commands.auto.farmodeautonome import FarModeautonome
 from commands.auto.megamodeautonome import MegaModeAutonome

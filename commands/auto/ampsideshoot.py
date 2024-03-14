@@ -2,11 +2,6 @@ import commands2
 from commands2.cmd import deadline
 from wpimath.geometry import Pose2d, Rotation2d
 
-from commands.auto.autospeakerampsideshoottwiceline import (
-    AutoSpeakerAmpSideShootTwiceLine,
-)
-from commands.drivetoposes import DriveToPoses, pose
-from commands.intake.pickup import PickUp
 from commands.drivetrain.resetpose import ResetPose
 from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
