@@ -2,9 +2,12 @@ import ast
 import inspect
 from textwrap import dedent
 from typing import List
+from unittest.mock import patch
 
-from commands2 import Command, Subsystem
+import pyfrc.test_support.controller
+from commands2 import Command, Subsystem, CommandScheduler
 
+from robot import Robot
 from tests.utils import import_submodules
 from utils.safecommand import SafeMixin, SafeCommand
 
@@ -112,3 +115,22 @@ def test_requirements():
             assert (
                 not subsystem_args
             ), f"addRequirements is not called, but should require {subsystem_args}"
+
+
+def test_command_scheduler_enabled(control: "pyfrc.test_support.controller.TestController", robot: Robot):
+    with control.run_robot():
+        control.step_timing(seconds=1.0, autonomous=False, enabled=True)
+        assert not CommandScheduler.getInstance()._disabled, "CommandScheduler should not be disabled"
+
+        """
+        La méthode 'run' du CommandScheduler est passé directement par référence 
+        au TimedRobot, donc on ne peut pas la mocker.
+        
+        On mock plutôt la fonction periodic d'un subsystem, qui doit uniquement
+        être appelé par le scheduler.
+        """
+
+        with patch.object(robot.drivetrain, "periodic", wraps=robot.drivetrain.periodic) as mock:
+            assert mock.call_count == 0
+            control.step_timing(seconds=1.0, autonomous=False, enabled=True)
+            assert mock.call_count >= 50
