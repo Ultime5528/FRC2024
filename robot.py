@@ -69,7 +69,7 @@ from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.axistrigger import AxisTrigger
 
-loop_delay = 10.0
+loop_delay = 30.0
 entry_name_check_time = "/CheckSaveLoop/time"
 entry_name_check_mirror = "/CheckSaveLoop/mirror"
 
@@ -400,7 +400,7 @@ class Robot(commands2.TimedCommandRobot):
                 self.timer_check.start()
                 current_time = wpilib.getTime()
                 self.entry_check_time.setDouble(current_time)
-                if self.timer_check.advanceIfElapsed(15.0):
+                if self.timer_check.advanceIfElapsed(loop_delay):
                     mirror_time = self.entry_check_mirror.getDouble(0.0)
                     if current_time - mirror_time < 5.0:
                         print("Save loop running")

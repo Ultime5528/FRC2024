@@ -66,6 +66,7 @@ def save_loop():
             save_once()
             current_time = time.time()
             while current_time - last_save_time <= loop_delay:
+                current_time = time.time()
                 entry_mirror.setDouble(entry_time.getDouble(current_time))
                 time.sleep(1.0)
             last_save_time = current_time
