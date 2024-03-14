@@ -52,13 +52,13 @@ class AmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                Pose2d(15, 7.3, Rotation2d.fromDegrees(150)),
-                                Pose2d(13.5, 7.3, Rotation2d.fromDegrees(180)),
+                                pose(15, 7.3, 150),
+                                pose(13.5, 7.3, 180),
                                 pose(12.5, 8, 153),
                             ],
                             [
-                                Pose2d(1.541, 7.3, Rotation2d.fromDegrees(30)),
-                                Pose2d(3.4, 7.3, Rotation2d.fromDegrees(0)),
+                                pose(1.541, 7.3, 30),
+                                pose(3.041, 7.3, 0),
                                 pose(4.041, 8, 27),
                             ],
                         ),

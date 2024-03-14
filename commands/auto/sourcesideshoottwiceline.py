@@ -32,11 +32,11 @@ class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
             eitherRedBlue(
                 ResetPose(
                     drivetrain,
-                    Pose2d(15.783, 4.385, Rotation2d.fromDegrees(-120)),
+                    pose(15.783, 4.385, -120),
                 ),
                 ResetPose(
                     drivetrain,
-                    Pose2d(0.758, 4.385, Rotation2d.fromDegrees(-60)),
+                    pose(0.758, 4.385, -60),
                 ),
             ),
             ResetPivotDown(pivot),
@@ -52,12 +52,14 @@ class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                pose(15, 4.1, 180),
-                                pose(13.5, 4.1, 180),
+                                pose(15, 3.844, -150),
+                                pose(13.5, 3.844, -180),
+                                pose(12.5, 3.144, -153),
                             ],
                             [
-                                pose(1.541, 4.1, 0),
-                                pose(3.041, 4.1, 0),
+                                pose(1.541, 3.844, -30),
+                                pose(3.041, 3.844, 0),
+                                pose(4.041, 3.144, -27),
                             ],
                         ),
                     ),
