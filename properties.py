@@ -65,10 +65,10 @@ def save_loop():
         while True:
             save_once()
             current_time = time.time()
-            while current_time - last_save_time <= loop_delay:
-                current_time = time.time()
+            while current_time - last_save_time < loop_delay:
                 entry_mirror.setDouble(entry_time.getDouble(current_time))
                 time.sleep(1.0)
+                current_time = time.time()
             last_save_time = current_time
     except KeyboardInterrupt:
         print("Save loop interrupted")
