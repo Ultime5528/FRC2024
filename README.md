@@ -36,7 +36,7 @@
 | commands/intake/\_\_init\_\_.py            |        0 |        0 |        0 |        0 |    100% |           |
 | commands/intake/drop.py                    |       20 |        0 |        0 |        0 |    100% |           |
 | commands/intake/load.py                    |       22 |        0 |        2 |        0 |    100% |           |
-| commands/intake/pickup.py                  |       27 |        1 |        4 |        1 |     94% |        37 |
+| commands/intake/pickup.py                  |       22 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/forceresetpivot.py          |       23 |        0 |        8 |        1 |     97% |  15->exit |
 | commands/pivot/maintainpivot.py            |       13 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/movepivot.py                |       57 |        2 |       20 |        2 |     95% |    76, 81 |
@@ -47,14 +47,15 @@
 | commands/shooter/prepareshoot.py           |       20 |        2 |        2 |        1 |     86% |    23, 28 |
 | commands/shooter/shoot.py                  |       23 |        0 |        0 |        0 |    100% |           |
 | commands/shooter/waitshootspeed.py         |       23 |        0 |        2 |        0 |    100% |           |
-| commands/vibrateremote.py                  |       20 |        8 |        0 |        0 |     60% |13-15, 18-19, 22, 25, 28 |
+| commands/vibratenote.py                    |       39 |        9 |        8 |        1 |     70% |     36-45 |
 | commands/vision/alignwithtag2d.py          |       50 |       19 |       14 |        1 |     53% |43->exit, 50-76, 79-81 |
 | gyro.py                                    |      122 |       51 |       14 |        5 |     59% |19, 28->exit, 31->exit, 34->exit, 37->exit, 40, 43, 49-51, 56-62, 65, 68, 71, 74, 79-83, 86, 89, 92, 95, 114, 122, 126, 131-135, 138, 141, 144, 147, 152-161, 164, 167, 170-171, 174-175, 178, 181 |
 | ports.py                                   |       28 |        0 |        0 |        0 |    100% |           |
 | properties.py                              |       71 |       71 |       24 |        0 |      0% |     1-141 |
-| robot.py                                   |      167 |        1 |       12 |        3 |     98% |356->exit, 374, 378->381 |
+| robot.py                                   |      172 |        1 |       12 |        3 |     98% |361->exit, 379, 383->386 |
 | subsystems/\_\_init\_\_.py                 |        0 |        0 |        0 |        0 |    100% |           |
 | subsystems/climber.py                      |      146 |        4 |       79 |       11 |     93% |20->exit, 23->exit, 26->exit, 29->exit, 32->exit, 35->exit, 38->exit, 41->exit, 44->exit, 84->exit, 121, 133, 159, 162 |
+| subsystems/controller.py                   |       16 |        1 |        2 |        0 |     94% |        21 |
 | subsystems/drivetrain.py                   |       95 |        7 |        4 |        2 |     91% |94->exit, 121, 141, 144, 153-162 |
 | subsystems/intake.py                       |       30 |        1 |        0 |        0 |     97% |        45 |
 | subsystems/led.py                          |      153 |       21 |       50 |        8 |     82% |16-17, 67, 69, 150-151, 166-168, 189, 194-203, 207, 211 |
@@ -78,6 +79,7 @@
 | utils/auto.py                              |        5 |        0 |        2 |        1 |     86% |   7->exit |
 | utils/autostartup.py                       |       64 |       64 |       12 |        0 |      0% |      1-99 |
 | utils/axistrigger.py                       |        8 |        1 |        4 |        1 |     83% |        15 |
+| utils/coroutinecommand.py                  |       27 |        6 |        6 |        2 |     76% |14, 19, 32->exit, 34-35, 38, 41 |
 | utils/linearinterpolator.py                |       25 |       12 |        6 |        0 |     42% |11-12, 15-16, 25-36 |
 | utils/property.py                          |       62 |       34 |       32 |        2 |     36% |36, 40, 54-108 |
 | utils/safecommand.py                       |       40 |       19 |        8 |        0 |     44% | 14, 18-39 |
@@ -87,7 +89,7 @@
 | utils/swerve.py                            |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                            |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                 |       99 |       29 |       44 |        9 |     62% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194 |
-|                                  **TOTAL** | **3115** |  **573** |  **657** |   **83** | **79%** |           |
+|                                  **TOTAL** | **3177** |  **580** |  **671** |   **85** | **79%** |           |
 
 
 ## Setup coverage badge
