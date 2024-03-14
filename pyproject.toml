@@ -31,6 +31,7 @@ requires = [
      "photonlibpy==2024.2.7",
      "numpy",
      "robotpy-commands-v2~=2024.3.1",
+     "robotpy-rev==2024.2.3",
      "black==24.1.1; platform_machine != 'roborio'",
      "coverage==7.4.1; platform_machine != 'roborio'",
      "ast-selector==0.2.0; platform_machine != 'roborio'",

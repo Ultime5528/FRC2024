@@ -1,7 +1,6 @@
 import commands2
 from commands2 import SequentialCommandGroup
 from commands2.cmd import race, deadline
-from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
@@ -32,11 +31,11 @@ class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
             eitherRedBlue(
                 ResetPose(
                     drivetrain,
-                    Pose2d(15.783, 4.385, Rotation2d.fromDegrees(-120)),
+                    pose(15.783, 4.385, -120),
                 ),
                 ResetPose(
                     drivetrain,
-                    Pose2d(0.758, 4.385, Rotation2d.fromDegrees(-60)),
+                    pose(0.758, 4.385, -60),
                 ),
             ),
             ResetPivotDown(pivot),
@@ -52,12 +51,12 @@ class SourceSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                pose(15, 4.1, 180),
-                                pose(13.5, 4.1, 180),
+                                pose(14.5, 4.1, -180),
+                                pose(13.5, 4.1, -180),
                             ],
                             [
-                                pose(1.541, 4.1, 0),
-                                pose(3.041, 4.1, 0),
+                                pose(2.0, 4.1, 0),
+                                pose(3.0, 4.1, 0),
                             ],
                         ),
                     ),
