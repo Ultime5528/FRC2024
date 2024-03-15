@@ -25,7 +25,10 @@ class Vision(Sendable):
         self._speaker_target: Optional[PhotonTrackedTarget] = None
 
     def periodic(self):
-        self._targets = self._cam.getLatestResult().getTargets()
+        if self._cam.isConnected():
+            self._targets = self._cam.getLatestResult().getTargets()
+        else:
+            self._targets = []
 
     def getTargetWithID(self, _id: int) -> Optional[PhotonTrackedTarget]:
         for target in self._targets:

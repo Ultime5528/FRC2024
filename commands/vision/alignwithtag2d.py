@@ -73,7 +73,7 @@ class AlignWithTag2D(SafeCommand):
             )
         elif self.hid:
             self.drivetrain.drive(x_speed, y_speed, 0, is_field_relative=True)
-            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 0.5)
+            self.hid.setRumble(GenericHID.RumbleType.kBothRumble, 1.0)
 
     def end(self, interrupted: bool):
         self.drivetrain.stop()
