@@ -36,10 +36,9 @@ class AmpSideShoot(SafeMixin, commands2.SequentialCommandGroup):
                     Pose2d(0.681, 6.715, Rotation2d.fromDegrees(60)),
                 ),
             ),
-            ResetPivotDown(pivot),
             deadline(
                 PrepareAndShoot(shooter, pivot, intake),
-                MovePivotContinuous(pivot, vision),
                 AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
+            ResetPivotDown(pivot),
         )

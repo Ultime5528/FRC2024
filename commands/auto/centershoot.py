@@ -30,10 +30,9 @@ class CenterShoot(SafeMixin, commands2.SequentialCommandGroup):
                 ResetPose(drivetrain, Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180))),
                 ResetPose(drivetrain, Pose2d(1.341, 5.55, Rotation2d.fromDegrees(0))),
             ),
-            ResetPivotDown(pivot),
             race(
                 PrepareAndShoot(shooter, pivot, intake),
-                MovePivotContinuous(pivot, vision),
                 AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
+            ResetPivotDown(pivot),
         )
