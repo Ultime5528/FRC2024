@@ -10,6 +10,7 @@ from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
 from commands.auto.ampsideshoot import AmpSideShoot
+from commands.auto.sourcesideshootgofar import SourceSideShootGoFar
 from commands.auto.ampsideshootline import AmpSideShootLine
 from commands.auto.ampsideshoottwicegofar import (
     AmpSideShootTwiceGoFar,
@@ -22,7 +23,6 @@ from commands.auto.centershootline import CenterShootLine
 from commands.auto.centershoottwiceline import (
     CenterShootTwiceLine,
 )
-from commands.auto.farmodeautonome import FarModeautonome
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.auto.sourcesideshoot import SourceSideShoot
 from commands.auto.sourcesideshootline import SourceSideShootLine
@@ -221,10 +221,10 @@ class Robot(commands2.TimedCommandRobot):
         )
 
         self.auto_chooser.addOption(
-            FarModeautonome.__name__,
-            FarModeautonome(
+            SourceSideShootGoFar.__name__,
+            SourceSideShootGoFar(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
+            )
         )
 
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
