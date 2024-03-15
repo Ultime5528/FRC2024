@@ -19,8 +19,8 @@ from utils.swerve import SwerveModule
 
 
 class Drivetrain(SafeSubsystem):
-    width = autoproperty(0.597)
-    length = autoproperty(0.597)
+    width = 0.597
+    length = 0.597
     max_angular_speed = autoproperty(25.0)
 
     angular_offset_fl = autoproperty(-1.57)

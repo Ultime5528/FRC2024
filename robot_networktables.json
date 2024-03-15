@@ -416,23 +416,15 @@
     }
   },
   {
-    "name": "/Properties/DriveToPoses/xy_p",
+    "name": "/Properties/DriveToPoses/xy_accel",
     "type": "double",
-    "value": 10.0,
+    "value": 5.0,
     "properties": {
       "persistent": true
     }
   },
   {
-    "name": "/Properties/DriveToPoses/xy_b",
-    "type": "double",
-    "value": 1.25,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/xy_tol_pos",
+    "name": "/Properties/DriveToPoses/xy_speed_end",
     "type": "double",
     "value": 0.5,
     "properties": {
@@ -440,31 +432,7 @@
     }
   },
   {
-    "name": "/Properties/DriveToPoses/xy_tol_pos_last",
-    "type": "double",
-    "value": 0.06,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/xy_tol_vel_last",
-    "type": "double",
-    "value": 10.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/xy_max",
-    "type": "double",
-    "value": 25.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/rot_p",
+    "name": "/Properties/DriveToPoses/xy_tol_pos",
     "type": "double",
     "value": 0.2,
     "properties": {
@@ -472,7 +440,31 @@
     }
   },
   {
-    "name": "/Properties/DriveToPoses/rot_b",
+    "name": "/Properties/DriveToPoses/xy_tol_pos_last",
+    "type": "double",
+    "value": 0.08,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_speed_max",
+    "type": "double",
+    "value": 15.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_accel",
+    "type": "double",
+    "value": 0.2,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_speed_end",
     "type": "double",
     "value": 1.0,
     "properties": {
@@ -496,17 +488,9 @@
     }
   },
   {
-    "name": "/Properties/DriveToPoses/rot_tol_vel_last",
+    "name": "/Properties/DriveToPoses/rot_speed_max",
     "type": "double",
-    "value": 10.0,
-    "properties": {
-      "persistent": true
-    }
-  },
-  {
-    "name": "/Properties/DriveToPoses/rot_max",
-    "type": "double",
-    "value": 10.0,
+    "value": 16.0,
     "properties": {
       "persistent": true
     }
@@ -699,6 +683,70 @@
     "name": "/Properties/LEDController/brightnessValue",
     "type": "int",
     "value": 20,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_p",
+    "type": "double",
+    "value": 10.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_b",
+    "type": "double",
+    "value": 0.2,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_tol_vel_last",
+    "type": "double",
+    "value": 10.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/xy_max",
+    "type": "double",
+    "value": 15.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_p",
+    "type": "double",
+    "value": 0.2,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_b",
+    "type": "double",
+    "value": 1.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_tol_vel_last",
+    "type": "double",
+    "value": 10.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Properties/DriveToPoses/rot_max",
+    "type": "double",
+    "value": 10.0,
     "properties": {
       "persistent": true
     }

@@ -8,6 +8,7 @@ from utils.affinecontroller import AffineController
 from utils.auto import eitherRedBlue
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
+from utils.trapezoidalmotion import TrapezoidalMotion
 
 
 def pose(x: float, y: float, deg: float) -> Pose2d:
@@ -15,19 +16,17 @@ def pose(x: float, y: float, deg: float) -> Pose2d:
 
 
 class DriveToPoses(SafeCommand):
-    xy_p = autoproperty(10.0)
-    xy_b = autoproperty(1.25)
+    xy_accel = autoproperty(7.0)
+    xy_speed_end = autoproperty(0.2)
     xy_tol_pos = autoproperty(0.5)
     xy_tol_pos_last = autoproperty(0.06)
-    xy_tol_vel_last = autoproperty(10.0)
-    xy_max = autoproperty(25.0)
+    xy_speed_max = autoproperty(15.0)
 
-    rot_p = autoproperty(0.2)
-    rot_b = autoproperty(1.0)
+    rot_accel = autoproperty(0.2)
+    rot_speed_end = autoproperty(1.0)
     rot_tol_pos = autoproperty(10.0)
     rot_tol_pos_last = autoproperty(5.0)
-    rot_tol_vel_last = autoproperty(10.0)
-    rot_max = autoproperty(10.0)
+    rot_speed_max = autoproperty(16.0)
 
     def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
         super().__init__()
@@ -44,35 +43,45 @@ class DriveToPoses(SafeCommand):
             DriveToPoses(drivetrain, blue_poses),
         )
 
+    def updateMotions(self):
+        currentGoal = self.goals[self.currGoal]
+        current_pose = self.drivetrain.getPose()
+        self.trap_motion_x = TrapezoidalMotion(
+            start_speed=self.xy_speed_max,
+            end_speed=self.xy_speed_end,
+            max_speed=self.xy_speed_max,
+            accel=self.xy_accel,
+            start_position=current_pose.X(),
+            end_position=currentGoal.X(),
+        )
+        self.trap_motion_y = TrapezoidalMotion(
+            start_speed=self.xy_speed_max,
+            end_speed=self.xy_speed_end,
+            max_speed=self.xy_speed_max,
+            accel=self.xy_accel,
+            start_position=current_pose.Y(),
+            end_position=currentGoal.Y(),
+        )
+        self.start_rotation = current_pose.rotation()
+        self.trap_motion_rot = TrapezoidalMotion(
+            start_speed=self.rot_speed_max,
+            end_speed=self.rot_speed_end,
+            max_speed=self.rot_speed_max,
+            accel=self.rot_accel,
+            start_position=0.0,
+            end_position=((currentGoal.rotation() - self.start_rotation).degrees()),
+        )
+
     def initialize(self):
         self.currGoal = 0
-        currentGoal = self.goals[self.currGoal]
-
-        self.pid_x = AffineController(self.xy_p, self.xy_b)
-        self.pid_x.setTolerance(self.xy_tol_pos)
-        self.pid_x.setMaximumOutput(self.xy_max)
-        self.pid_x.setSetpoint(currentGoal.x)
-
-        self.pid_y = AffineController(self.xy_p, self.xy_b)
-        self.pid_y.setTolerance(self.xy_tol_pos)
-        self.pid_y.setMaximumOutput(self.xy_max)
-        self.pid_y.setSetpoint(currentGoal.y)
-
-        self.pid_rot = AffineController(self.rot_p, self.rot_b)
-        self.pid_rot.setTolerance(self.rot_tol_pos)
-        self.pid_rot.setMaximumOutput(self.rot_max)
-        self.pid_rot.enableContinuousInput(-180, 180)
-        self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
-
-        if len(self.goals) == 1:
-            self.setLastGoalSettings()
+        self.updateMotions()
 
     def execute(self):
         current_pos = self.drivetrain.getPose()
 
-        vel_x = self.pid_x.calculate(current_pos.x)
-        vel_y = self.pid_y.calculate(current_pos.y)
-        vel_rot = self.pid_rot.calculate(current_pos.rotation().degrees())
+        vel_x = self.trap_motion_x.calculate(current_pos.x)
+        vel_y = self.trap_motion_y.calculate(current_pos.y)
+        vel_rot = self.trap_motion_rot.calculate((current_pos.rotation() - self.start_rotation).degrees())
 
         self.drivetrain.driveRaw(
             vel_x,
@@ -82,22 +91,15 @@ class DriveToPoses(SafeCommand):
         )
 
         if (
-            self.pid_x.atSetpoint()
-            and self.pid_y.atSetpoint()
-            and self.pid_rot.atSetpoint()
+            self.currGoal < len(self.goals) - 1
+            and self.isWithinTolerances()
+            or self.currGoal == len(self.goals) - 1
+            and self.isWithinLastTolerances()
         ):
             self.currGoal += 1
 
             if self.currGoal < len(self.goals):
-                print(len(self.goals) - 1, self.currGoal)
-
-                currentGoal = self.goals[self.currGoal]
-                self.pid_x.setSetpoint(currentGoal.x)
-                self.pid_y.setSetpoint(currentGoal.y)
-                self.pid_rot.setSetpoint(currentGoal.rotation().degrees())
-
-                if self.currGoal == len(self.goals) - 1:
-                    self.setLastGoalSettings()
+                self.updateMotions()
 
     def end(self, interrupted):
         self.drivetrain.stop()
@@ -105,7 +107,16 @@ class DriveToPoses(SafeCommand):
     def isFinished(self):
         return self.currGoal == len(self.goals)
 
-    def setLastGoalSettings(self):
-        self.pid_x.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-        self.pid_y.setTolerance(self.xy_tol_pos_last, self.xy_tol_vel_last)
-        self.pid_rot.setTolerance(self.rot_tol_pos_last, self.rot_tol_vel_last)
+    def isWithinLastTolerances(self) -> bool:
+        return (
+            self.trap_motion_x.getRemainingDistance() <= self.xy_tol_pos_last
+            and self.trap_motion_y.getRemainingDistance() <= self.xy_tol_pos_last
+            and self.trap_motion_rot.getRemainingDistance() <= self.rot_tol_pos_last
+        )
+
+    def isWithinTolerances(self) -> bool:
+        return (
+            self.trap_motion_x.getRemainingDistance() <= self.xy_tol_pos
+            and self.trap_motion_y.getRemainingDistance() <= self.xy_tol_pos
+            and self.trap_motion_rot.getRemainingDistance() <= self.rot_tol_pos
+        )
