@@ -49,7 +49,7 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                 ),
             ),
             DriveToPoses.fromRedBluePoints(
-                drivetrain, [pose(15.2029, 5.553, 180)], [pose(1.3381, 5.553, 0)]
+                drivetrain, [pose(15, 5.553, 180)], [pose(1.5381, 5.553, 0)]
             ),
             race(
                 PrepareAndShoot(shooter, pivot, intake),
