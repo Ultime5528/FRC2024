@@ -1,6 +1,6 @@
 import commands2
 from commands2 import SequentialCommandGroup
-from commands2.cmd import race, deadline
+from commands2.cmd import race, deadline, parallel, sequence
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
@@ -38,14 +38,13 @@ class AmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                     pose(0.758, 6.759, 60),
                 ),
             ),
-            ResetPivotDown(pivot),
             race(
-                MovePivotContinuous(pivot, vision),
                 SequentialCommandGroup(
                     race(
                         PrepareAndShoot(shooter, pivot, intake),
                         AlignWithTag2D.toSpeaker(drivetrain, vision),
                     ),
+                    ResetPivotDown(pivot),
                     deadline(
                         PickUp(intake),
                         DriveToPoses.fromRedBluePoints(
@@ -62,12 +61,17 @@ class AmpSideShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                             ],
                         ),
                     ),
-                    DriveToPoses.fromRedBluePoints(
-                        drivetrain, [pose(15, 6.5, 153)], [pose(1.541, 6.5, 27)]
-                    ),
                     race(
-                        PrepareAndShoot(shooter, pivot, intake),
-                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                        MovePivotContinuous(pivot, vision),
+                        sequence(
+                            DriveToPoses.fromRedBluePoints(
+                                drivetrain, [pose(15, 6.5, 153)], [pose(1.541, 6.5, 27)]
+                            ),
+                            race(
+                                PrepareAndShoot(shooter, pivot, intake),
+                                AlignWithTag2D.toSpeaker(drivetrain, vision),
+                            ),
+                        ),
                     ),
                 ),
             ),

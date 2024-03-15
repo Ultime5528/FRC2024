@@ -201,4 +201,3 @@ class TrapezoidalMotion:
 
     def getRemainingDistance(self) -> float:
         return abs(self._real_config.end_position - self._position)
-

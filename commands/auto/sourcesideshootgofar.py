@@ -37,5 +37,5 @@ class SourceSideShootGoFar(SafeMixin, commands2.SequentialCommandGroup):
                     [pose(15.86, 1.245, -120), pose(8.15, 0.745, -180)],
                     [pose(0.681, 1.245, -60), pose(8.39, 0.745, 0)],
                 ),
-            )
+            ),
         )

@@ -1,5 +1,5 @@
 import commands2
-from commands2.cmd import deadline, race
+from commands2.cmd import deadline, race, parallel, sequence
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
@@ -31,14 +31,15 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                 ResetPose(drivetrain, pose(15.2029, 5.553, 180)),
                 ResetPose(drivetrain, pose(1.3381, 5.553, 0)),
             ),
-            ResetPivotDown(pivot),
             race(
                 PrepareAndShoot(shooter, pivot, intake),
-                MovePivotContinuous(pivot, vision),
                 AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
             deadline(
-                PickUp(intake),
+                parallel(
+                    PickUp(intake),
+                    ResetPivotDown(pivot),
+                ),
                 DriveToPoses.fromRedBluePoints(
                     drivetrain,
                     [
@@ -48,12 +49,16 @@ class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
                     [pose(3.141, 5.553, 0), pose(3.641, 5.553, 0)],
                 ),
             ),
-            DriveToPoses.fromRedBluePoints(
-                drivetrain, [pose(15, 5.553, 180)], [pose(1.5381, 5.553, 0)]
-            ),
             race(
-                PrepareAndShoot(shooter, pivot, intake),
                 MovePivotContinuous(pivot, vision),
-                AlignWithTag2D.toSpeaker(drivetrain, vision),
+                sequence(
+                    DriveToPoses.fromRedBluePoints(
+                        drivetrain, [pose(15, 5.553, 180)], [pose(1.5381, 5.553, 0)]
+                    ),
+                    race(
+                        PrepareAndShoot(shooter, pivot, intake),
+                        AlignWithTag2D.toSpeaker(drivetrain, vision),
+                    ),
+                ),
             ),
         )
