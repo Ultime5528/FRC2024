@@ -30,10 +30,13 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.12"
-    - name: Install dependencies
+    - name: Make test requirements
+      run: |
+        python make_test_requirements.txt
+    - name: Install test requirements
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 robotpy
+        pip install -r test_requirements.txt
     - name: Sync robotpy dependencies
       run : |
         python -m robotpy sync --no-upgrade-project
