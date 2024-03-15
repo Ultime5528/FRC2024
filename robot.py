@@ -224,7 +224,7 @@ class Robot(commands2.TimedCommandRobot):
             SourceSideShootGoFar.__name__,
             SourceSideShootGoFar(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            )
+            ),
         )
 
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)

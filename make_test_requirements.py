@@ -7,13 +7,11 @@ with open("pyproject.toml", "rb") as f:
 
 print(f"Detected robotpy version: {robotpy_version}")
 
-reqs = (
-    "flake8==7.0.0\n"
-    f"robotpy=={robotpy_version}"
-)
+reqs = f"""flake8==7.0.0
+robotpy=={robotpy_version}
+"""
 
 print(reqs)
 
 with open("test_requirements.txt", "w") as f:
     f.write(reqs)
-    

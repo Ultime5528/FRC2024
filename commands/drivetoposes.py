@@ -81,7 +81,9 @@ class DriveToPoses(SafeCommand):
 
         vel_x = self.trap_motion_x.calculate(current_pos.x)
         vel_y = self.trap_motion_y.calculate(current_pos.y)
-        vel_rot = self.trap_motion_rot.calculate((current_pos.rotation() - self.start_rotation).degrees())
+        vel_rot = self.trap_motion_rot.calculate(
+            (current_pos.rotation() - self.start_rotation).degrees()
+        )
 
         self.drivetrain.driveRaw(
             vel_x,
