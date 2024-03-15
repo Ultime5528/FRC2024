@@ -32,6 +32,9 @@ from commands.auto.sourcesideshoottwicegofar import (
 from commands.auto.sourcesideshoottwiceline import (
     SourceSideShootTwiceLine,
 )
+from commands.auto.autofarwest import (
+    AutoFarWest,
+)
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -135,6 +138,14 @@ class Robot(commands2.TimedCommandRobot):
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
+
+
+        self.auto_chooser.addOption(
+            AutoFarWest.__name__,
+            AutoFarWest(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+            ),
+        )
 
         self.auto_chooser.addOption(
             CenterShoot.__name__,

@@ -18,9 +18,6 @@ from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.auto import eitherRedBlue
 from utils.safecommand import SafeMixin
-from commands.auto.autospeakerampsideshoottwiceline import (
-    AutoSpeakerAmpSideShootTwiceLine,
-)
 
 
 class AutoFarWest(SafeMixin, commands2.SequentialCommandGroup):
