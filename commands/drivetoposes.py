@@ -16,7 +16,7 @@ def pose(x: float, y: float, deg: float) -> Pose2d:
 
 class DriveToPoses(SafeCommand):
     xy_p = autoproperty(10.0)
-    xy_b = autoproperty(1.25)
+    xy_b = autoproperty(0.2)
     xy_tol_pos = autoproperty(0.5)
     xy_tol_pos_last = autoproperty(0.06)
     xy_tol_vel_last = autoproperty(10.0)

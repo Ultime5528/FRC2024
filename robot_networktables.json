@@ -426,7 +426,7 @@
   {
     "name": "/Properties/DriveToPoses/xy_b",
     "type": "double",
-    "value": 1.25,
+    "value": 0.2,
     "properties": {
       "persistent": true
     }
