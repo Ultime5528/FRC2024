@@ -32,7 +32,7 @@ jobs:
         python-version: "3.12"
     - name: Make test requirements
       run: |
-        python make_test_requirements.txt
+        python make_test_requirements.py
     - name: Install test requirements
       run: |
         python -m pip install --upgrade pip
