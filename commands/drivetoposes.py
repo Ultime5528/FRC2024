@@ -16,17 +16,17 @@ def pose(x: float, y: float, deg: float) -> Pose2d:
 
 
 class DriveToPoses(SafeCommand):
-    xy_accel = autoproperty(10.0)
+    xy_accel = autoproperty(7.0)
     xy_speed_end = autoproperty(0.2)
     xy_tol_pos = autoproperty(0.5)
     xy_tol_pos_last = autoproperty(0.06)
-    xy_speed_max = autoproperty(25.0)
+    xy_speed_max = autoproperty(15.0)
 
     rot_accel = autoproperty(0.2)
     rot_speed_end = autoproperty(1.0)
     rot_tol_pos = autoproperty(10.0)
     rot_tol_pos_last = autoproperty(5.0)
-    rot_speed_max = autoproperty(10.0)
+    rot_speed_max = autoproperty(16.0)
 
     def __init__(self, drivetrain: Drivetrain, goals: List[Pose2d]):
         super().__init__()

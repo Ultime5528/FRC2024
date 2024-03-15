@@ -41,12 +41,12 @@ class MegaModeAutonome(SafeMixin, commands2.SequentialCommandGroup):
                         DriveToPoses.fromRedBluePoints(
                             drivetrain,
                             [
-                                pose(14.78, 6.65, 153.36),
-                                pose(13.66, 7.03, 153.36),  # 13, 7
+                                pose(14.78, 6.8, 180),
+                                pose(13.66, 6.8, 153.36),  # 13, 7
                             ],
                             [
-                                pose(1.761, 6.65, 26.64),  # 13, 7
-                                pose(2.881, 7.03, 26.64),  # 13, 7
+                                pose(1.761, 6.8, 0),  # 13, 7
+                                pose(2.881, 6.8, 26.64),  # 13, 7
                             ],
                         ),
                     ),
