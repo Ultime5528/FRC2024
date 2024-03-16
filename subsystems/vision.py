@@ -1,8 +1,10 @@
+import os
 from typing import Optional, List
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
+from wpilib import Timer, RobotBase
 from wpiutil import Sendable
 
 
@@ -24,11 +26,29 @@ class Vision(Sendable):
         self._targets: List[PhotonTrackedTarget] = []
         self._speaker_target: Optional[PhotonTrackedTarget] = None
 
+        # If sim, 
+        self._has_logged_date = RobotBase.isSimulation()
+        self._log_timer = Timer()
+        self._log_timer.start()
+
     def periodic(self):
         if self._cam.isConnected():
             self._targets = self._cam.getLatestResult().getTargets()
+            if not self._has_logged_date and self._log_timer.hasElapsed(10.0):
+                self._log_timer.restart()
+                print("Retrieving Photonvision date")
+                try:
+                    ret = os.system("ssh -o ConnectTimeout=1 pi@10.55.28.212 date")
+                    if ret == 0:
+                        self._has_logged_date = True
+                    else:
+                        print("Returned exit code", ret)
+                except Exception as e:
+                    print(e)
+
         else:
             self._targets = []
+            self._cam._versionCheck()
 
     def getTargetWithID(self, _id: int) -> Optional[PhotonTrackedTarget]:
         for target in self._targets:
@@ -54,3 +74,4 @@ class Vision(Sendable):
 
         builder.addFloatProperty("speaker_y", getSpeakerPitch, noop)
         builder.addFloatProperty("speaker_x", getSpeakerYaw, noop)
+        builder.addBooleanProperty("has_logged_date", lambda: self._has_logged_date, noop)
