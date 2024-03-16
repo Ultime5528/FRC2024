@@ -27,7 +27,7 @@ class MovePivotContinuous(SafeCommand):
                     target.getPitch()
                 )
             else:
-                interpolated_value = 60
+                interpolated_value = 57
 
             error = interpolated_value - self.pivot.getHeight()
             if abs(error) <= self.threshold:
