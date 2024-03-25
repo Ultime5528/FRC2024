@@ -3,7 +3,6 @@ from commands2.cmd import race
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetrain.resetpose import ResetPose
-from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.shoot import PrepareAndShoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
@@ -30,10 +29,9 @@ class CenterShoot(SafeMixin, commands2.SequentialCommandGroup):
                 ResetPose(drivetrain, Pose2d(15.20, 5.55, Rotation2d.fromDegrees(180))),
                 ResetPose(drivetrain, Pose2d(1.341, 5.55, Rotation2d.fromDegrees(0))),
             ),
-            ResetPivotDown(pivot),
             race(
                 PrepareAndShoot(shooter, pivot, intake),
-                MovePivotContinuous(pivot, vision),
                 AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
+            ResetPivotDown(pivot),
         )

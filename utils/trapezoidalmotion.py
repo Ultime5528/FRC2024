@@ -182,7 +182,7 @@ class TrapezoidalMotion:
                 * (self._real_config.max_speed**2 - self._real_config.end_speed**2)
             )
         else:
-            v = self._real_config.end_speed
+            v = -self._real_config.end_speed
 
         if self._inverted:
             v *= -1
@@ -194,3 +194,10 @@ class TrapezoidalMotion:
             return self._position <= self._real_config.end_position
         else:
             return self._position >= self._real_config.end_position
+
+    def calculate(self, position: float) -> float:
+        self.setPosition(position)
+        return self.getSpeed()
+
+    def getRemainingDistance(self) -> float:
+        return abs(self._real_config.end_position - self._position)

@@ -22,9 +22,9 @@ from commands.auto.centershootline import CenterShootLine
 from commands.auto.centershoottwiceline import (
     CenterShootTwiceLine,
 )
-from commands.auto.farmodeautonome import FarModeautonome
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.auto.sourcesideshoot import SourceSideShoot
+from commands.auto.sourcesideshootgofar import SourceSideShootGoFar
 from commands.auto.sourcesideshootline import SourceSideShootLine
 from commands.auto.sourcesideshoottwicegofar import (
     SourceSideShootTwiceGoFar,
@@ -221,8 +221,8 @@ class Robot(commands2.TimedCommandRobot):
         )
 
         self.auto_chooser.addOption(
-            FarModeautonome.__name__,
-            FarModeautonome(
+            SourceSideShootGoFar.__name__,
+            SourceSideShootGoFar(
                 self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
             ),
         )

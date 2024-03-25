@@ -3,7 +3,6 @@ from commands2.cmd import deadline
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetrain.resetpose import ResetPose
-from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.shoot import PrepareAndShoot
 from commands.vision.alignwithtag2d import AlignWithTag2D
@@ -36,10 +35,9 @@ class AmpSideShoot(SafeMixin, commands2.SequentialCommandGroup):
                     Pose2d(0.681, 6.715, Rotation2d.fromDegrees(60)),
                 ),
             ),
-            ResetPivotDown(pivot),
             deadline(
                 PrepareAndShoot(shooter, pivot, intake),
-                MovePivotContinuous(pivot, vision),
                 AlignWithTag2D.toSpeaker(drivetrain, vision),
             ),
+            ResetPivotDown(pivot),
         )
