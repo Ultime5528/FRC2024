@@ -26,7 +26,7 @@ class Vision(Sendable):
         self._targets: List[PhotonTrackedTarget] = []
         self._speaker_target: Optional[PhotonTrackedTarget] = None
 
-        # If sim, 
+        # If sim, we consider we already logged the date.
         self._has_logged_date = RobotBase.isSimulation()
         self._log_timer = Timer()
         self._log_timer.start()
@@ -74,4 +74,6 @@ class Vision(Sendable):
 
         builder.addFloatProperty("speaker_y", getSpeakerPitch, noop)
         builder.addFloatProperty("speaker_x", getSpeakerYaw, noop)
-        builder.addBooleanProperty("has_logged_date", lambda: self._has_logged_date, noop)
+        builder.addBooleanProperty(
+            "has_logged_date", lambda: self._has_logged_date, noop
+        )
