@@ -3,7 +3,6 @@ from commands2.cmd import race
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.drivetrain.resetpose import ResetPose
-from commands.pivot.movepivotcontinuous import MovePivotContinuous
 from commands.pivot.resetpivotdown import ResetPivotDown
 from commands.shooter.shoot import PrepareAndShoot
 from commands.vision.alignwithtag2d import AlignWithTag2D

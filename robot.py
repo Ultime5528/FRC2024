@@ -10,7 +10,6 @@ from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
 from commands.auto.ampsideshoot import AmpSideShoot
-from commands.auto.sourcesideshootgofar import SourceSideShootGoFar
 from commands.auto.ampsideshootline import AmpSideShootLine
 from commands.auto.ampsideshoottwicegofar import (
     AmpSideShootTwiceGoFar,
@@ -25,6 +24,7 @@ from commands.auto.centershoottwiceline import (
 )
 from commands.auto.megamodeautonome import MegaModeAutonome
 from commands.auto.sourcesideshoot import SourceSideShoot
+from commands.auto.sourcesideshootgofar import SourceSideShootGoFar
 from commands.auto.sourcesideshootline import SourceSideShootLine
 from commands.auto.sourcesideshoottwicegofar import (
     SourceSideShootTwiceGoFar,
