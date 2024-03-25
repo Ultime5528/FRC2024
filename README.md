@@ -40,7 +40,7 @@
 | commands/pivot/forceresetpivot.py          |       23 |        0 |        8 |        1 |     97% |  15->exit |
 | commands/pivot/maintainpivot.py            |       13 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/movepivot.py                |       57 |        2 |       20 |        2 |     95% |    76, 81 |
-| commands/pivot/movepivotcontinuous.py      |       31 |       15 |        8 |        0 |     41% |20, 23-40, 43-44 |
+| commands/pivot/movepivotcontinuous.py      |       30 |       15 |        8 |        0 |     39% |19, 22-39, 42-43 |
 | commands/pivot/resetpivotdown.py           |       19 |        0 |        2 |        0 |    100% |           |
 | commands/pivot/resetpivotup.py             |       19 |        7 |        2 |        0 |     57% |13, 16-20, 23, 26 |
 | commands/shooter/manualshoot.py            |       13 |        2 |        0 |        0 |     85% |    15, 18 |
@@ -62,7 +62,7 @@
 | subsystems/led.py                          |      153 |       23 |       50 |        8 |     80% |16-17, 67, 69, 150-151, 166-168, 189, 194-203, 207, 211, 217-218 |
 | subsystems/pivot.py                        |      110 |       24 |       18 |        3 |     74% |54->exit, 85, 101, 109, 112-113, 140-167 |
 | subsystems/shooter.py                      |       67 |       14 |       10 |        1 |     73% |48->exit, 76, 79-83, 90-105 |
-| subsystems/vision.py                       |       43 |       25 |       14 |        0 |     35% |10-17, 34-37, 40-56 |
+| subsystems/vision.py                       |       60 |       35 |       20 |        1 |     35% |12-19, 38-47, 54-57, 60-77 |
 | tests/properties\_test.py                  |        3 |        0 |        0 |        0 |    100% |           |
 | tests/test\_climber.py                     |       92 |        0 |       24 |        0 |    100% |           |
 | tests/test\_commands.py                    |       80 |        6 |       62 |        6 |     92% |70->62, 72-75, 84-87, 88->78, 90-93, 107->104 |
@@ -91,7 +91,7 @@
 | utils/swerve.py                            |      115 |        0 |        2 |        1 |     99% | 136->exit |
 | utils/switch.py                            |       66 |        6 |       42 |        7 |     88% |24->exit, 36, 48, 52, 62, 66, 76 |
 | utils/trapezoidalmotion.py                 |      104 |       32 |       44 |        9 |     61% |20, 22, 40-44, 59->exit, 73-91, 110-111, 161, 168, 188, 194, 199-200, 203 |
-|                                  **TOTAL** | **3211** |  **717** |  **683** |   **81** | **75%** |           |
+|                                  **TOTAL** | **3227** |  **727** |  **689** |   **82** | **74%** |           |
 
 
 ## Setup coverage badge
