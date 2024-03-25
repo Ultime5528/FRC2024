@@ -1,6 +1,6 @@
 import commands2
 from commands2 import SequentialCommandGroup
-from commands2.cmd import race, deadline, parallel, sequence
+from commands2.cmd import race, deadline, sequence
 
 from commands.drivetoposes import DriveToPoses, pose
 from commands.drivetrain.resetpose import ResetPose
