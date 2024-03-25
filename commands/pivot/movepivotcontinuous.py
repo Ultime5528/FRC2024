@@ -1,6 +1,5 @@
 import wpilib
 
-from commands.pivot.movepivot import move_pivot_properties
 from subsystems.pivot import Pivot
 from subsystems.vision import Vision, getSpeakerTagIDFromAlliance
 from utils.property import autoproperty
