@@ -50,6 +50,12 @@ class Vision(Sendable):
             self._targets = []
             self._cam._versionCheck()
 
+    def getEstimatedPose(self):
+        if (self._cam.getLatestResult().multiTagResult.estimatedPose.isPresent):
+            return self._cam.getLatestResult().multiTagResult.estimatedPose.best
+        else:
+            return None
+
     def getTargetWithID(self, _id: int) -> Optional[PhotonTrackedTarget]:
         for target in self._targets:
             if target.getFiducialId() == _id:
