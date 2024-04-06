@@ -58,6 +58,7 @@ from commands.shooter.shoot import (
 )
 from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
+from commands.vision.estimatepose import EstimatePose
 from subsystems.climber import Climber
 from subsystems.climber import climber_left_properties, climber_right_properties
 from subsystems.controller import Controller
@@ -370,6 +371,7 @@ class Robot(commands2.TimedCommandRobot):
                 self.xbox_controller,
             ),
         )
+        putCommandOnDashboard("Vision", EstimatePose(self.drivetrain, self.vision))
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
