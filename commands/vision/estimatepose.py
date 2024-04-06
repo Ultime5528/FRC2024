@@ -3,6 +3,7 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.vision import Vision
 from utils.safecommand import SafeCommand
 
+
 class EstimatePose(SafeCommand):
     def __init__(
         self,
@@ -21,13 +22,33 @@ class EstimatePose(SafeCommand):
 
         if visionEstimatedPose is not None:
             if not self.isClose(drivetrainEstimatedPose.x, visionEstimatedPose.x, 0.2):
-                self.drivetrain.resetToPose(Pose2d(visionEstimatedPose.x, drivetrainEstimatedPose.y, Rotation2d.fromDegrees(drivetrainEstimatedRot)))
+                self.drivetrain.resetToPose(
+                    Pose2d(
+                        visionEstimatedPose.x,
+                        drivetrainEstimatedPose.y,
+                        Rotation2d.fromDegrees(drivetrainEstimatedRot),
+                    )
+                )
             if not self.isClose(drivetrainEstimatedPose.y, visionEstimatedPose.y, 0.2):
-                self.drivetrain.resetToPose(Pose2d(drivetrainEstimatedPose.x, visionEstimatedPose.y, Rotation2d.fromDegrees(drivetrainEstimatedRot)))
+                self.drivetrain.resetToPose(
+                    Pose2d(
+                        drivetrainEstimatedPose.x,
+                        visionEstimatedPose.y,
+                        Rotation2d.fromDegrees(drivetrainEstimatedRot),
+                    )
+                )
 
         if visionEstimatedRot is not None:
-            if not self.isClose(drivetrainEstimatedRot, visionEstimatedRot.y_degrees, 5):
-                self.drivetrain.resetToPose(Pose2d(drivetrainEstimatedPose.x, drivetrainEstimatedPose.y, Rotation2d(visionEstimatedRot.y_degrees)))
+            if not self.isClose(
+                drivetrainEstimatedRot, visionEstimatedRot.y_degrees, 5
+            ):
+                self.drivetrain.resetToPose(
+                    Pose2d(
+                        drivetrainEstimatedPose.x,
+                        drivetrainEstimatedPose.y,
+                        Rotation2d(visionEstimatedRot.y_degrees),
+                    )
+                )
 
     def isClose(self, a, b, zone):
-        return (a+zone > b and a-zone < b)
+        return a + zone > b and a - zone < b

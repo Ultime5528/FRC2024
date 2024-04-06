@@ -51,14 +51,16 @@ class Vision(Sendable):
             self._cam._versionCheck()
 
     def getEstimatedPose(self):
-        if (self._cam.getLatestResult().multiTagResult.estimatedPose.isPresent):
+        if self._cam.getLatestResult().multiTagResult.estimatedPose.isPresent:
             return self._cam.getLatestResult().multiTagResult.estimatedPose.best
         else:
             return None
 
     def getEstimatedRot(self):
-        if (self._cam.getLatestResult().multiTagResult.estimatedPose.isPresent):
-            return self._cam.getLatestResult().multiTagResult.estimatedPose.best.rotation()
+        if self._cam.getLatestResult().multiTagResult.estimatedPose.isPresent:
+            return (
+                self._cam.getLatestResult().multiTagResult.estimatedPose.best.rotation()
+            )
         else:
             return None
 
