@@ -1,8 +1,10 @@
-import math
+from typing import Optional
+
+plimport math
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
-from wpilib import RobotBase
+from wpilib import RobotBase, DriverStation
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
@@ -10,12 +12,20 @@ from wpimath.kinematics import (
     SwerveDrive4Kinematics,
     SwerveModuleState,
 )
+from pathplannerlib.auto import AutoBuilder
 
 import ports
 from gyro import ADIS16470
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.swerve import SwerveModule
+
+
+def should_flip_path():
+    # Boolean supplier that controls when the path will be mirrored for the red alliance
+    # This will flip the path being followed to the red side of the field.
+    # THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+    return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
 
 class Drivetrain(SafeSubsystem):
@@ -27,6 +37,8 @@ class Drivetrain(SafeSubsystem):
     angular_offset_fr = autoproperty(0.0)
     angular_offset_bl = autoproperty(3.14)
     angular_offset_br = autoproperty(1.57)
+
+    should_flip_path = autoproperty(False)
 
     def __init__(self, period: float) -> None:
         super().__init__()
@@ -90,6 +102,16 @@ class Drivetrain(SafeSubsystem):
         )
 
         self.cam = PhotonCamera("mainCamera")
+
+
+
+        AutoBuilder.configureHolonomic(
+            self.getPose,
+            self.resetToPose,
+            self.swervedrive_kinematics.toChassisSpeeds
+        )
+
+        AutoBuilder.configureCustom()
 
         if RobotBase.isSimulation():
             self.sim_yaw = 0
@@ -241,7 +263,7 @@ class Drivetrain(SafeSubsystem):
 
         self._field.setRobotPose(self.swerve_estimator.getEstimatedPosition())
 
-    def resetToPose(self, pose: Pose2d):
+    def resetToPose(self, pose: Optional[Pose2d]):
         self.swerve_estimator.resetPosition(
             self._gyro.getRotation2d(),
             (
@@ -250,5 +272,5 @@ class Drivetrain(SafeSubsystem):
                 self.swerve_module_bl.getPosition(),
                 self.swerve_module_br.getPosition(),
             ),
-            pose,
+            pose if pose is not None else Pose2d(0, 0, 0),
         )
