@@ -48,7 +48,7 @@ class SafeSubsystem(commands2.Subsystem):
 
     def clearFaults(self):
         self._subsystem_status = SubSystemStatus.OK
-        self._subsystem_status_prop.fset(None, int(self._subsystem_status))
+        self._subsystem_status_prop.fset(None, self._subsystem_status.value)
         self._faults = []
         self._faults_prop.fset(None, self._faults)
 
