@@ -1,6 +1,8 @@
 from typing import Optional
 
-plimport math
+from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants
+
+import math
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
@@ -27,10 +29,10 @@ def should_flip_path():
     # THE ORIGIN WILL REMAIN ON THE BLUE SIDE
     return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
+width = 0.597
+length = 0.597
 
 class Drivetrain(SafeSubsystem):
-    width = 0.597
-    length = 0.597
     max_angular_speed = autoproperty(25.0)
 
     angular_offset_fl = autoproperty(-1.57)
@@ -45,10 +47,10 @@ class Drivetrain(SafeSubsystem):
         self.period_seconds = period
 
         # Swerve Module motor positions
-        self.motor_fl_loc = Translation2d(self.width / 2, self.length / 2)
-        self.motor_fr_loc = Translation2d(self.width / 2, -self.length / 2)
-        self.motor_bl_loc = Translation2d(-self.width / 2, self.length / 2)
-        self.motor_br_loc = Translation2d(-self.width / 2, -self.length / 2)
+        self.motor_fl_loc = Translation2d(width / 2, length / 2)
+        self.motor_fr_loc = Translation2d(width / 2, -length / 2)
+        self.motor_bl_loc = Translation2d(-width / 2, length / 2)
+        self.motor_br_loc = Translation2d(-width / 2, -length / 2)
 
         self.swerve_module_fl = SwerveModule(
             ports.drivetrain_motor_driving_fl,
@@ -103,15 +105,16 @@ class Drivetrain(SafeSubsystem):
 
         self.cam = PhotonCamera("mainCamera")
 
-
-
         AutoBuilder.configureHolonomic(
             self.getPose,
             self.resetToPose,
-            self.swervedrive_kinematics.toChassisSpeeds
+            self.getRobotRelativeSpeeds,
+            self.driveFromRobotRelativeChassisSpeeds,
+            self.swerve_module_fr.getHolonomicPathFollowerConfig(),
+            should_flip_path,
+            self
         )
 
-        AutoBuilder.configureCustom()
 
         if RobotBase.isSimulation():
             self.sim_yaw = 0
@@ -156,6 +159,21 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_bl.setDesiredState(swerve_module_states[2])
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
+    def driveFromRobotRelativeChassisSpeeds(self, chassis_speeds: ChassisSpeeds) -> None:
+        corrected_chassis_speed = self.correctForDynamics(chassis_speeds)
+
+        swerve_module_states = self.swervedrive_kinematics.toSwerveModuleStates(
+            corrected_chassis_speed
+        )
+
+        SwerveDrive4Kinematics.desaturateWheelSpeeds(
+            swerve_module_states, self.swerve_module_fr.max_speed
+        )
+        self.swerve_module_fl.setDesiredState(swerve_module_states[0])
+        self.swerve_module_fr.setDesiredState(swerve_module_states[1])
+        self.swerve_module_bl.setDesiredState(swerve_module_states[2])
+        self.swerve_module_br.setDesiredState(swerve_module_states[3])
+
     def getAngle(self):
         """
         Wrapped between -180 and 180
@@ -167,6 +185,19 @@ class Drivetrain(SafeSubsystem):
 
     def getPose(self):
         return self.swerve_estimator.getEstimatedPosition()
+
+    def getRobotRelativeSpeeds(self):
+        """
+        Returns robot relative chassis speeds from current swerve module states
+        """
+        module_states = (
+            self.swerve_module_fl.getState(),
+            self.swerve_module_fr.getState(),
+            self.swerve_module_bl.getState(),
+            self.swerve_module_br.getState(),
+        )
+        chassis_speed = self.swervedrive_kinematics.toChassisSpeeds(module_states)
+        return chassis_speed
 
     def setXFormation(self):
         """

@@ -1,5 +1,7 @@
 import math
 
+from pathplannerlib.config import PIDConstants, HolonomicPathFollowerConfig, ReplanningConfig
+
 from rev import (
     SparkMaxAbsoluteEncoder,
     CANSparkMax,
@@ -10,6 +12,7 @@ from wpimath.geometry import Rotation2d
 from wpimath.kinematics import SwerveModulePosition, SwerveModuleState
 from wpimath.system.plant import DCMotor, LinearSystemId
 
+from subsystems import drivetrain
 from utils.property import autoproperty
 from utils.sparkmaxsim import SparkMaxSim
 from utils.sparkmaxutils import waitForCAN
@@ -179,6 +182,16 @@ class SwerveModule:
         return SwerveModulePosition(
             self.getModuleEncoderPosition(),
             Rotation2d(self.getTurningRadians() - self._chassis_angular_offset),
+        )
+
+    def getHolonomicPathFollowerConfig(self) -> HolonomicPathFollowerConfig:
+        return HolonomicPathFollowerConfig(
+            PIDConstants(self.driving_PID_P, self.driving_PID_I, self.driving_PID_D),
+            PIDConstants(self.turning_PID_P, self.turning_PID_I, self.turning_PID_D),
+            self.max_speed,
+            math.sqrt((drivetrain.width/2)**2 + (drivetrain.length/2)**2),
+            # Eventually get it from RobotConfig.getFromGUI
+            ReplanningConfig()
         )
 
     def setDesiredState(self, desired_state: SwerveModuleState):

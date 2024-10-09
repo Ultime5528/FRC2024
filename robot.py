@@ -1,37 +1,19 @@
 #!/usr/bin/env python3
+import os
+from idlelib.undo import Command
 from typing import Optional
 
+import commands2
 import commands2.button
 import wpilib
 from commands2.cmd import sequence
 from ntcore import NetworkTableInstance
+from pathplannerlib.auto import AutoBuilder, NamedCommands
+from robotpy_installer.roborio_utils import robot_command
 from wpilib import DriverStation, Timer
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
-from commands.auto.ampsideshoot import AmpSideShoot
-from commands.auto.ampsideshootline import AmpSideShootLine
-from commands.auto.ampsideshoottwicegofar import (
-    AmpSideShootTwiceGoFar,
-)
-from commands.auto.ampsideshoottwiceline import (
-    AmpSideShootTwiceLine,
-)
-from commands.auto.centershoot import CenterShoot
-from commands.auto.centershootline import CenterShootLine
-from commands.auto.centershoottwiceline import (
-    CenterShootTwiceLine,
-)
-from commands.auto.megamodeautonome import MegaModeAutonome
-from commands.auto.sourcesideshoot import SourceSideShoot
-from commands.auto.sourcesideshootgofar import SourceSideShootGoFar
-from commands.auto.sourcesideshootline import SourceSideShootLine
-from commands.auto.sourcesideshoottwicegofar import (
-    SourceSideShootTwiceGoFar,
-)
-from commands.auto.sourcesideshoottwiceline import (
-    SourceSideShootTwiceLine,
-)
 from commands.climber.extendclimber import ExtendClimber
 from commands.climber.forceresetclimber import ForceResetClimber
 from commands.climber.lockratchet import LockRatchet
@@ -82,12 +64,6 @@ class Robot(commands2.TimedCommandRobot):
         self.enableLiveWindowInTest(True)
 
         """
-        Autonomous
-        """
-        self.auto_command: Optional[commands2.Command] = None
-        self.auto_chooser = wpilib.SendableChooser()
-
-        """
         Joysticks
         """
         self.xbox_controller = commands2.button.CommandXboxController(0)
@@ -126,107 +102,25 @@ class Robot(commands2.TimedCommandRobot):
         self.timer_check.start()
 
         """
+        Auto
+        """
+        self.auto_chooser = AutoBuilder.buildAutoChooser()
+        self.auto_command = Optional[Command]
+
+        """
         Setups
         """
         self.setupAuto()
+        self.setupCommandsOnPathPlanner()
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
 
+    def setupCommandsOnPathPlanner(self):
+        NamedCommands.registerCommand("print shizzle", commands2.PrintCommand("shizzle"))
+        NamedCommands.registerCommand("print swizzle", commands2.PrintCommand("swizzle"))
+
     def setupAuto(self):
-        self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
-
-        self.auto_chooser.addOption(
-            CenterShoot.__name__,
-            CenterShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AmpSideShoot.__name__,
-            AmpSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            SourceSideShoot.__name__,
-            SourceSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            CenterShootLine.__name__,
-            CenterShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            CenterShootTwiceLine.__name__,
-            CenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AmpSideShootLine.__name__,
-            AmpSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AmpSideShootTwiceLine.__name__,
-            AmpSideShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            SourceSideShootTwiceGoFar.__name__,
-            SourceSideShootTwiceGoFar(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            SourceSideShootLine.__name__,
-            SourceSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            SourceSideShootTwiceLine.__name__,
-            SourceSideShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            AmpSideShootTwiceGoFar.__name__,
-            AmpSideShootTwiceGoFar(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            MegaModeAutonome.__name__,
-            MegaModeAutonome(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
-        self.auto_chooser.addOption(
-            SourceSideShootGoFar.__name__,
-            SourceSideShootGoFar(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
-            ),
-        )
-
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
 
     def setupButtons(self):
