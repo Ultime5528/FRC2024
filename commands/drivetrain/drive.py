@@ -27,7 +27,7 @@ def apply_linear_deadzone(_input, deadzone):
 
 class DriveField(SafeCommand):
     rotation_deadzone = autoproperty(0.3)
-    rotate_speed = autoproperty(0.03)
+    rotate_speed = autoproperty(0.005)  # 0.03 for normal driving
 
     def __init__(
         self,
