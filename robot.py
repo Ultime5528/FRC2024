@@ -4,8 +4,9 @@ from typing import Optional
 import commands2.button
 import wpilib
 from commands2.cmd import sequence
-from ntcore import NetworkTableInstance
-from wpilib import DriverStation, Timer
+from ntcore import NetworkTableInstance, NetworkTableType
+from ntcore.util import ntproperty
+from wpilib import DriverStation, Timer, RobotController
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
@@ -125,6 +126,9 @@ class Robot(commands2.TimedCommandRobot):
         self.entry_check_mirror = inst.getEntry(entry_name_check_mirror)
         self.timer_check = Timer()
         self.timer_check.start()
+
+        self.batteryVoltageHistory = []
+        self.batteryVoltageHistory_prop = ntproperty("/Diagnostics/BatteryVoltage", [], type=NetworkTableType.kDoubleArray, persistent=False)
 
         """
         Setups
@@ -387,6 +391,13 @@ class Robot(commands2.TimedCommandRobot):
     def robotPeriodic(self):
         self.checkPropertiesSaveLoop()
         self.vision.periodic()
+
+        voltage = RobotController.getBatteryVoltage()
+        self.batteryVoltageHistory.append(voltage)
+        if len(self.batteryVoltageHistory) > 100:
+            self.batteryVoltageHistory.pop(0)
+        self.batteryVoltageHistory_prop.fset(None, self.batteryVoltageHistory)
+
         super().robotPeriodic()
 
     def checkPropertiesSaveLoop(self):

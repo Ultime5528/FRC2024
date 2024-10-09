@@ -16,23 +16,28 @@ class SubSystemStatus(Enum):
     ERROR = 2
 
 class SafeSubsystem(commands2.Subsystem):
+    subsystems: List["SafeSubsystem"] = []
+    subsystems_prop = ntproperty("/Diagnostics/SubsystemList", [], type=NetworkTableType.kStringArray, persistent=False)
+
     def __init__(self):
         super().__init__()
         self.setName(self.__class__.__name__)
-        self._faults = []
-        self._subsystem_status = SubSystemStatus.OK
         self._faults_prop = ntproperty(
-            "/Diagnostics/" + self.__class__.__name__ + "/Faults",
+            "/Diagnostics/Subsystems/" + self.__class__.__name__ + "/Faults",
             [],
             type=NetworkTableType.kStringArray,
             persistent=True,
         )
+        self._faults = self._faults_prop.fget(None)
+        self._subsystem_status = SubSystemStatus.OK
         self._subsystem_status_prop = ntproperty(
-            "/Diagnostics/" + self.__class__.__name__ + "/Status",
+            "/Diagnostics/Subsystems/" + self.__class__.__name__ + "/Status",
             0,
             type=NetworkTableType.kInteger,
             persistent=True,
         )
+        SafeSubsystem.subsystems.append(self)
+        SafeSubsystem.subsystems_prop.fset(None, [subsystem.__class__.__name__ for subsystem in SafeSubsystem.subsystems])
 
     def registerFault(self, fault: Fault):
         if self._subsystem_status != SubSystemStatus.ERROR:
