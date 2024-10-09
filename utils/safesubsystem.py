@@ -46,8 +46,8 @@ class SafeSubsystem(commands2.Subsystem):
             elif fault.severity == ErrorType.WARNING:
                 self._subsystem_status = SubSystemStatus.WARNING
 
-        print(self._subsystem_status.value)
         self._subsystem_status_prop.fset(None, self._subsystem_status.value)
+        self._faults = self._faults_prop.fget(None)
         self._faults.append(str(fault))
         self._faults_prop.fset(None, self._faults)
 
