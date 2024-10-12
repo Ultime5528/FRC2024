@@ -6,6 +6,7 @@ from wpilib.simulation import PWMSim, EncoderSim
 from wpiutil import SendableBuilder
 
 import ports
+from commands.tests.testpivot import TestPivot
 from utils.linearinterpolator import LinearInterpolator
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
@@ -32,7 +33,7 @@ class Pivot(SafeSubsystem):
     height_max = autoproperty(65.0)
 
     def __init__(self):
-        super().__init__()
+        super().__init__(TestPivot(self))
         self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
         self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
         self._motor = wpilib.VictorSP(ports.pivot_motor)

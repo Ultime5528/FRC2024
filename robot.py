@@ -57,6 +57,7 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
+from commands.tests.testclimber import TestClimber
 from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
@@ -108,6 +109,11 @@ class Robot(commands2.TimedCommandRobot):
         self.led = LEDController(self)
         self.controller = Controller(self.xbox_controller.getHID())
 
+        self.climber_left.setName("ClimberLeft")
+        self.climber_right.setName("ClimberRight")
+        self.climber_left.setTestCommand(TestClimber(self.climber_left))
+        self.climber_right.setTestCommand(TestClimber(self.climber_right))
+
         """
         Default subsystem commands
         """
@@ -128,6 +134,8 @@ class Robot(commands2.TimedCommandRobot):
 
         self.batteryVoltageHistory = []
         self.batteryVoltageHistory_prop = ntproperty("/Diagnostics/BatteryVoltage", [], type=NetworkTableType.kDoubleArray, persistent=False)
+
+        self.is_in_test_mode = ntproperty("/Diagnostics/IsInTest", False, type=NetworkTableType.kBoolean, persistent=False)
 
         """
         Setups
@@ -375,6 +383,12 @@ class Robot(commands2.TimedCommandRobot):
             ),
         )
 
+    def disabledPeriodic(self):
+        self.is_in_test_mode.fset(None, True)
+
+    def disabledExit(self):
+        self.is_in_test_mode.fset(None, False)
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
@@ -394,7 +408,9 @@ class Robot(commands2.TimedCommandRobot):
         self.batteryVoltageHistory.append(voltage)
         if len(self.batteryVoltageHistory) > 100:
             self.batteryVoltageHistory.pop(0)
-        self.batteryVoltageHistory_prop.fset(None, self.batteryVoltageHistory)
+
+        if self.is_in_test_mode.fget(None) == True:
+            self.batteryVoltageHistory_prop.fset(None, self.batteryVoltageHistory)
 
         super().robotPeriodic()
 

@@ -4,6 +4,7 @@ from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
 import ports
+from commands.tests.testshooter import TestShooter
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
@@ -24,7 +25,7 @@ class Shooter(SafeSubsystem):
     delay_shoot = autoproperty(0.75)
 
     def __init__(self):
-        super().__init__()
+        super().__init__(TestShooter(self))
 
         self._left_motor = rev.CANSparkMax(
             ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless

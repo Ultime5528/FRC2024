@@ -2,6 +2,7 @@ import wpilib
 from wpiutil import SendableBuilder
 
 import ports
+from commands.tests.testintake import TestIntake
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.switch import Switch
@@ -13,7 +14,7 @@ class Intake(SafeSubsystem):
     speed_out = autoproperty(-0.3)
 
     def __init__(self):
-        super().__init__()
+        super().__init__(TestIntake(self))
 
         self._motor = wpilib.VictorSP(ports.intake_motor)
 
