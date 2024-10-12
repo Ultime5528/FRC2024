@@ -12,6 +12,7 @@ from wpimath.kinematics import (
 )
 
 import ports
+from commands.tests.testdrivetrain import TestDrivetrain
 from gyro import ADIS16470
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
@@ -29,7 +30,7 @@ class Drivetrain(SafeSubsystem):
     angular_offset_br = autoproperty(1.57)
 
     def __init__(self, period: float) -> None:
-        super().__init__()
+        super().__init__(TestDrivetrain(self))
         self.period_seconds = period
 
         # Swerve Module motor positions

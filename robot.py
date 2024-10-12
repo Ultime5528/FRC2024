@@ -57,7 +57,6 @@ from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
     ShootAndMovePivotLoading,
 )
-from commands.tests.throwfaultdrive import ThrowFaultDrive
 from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
@@ -312,7 +311,6 @@ class Robot(commands2.TimedCommandRobot):
         )
 
         putCommandOnDashboard("Drivetrain", ResetGyro(self.drivetrain))
-        putCommandOnDashboard("Drivetrain", ThrowFaultDrive(self.drivetrain))
 
         for climber, name in (
             (self.climber_left, "Left"),

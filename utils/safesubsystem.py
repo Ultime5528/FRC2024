@@ -8,6 +8,7 @@ from ntcore.util import ntproperty
 from wpiutil import SendableBuilder
 
 from utils.fault import Fault, ErrorType
+from utils.safecommand import SafeCommand
 
 
 class SubSystemStatus(Enum):
@@ -19,7 +20,7 @@ class SafeSubsystem(commands2.Subsystem):
     subsystems: List["SafeSubsystem"] = []
     subsystems_prop = ntproperty("/Diagnostics/SubsystemList", [], type=NetworkTableType.kStringArray, persistent=False)
 
-    def __init__(self):
+    def __init__(self, test_command: SafeCommand = None):
         super().__init__()
         self.setName(self.__class__.__name__)
         self._faults_prop = ntproperty(
@@ -36,8 +37,13 @@ class SafeSubsystem(commands2.Subsystem):
             type=NetworkTableType.kInteger,
             persistent=True,
         )
+        self._test_command = test_command
+        if self._test_command:
+            wpilib.SmartDashboard.putData("Diagnostics/Tests/Test"+self.getName(), self._test_command)
+
+
         SafeSubsystem.subsystems.append(self)
-        SafeSubsystem.subsystems_prop.fset(None, [subsystem.__class__.__name__ for subsystem in SafeSubsystem.subsystems])
+        SafeSubsystem.subsystems_prop.fset(None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems])
 
     def registerFault(self, fault: Fault):
         if self._subsystem_status != SubSystemStatus.ERROR:
