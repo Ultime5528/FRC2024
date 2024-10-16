@@ -1,5 +1,6 @@
 import math
 
+import commands2.button
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
 from wpilib import RobotBase
@@ -19,9 +20,12 @@ from utils.swerve import SwerveModule
 
 
 class Drivetrain(SafeSubsystem):
+    toggleable_max_speed = 35
+    toggleable_max_angular = 25
     width = 0.597
     length = 0.597
     max_angular_speed = autoproperty(25.0)
+    sub_angular_speed = autoproperty(14)
 
     angular_offset_fl = autoproperty(-1.57)
     angular_offset_fr = autoproperty(0.0)
@@ -94,24 +98,32 @@ class Drivetrain(SafeSubsystem):
         if RobotBase.isSimulation():
             self.sim_yaw = 0
 
+    def setMinSpeed(self):
+        Drivetrain.toggleable_max_speed = SwerveModule.slow_max_speed
+        Drivetrain.toggleable_max_angular = self.sub_angular_speed
+
+    def setMaxSpeed(self):
+        Drivetrain.toggleable_max_speed = SwerveModule.max_speed
+        Drivetrain.toggleable_max_angular = self.max_angular_speed
+
     def drive(
-        self,
-        x_speed_input: float,
-        y_speed_input: float,
-        rot_speed: float,
-        is_field_relative: bool,
+            self,
+            x_speed_input: float,
+            y_speed_input: float,
+            rot_speed: float,
+            is_field_relative: bool,
     ):
-        x_speed = x_speed_input * self.swerve_module_fr.max_speed
-        y_speed = y_speed_input * self.swerve_module_fr.max_speed
-        rot_speed = rot_speed * self.max_angular_speed
+        x_speed = x_speed_input * self.toggleable_max_speed
+        y_speed = y_speed_input * self.toggleable_max_speed
+        rot_speed = rot_speed * self.toggleable_max_angular
         self.driveRaw(x_speed, y_speed, rot_speed, is_field_relative)
 
     def driveRaw(
-        self,
-        x_speed: float,
-        y_speed: float,
-        rot_speed: float,
-        is_field_relative: bool,
+            self,
+            x_speed: float,
+            y_speed: float,
+            rot_speed: float,
+            is_field_relative: bool,
     ):
         if is_field_relative:
             base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -170,7 +182,7 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_br.stop()
 
     def correctForDynamics(
-        self, original_chassis_speeds: ChassisSpeeds
+            self, original_chassis_speeds: ChassisSpeeds
     ) -> ChassisSpeeds:
         next_robot_pose: Pose2d = Pose2d(
             original_chassis_speeds.vx * self.period_seconds,
