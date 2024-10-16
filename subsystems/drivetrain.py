@@ -1,3 +1,4 @@
+from multiprocessing.managers import State
 from typing import Optional
 
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants
@@ -6,7 +7,7 @@ import math
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
-from wpilib import RobotBase, DriverStation
+from wpilib import RobotBase, DriverStation, SmartDashboard
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
@@ -15,6 +16,7 @@ from wpimath.kinematics import (
     SwerveModuleState,
 )
 from pathplannerlib.auto import AutoBuilder
+from wpimath.units import feetToMeters
 
 import ports
 from gyro import ADIS16470
@@ -108,7 +110,7 @@ class Drivetrain(SafeSubsystem):
         AutoBuilder.configureHolonomic(
             self.getPose,
             self.resetToPose,
-            self.getRobotRelativeSpeeds,
+            self.getRobotRelativeChassisSpeeds,
             self.driveFromRobotRelativeChassisSpeeds,
             self.swerve_module_fr.getHolonomicPathFollowerConfig(),
             should_flip_path,
@@ -138,6 +140,9 @@ class Drivetrain(SafeSubsystem):
         rot_speed: float,
         is_field_relative: bool,
     ):
+        SmartDashboard.putNumber("driveX", x_speed)
+        SmartDashboard.putNumber("driveY", y_speed)
+        SmartDashboard.putNumber("driveRot", rot_speed)
         if is_field_relative:
             base_chassis_speed = ChassisSpeeds.fromFieldRelativeSpeeds(
                 x_speed, y_speed, rot_speed, self.getPose().rotation()
@@ -154,16 +159,22 @@ class Drivetrain(SafeSubsystem):
         SwerveDrive4Kinematics.desaturateWheelSpeeds(
             swerve_module_states, self.swerve_module_fr.max_speed
         )
+        SmartDashboard.putNumberArray("moduleSpeeds", [state.speed for state in swerve_module_states])
+
         self.swerve_module_fl.setDesiredState(swerve_module_states[0])
         self.swerve_module_fr.setDesiredState(swerve_module_states[1])
         self.swerve_module_bl.setDesiredState(swerve_module_states[2])
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
     def driveFromRobotRelativeChassisSpeeds(self, chassis_speeds: ChassisSpeeds) -> None:
+        SmartDashboard.putNumber("chassisSpeedsX", chassis_speeds.vx)
+        SmartDashboard.putNumber("chassisSpeedsY", chassis_speeds.vy)
+        SmartDashboard.putNumber("chassisSpeedsRot", chassis_speeds.omega_dps)
+
         corrected_chassis_speed = self.correctForDynamics(chassis_speeds)
 
         swerve_module_states = self.swervedrive_kinematics.toSwerveModuleStates(
-            corrected_chassis_speed
+            chassis_speeds
         )
 
         SwerveDrive4Kinematics.desaturateWheelSpeeds(
@@ -186,7 +197,7 @@ class Drivetrain(SafeSubsystem):
     def getPose(self):
         return self.swerve_estimator.getEstimatedPosition()
 
-    def getRobotRelativeSpeeds(self):
+    def getRobotRelativeChassisSpeeds(self):
         """
         Returns robot relative chassis speeds from current swerve module states
         """
