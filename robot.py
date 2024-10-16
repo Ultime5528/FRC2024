@@ -70,6 +70,7 @@ from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.axistrigger import AxisTrigger
+from utils.safesubsystem import SafeSubsystem
 
 loop_delay = 30.0
 entry_name_check_time = "/CheckSaveLoop/time"
@@ -144,6 +145,12 @@ class Robot(commands2.TimedCommandRobot):
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
+        self.setupDiagnostics()
+
+    def setupDiagnostics(self):
+        for subsystem in SafeSubsystem.subsystems:
+            subsystem.setupSubsystem()
+
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))

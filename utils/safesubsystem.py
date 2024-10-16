@@ -16,13 +16,24 @@ class SubSystemStatus(Enum):
     WARNING = 1
     ERROR = 2
 
+
 class SafeSubsystem(commands2.Subsystem):
     subsystems: List["SafeSubsystem"] = []
-    subsystems_prop = ntproperty("/Diagnostics/SubsystemList", [], type=NetworkTableType.kStringArray, persistent=False)
+    subsystems_prop = ntproperty(
+        "/Diagnostics/SubsystemList",
+        [],
+        type=NetworkTableType.kStringArray,
+        persistent=False,
+    )
 
     def __init__(self, test_command: TestCommand = None):
         super().__init__()
+        SafeSubsystem.subsystems.append(self)
+        self._subsystem_status = SubSystemStatus.OK
         self.setName(self.__class__.__name__)
+        self._test_command = test_command
+
+    def setupSubsystem(self):
         self._faults_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Faults",
             [],
@@ -30,44 +41,27 @@ class SafeSubsystem(commands2.Subsystem):
             persistent=True,
         )
         self._faults = self._faults_prop.fget(None)
-        self._subsystem_status = SubSystemStatus.OK
+
         self._subsystem_status_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Status",
             0,
             type=NetworkTableType.kInteger,
             persistent=True,
         )
-        self._test_command = test_command
         if self._test_command:
-            wpilib.SmartDashboard.putData("Diagnostics/Tests/Test"+self.getName(), self._test_command)
+            wpilib.SmartDashboard.putData(
+                "Diagnostics/Tests/Test" + self.getName(), self._test_command
+            )
 
-
-        SafeSubsystem.subsystems.append(self)
         SafeSubsystem.subsystems_prop.fset(None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems])
 
     def setTestCommand(self, test_command: TestCommand):
         self._test_command = test_command
-        wpilib.SmartDashboard.putData("Diagnostics/Tests/Test"+self.getName(), self._test_command)
+        wpilib.SmartDashboard.putData("Diagnostics/Tests/Test" + self.getName(), self._test_command)
 
-    def setName(self, name: str) -> None:
-        super().setName(name)
-        self._faults_prop = ntproperty(
-            "/Diagnostics/Subsystems/" + self.getName() + "/Faults",
-            [],
-            type=NetworkTableType.kStringArray,
-            persistent=True,
-        )
-        self._faults = self._faults_prop.fget(None)
-        self._subsystem_status_prop = ntproperty(
-            "/Diagnostics/Subsystems/" + self.getName() + "/Status",
-            0,
-            type=NetworkTableType.kInteger,
-            persistent=True,
-        )
-
-        SafeSubsystem.subsystems_prop.fset(None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems])
-
-    def registerFault(self, message: str, severity: ErrorType = ErrorType.ERROR, static=False):
+    def registerFault(
+        self, message: str, severity: ErrorType = ErrorType.ERROR, static=False
+    ):
         fault = Fault(message, static, severity)
         if self._subsystem_status != SubSystemStatus.ERROR:
             if fault.severity == ErrorType.ERROR:
