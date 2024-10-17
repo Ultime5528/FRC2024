@@ -14,7 +14,8 @@ class Intake(SafeSubsystem):
     speed_out = autoproperty(-0.3)
 
     def __init__(self):
-        super().__init__(TestIntake(self))
+        super().__init__()
+        self.setTestCommand(TestIntake(self))
 
         self._motor = wpilib.VictorSP(ports.intake_motor)
 

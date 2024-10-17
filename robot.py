@@ -150,6 +150,7 @@ class Robot(commands2.TimedCommandRobot):
     def setupDiagnostics(self):
         for subsystem in SafeSubsystem.subsystems:
             subsystem.setupSubsystem()
+        ntproperty("/Diagnostics/Ready", True)
 
 
     def setupAuto(self):

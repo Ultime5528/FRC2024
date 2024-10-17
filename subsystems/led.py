@@ -38,7 +38,8 @@ class LEDController(SafeSubsystem):
     brightnessValue = autoproperty(20)
 
     def __init__(self, robot):
-        super().__init__(TestLED(self))
+        super().__init__()
+        self.setTestCommand(TestLED(self))
         self.led_strip = wpilib.AddressableLED(ports.led_strip)
         self.buffer = [wpilib.AddressableLED.LEDData() for _ in range(self.led_number)]
         self.led_strip.setLength(len(self.buffer))

@@ -25,8 +25,8 @@ class Shooter(SafeSubsystem):
     delay_shoot = autoproperty(0.75)
 
     def __init__(self):
-        super().__init__(TestShooter(self))
-
+        super().__init__()
+        self.setTestCommand(TestShooter(self))
         self._left_motor = rev.CANSparkMax(
             ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless
         )

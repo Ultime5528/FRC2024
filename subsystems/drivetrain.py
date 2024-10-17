@@ -30,7 +30,8 @@ class Drivetrain(SafeSubsystem):
     angular_offset_br = autoproperty(1.57)
 
     def __init__(self, period: float) -> None:
-        super().__init__(TestDrivetrain(self))
+        super().__init__()
+        self.setTestCommand(TestDrivetrain(self))
         self.period_seconds = period
 
         # Swerve Module motor positions

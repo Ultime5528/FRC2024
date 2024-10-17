@@ -33,7 +33,8 @@ class Pivot(SafeSubsystem):
     height_max = autoproperty(65.0)
 
     def __init__(self):
-        super().__init__(TestPivot(self))
+        super().__init__()
+        self.setTestCommand(TestPivot(self))
         self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
         self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
         self._motor = wpilib.VictorSP(ports.pivot_motor)

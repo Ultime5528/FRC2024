@@ -1,5 +1,3 @@
-from wpiutil import SendableBuilder
-
 from utils.safecommand import SafeCommand
 
 

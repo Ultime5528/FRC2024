@@ -15,6 +15,7 @@ class SubSystemStatus(Enum):
     OK = 0
     WARNING = 1
     ERROR = 2
+    RUNNING_TEST = 3
 
 
 class SafeSubsystem(commands2.Subsystem):
@@ -26,12 +27,15 @@ class SafeSubsystem(commands2.Subsystem):
         persistent=False,
     )
 
-    def __init__(self, test_command: TestCommand = None):
+    def __init__(self):
         super().__init__()
         SafeSubsystem.subsystems.append(self)
-        self._subsystem_status = SubSystemStatus.OK
         self.setName(self.__class__.__name__)
-        self._test_command = test_command
+        self._subsystem_status = SubSystemStatus.OK
+        self._subsystem_status_prop = None
+        self._faults = []
+        self._faults_prop = None
+        self._test_command = None
 
     def setupSubsystem(self):
         self._faults_prop = ntproperty(
@@ -45,13 +49,12 @@ class SafeSubsystem(commands2.Subsystem):
         self._subsystem_status_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Status",
             0,
-            type=NetworkTableType.kInteger,
             persistent=True,
         )
+
+        self._subsystem_status = SubSystemStatus(self._subsystem_status_prop.fget(None))
         if self._test_command:
-            wpilib.SmartDashboard.putData(
-                "Diagnostics/Tests/Test" + self.getName(), self._test_command
-            )
+            wpilib.SmartDashboard.putData("Diagnostics/Tests/Test" + self.getName(), self._test_command)
 
         SafeSubsystem.subsystems_prop.fset(None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems])
 
@@ -82,6 +85,10 @@ class SafeSubsystem(commands2.Subsystem):
 
     def getSubsystemStatus(self) -> SubSystemStatus:
         return self._subsystem_status
+
+    def setSubsystemStatus(self, status: SubSystemStatus):
+        self._subsystem_status = status
+        self._subsystem_status_prop.fset(None, self._subsystem_status.value)
 
     def initSendable(self, builder: SendableBuilder) -> None:
         super().initSendable(builder)
