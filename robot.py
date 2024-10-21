@@ -246,12 +246,6 @@ class Robot(commands2.TimedCommandRobot):
         self.xbox_controller.leftTrigger().whileTrue(
             AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)
         )
-        self.xbox_controller.rightBumper().whileTrue(
-            InstantCommand(lambda: self.drivetrain.setMinSpeed(), self.drivetrain)
-        )
-        self.xbox_controller.rightBumper().whileFalse(
-            InstantCommand(lambda: self.drivetrain.setMaxSpeed(), self.drivetrain )
-        )
 
 
         # Copilot's panel

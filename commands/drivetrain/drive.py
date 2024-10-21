@@ -78,6 +78,11 @@ class DriveField(SafeCommand):
             x_speed *= -1
             y_speed *= -1
 
+        if self.xbox_remote.rightBumper():
+            x_speed /= 3
+            y_speed /= 3
+            rot_speed /= 3
+
         self.drivetrain.drive(x_speed, y_speed, rot_speed, True)
 
     def end(self, interrupted: bool) -> None:
