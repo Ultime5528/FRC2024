@@ -3,7 +3,6 @@ from typing import Optional
 
 import commands2.button
 import wpilib
-from commands2 import InstantCommand
 from commands2.cmd import sequence
 from ntcore import NetworkTableInstance
 from wpilib import DriverStation, Timer
@@ -246,13 +245,6 @@ class Robot(commands2.TimedCommandRobot):
         self.xbox_controller.leftTrigger().whileTrue(
             AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)
         )
-        self.xbox_controller.rightBumper().whileTrue(
-            InstantCommand(lambda: self.drivetrain.setMinSpeed(), self.drivetrain)
-        )
-        self.xbox_controller.rightBumper().whileFalse(
-            InstantCommand(lambda: self.drivetrain.setMaxSpeed(), self.drivetrain )
-        )
-
 
         # Copilot's panel
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))

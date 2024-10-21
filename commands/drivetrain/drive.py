@@ -28,6 +28,7 @@ def apply_linear_deadzone(_input, deadzone):
 class DriveField(SafeCommand):
     rotation_deadzone = autoproperty(0.3)
     rotate_speed = autoproperty(0.03)
+    speed_rate = autoproperty(0.33)
 
     def __init__(
         self,
@@ -77,6 +78,11 @@ class DriveField(SafeCommand):
         if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
             x_speed *= -1
             y_speed *= -1
+
+        if self.xbox_remote.rightBumper():
+            x_speed *= self.speed_rate
+            y_speed *= self.speed_rate
+            rot_speed *= self.speed_rate
 
         self.drivetrain.drive(x_speed, y_speed, rot_speed, True)
 
