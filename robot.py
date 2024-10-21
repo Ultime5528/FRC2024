@@ -134,9 +134,19 @@ class Robot(commands2.TimedCommandRobot):
         self.timer_check.start()
 
         self.batteryVoltageHistory = []
-        self.batteryVoltageHistory_prop = ntproperty("/Diagnostics/BatteryVoltage", [], type=NetworkTableType.kDoubleArray, persistent=False)
+        self.batteryVoltageHistory_prop = ntproperty(
+            "/Diagnostics/BatteryVoltage",
+            [],
+            type=NetworkTableType.kDoubleArray,
+            persistent=False,
+        )
 
-        self.is_in_test_mode = ntproperty("/Diagnostics/IsInTest", False, type=NetworkTableType.kBoolean, persistent=False)
+        self.is_in_test_mode = ntproperty(
+            "/Diagnostics/IsInTest",
+            False,
+            type=NetworkTableType.kBoolean,
+            persistent=False,
+        )
 
         """
         Setups
@@ -151,7 +161,7 @@ class Robot(commands2.TimedCommandRobot):
         for subsystem in SafeSubsystem.subsystems:
             subsystem.setupSubsystem()
         ntproperty("/Diagnostics/Ready", True)
-
+        ntproperty("/Diagnostics/IsRunningTests", False)
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
