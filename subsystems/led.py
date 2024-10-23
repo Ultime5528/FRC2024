@@ -8,7 +8,6 @@ from wpilib import DriverStation
 from wpiutil import SendableBuilder
 
 import ports
-from commands.tests.testled import TestLED
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 
@@ -39,7 +38,6 @@ class LEDController(SafeSubsystem):
 
     def __init__(self, robot):
         super().__init__()
-        self.setTestCommand(TestLED(self))
         self.led_strip = wpilib.AddressableLED(ports.led_strip)
         self.buffer = [wpilib.AddressableLED.LEDData() for _ in range(self.led_number)]
         self.led_strip.setLength(len(self.buffer))

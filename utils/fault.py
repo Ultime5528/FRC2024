@@ -15,4 +15,11 @@ class Fault:
         self.severity = severity
 
     def __str__(self):
-        return str(self.severity.value)+";"+str(self.timestamp)+";"+("1;" if self.static else "0;")+self.message
+        return (
+            str(self.severity.value)
+            + ";"
+            + str(self.timestamp)
+            + ";"
+            + ("1;" if self.static else "0;")
+            + self.message
+        )

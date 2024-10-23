@@ -54,13 +54,19 @@ class SafeSubsystem(commands2.Subsystem):
 
         self._subsystem_status = SubSystemStatus(self._subsystem_status_prop.fget(None))
         if self._test_command:
-            wpilib.SmartDashboard.putData("Diagnostics/Tests/Test" + self.getName(), self._test_command)
+            wpilib.SmartDashboard.putData(
+                "Diagnostics/Tests/Test" + self.getName(), self._test_command
+            )
 
-        SafeSubsystem.subsystems_prop.fset(None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems])
+        SafeSubsystem.subsystems_prop.fset(
+            None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems]
+        )
 
     def setTestCommand(self, test_command: TestCommand):
         self._test_command = test_command
-        wpilib.SmartDashboard.putData("Diagnostics/Tests/Test" + self.getName(), self._test_command)
+        wpilib.SmartDashboard.putData(
+            "Diagnostics/Tests/Test" + self.getName(), self._test_command
+        )
 
     def registerFault(
         self, message: str, severity: ErrorType = ErrorType.ERROR, static=False

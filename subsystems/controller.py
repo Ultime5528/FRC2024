@@ -1,14 +1,12 @@
 from wpilib.interfaces import GenericHID
 from wpiutil import SendableBuilder
 
-from commands.tests.testcontroller import TestController
 from utils.safesubsystem import SafeSubsystem
 
 
 class Controller(SafeSubsystem):
     def __init__(self, hid: GenericHID):
         super().__init__()
-        self.setTestCommand(TestController(self))
         self.hid = hid
         self._current_rumble = 0.0
 

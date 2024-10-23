@@ -9,7 +9,11 @@ class TestClimber(TestCommand):
         self.climber = climber
 
     def initialize(self):
-        self.climber.registerFault("Test", ErrorType.WARNING)
+        if not self.climber._motor.isAlive():
+            self.climber.registerFault(
+                "Climber motor connection timed out. Check climber motor connection.",
+                ErrorType.ERROR,
+            )
 
     def isFinished(self) -> bool:
         return True
