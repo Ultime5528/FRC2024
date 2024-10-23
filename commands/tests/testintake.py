@@ -15,12 +15,6 @@ class TestIntake(TestCommand):
         self.timer = wpilib.Timer()
 
     def initialize(self):
-        if not self.intake._sensor.isAlive():
-            self.intake.registerFault(
-                "Intake sensor connection timed out. Check intake sensor connection.",
-                ErrorType.ERROR,
-            )
-
         if not self.intake._motor.isAlive():
             self.intake.registerFault(
                 "Intake motor connection timed out. Check intake motor connection.",

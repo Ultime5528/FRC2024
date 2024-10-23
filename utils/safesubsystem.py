@@ -21,10 +21,11 @@ class SubSystemStatus(Enum):
 class SafeSubsystem(commands2.Subsystem):
     subsystems: List["SafeSubsystem"] = []
     subsystems_prop = ntproperty(
-        "/Diagnostics/SubsystemList",
-        [],
-        type=NetworkTableType.kStringArray,
-        persistent=False,
+        "/Diagnostics/SubsystemList", [], type=NetworkTableType.kStringArray
+    )
+    subsystems_tests: List["SafeSubsystem"] = []
+    subsystems_tests_prop = ntproperty(
+        "/Diagnostics/SubsystemListTests", [], type=NetworkTableType.kStringArray
     )
 
     def __init__(self):
@@ -38,6 +39,13 @@ class SafeSubsystem(commands2.Subsystem):
         self._test_command = None
 
     def setupSubsystem(self):
+        if self._test_command and self not in SafeSubsystem.subsystems_tests:
+            SafeSubsystem.subsystems_tests.append(self)
+            SafeSubsystem.subsystems_tests_prop.fset(
+                None,
+                [subsystem.getName() for subsystem in SafeSubsystem.subsystems_tests],
+            )
+
         self._faults_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Faults",
             [],
@@ -63,6 +71,10 @@ class SafeSubsystem(commands2.Subsystem):
         )
 
     def setTestCommand(self, test_command: TestCommand):
+        SafeSubsystem.subsystems_tests.append(self)
+        SafeSubsystem.subsystems_tests_prop.fset(
+            None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems_tests]
+        )
         self._test_command = test_command
         wpilib.SmartDashboard.putData(
             "Diagnostics/Tests/Test" + self.getName(), self._test_command

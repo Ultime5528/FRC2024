@@ -25,20 +25,12 @@ class TestDrivetrain(TestCommand):
                 > self.max_swerve_temperature
             ):
                 self.drivetrain.registerFault(
-                    motorlocation
-                    + " Swerve temperature is high. Let swerves cool down. ("
+                    "High swerve temperature on " + motorlocation + ". Let swerves cool down. ("
                     + str(motor._drive_motor.getMotorTemperature())
                     + "°C, "
                     + str(motor._turning_motor.getMotorTemperature())
                     + "°C)",
                     ErrorType.WARNING,
-                )
-
-            if not motor._drive_motor.isAlive() or not motor._turning_motor.isAlive():
-                self.drivetrain.registerFault(
-                    motorlocation
-                    + " motor connection timed out. Check motor connection.",
-                    ErrorType.ERROR,
                 )
 
     def isFinished(self):
