@@ -1,6 +1,10 @@
 import math
 
-from pathplannerlib.config import PIDConstants, HolonomicPathFollowerConfig, ReplanningConfig
+from pathplannerlib.config import (
+    PIDConstants,
+    HolonomicPathFollowerConfig,
+    ReplanningConfig,
+)
 
 from rev import (
     SparkMaxAbsoluteEncoder,
@@ -39,7 +43,7 @@ turning_encoder_position_PID_max_input = turning_encoder_position_conversion_fac
 
 
 class SwerveModule:
-    max_speed = autoproperty(35.0)
+    max_speed = autoproperty(3.0)
 
     driving_PID_P = autoproperty(0.04)
     driving_PID_I = autoproperty(0.0)
@@ -189,9 +193,9 @@ class SwerveModule:
             PIDConstants(self.driving_PID_P, self.driving_PID_I, self.driving_PID_D),
             PIDConstants(self.turning_PID_P, self.turning_PID_I, self.turning_PID_D),
             self.max_speed,
-            math.sqrt((drivetrain.width/2)**2 + (drivetrain.length/2)**2),
-            # Eventually get it from RobotConfig.getFromGUI
-            ReplanningConfig()
+            math.sqrt((drivetrain.width / 2) ** 2 + (drivetrain.length / 2) ** 2),
+            # Recalculates path often because robot doesn't follow path very closely
+            ReplanningConfig(enableDynamicReplanning=True),
         )
 
     def setDesiredState(self, desired_state: SwerveModuleState):

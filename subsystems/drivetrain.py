@@ -31,8 +31,10 @@ def should_flip_path():
     # THE ORIGIN WILL REMAIN ON THE BLUE SIDE
     return DriverStation.getAlliance() == DriverStation.Alliance.kRed
 
+
 width = 0.597
 length = 0.597
+
 
 class Drivetrain(SafeSubsystem):
     max_angular_speed = autoproperty(25.0)
@@ -114,9 +116,8 @@ class Drivetrain(SafeSubsystem):
             self.driveFromRobotRelativeChassisSpeeds,
             self.swerve_module_fr.getHolonomicPathFollowerConfig(),
             should_flip_path,
-            self
+            self,
         )
-
 
         if RobotBase.isSimulation():
             self.sim_yaw = 0
@@ -128,7 +129,9 @@ class Drivetrain(SafeSubsystem):
         rot_speed: float,
         is_field_relative: bool,
     ):
-        x_speed = x_speed_input * self.swerve_module_fr.max_speed
+        x_speed = (
+            x_speed_input * self.swerve_module_fr.max_speed
+        )  # 35 m/s (weird unit, but it works)
         y_speed = y_speed_input * self.swerve_module_fr.max_speed
         rot_speed = rot_speed * self.max_angular_speed
         self.driveRaw(x_speed, y_speed, rot_speed, is_field_relative)
@@ -159,14 +162,18 @@ class Drivetrain(SafeSubsystem):
         SwerveDrive4Kinematics.desaturateWheelSpeeds(
             swerve_module_states, self.swerve_module_fr.max_speed
         )
-        SmartDashboard.putNumberArray("moduleSpeeds", [state.speed for state in swerve_module_states])
+        SmartDashboard.putNumberArray(
+            "moduleSpeeds", [state.speed for state in swerve_module_states]
+        )
 
         self.swerve_module_fl.setDesiredState(swerve_module_states[0])
         self.swerve_module_fr.setDesiredState(swerve_module_states[1])
         self.swerve_module_bl.setDesiredState(swerve_module_states[2])
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
-    def driveFromRobotRelativeChassisSpeeds(self, chassis_speeds: ChassisSpeeds) -> None:
+    def driveFromRobotRelativeChassisSpeeds(
+        self, chassis_speeds: ChassisSpeeds
+    ) -> None:
         SmartDashboard.putNumber("chassisSpeedsX", chassis_speeds.vx)
         SmartDashboard.putNumber("chassisSpeedsY", chassis_speeds.vy)
         SmartDashboard.putNumber("chassisSpeedsRot", chassis_speeds.omega_dps)
@@ -174,7 +181,7 @@ class Drivetrain(SafeSubsystem):
         corrected_chassis_speed = self.correctForDynamics(chassis_speeds)
 
         swerve_module_states = self.swervedrive_kinematics.toSwerveModuleStates(
-            chassis_speeds
+            corrected_chassis_speed
         )
 
         SwerveDrive4Kinematics.desaturateWheelSpeeds(

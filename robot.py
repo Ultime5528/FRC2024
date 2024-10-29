@@ -8,11 +8,13 @@ import commands2
 import commands2.button
 import wpilib
 from commands2.cmd import sequence
+from hal import AllianceStationID
 from ntcore import NetworkTableInstance
 from pathplannerlib.auto import AutoBuilder, NamedCommands
 from robotpy_ext.autonomous import AutonomousModeSelector
 from robotpy_installer.roborio_utils import robot_command
 from wpilib import DriverStation, Timer, SmartDashboard
+from wpilib.simulation import DriverStationSim
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
@@ -65,6 +67,7 @@ class Robot(commands2.TimedCommandRobot):
         wpilib.DriverStation.silenceJoystickConnectionWarning(True)
         self.enableLiveWindowInTest(True)
 
+        DriverStationSim.setAllianceStationId(AllianceStationID.kBlue1)
         """
         Joysticks
         """
@@ -109,6 +112,7 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser = AutoBuilder.buildAutoChooser()
         self.auto_command = Optional[Command]
 
+
         """
         Setups
         """
@@ -119,8 +123,12 @@ class Robot(commands2.TimedCommandRobot):
         self.setupCommandsOnDashboard()
 
     def setupCommandsOnPathPlanner(self):
-        NamedCommands.registerCommand("print_shizzle", commands2.PrintCommand("shizzle"))
-        NamedCommands.registerCommand("print_swizzle", commands2.PrintCommand("swizzle"))
+        NamedCommands.registerCommand(
+            "print_shizzle", commands2.PrintCommand("shizzle")
+        )
+        NamedCommands.registerCommand(
+            "print_swizzle", commands2.PrintCommand("swizzle")
+        )
 
     def setupAuto(self):
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
@@ -268,8 +276,6 @@ class Robot(commands2.TimedCommandRobot):
         )
 
     def autonomousInit(self):
-        print(NamedCommands.hasCommand("print_shizzle"))
-        print(NamedCommands.hasCommand("print_swizzle"))
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
             self.auto_command.schedule()
