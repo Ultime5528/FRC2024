@@ -25,7 +25,9 @@ class TestDrivetrain(TestCommand):
                 > self.max_swerve_temperature
             ):
                 self.drivetrain.registerFault(
-                    "High swerve temperature on " + motorlocation + ". Let swerves cool down. ("
+                    "High swerve temperature on "
+                    + motorlocation
+                    + ". Let swerves cool down. ("
                     + str(motor._drive_motor.getMotorTemperature())
                     + "°C, "
                     + str(motor._turning_motor.getMotorTemperature())

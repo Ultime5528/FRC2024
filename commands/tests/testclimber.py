@@ -8,6 +8,5 @@ class TestClimber(TestCommand):
         self.addRequirements(climber)
         self.climber = climber
 
-
     def isFinished(self) -> bool:
         return True
