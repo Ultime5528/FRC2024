@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 from typing import Optional
 
 import commands2.button
@@ -112,8 +113,8 @@ class Robot(commands2.TimedCommandRobot):
 
         self.climber_left.setName("ClimberLeft")
         self.climber_right.setName("ClimberRight")
-        self.climber_left.setTestCommand(TestClimber(self.climber_left))
-        self.climber_right.setTestCommand(TestClimber(self.climber_right))
+        # self.climber_left.setTestCommand(TestClimber(self.climber_left))
+        # self.climber_right.setTestCommand(TestClimber(self.climber_right))
 
         """
         Default subsystem commands
@@ -155,13 +156,7 @@ class Robot(commands2.TimedCommandRobot):
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
-        self.setupDiagnostics()
-
-    def setupDiagnostics(self):
-        for subsystem in SafeSubsystem.subsystems:
-            subsystem.setupSubsystem()
-        ntproperty("/Diagnostics/Ready", True)
-        ntproperty("/Diagnostics/IsRunningTests", False)
+        SafeSubsystem.setupDiagnostics()
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))

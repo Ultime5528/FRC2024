@@ -37,9 +37,17 @@ class SafeSubsystem(commands2.Subsystem):
         self._faults = []
         self._faults_prop = None
         self._test_command = None
+        self._diagnostics_initialized = False
+
+    @staticmethod
+    def setupDiagnostics():
+        for subsystem in SafeSubsystem.subsystems:
+            subsystem.setupSubsystem()
+        ntproperty("/Diagnostics/Ready", True)
+        ntproperty("/Diagnostics/IsRunningTests", False)
 
     def setupSubsystem(self):
-        if self._test_command and self not in SafeSubsystem.subsystems_tests:
+        if self not in SafeSubsystem.subsystems_tests:
             SafeSubsystem.subsystems_tests.append(self)
             SafeSubsystem.subsystems_tests_prop.fset(
                 None,
@@ -69,20 +77,27 @@ class SafeSubsystem(commands2.Subsystem):
         SafeSubsystem.subsystems_prop.fset(
             None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems]
         )
+        self._diagnostics_initialized = True
 
     def setTestCommand(self, test_command: TestCommand):
-        SafeSubsystem.subsystems_tests.append(self)
+        if self not in SafeSubsystem.subsystems_tests:
+            SafeSubsystem.subsystems_tests.append(self)
+
+        self._test_command = test_command
         SafeSubsystem.subsystems_tests_prop.fset(
             None, [subsystem.getName() for subsystem in SafeSubsystem.subsystems_tests]
         )
-        self._test_command = test_command
-        wpilib.SmartDashboard.putData(
-            "Diagnostics/Tests/Test" + self.getName(), self._test_command
-        )
+
+        if self._diagnostics_initialized:
+            wpilib.SmartDashboard.putData(
+                "Diagnostics/Tests/Test" + self.getName(), self._test_command
+            )
 
     def registerFault(
         self, message: str, severity: ErrorType = ErrorType.ERROR, static=False
     ):
+        if not self._diagnostics_initialized:
+            return
         fault = Fault(message, static, severity)
         if self._subsystem_status != SubSystemStatus.ERROR:
             if fault.severity == ErrorType.ERROR:
@@ -97,8 +112,10 @@ class SafeSubsystem(commands2.Subsystem):
 
     def clearFaults(self):
         self._subsystem_status = SubSystemStatus.OK
-        self._subsystem_status_prop.fset(None, self._subsystem_status.value)
         self._faults = []
+        if not self._diagnostics_initialized:
+            return
+        self._subsystem_status_prop.fset(None, self._subsystem_status.value)
         self._faults_prop.fset(None, self._faults)
 
     def getSubsystemStatus(self) -> SubSystemStatus:
@@ -106,6 +123,8 @@ class SafeSubsystem(commands2.Subsystem):
 
     def setSubsystemStatus(self, status: SubSystemStatus):
         self._subsystem_status = status
+        if not self._diagnostics_initialized:
+            return
         self._subsystem_status_prop.fset(None, self._subsystem_status.value)
 
     def initSendable(self, builder: SendableBuilder) -> None:
