@@ -47,12 +47,6 @@ class SafeSubsystem(commands2.Subsystem):
         ntproperty("/Diagnostics/IsRunningTests", False)
 
     def setupSubsystem(self):
-        if self not in SafeSubsystem.subsystems_tests:
-            SafeSubsystem.subsystems_tests.append(self)
-            SafeSubsystem.subsystems_tests_prop.fset(
-                None,
-                [subsystem.getName() for subsystem in SafeSubsystem.subsystems_tests],
-            )
 
         self._faults_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Faults",
@@ -70,6 +64,11 @@ class SafeSubsystem(commands2.Subsystem):
 
         self._subsystem_status = SubSystemStatus(self._subsystem_status_prop.fget(None))
         if self._test_command:
+            SafeSubsystem.subsystems_tests.append(self)
+            SafeSubsystem.subsystems_tests_prop.fset(
+                None,
+                [subsystem.getName() for subsystem in SafeSubsystem.subsystems_tests],
+            )
             wpilib.SmartDashboard.putData(
                 "Diagnostics/Tests/Test" + self.getName(), self._test_command
             )
@@ -80,7 +79,7 @@ class SafeSubsystem(commands2.Subsystem):
         self._diagnostics_initialized = True
 
     def setTestCommand(self, test_command: TestCommand):
-        if self not in SafeSubsystem.subsystems_tests:
+        if self._diagnostics_initialized and self not in SafeSubsystem.subsystems_tests:
             SafeSubsystem.subsystems_tests.append(self)
 
         self._test_command = test_command
