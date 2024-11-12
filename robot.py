@@ -113,8 +113,8 @@ class Robot(commands2.TimedCommandRobot):
 
         self.climber_left.setName("ClimberLeft")
         self.climber_right.setName("ClimberRight")
-        # self.climber_left.setTestCommand(TestClimber(self.climber_left))
-        # self.climber_right.setTestCommand(TestClimber(self.climber_right))
+        self.climber_left.setTestCommand(TestClimber(self.climber_left))
+        self.climber_right.setTestCommand(TestClimber(self.climber_right))
 
         """
         Default subsystem commands

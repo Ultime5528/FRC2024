@@ -47,7 +47,6 @@ class SafeSubsystem(commands2.Subsystem):
         ntproperty("/Diagnostics/IsRunningTests", False)
 
     def setupSubsystem(self):
-
         self._faults_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Faults",
             [],
