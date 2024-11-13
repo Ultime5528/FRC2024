@@ -112,7 +112,6 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser = AutoBuilder.buildAutoChooser()
         self.auto_command = Optional[Command]
 
-
         """
         Setups
         """

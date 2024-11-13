@@ -1,4 +1,3 @@
-from multiprocessing.managers import State
 from typing import Optional
 
 from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants
@@ -6,8 +5,10 @@ from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants
 import math
 
 import wpilib
+from pathplannerlib.path import PathPlannerPath
 from photonlibpy.photonCamera import PhotonCamera
 from wpilib import RobotBase, DriverStation, SmartDashboard
+from commands2.command import Command
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
@@ -118,7 +119,9 @@ class Drivetrain(SafeSubsystem):
             should_flip_path,
             self,
         )
+        AutoBuilder.configureCustom(
 
+        )
         if RobotBase.isSimulation():
             self.sim_yaw = 0
 
@@ -170,6 +173,9 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_fr.setDesiredState(swerve_module_states[1])
         self.swerve_module_bl.setDesiredState(swerve_module_states[2])
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
+
+    def getCommandFromPathplannerPath(self, path: PathPlannerPath) -> Command:
+        return Command()
 
     def driveFromRobotRelativeChassisSpeeds(
         self, chassis_speeds: ChassisSpeeds

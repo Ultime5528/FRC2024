@@ -1,12 +1,12 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.597,
+  "robotLength": 0.597,
   "holonomicMode": true,
-  "pathFolders": ["D:\\Documents\\FRC2024\\.pathplanner\\deploy\\pathplanner\\paths"],
-  "autoFolders": ["D:\\Documents\\FRC2024\\.pathplanner\\deploy\\pathplanner\\autos"],
-  "defaultMaxVel": 35.0,
-  "defaultMaxAccel": 10.0,
-  "defaultMaxAngVel": 540.0,
-  "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 35.0
+  "pathFolders": [],
+  "autoFolders": [],
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 3.0,
+  "defaultMaxAngVel": 25.0,
+  "defaultMaxAngAccel": 5.0,
+  "maxModuleSpeed": 4.5
 }
