@@ -55,7 +55,7 @@ from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
-    ShootAndMovePivotLoading,
+    ShootAndMovePivotLoading, Shoot,
 )
 from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
@@ -363,6 +363,7 @@ class Robot(commands2.TimedCommandRobot):
         )
         putCommandOnDashboard("Shooter", ManualShoot(self.shooter))
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
+        putCommandOnDashboard("Shooter", Shoot(self.shooter, self.intake))
 
  #       putCommandOnDashboard(
   #          "Vision",

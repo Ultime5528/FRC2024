@@ -38,7 +38,7 @@ class Vision2(Sendable):
           #  self._cam._versionCheck()
 
     def getTargetDistance(self, target: PhotonTrackedTarget):
-        return (target.getPitch()*target.getPitch()+target.getYaw()*target.getYaw())
+        return target.getPitch()
 
     def getBestNote(self):
         bestNote = None
