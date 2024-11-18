@@ -72,6 +72,8 @@ from subsystems.shooter import Shooter
 from subsystems.vision import Vision
 from utils.axistrigger import AxisTrigger
 from utils.safesubsystem import SafeSubsystem
+from wpilib import PowerDistribution
+
 
 loop_delay = 30.0
 entry_name_check_time = "/CheckSaveLoop/time"
@@ -104,7 +106,7 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain = Drivetrain(self.getPeriod())
         self.climber_left = Climber(climber_left_properties)
         self.climber_right = Climber(climber_right_properties)
-        self.intake = Intake()
+        self.intake = Intake(wpilib.pdp)
         self.pivot = Pivot()
         self.shooter = Shooter()
         self.vision = Vision()
