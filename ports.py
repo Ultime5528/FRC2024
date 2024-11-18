@@ -43,7 +43,7 @@ pivot_encoder_b: Final = 6
 climber_left_switch_down: Final = 8
 climber_right_switch_down: Final = 9
 
-#PDP
+# PDP
 current_swerve_turning_fl = 0
 current_swerve_motor_fl = 1
 current_pivot_motor = 2
