@@ -106,7 +106,7 @@ class Robot(commands2.TimedCommandRobot):
         self.drivetrain = Drivetrain(self.getPeriod())
         self.climber_left = Climber(climber_left_properties)
         self.climber_right = Climber(climber_right_properties)
-        self.intake = Intake(wpilib.pdp)
+        self.intake = Intake(wpilib.PowerDistribution)
         self.pivot = Pivot()
         self.shooter = Shooter()
         self.vision = Vision()
