@@ -1,11 +1,13 @@
 from typing import Optional
 
-from pathplannerlib.config import HolonomicPathFollowerConfig, PIDConstants
-
 import math
 
 import wpilib
-from pathplannerlib.path import PathPlannerPath
+from commands2 import FunctionalCommand
+from numpy.ma.testutils import approx
+from pathplannerlib.geometry_util import flipFieldPose
+from pathplannerlib.path import PathPlannerPath, PathPoint
+from pathplannerlib.trajectory import PathPlannerTrajectory
 from photonlibpy.photonCamera import PhotonCamera
 from wpilib import RobotBase, DriverStation, SmartDashboard
 from commands2.command import Command
@@ -22,6 +24,7 @@ from wpimath.units import feetToMeters
 import ports
 from gyro import ADIS16470
 from utils.property import autoproperty
+from utils.safecommand import SafeCommand
 from utils.safesubsystem import SafeSubsystem
 from utils.swerve import SwerveModule
 
@@ -110,17 +113,20 @@ class Drivetrain(SafeSubsystem):
 
         self.cam = PhotonCamera("mainCamera")
 
-        AutoBuilder.configureHolonomic(
+        # AutoBuilder.configureHolonomic(
+        #     self.getPose,
+        #     self.resetToPose,
+        #     self.getRobotRelativeChassisSpeeds,
+        #     self.driveFromRobotRelativeChassisSpeeds,
+        #     self.swerve_module_fr.getHolonomicPathFollowerConfig(),
+        #     should_flip_path,
+        #     self,
+        # )
+        AutoBuilder.configureCustom(
+            self.getCommandFromPathplannerPath,
             self.getPose,
             self.resetToPose,
-            self.getRobotRelativeChassisSpeeds,
-            self.driveFromRobotRelativeChassisSpeeds,
-            self.swerve_module_fr.getHolonomicPathFollowerConfig(),
-            should_flip_path,
-            self,
-        )
-        AutoBuilder.configureCustom(
-
+            should_flip_path
         )
         if RobotBase.isSimulation():
             self.sim_yaw = 0
@@ -175,7 +181,7 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
     def getCommandFromPathplannerPath(self, path: PathPlannerPath) -> Command:
-        return Command()
+        return FollowPathplannerPath(path.flipPath() if should_flip_path() else path, self)
 
     def driveFromRobotRelativeChassisSpeeds(
         self, chassis_speeds: ChassisSpeeds
@@ -329,3 +335,30 @@ class Drivetrain(SafeSubsystem):
             ),
             pose if pose is not None else Pose2d(0, 0, 0),
         )
+
+
+class FollowPathplannerPath(SafeCommand):
+    def __init__(self, pathplanner_path: PathPlannerPath, drivetrain: Drivetrain):
+        super().__init__()
+        self.drivetrain = drivetrain
+        self.pathplanner_path = pathplanner_path
+        self.addRequirements(drivetrain)
+        self.timer = wpilib.Timer()
+        self.finished_points = False
+        self.counter = 0
+        self.trajectory: PathPlannerTrajectory = None
+
+    def initialize(self):
+        self.timer.restart()
+        self.counter = 0
+        self.trajectory = self.pathplanner_path.getTrajectory(self.drivetrain.getRobotRelativeChassisSpeeds(), Rotation2d(0))
+
+    def execute(self):
+        if approx(self.timer.get() % 0.1, 0, atol=0.03):
+            self.drivetrain.resetToPose(Pose2d(self.trajectory.getState(self.counter).positionMeters, self.trajectory.getState(self.counter).heading))
+            self.counter += 1
+
+
+    def isFinished(self) -> bool:
+        return self.counter >= len(self.pathplanner_path.bezierFromPoses(self.pathplanner_path.getPathPoses()))
+
