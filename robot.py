@@ -105,7 +105,7 @@ class Robot(commands2.TimedCommandRobot):
         self.intake = Intake()
         self.pivot = Pivot()
         self.shooter = Shooter()
-        #self.vision = Vision()
+        self.vision = Vision()
         self.vision2 = Vision2()
         self.led = LEDController(self)
         self.controller = Controller(self.xbox_controller.getHID())
@@ -131,7 +131,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Setups
         """
-       # self.setupAuto()
+        #self.setupAuto()
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
@@ -170,7 +170,7 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             CenterShootTwiceLine.__name__,
             CenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision, self.vision2
             ),
         )
 
@@ -236,18 +236,18 @@ class Robot(commands2.TimedCommandRobot):
         """
         Bind commands to buttons on controllers and joysticks
         """
-       # self.xbox_controller.rightTrigger().whileTrue(
-           # AlignEverything(
-            #    self.drivetrain,
-             #   self.pivot,
-              #  self.shooter,
-               # self.vision,
-                #self.xbox_controller,
-      #      )
-       # )
-#        self.xbox_controller.leftTrigger().whileTrue(
- #           AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)
-  #      )
+        self.xbox_controller.rightTrigger().whileTrue(
+            AlignEverything(
+                self.drivetrain,
+                self.pivot,
+                self.shooter,
+                self.vision,
+                self.xbox_controller,
+            )
+        )
+        self.xbox_controller.leftTrigger().whileTrue(
+            AlignWithTag2D.toSpeaker(self.drivetrain, self.vision, self.xbox_controller)
+        )
 
         # Copilot's panel
         AxisTrigger(self.panel_1, 1, "down").whileTrue(ExtendClimber(self.climber_left))
@@ -284,12 +284,22 @@ class Robot(commands2.TimedCommandRobot):
         """
         Send commands to dashboard to
         """
-  #      putCommandOnDashboard(
-   #         "Drivetrain",
-    #        AlignWithTag2D.toSpeaker(
-     #           self.drivetrain, self.vision, self.xbox_controller
-      #      ),
-       # )
+        putCommandOnDashboard(
+            "Auto",
+            CenterShootTwiceLine(
+                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision, self.vision2
+            ),
+        )
+        CenterShootTwiceLine(
+            self.drivetrain, self.shooter, self.pivot, self.intake, self.vision, self.vision2
+        ),
+
+        putCommandOnDashboard(
+            "Drivetrain",
+            AlignWithTag2D.toSpeaker(
+                self.drivetrain, self.vision, self.xbox_controller
+            ),
+        )
 
         putCommandOnDashboard(
             "Drivetrain",
@@ -355,7 +365,7 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
-      #  putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
+        putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision))
 
         putCommandOnDashboard(
             "Shooter",
@@ -365,16 +375,16 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Shooter", PrepareShoot(self.shooter, self.pivot))
         putCommandOnDashboard("Shooter", Shoot(self.shooter, self.intake))
 
- #       putCommandOnDashboard(
-  #          "Vision",
-   #         AlignEverything(
-    #            self.drivetrain,
-     #           self.pivot,
-      #          self.shooter,
-       #         self.vision,
-    #            self.xbox_controller,
-     #       ),
-      #  )
+        putCommandOnDashboard(
+            "Vision",
+            AlignEverything(
+                self.drivetrain,
+                self.pivot,
+                self.shooter,
+                self.vision,
+                self.xbox_controller,
+            ),
+        )
 
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
@@ -390,7 +400,7 @@ class Robot(commands2.TimedCommandRobot):
     def robotPeriodic(self):
         self.checkPropertiesSaveLoop()
         super().robotPeriodic()
-#      self.vision.periodic()
+        self.vision.periodic()
         self.vision2.periodic()
 
     def checkPropertiesSaveLoop(self):

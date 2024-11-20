@@ -10,7 +10,7 @@ from wpiutil import Sendable
 class Vision2(Sendable):
     def __init__(self):
         super().__init__()
-        self._cam = PhotonCamera("mainCamera")
+        self._cam = PhotonCamera("noteCamera")
         self._targets: List[PhotonTrackedTarget] = []
 
         # If sim, we consider we already logged the date.
