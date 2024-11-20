@@ -103,7 +103,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Subsystems
         """
-        self.drivetrain = Drivetrain(self.getPeriod())
+        self.drivetrain = Drivetrain(self.getPeriod(), wpilib.PowerDistribution)
         self.climber_left = Climber(climber_left_properties)
         self.climber_right = Climber(climber_right_properties)
         self.intake = Intake(wpilib.PowerDistribution)

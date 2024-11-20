@@ -10,7 +10,7 @@ from utils.property import autoproperty
 
 class TestIntake(TestCommand):
     time_window = autoproperty(0.25)
-
+    max_temp = autoproperty(50)
 
     def __init__(self, intake: Intake, pdp: PowerDistribution):
         super().__init__()
@@ -21,7 +21,6 @@ class TestIntake(TestCommand):
         self.timer = wpilib.Timer()
 
     def initialize(self):
-
         self.timer.start()
         self.first_current = self.pdp.getCurrent(self.intake_current)
 

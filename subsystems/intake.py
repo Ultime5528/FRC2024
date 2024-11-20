@@ -16,6 +16,7 @@ class Intake(SafeSubsystem):
     def __init__(self, pdp: PowerDistribution):
         super().__init__()
         from commands.tests.testintake import TestIntake
+
         self.setTestCommand(TestIntake(self, pdp))
 
         self._motor = wpilib.VictorSP(ports.intake_motor)
