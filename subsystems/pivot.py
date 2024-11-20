@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 import wpilib
-from wpilib import RobotBase
+from wpilib import RobotBase, PowerDistribution
 from wpilib.simulation import PWMSim, EncoderSim
 from wpiutil import SendableBuilder
 
@@ -32,9 +32,9 @@ class Pivot(SafeSubsystem):
     height_min = autoproperty(0.0)
     height_max = autoproperty(65.0)
 
-    def __init__(self):
+    def __init__(self, pdp: PowerDistribution):
         super().__init__()
-        self.setTestCommand(TestPivot(self))
+        self.setTestCommand(TestPivot(self, pdp))
         self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
         self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
         self._motor = wpilib.VictorSP(ports.pivot_motor)

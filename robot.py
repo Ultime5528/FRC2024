@@ -107,7 +107,7 @@ class Robot(commands2.TimedCommandRobot):
         self.climber_left = Climber(climber_left_properties)
         self.climber_right = Climber(climber_right_properties)
         self.intake = Intake(wpilib.PowerDistribution)
-        self.pivot = Pivot()
+        self.pivot = Pivot(wpilib.PowerDistribution)
         self.shooter = Shooter()
         self.vision = Vision()
         self.led = LEDController(self)
