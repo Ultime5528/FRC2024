@@ -1,4 +1,4 @@
-from utils.fault import ErrorType
+from utils.fault import Severity
 from utils.testcommand import TestCommand
 
 

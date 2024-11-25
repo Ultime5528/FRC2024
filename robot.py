@@ -100,21 +100,21 @@ class Robot(commands2.TimedCommandRobot):
         self.panel_1 = commands2.button.CommandJoystick(1)
         self.panel_2 = commands2.button.CommandJoystick(2)
 
+        self.pdp = wpilib.PowerDistribution()
+
         """
         Subsystems
         """
-        self.drivetrain = Drivetrain(self.getPeriod(), wpilib.PowerDistribution)
+        self.drivetrain = Drivetrain(self.getPeriod(), self.pdp)
         self.climber_left = Climber(climber_left_properties)
         self.climber_right = Climber(climber_right_properties)
-        self.intake = Intake(wpilib.PowerDistribution)
-        self.pivot = Pivot()
-        self.shooter = Shooter()
+        self.intake = Intake(self.pdp)
+        self.pivot = Pivot(self.pdp)
+        self.shooter = Shooter(self.pdp)
         self.vision = Vision()
         self.led = LEDController(self)
         self.controller = Controller(self.xbox_controller.getHID())
 
-        self.climber_left.setName("ClimberLeft")
-        self.climber_right.setName("ClimberRight")
         self.climber_left.setTestCommand(TestClimber(self.climber_left))
         self.climber_right.setTestCommand(TestClimber(self.climber_right))
 

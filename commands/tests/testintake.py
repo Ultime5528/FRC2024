@@ -2,7 +2,7 @@ from wpilib import PowerDistribution
 import ports
 from subsystems.intake import Intake
 
-from utils.fault import ErrorType
+from utils.fault import Severity
 from utils.testcommand import TestCommand
 import wpilib
 from utils.property import autoproperty
@@ -27,7 +27,7 @@ class TestIntake(TestCommand):
         if self.intake.hasNote():
             self.intake.registerFault(
                 "Sensor shouldn't detect object. Check for obstructions.",
-                ErrorType.WARNING,
+                Severity.WARNING,
             )
 
     def execute(self):
@@ -39,6 +39,6 @@ class TestIntake(TestCommand):
     def end(self, interrupted: bool):
         if self.pdp.getCurrent(self.intake_current) <= self.first_current:
             self.intake.registerFault(
-                "Intake motor timed out. Check for connections", ErrorType.ERROR
+                "Intake motor timed out. Check for connections", Severity.ERROR
             )
         self.intake.stop()
