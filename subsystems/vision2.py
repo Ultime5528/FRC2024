@@ -21,21 +21,10 @@ class Vision2(Sendable):
     def periodic(self):
         if self._cam.isConnected():
             self._targets = self._cam.getLatestResult().getTargets()
-           # if not self._has_logged_date and self._log_timer.hasElapsed(10.0):
-            #    self._log_timer.restart()
-             #   print("Retrieving Photonvision date")
-              #  try:
-              #      ret = os.system("ssh -o ConnectTimeout=1 pi@10.55.28.212 date")
-             #       if ret == 0:
-               #         self._has_logged_date = True
-            #        else:
-                      #  print("Returned exit code", ret)
-             #   except Exception as e:
-              #      print(e)
         else:
             print('camera not connected')
             self._targets = []
-          #  self._cam._versionCheck()
+            self._cam._versionCheck()
 
     def getTargetDistance(self, target: PhotonTrackedTarget):
         return target.getPitch()

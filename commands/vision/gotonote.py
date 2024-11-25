@@ -16,6 +16,8 @@ class GoToNote(SafeCommand):
     p = autoproperty(0.015)
     horizontal_offset = autoproperty(2.0)
     delay = autoproperty(1.0)
+    speed_far = autoproperty(0.40)
+    speed_close = autoproperty(0.10)
 
     def __init__(
         self,
@@ -28,43 +30,35 @@ class GoToNote(SafeCommand):
         self.vision = vision
         self.vel_rot = 0
 
-        self.m_xspeedLimiter = SlewRateLimiter(3)
-        self.m_yspeedLimiter = SlewRateLimiter(3)
         self.timer = wpilib.Timer()
 
-        self.noteisclose = False
+        self.is_note_close = False
 
     def initialize(self):
         self.timer.reset()
 
     def execute(self):
         target = self.vision.getBestNote()
-        y_speed = -0.5
 
-        if DriverStation.getAlliance() == DriverStation.Alliance.kRed:
-            y_speed *= -0.5
-
-        y_speed = self.m_yspeedLimiter.calculate(y_speed)
-        # TODO: quand le robot voit plus de note, le il arrete de boujer. Il devrait continuer le bouger vers l'avant
         if target is not None:
             self.timer.stop()
             self.timer.reset()
 
             # si le target est sous la croix rouge
             if target.getPitch() < 0:
-                self.noteisclose = True
+                self.is_note_close = True
 
             self.vel_rot = self.p * (self.horizontal_offset - target.getYaw())
             self.drivetrain.drive(
-                        0.40, 0, self.vel_rot, is_field_relative=False
+                        self.speed_far, 0, self.vel_rot, is_field_relative=False
             )
-        elif self.noteisclose == True:
+        elif self.is_note_close:
             self.timer.start()
             self.drivetrain.drive(
-                0.10, 0, 0, is_field_relative=False
+                self.speed_close, 0, 0, is_field_relative=False
             )
         else:
-            self.noteisclose = False
+            self.is_note_close = False
             self.timer.start()
 
             print("target is none")
