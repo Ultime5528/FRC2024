@@ -12,6 +12,7 @@ from subsystems.vision2 import Vision2
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
+
 class GoToNote(SafeCommand):
     p = autoproperty(0.015)
     horizontal_offset = autoproperty(2.0)
@@ -50,13 +51,11 @@ class GoToNote(SafeCommand):
 
             self.vel_rot = self.p * (self.horizontal_offset - target.getYaw())
             self.drivetrain.drive(
-                        self.speed_far, 0, self.vel_rot, is_field_relative=False
+                self.speed_far, 0, self.vel_rot, is_field_relative=False
             )
         elif self.is_note_close:
             self.timer.start()
-            self.drivetrain.drive(
-                self.speed_close, 0, 0, is_field_relative=False
-            )
+            self.drivetrain.drive(self.speed_close, 0, 0, is_field_relative=False)
         else:
             self.is_note_close = False
             self.timer.start()

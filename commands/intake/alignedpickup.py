@@ -16,7 +16,4 @@ class AlignedPickUp(SafeMixin, ParallelDeadlineGroup):
         intake: Intake,
         vision: Vision2,
     ):
-        super().__init__(
-            PickUp(intake),
-            GoToNote(drivetrain, vision)
-        )
+        super().__init__(PickUp(intake), GoToNote(drivetrain, vision))

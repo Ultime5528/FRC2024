@@ -55,7 +55,8 @@ from commands.shooter.manualshoot import ManualShoot
 from commands.shooter.prepareshoot import PrepareShoot
 from commands.shooter.shoot import (
     PrepareAndShootAndMovePivotLoading,
-    ShootAndMovePivotLoading, Shoot,
+    ShootAndMovePivotLoading,
+    Shoot,
 )
 from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
@@ -131,7 +132,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Setups
         """
-        #self.setupAuto()
+        # self.setupAuto()
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
@@ -170,7 +171,12 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             CenterShootTwiceLine.__name__,
             CenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision, self.vision2
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision,
+                self.vision2,
             ),
         )
 
@@ -287,11 +293,21 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard(
             "Auto",
             CenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision, self.vision2
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision,
+                self.vision2,
             ),
         )
         CenterShootTwiceLine(
-            self.drivetrain, self.shooter, self.pivot, self.intake, self.vision, self.vision2
+            self.drivetrain,
+            self.shooter,
+            self.pivot,
+            self.intake,
+            self.vision,
+            self.vision2,
         ),
 
         putCommandOnDashboard(
@@ -355,7 +371,9 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
-        putCommandOnDashboard("Intake", AlignedPickUp(self.drivetrain, self.intake, self.vision2))
+        putCommandOnDashboard(
+            "Intake", AlignedPickUp(self.drivetrain, self.intake, self.vision2)
+        )
 
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))

@@ -7,6 +7,7 @@ from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 from wpilib import Timer, RobotBase
 from wpiutil import Sendable
 
+
 class Vision2(Sendable):
     def __init__(self):
         super().__init__()
@@ -22,7 +23,7 @@ class Vision2(Sendable):
         if self._cam.isConnected():
             self._targets = self._cam.getLatestResult().getTargets()
         else:
-            print('camera not connected')
+            print("camera not connected")
             self._targets = []
             self._cam._versionCheck()
 
@@ -32,6 +33,8 @@ class Vision2(Sendable):
     def getBestNote(self):
         bestNote = None
         for target in self._targets:
-            if bestNote is None or self.getTargetDistance(target) < self.getTargetDistance(bestNote):
+            if bestNote is None or self.getTargetDistance(
+                target
+            ) < self.getTargetDistance(bestNote):
                 bestNote = target
         return bestNote
