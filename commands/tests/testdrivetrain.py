@@ -37,8 +37,15 @@ class TestDrivetrain(TestCommand):
     def initialize(self):
         self.timer.start()
 
-        self.first_turn_current = self.pdp.getCurrent(self.current_swerve_turn)
-        self.first_motor_current = self.pdp.getCurrent(self.current_swerve_motor)
+        self.first_turn_current_fl = self.pdp.getCurrent(ports.current_swerve_turning_fl)
+        self.first_turn_current_fr = self.pdp.getCurrent(ports.current_swerve_turning_fr)
+        self.first_turn_current_bl = self.pdp.getCurrent(ports.current_swerve_turning_bl)
+        self.first_turn_current_br = self.pdp.getCurrent(ports.current_swerve_turning_br)
+
+        self.first_motor_current_fl = self.pdp.getCurrent(ports.current_swerve_motor_fl)
+        self.first_motor_current_fr = self.pdp.getCurrent(ports.current_swerve_motor_fr)
+        self.first_motor_current_bl = self.pdp.getCurrent(ports.current_swerve_motor_bl)
+        self.first_motor_current_br = self.pdp.getCurrent(ports.current_swerve_motor_br)
 
         swervemotors = {
             "FL": self.drivetrain.swerve_module_fl,
@@ -71,9 +78,11 @@ class TestDrivetrain(TestCommand):
                     Severity.WARNING
                 )
 
-    #    def execute(self):
-    #        for motor_location, swerve in self.swervemotors.items():
-    #            swerve
+    def execute(self):
+        self.drivetrain.drive(self, 12, 12, 19,)
+        self.drivetrain.drive()
+
+
 
     def isFinished(self):
         return True
