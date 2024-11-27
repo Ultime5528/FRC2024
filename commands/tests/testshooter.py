@@ -38,22 +38,22 @@ class TestShooter(TestCommand):
         if self.pdp.getCurrent(self.left_shooter_current) <= self.first_current_left:
             self.shooter.registerFault(
                 "Left shooter motor timed out. Check for connections",
-                Severity.ERROR,
+                Severity.ERROR
             )
         if self.pdp.getCurrent(self.right_shooter_current) <= self.first_current_right:
             self.shooter.registerFault(
                 "Right shooter motor timed out. Check for connections",
-                Severity.ERROR,
+                Severity.ERROR
             )
         if self.shooter._encoder_left.getVelocity() <= self.first_velocity_left:
             self.shooter.registerFault(
                 "Left shooter encoder timed out. Check for connections",
-                Severity.ERROR,
+                Severity.ERROR
             )
         if self.shooter._encoder_right.getVelocity() <= self.first_velocity_right:
             self.shooter.registerFault(
                 "Right shooter encoder timed out. Check for connections",
-                Severity.ERROR,
+                Severity.ERROR
             )
 
         self.shooter.stop()
