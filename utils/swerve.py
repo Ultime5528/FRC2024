@@ -1,16 +1,7 @@
 import math
 
-from pathplannerlib.config import (
-    PIDConstants,
-    HolonomicPathFollowerConfig,
-    ReplanningConfig,
-)
-
-from rev import (
-    SparkMaxAbsoluteEncoder,
-    CANSparkMax,
-)
-from wpilib import RobotBase, RobotController
+from rev import SparkMax, SparkAbsoluteEncoder, SparkBaseConfig, SparkBase, EncoderConfigAccessor, EncoderConfig
+from wpilib import RobotBase, RobotController, Spark
 from wpilib.simulation import FlywheelSim
 from wpimath.geometry import Rotation2d
 from wpimath.kinematics import SwerveModulePosition, SwerveModuleState
@@ -65,27 +56,30 @@ class SwerveModule:
         turning_motor_port,
         chassis_angular_offset: float,
     ):
-        self._drive_motor = CANSparkMax(
-            drive_motor_port, CANSparkMax.MotorType.kBrushless
+        self._drive_motor = SparkMax(
+            drive_motor_port, SparkMax.MotorType.kBrushless
         )
 
-        self._turning_motor = CANSparkMax(
-            turning_motor_port, CANSparkMax.MotorType.kBrushless
+        self._turning_motor = SparkMax(
+            turning_motor_port, SparkMax.MotorType.kBrushless
         )
 
         # Restore SparkMax controllers to factory defaults
-        self._turning_motor.restoreFactoryDefaults()
-        self._drive_motor.restoreFactoryDefaults()
+        config = SparkBaseConfig()
+        config.setIdleMode(SparkBaseConfig.IdleMode.kBrake)
+
+        encoder_config = EncoderConfig().positionConversionFactor(turning_encoder_position_conversion_factor)
+        self._drive_motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
+        self._turning_motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
 
         # Setup encoders and PID controllers for the driving and turning SPARKS MAX.
         self._drive_encoder = self._drive_motor.getEncoder()
-        self._turning_encoder = self._turning_motor.getAbsoluteEncoder(
-            SparkMaxAbsoluteEncoder.Type.kDutyCycle
-        )
-        self._drive_PIDController = self._drive_motor.getPIDController()
-        self._turning_PIDController = self._turning_motor.getPIDController()
-        self._drive_PIDController.setFeedbackDevice(self._drive_encoder)
-        self._turning_PIDController.setFeedbackDevice(self._turning_encoder)
+        self._turning_encoder = self._turning_motor.getAbsoluteEncoder()
+
+        self._drive_PIDController = self._drive_motor.getClosedLoopController()
+        self._turning_PIDController = self._turning_motor.getClosedLoopController()
+        self._drive_PIDController.setReference(1, SparkBase.ControlType.kDutyCycle)
+        self._turning_PIDController.setReference(1, SparkBase.ControlType.kDutyCycle)
 
         self._drive_encoder.setPositionConversionFactor(
             drive_encoder_position_conversion_factor
@@ -100,7 +94,7 @@ class SwerveModule:
             turning_encoder_velocity_conversion_factor
         )
 
-        self._turning_encoder.setInverted(True)
+        self._turning_encoder.set
 
         self._turning_PIDController.setPositionPIDWrappingEnabled(True)
         self._turning_PIDController.setPositionPIDWrappingMinInput(
@@ -126,8 +120,8 @@ class SwerveModule:
             self.turning_PID_output_min, self.turning_PID_output_max
         )
 
-        self._drive_motor.setIdleMode(CANSparkMax.IdleMode.kBrake)
-        self._turning_motor.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self._drive_motor.setIdleMode(SparkMax.IdleMode.kBrake)
+        self._turning_motor.setIdleMode(SparkMax.IdleMode.kBrake)
         self._drive_motor.setSmartCurrentLimit(25)
         self._turning_motor.setSmartCurrentLimit(25)
         # Save the SPARK MAX configurations. If a SPARK MAX browns out during
@@ -188,15 +182,15 @@ class SwerveModule:
             Rotation2d(self.getTurningRadians() - self._chassis_angular_offset),
         )
 
-    def getHolonomicPathFollowerConfig(self) -> HolonomicPathFollowerConfig:
-        return HolonomicPathFollowerConfig(
-            PIDConstants(self.driving_PID_P, self.driving_PID_I, self.driving_PID_D),
-            PIDConstants(self.turning_PID_P, self.turning_PID_I, self.turning_PID_D),
-            self.max_speed,
-            math.sqrt((drivetrain.width / 2) ** 2 + (drivetrain.length / 2) ** 2),
-            # Recalculates path often because robot doesn't follow path very closely
-            ReplanningConfig(enableDynamicReplanning=False),
-        )
+    # def getHolonomicPathFollowerConfig(self) -> HolonomicPathFollowerConfig:
+    #     return HolonomicPathFollowerConfig(
+    #         PIDConstants(self.driving_PID_P, self.driving_PID_I, self.driving_PID_D),
+    #         PIDConstants(self.turning_PID_P, self.turning_PID_I, self.turning_PID_D),
+    #         self.max_speed,
+    #         math.sqrt((drivetrain.width / 2) ** 2 + (drivetrain.length / 2) ** 2),
+    #         # Recalculates path often because robot doesn't follow path very closely
+    #         ReplanningConfig(enableDynamicReplanning=False),
+    #     )
 
     def setDesiredState(self, desired_state: SwerveModuleState):
         corrected_desired_state = SwerveModuleState()

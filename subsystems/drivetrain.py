@@ -6,10 +6,12 @@ import math
 import wpilib
 from commands2 import FunctionalCommand
 from numpy.ma.testutils import approx
-from pathplannerlib.geometry_util import flipFieldPose
+from pathplannerlib.config import PIDConstants, RobotConfig
+from pathplannerlib.controller import PPHolonomicDriveController
 from pathplannerlib.path import PathPlannerPath, PathPoint
 from pathplannerlib.telemetry import PPLibTelemetry
-from pathplannerlib.trajectory import PathPlannerTrajectory, State
+from pathplannerlib.trajectory import PathPlannerTrajectory
+from pathplannerlib.util import DriveFeedforwards
 from photonlibpy.photonCamera import PhotonCamera
 from wpilib import RobotBase, DriverStation, SmartDashboard
 from commands2.command import Command
@@ -124,12 +126,25 @@ class Drivetrain(SafeSubsystem):
         #     should_flip_path,
         #     self,
         # )
-        AutoBuilder.configureCustom(
-            self.getCommandFromPathplannerPath,
+        AutoBuilder.configure(
             self.getPose,
             self.resetToPose,
-            should_flip_path
+            self.getRobotRelativeChassisSpeeds,
+            self.driveFromRobotRelativeChassisSpeeds,
+            PPHolonomicDriveController(
+                PIDConstants(self.swerve_module_fl.driving_PID_P, 0, 0),
+                PIDConstants(self.swerve_module_fl.turning_PID_P, 0, 0),
+            ),
+            RobotConfig.fromGUISettings(),
+            should_flip_path,
+            self,
         )
+        # AutoBuilder.configureCustom(
+        #     self.getCommandFromPathplannerPath,
+        #     self.getPose,
+        #     self.resetToPose,
+        #     should_flip_path,
+        # )
         if RobotBase.isSimulation():
             self.sim_yaw = 0
 
@@ -183,10 +198,12 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
     def getCommandFromPathplannerPath(self, path: PathPlannerPath) -> Command:
-        return FollowPathplannerPath(path.flipPath() if should_flip_path() else path, self)
+        return FollowPathplannerPath(
+            path.flipPath() if should_flip_path() else path, self
+        )
 
     def driveFromRobotRelativeChassisSpeeds(
-        self, chassis_speeds: ChassisSpeeds
+        self, chassis_speeds: ChassisSpeeds, drive_feedforwards: DriveFeedforwards
     ) -> None:
         SmartDashboard.putNumber("chassisSpeedsX", chassis_speeds.vx)
         SmartDashboard.putNumber("chassisSpeedsY", chassis_speeds.vy)
@@ -339,39 +356,59 @@ class Drivetrain(SafeSubsystem):
         )
 
 
-class FollowPathplannerPath(SafeCommand):
-    delta_t = autoproperty(0.1)
-    pos_tolerance = autoproperty(0.1)
-    rot_tolerance = autoproperty(1)
-    def __init__(self, pathplanner_path: PathPlannerPath, drivetrain: Drivetrain):
-        super().__init__()
-        self.sampled_trajectory = None
-        self.drivetrain = drivetrain
-        self.pathplanner_path = pathplanner_path
-        self.addRequirements(drivetrain)
-        self.sampled_trajectory: list[State] = []
-        self.current_goal = 0
-
-    def initialize(self):
-        self.pathplanner_path = self.pathplanner_path.flipPath() if should_flip_path() else self.pathplanner_path
-        PPLibTelemetry.setCurrentPath(self.pathplanner_path)
-        trajectory = self.pathplanner_path.getTrajectory(self.drivetrain.getRobotRelativeChassisSpeeds(), self.drivetrain.getPose().rotation())
-
-        for i in range(math.ceil(trajectory.getTotalTimeSeconds() / self.delta_t)):
-            self.sampled_trajectory.append(trajectory.sample(i * self.delta_t))
-
-    def execute(self):
-        PPLibTelemetry.setCurrentPose(self.drivetrain.getPose())
-        PPLibTelemetry.setTargetPose(Pose2d(self.sampled_trajectory[self.current_goal].positionMeters.X(), self.sampled_trajectory[self.current_goal].positionMeters.Y(), self.sampled_trajectory[self.current_goal].positionMeters.angle()))
-        position_error = self.sampled_trajectory[self.current_goal].positionMeters - self.drivetrain.getPose().translation()
-        rotation_error = self.sampled_trajectory[self.current_goal].heading - self.drivetrain.getPose().rotation()
-        if math.hypot(position_error.X(), position_error.Y()) <= self.pos_tolerance:
-            self.current_goal += 1
-        else:
-            self.drivetrain.drive(position_error.X(), position_error.Y(), 0, True)
-
-    def isFinished(self) -> bool:
-        return self.current_goal >= len(self.sampled_trajectory)
-
-    def end(self, interrupted: bool):
-        self.drivetrain.drive(0,0,0, True)
+# class FollowPathplannerPath(SafeCommand):
+#     delta_t = autoproperty(0.1)
+#     pos_tolerance = autoproperty(0.1)
+#     rot_tolerance = autoproperty(1)
+#
+#     def __init__(self, pathplanner_path: PathPlannerPath, drivetrain: Drivetrain):
+#         super().__init__()
+#         self.sampled_trajectory = None
+#         self.drivetrain = drivetrain
+#         self.pathplanner_path = pathplanner_path
+#         self.addRequirements(drivetrain)
+#         self.sampled_trajectory: list[State] = []
+#         self.current_goal = 0
+#
+#     def initialize(self):
+#         self.pathplanner_path = (
+#             self.pathplanner_path.flipPath()
+#             if should_flip_path()
+#             else self.pathplanner_path
+#         )
+#         PPLibTelemetry.setCurrentPath(self.pathplanner_path)
+#         trajectory = self.pathplanner_path.getTrajectory(
+#             self.drivetrain.getRobotRelativeChassisSpeeds(),
+#             self.drivetrain.getPose().rotation(),
+#         )
+#
+#         for i in range(math.ceil(trajectory.getTotalTimeSeconds() / self.delta_t)):
+#             self.sampled_trajectory.append(trajectory.sample(i * self.delta_t))
+#
+#     def execute(self):
+#         PPLibTelemetry.setCurrentPose(self.drivetrain.getPose())
+#         PPLibTelemetry.setTargetPose(
+#             Pose2d(
+#                 self.sampled_trajectory[self.current_goal].positionMeters.X(),
+#                 self.sampled_trajectory[self.current_goal].positionMeters.Y(),
+#                 self.sampled_trajectory[self.current_goal].positionMeters.angle(),
+#             )
+#         )
+#         position_error = (
+#             self.sampled_trajectory[self.current_goal].positionMeters
+#             - self.drivetrain.getPose().translation()
+#         )
+#         rotation_error = (
+#             self.sampled_trajectory[self.current_goal].heading
+#             - self.drivetrain.getPose().rotation()
+#         )
+#         if math.hypot(position_error.X(), position_error.Y()) <= self.pos_tolerance:
+#             self.current_goal += 1
+#         else:
+#             self.drivetrain.drive(position_error.X(), position_error.Y(), 0, True)
+#
+#     def isFinished(self) -> bool:
+#         return self.current_goal >= len(self.sampled_trajectory)
+#
+#     def end(self, interrupted: bool):
+#         self.drivetrain.drive(0, 0, 0, True)

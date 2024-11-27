@@ -1,7 +1,7 @@
 from typing import Literal, Optional
 
 import wpilib
-from rev import CANSparkMax, REVLibError
+from rev import SparkMax, REVLibError
 from wpilib import RobotBase
 
 IdleMode = Literal["brake", "coast"]
@@ -15,7 +15,7 @@ def waitForCAN(time_seconds: float):
 
 
 def configureLeader(
-    motor: CANSparkMax,
+    motor: SparkMax,
     mode: IdleMode,
     inverted: bool = False,
     stallLimit: Optional[int] = None,
@@ -27,8 +27,8 @@ def configureLeader(
 
 
 def configureFollower(
-    follower: CANSparkMax,
-    leader: CANSparkMax,
+    follower: SparkMax,
+    leader: SparkMax,
     mode: IdleMode,
     inverted: bool = False,
     stallLimit: Optional[int] = None,
@@ -39,17 +39,17 @@ def configureFollower(
     )
     _handleCanError(follower.follow(leader, inverted), "follow", follower)
     _handleCanError(
-        follower.setPeriodicFramePeriod(CANSparkMax.PeriodicFrame.kStatus0, 1000),
+        follower.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus0, 1000),
         "set status0 rate",
         follower,
     )
     _handleCanError(
-        follower.setPeriodicFramePeriod(CANSparkMax.PeriodicFrame.kStatus1, 1000),
+        follower.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus1, 1000),
         "set status1 rate",
         follower,
     )
     _handleCanError(
-        follower.setPeriodicFramePeriod(CANSparkMax.PeriodicFrame.kStatus2, 1000),
+        follower.setPeriodicFramePeriod(SparkMax.PeriodicFrame.kStatus2, 1000),
         "set status2 rate",
         follower,
     )
@@ -57,7 +57,7 @@ def configureFollower(
 
 
 def _configureMotor(
-    motor: CANSparkMax,
+    motor: SparkMax,
     mode: IdleMode,
     stallLimit: Optional[int],
     freeLimit: Optional[int],
@@ -82,13 +82,13 @@ def _configureMotor(
 
 def _idleModeToEnum(mode: IdleMode):
     if mode == "brake":
-        return CANSparkMax.IdleMode.kBrake
+        return SparkMax.IdleMode.kBrake
     elif mode == "coast":
-        return CANSparkMax.IdleMode.kCoast
+        return SparkMax.IdleMode.kCoast
     raise ValueError(f"mode is not 'brake' or 'coast' : {mode}")
 
 
-def _handleCanError(error: REVLibError, function: str, motor: CANSparkMax):
+def _handleCanError(error: REVLibError, function: str, motor: SparkMax):
     if error != REVLibError.kOk:
         wpilib.reportError(
             f"CANError on motor ID {motor.getDeviceId()} during {function} : {error}",
