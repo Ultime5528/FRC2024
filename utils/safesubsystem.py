@@ -92,12 +92,12 @@ class SafeSubsystem(commands2.Subsystem):
             )
 
     def registerFault(
-        self, message: str, severity: Severity = Severity.ERROR, static=False
+        self, message: str, severity: Severity = Severity.ERROR, sticky=False
     ):
         if not self._diagnostics_initialized:
             raise Exception("Diagnostics are not initialized.")
 
-        fault = Fault(message, static, severity)
+        fault = Fault(message, severity, sticky)
         if self._subsystem_status != SubSystemStatus.ERROR:
             if fault.severity == Severity.ERROR:
                 self._subsystem_status = SubSystemStatus.ERROR
