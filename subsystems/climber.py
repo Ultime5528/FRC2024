@@ -18,6 +18,7 @@ class ClimberSide(Enum):
     Left = "ClimberLeft"
     Right = "ClimberRight"
 
+
 class ClimberProperties(ABC):
     @property
     @abstractmethod
