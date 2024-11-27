@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, StrEnum, auto
 from typing import List
 
 import commands2
@@ -7,15 +7,15 @@ from ntcore import NetworkTableType
 from ntcore.util import ntproperty
 from wpiutil import SendableBuilder
 
-from utils.fault import Fault, ErrorType
+from utils.fault import Fault, Severity
 from utils.testcommand import TestCommand
 
 
-class SubSystemStatus(Enum):
-    OK = 0
-    WARNING = 1
-    ERROR = 2
-    RUNNING_TEST = 3
+class SubSystemStatus(StrEnum):
+    OK = auto()
+    WARNING = auto()
+    ERROR = auto()
+    RUNNING_TEST = auto()
 
 
 class SafeSubsystem(commands2.Subsystem):
@@ -57,7 +57,7 @@ class SafeSubsystem(commands2.Subsystem):
 
         self._subsystem_status_prop = ntproperty(
             "/Diagnostics/Subsystems/" + self.getName() + "/Status",
-            0,
+            SubSystemStatus.OK,
             persistent=True,
         )
 
@@ -92,15 +92,16 @@ class SafeSubsystem(commands2.Subsystem):
             )
 
     def registerFault(
-        self, message: str, severity: ErrorType = ErrorType.ERROR, static=False
+        self, message: str, severity: Severity = Severity.ERROR, static=False
     ):
         if not self._diagnostics_initialized:
-            return
+            raise Exception("Diagnostics are not initialized.")
+
         fault = Fault(message, static, severity)
         if self._subsystem_status != SubSystemStatus.ERROR:
-            if fault.severity == ErrorType.ERROR:
+            if fault.severity == Severity.ERROR:
                 self._subsystem_status = SubSystemStatus.ERROR
-            elif fault.severity == ErrorType.WARNING:
+            elif fault.severity == Severity.WARNING:
                 self._subsystem_status = SubSystemStatus.WARNING
 
         self._subsystem_status_prop.fset(None, self._subsystem_status.value)

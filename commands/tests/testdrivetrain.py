@@ -4,7 +4,7 @@ from wpilib import PowerDistribution
 import ports
 import subsystems.drivetrain
 from subsystems.drivetrain import Drivetrain
-from utils.fault import ErrorType
+from utils.fault import Severity
 from utils.property import autoproperty
 from utils.testcommand import TestCommand
 
@@ -17,21 +17,21 @@ class TestDrivetrain(TestCommand):
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
         self.pdp = pdp
-        self.timer = wpilib.Timer
+        self.timer = wpilib.Timer()
 
-        self.current_swerve_turn = {
-       ports.current_swerve_turning_fr,
-        ports.current_swerve_turning_fl,
-         ports.current_swerve_turning_br,
-          ports.current_swerve_turning_bl,
-       }
+        self.current_swerve_turn = [
+            ports.current_swerve_turning_fr,
+            ports.current_swerve_turning_fl,
+            ports.current_swerve_turning_br,
+            ports.current_swerve_turning_bl,
+        ]
 
-        self.current_swerve_motor = {
+        self.current_swerve_motor = [
             ports.current_swerve_motor_fr,
             ports.current_swerve_motor_fl,
             ports.current_swerve_motor_br,
             ports.current_swerve_motor_bl,
-        }
+        ]
 
 
     def initialize(self):
@@ -49,19 +49,26 @@ class TestDrivetrain(TestCommand):
 
         for motorlocation, motor in swervemotors.items():
             if (
-                motor._drive_motor.getMotorTemperature() > self.max_swerve_temperature
-                or motor._turning_motor.getMotorTemperature()
-                > self.max_swerve_temperature
+                motor._turning_motor.getMotorTemperature() > self.max_swerve_temperature
             ):
                 self.drivetrain.registerFault(
                     "High swerve temperature on "
                     + motorlocation
-                    + ". Let swerves cool down. ("
-                    + str(motor._drive_motor.getMotorTemperature())
-                    + "°C, "
+                    + " Turning motor. Let swerves cool down. ("
                     + str(motor._turning_motor.getMotorTemperature())
                     + "°C)",
-                    ErrorType.WARNING,
+                    Severity.WARNING
+                )
+            elif (
+                motor._drive_motor.getMotorTemperature() > self.max_swerve_temperature
+            ):
+                self.drivetrain.registerFault(
+                    "High swerve temperature on "
+                    + motorlocation
+                    + " Driving motor. Let swerves cool down. ("
+                    + str(motor._drive_motor.getMotorTemperature())
+                    + "°C)",
+                    Severity.WARNING
                 )
 
     #    def execute(self):

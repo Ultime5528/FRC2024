@@ -2,16 +2,16 @@ import wpilib
 from enum import Enum
 
 
-class ErrorType(Enum):
+class Severity(Enum):
     WARNING = 0
     ERROR = 1
 
 
 class Fault:
-    def __init__(self, message: str, static: bool, severity: ErrorType):
+    def __init__(self, message: str, severity: Severity, sticky: bool):
         self.timestamp = wpilib.Timer.getFPGATimestamp()
         self.message = message
-        self.static = static
+        self.sticky = sticky
         self.severity = severity
 
     def __str__(self):
@@ -20,6 +20,6 @@ class Fault:
             + ";"
             + str(self.timestamp)
             + ";"
-            + ("1;" if self.static else "0;")
+            + ("1;" if self.sticky else "0;")
             + self.message
         )

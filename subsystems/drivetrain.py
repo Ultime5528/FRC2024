@@ -32,7 +32,6 @@ class Drivetrain(SafeSubsystem):
         super().__init__()
         from commands.tests.testdrivetrain import TestDrivetrain
 
-        self.setTestCommand(TestDrivetrain(self, pdp))
         self.period_seconds = period
 
         # Swerve Module motor positions
@@ -96,6 +95,8 @@ class Drivetrain(SafeSubsystem):
 
         if RobotBase.isSimulation():
             self.sim_yaw = 0
+
+        self.setTestCommand(TestDrivetrain(self, pdp))
 
     def drive(
         self,
