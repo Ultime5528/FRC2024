@@ -62,8 +62,8 @@ class Climber(SafeSubsystem):
 
     def __init__(self, properties: ClimberProperties):
         super().__init__()
-        self._motor = rev.CANSparkMax(
-            properties.port_motor, rev.CANSparkMax.MotorType.kBrushless
+        self._motor = rev.SparkMax(
+            properties.port_motor, rev.SparkMax.MotorType.kBrushless
         )
         configureLeader(self._motor, "brake", inverted=properties.inversed)
         self._encoder = self._motor.getEncoder()

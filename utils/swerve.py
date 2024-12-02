@@ -1,7 +1,7 @@
 import math
 
-from rev import SparkMax, SparkAbsoluteEncoder, SparkBaseConfig, SparkBase, EncoderConfigAccessor, EncoderConfig
-from wpilib import RobotBase, RobotController, Spark
+from rev import SparkMax, SparkBaseConfig, SparkBase,ClosedLoopConfig
+from wpilib import RobotBase, RobotController
 from wpilib.simulation import FlywheelSim
 from wpimath.geometry import Rotation2d
 from wpimath.kinematics import SwerveModulePosition, SwerveModuleState
@@ -65,69 +65,49 @@ class SwerveModule:
         )
 
         # Restore SparkMax controllers to factory defaults
-        config = SparkBaseConfig()
-        config.setIdleMode(SparkBaseConfig.IdleMode.kBrake)
+        drive_config = SparkBaseConfig()
+        turn_config = SparkBaseConfig()
 
-        encoder_config = EncoderConfig().positionConversionFactor(turning_encoder_position_conversion_factor)
-        self._drive_motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
-        self._turning_motor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
+        (drive_config
+         .setIdleMode(SparkBaseConfig.IdleMode.kBrake)
+         .smartCurrentLimit(25))
+
+        (drive_config.encoder
+         .velocityConversionFactor(drive_encoder_velocity_conversion_factor)
+         .positionConversionFactor(drive_encoder_position_conversion_factor))
+
+        (drive_config.closedLoop
+         .pidf(self.driving_PID_P, self.driving_PID_I, self.driving_PID_D, self.driving_PID_feedforward)
+         .setFeedbackSensor(ClosedLoopConfig.FeedbackSensor.kPrimaryEncoder)
+         .positionWrappingEnabled(True)
+         .positionWrappingInputRange(self.driving_PID_output_min, self.driving_PID_output_max))
+
+
+        (turn_config
+         .setIdleMode(SparkBaseConfig.IdleMode.kBrake)
+         .smartCurrentLimit(25))
+
+        (turn_config.absoluteEncoder
+         .velocityConversionFactor(turning_encoder_velocity_conversion_factor)
+         .positionConversionFactor(turning_encoder_position_conversion_factor)
+         .inverted(True))
+
+        (turn_config.closedLoop
+         .pidf(self.turning_PID_P, self.turning_PID_I, self.turning_PID_D, self.turning_PID_feedforward)
+         .setFeedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder)
+         .positionWrappingEnabled(True)
+         .positionWrappingInputRange(self.turning_PID_output_min, self.turning_PID_output_max))
+
+        self._drive_motor.configure(drive_config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
+        self._turning_motor.configure(turn_config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
+
+        self._drive_PIDController = self._drive_motor.getClosedLoopController()
+        self._turning_PIDController = self._turning_motor.getClosedLoopController()
 
         # Setup encoders and PID controllers for the driving and turning SPARKS MAX.
         self._drive_encoder = self._drive_motor.getEncoder()
         self._turning_encoder = self._turning_motor.getAbsoluteEncoder()
 
-        self._drive_PIDController = self._drive_motor.getClosedLoopController()
-        self._turning_PIDController = self._turning_motor.getClosedLoopController()
-        self._drive_PIDController.setReference(1, SparkBase.ControlType.kDutyCycle)
-        self._turning_PIDController.setReference(1, SparkBase.ControlType.kDutyCycle)
-
-        self._drive_encoder.setPositionConversionFactor(
-            drive_encoder_position_conversion_factor
-        )
-        self._drive_encoder.setVelocityConversionFactor(
-            drive_encoder_velocity_conversion_factor
-        )
-        self._turning_encoder.setPositionConversionFactor(
-            turning_encoder_position_conversion_factor
-        )
-        self._turning_encoder.setVelocityConversionFactor(
-            turning_encoder_velocity_conversion_factor
-        )
-
-        self._turning_encoder.set
-
-        self._turning_PIDController.setPositionPIDWrappingEnabled(True)
-        self._turning_PIDController.setPositionPIDWrappingMinInput(
-            turning_encoder_position_PID_min_input
-        )
-        self._turning_PIDController.setPositionPIDWrappingMaxInput(
-            turning_encoder_position_PID_max_input
-        )
-
-        self._drive_PIDController.setP(self.driving_PID_P)
-        self._drive_PIDController.setI(self.driving_PID_I)
-        self._drive_PIDController.setD(self.driving_PID_D)
-        self._drive_PIDController.setFF(self.driving_PID_feedforward)
-        self._drive_PIDController.setOutputRange(
-            self.driving_PID_output_min, self.driving_PID_output_max
-        )
-
-        self._turning_PIDController.setP(self.turning_PID_P)
-        self._turning_PIDController.setI(self.turning_PID_I)
-        self._turning_PIDController.setD(self.turning_PID_D)
-        self._turning_PIDController.setFF(self.turning_PID_feedforward)
-        self._turning_PIDController.setOutputRange(
-            self.turning_PID_output_min, self.turning_PID_output_max
-        )
-
-        self._drive_motor.setIdleMode(SparkMax.IdleMode.kBrake)
-        self._turning_motor.setIdleMode(SparkMax.IdleMode.kBrake)
-        self._drive_motor.setSmartCurrentLimit(25)
-        self._turning_motor.setSmartCurrentLimit(25)
-        # Save the SPARK MAX configurations. If a SPARK MAX browns out during
-        # operation, it will maintain the above configurations.
-        self._drive_motor.burnFlash()
-        self._turning_motor.burnFlash()
 
         self._chassis_angular_offset = chassis_angular_offset
         self._drive_encoder.setPosition(0)
@@ -150,12 +130,12 @@ class SwerveModule:
             self.sim_turn_motor = FlywheelSim(
                 LinearSystemId.identifyVelocitySystemMeters(0.16, 0.0348),
                 DCMotor.NEO550(1),
-                turn_motor_gear_ratio,
+                [turn_motor_gear_ratio],
             )
             self.sim_drive_motor = FlywheelSim(
                 LinearSystemId.identifyVelocitySystemMeters(3, 1.24),
                 DCMotor.NEO550(1),
-                drive_motor_gear_ratio,
+                [drive_motor_gear_ratio],
             )
 
     def getVelocity(self) -> float:
@@ -209,10 +189,10 @@ class SwerveModule:
         ).cos()
 
         self._drive_PIDController.setReference(
-            optimized_desired_state.speed, CANSparkMax.ControlType.kVelocity
+            optimized_desired_state.speed, SparkMax.ControlType.kVelocity
         )
         self._turning_PIDController.setReference(
-            optimized_desired_state.angle.radians(), CANSparkMax.ControlType.kPosition
+            optimized_desired_state.angle.radians(), SparkMax.ControlType.kPosition
         )
 
     def stop(self):

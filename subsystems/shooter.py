@@ -1,5 +1,6 @@
 import rev
 import wpilib
+from rev import SparkMaxConfig, SparkBaseConfig
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
@@ -7,7 +8,7 @@ import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
-from utils.sparkmaxutils import configureLeader
+from utils.sparkmaxutils import IdleMode
 
 
 def computeVoltage(rpm_goal, rpm_actual, p, ff) -> tuple[float, bool]:
@@ -26,18 +27,21 @@ class Shooter(SafeSubsystem):
     def __init__(self):
         super().__init__()
 
-        self._left_motor = rev.CANSparkMax(
-            ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless
-        )
-        configureLeader(self._left_motor, "coast")
-        self._left_motor.enableVoltageCompensation(12.0)
-        self._encoder_left = self._left_motor.getEncoder()
+        left_config = SparkMaxConfig()
+        right_config = SparkMaxConfig()
+        left_config.setIdleMode(SparkBaseConfig.IdleMode.kCoast).voltageCompensation(12.0)
+        right_config.inverted(True).setIdleMode(SparkBaseConfig.IdleMode.kCoast).voltageCompensation(12.0)
 
-        self._right_motor = rev.CANSparkMax(
-            ports.shooter_motor_right, rev.CANSparkMax.MotorType.kBrushless
+        self._left_motor = rev.SparkMax(
+            ports.shooter_motor_left, rev.SparkMax.MotorType.kBrushless
         )
-        configureLeader(self._right_motor, "coast", inverted=True)
-        self._right_motor.enableVoltageCompensation(12.0)
+        self._right_motor = rev.SparkMax(
+            ports.shooter_motor_right, rev.SparkMax.MotorType.kBrushless
+        )
+
+        self._left_motor.configure(left_config)
+
+        self._encoder_left = self._left_motor.getEncoder()
         self._encoder_right = self._right_motor.getEncoder()
 
         self._ref_rpm = 0.0
