@@ -18,7 +18,6 @@ class TestDrivetrain(TestCommand):
         super().__init__()
         self.addRequirements(drivetrain)
         self.drivetrain = drivetrain
-        self.swerve_module = SwerveModule
         self.pdp = pdp
         self.timer = wpilib.Timer()
 
@@ -50,14 +49,14 @@ class TestDrivetrain(TestCommand):
             self.pdp.getCurrent(ports.current_swerve_turning_fl),
             self.pdp.getCurrent(ports.current_swerve_turning_fr),
             self.pdp.getCurrent(ports.current_swerve_turning_bl),
-            self.pdp.getCurrent(ports.current_swerve_turning_br)
+            self.pdp.getCurrent(ports.current_swerve_turning_br),
         ]
 
         self.first_motor_current = [
             self.pdp.getCurrent(ports.current_swerve_motor_fl),
             self.pdp.getCurrent(ports.current_swerve_motor_fr),
             self.pdp.getCurrent(ports.current_swerve_motor_bl),
-            self.pdp.getCurrent(ports.current_swerve_motor_br)
+            self.pdp.getCurrent(ports.current_swerve_motor_br),
         ]
 
         for motorlocation, motor in self.swervemotors.items():
@@ -68,7 +67,7 @@ class TestDrivetrain(TestCommand):
                     + " Turning motor. Let swerves cool down. ("
                     + str(motor._turning_motor.getMotorTemperature())
                     + "°C)",
-                    Severity.WARNING
+                    Severity.WARNING,
                 )
             elif motor._drive_motor.getMotorTemperature() > self.max_swerve_temperature:
                 self.drivetrain.registerFault(
@@ -77,21 +76,41 @@ class TestDrivetrain(TestCommand):
                     + " Driving motor. Let swerves cool down. ("
                     + str(motor._drive_motor.getMotorTemperature())
                     + "°C)",
-                    Severity.WARNING
+                    Severity.WARNING,
                 )
 
     def execute(self):
         for motorlocation, motor in self.swervemotors.items():
             motor._turning_motor.set(self.drivetrain.max_angular_speed)
-            motor._drive_motor.set(self.swerve_module.max_speed)
+            motor._drive_motor.set(self.drivetrain.swerve_module_fl.max_speed)
 
-    def isFinished(self):
-        return self.timer >= self.time_window
+    def isFinished(self) -> bool:
+        return self.timer.get() >= self.time_window
 
     def end(self, interrupted: bool):
-        self.swerve_property = zip(self.current_swerve_turn, self.current_swerve_motor, self.first_turn_current,self.first_motor_current, self.swerve_module)
-        for turn_swerve in self.first_turn_current:
-            if self.pdp.getCurrent() <= ght:
+        self.swerve_property = zip(
+            self.current_swerve_turn,
+            self.current_swerve_motor,
+            self.first_turn_current,
+            self.first_motor_current,
+            self.swervemotors,
+        )
+        for swerves in self.swerve_property:
+            if self.pdp.getCurrent(swerves[0]) <= swerves[2]:
                 self.drivetrain.registerFault(
-                    ""
+                    "Swerve"
+                    + swerves[4][0]
+                    + "turning motor timed out. Check connections",
+                    Severity.ERROR,
                 )
+            if self.pdp.getCurrent(swerves[1]) <= swerves[3]:
+                self.drivetrain.registerFault(
+                    "Swerve"
+                    + swerves[4][0]
+                    + "driving motor timed out. Check connections",
+                    Severity.ERROR,
+                )
+
+        for motorlocation, motor in self.swervemotors.items():
+            motor._turning_motor.stopMotor()
+            motor._drive_motor.stopMotor()

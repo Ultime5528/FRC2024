@@ -26,7 +26,7 @@ class TestIntake(TestCommand):
         if self.intake.hasNote():
             self.intake.registerFault(
                 "Sensor shouldn't detect object. Check for obstructions.",
-                Severity.WARNING
+                Severity.WARNING,
             )
 
     def execute(self):
@@ -38,7 +38,6 @@ class TestIntake(TestCommand):
     def end(self, interrupted: bool):
         if self.pdp.getCurrent(self.intake_current) <= self.first_current:
             self.intake.registerFault(
-                "Intake motor timed out. Check for connections",
-                Severity.ERROR
+                "Intake motor timed out. Check for connections", Severity.ERROR
             )
         self.intake.stop()
