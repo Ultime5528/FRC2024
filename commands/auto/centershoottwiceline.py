@@ -20,6 +20,7 @@ from utils.safecommand import SafeMixin
 from subsystems.pickupvision import PickUpVision
 from commands.vision.gotonote import GoToNote
 
+
 class CenterShootTwiceLine(SafeMixin, commands2.SequentialCommandGroup):
     def __init__(
         self,

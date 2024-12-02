@@ -4,6 +4,7 @@ from photonlibpy.photonCamera import PhotonCamera
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 from wpiutil import Sendable
 
+
 class Vision(Sendable):
     def __init__(self, cameraname: str):
         super().__init__()

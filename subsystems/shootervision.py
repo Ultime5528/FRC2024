@@ -3,6 +3,7 @@ import wpilib
 from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
 from subsystems.vision import Vision
 
+
 def getSpeakerTagIDFromAlliance() -> Optional[int]:
     alliance = wpilib.DriverStation.getAlliance()
     if alliance == wpilib.DriverStation.Alliance.kRed:
@@ -13,9 +14,10 @@ def getSpeakerTagIDFromAlliance() -> Optional[int]:
         wpilib.reportError("Alliance is invalid")
         return None
 
+
 class ShooterVision(Vision):
     def __init__(self):
-        super().__init__(cameraname='shootingCamera')
+        super().__init__(cameraname="shootingCamera")
 
     def getTargetWithID(self, _id: int) -> Optional[PhotonTrackedTarget]:
         for target in self._targets:

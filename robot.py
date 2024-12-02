@@ -143,91 +143,144 @@ class Robot(commands2.TimedCommandRobot):
         self.auto_chooser.addOption(
             CenterShoot.__name__,
             CenterShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             AmpSideShoot.__name__,
             AmpSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             SourceSideShoot.__name__,
             SourceSideShoot(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             CenterShootLine.__name__,
             CenterShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             CenterShootTwiceLine.__name__,
             CenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter, self.vision_pick_up
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
+                self.vision_pick_up,
             ),
         )
 
         self.auto_chooser.addOption(
             AmpSideShootLine.__name__,
             AmpSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             AmpSideShootTwiceLine.__name__,
             AmpSideShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             SourceSideShootTwiceGoFar.__name__,
             SourceSideShootTwiceGoFar(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             SourceSideShootLine.__name__,
             SourceSideShootLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             SourceSideShootTwiceLine.__name__,
             SourceSideShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             AmpSideShootTwiceGoFar.__name__,
             AmpSideShootTwiceGoFar(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             MegaModeAutonome.__name__,
             MegaModeAutonome(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
         self.auto_chooser.addOption(
             SourceSideShootGoFar.__name__,
             SourceSideShootGoFar(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
             ),
         )
 
@@ -306,9 +359,14 @@ class Robot(commands2.TimedCommandRobot):
         ),
 
         putCommandOnDashboard(
-            'AutoCommand',
+            "AutoCommand",
             CenterShootTwiceLine(
-                self.drivetrain, self.shooter, self.pivot, self.intake, self.vision_shooter, self.vision_pick_up
+                self.drivetrain,
+                self.shooter,
+                self.pivot,
+                self.intake,
+                self.vision_shooter,
+                self.vision_pick_up,
             ),
         )
 
@@ -373,7 +431,9 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Intake", Drop(self.intake))
         putCommandOnDashboard("Intake", PickUp(self.intake))
         putCommandOnDashboard("Intake", Load(self.intake))
-        putCommandOnDashboard("Intake", AlignedPickUp(self.drivetrain, self.intake, self.vision_pick_up))
+        putCommandOnDashboard(
+            "Intake", AlignedPickUp(self.drivetrain, self.intake, self.vision_pick_up)
+        )
 
         putCommandOnDashboard("Pivot", MovePivot.toAmp(self.pivot))
         putCommandOnDashboard("Pivot", MovePivot.toSpeakerFar(self.pivot))
@@ -383,7 +443,9 @@ class Robot(commands2.TimedCommandRobot):
         putCommandOnDashboard("Pivot", ResetPivotUp(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMin(self.pivot))
         putCommandOnDashboard("Pivot", ForceResetPivot.toMax(self.pivot))
-        putCommandOnDashboard("Pivot", MovePivotContinuous(self.pivot, self.vision_shooter))
+        putCommandOnDashboard(
+            "Pivot", MovePivotContinuous(self.pivot, self.vision_shooter)
+        )
 
         putCommandOnDashboard(
             "Shooter",
