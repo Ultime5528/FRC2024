@@ -1,14 +1,6 @@
-from typing import Union, Callable, Optional
-
 import wpilib
-from commands2.button import CommandXboxController
-from wpilib import DriverStation
-from wpilib.interfaces import GenericHID
-from wpimath.filter import SlewRateLimiter
-
-from commands.drivetrain.drive import apply_center_distance_deadzone, properties
 from subsystems.drivetrain import Drivetrain
-from subsystems.vision2 import Vision2
+from subsystems.pickupvision import PickUpVision
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
@@ -23,7 +15,7 @@ class GoToNote(SafeCommand):
     def __init__(
         self,
         drivetrain: Drivetrain,
-        vision: Vision2,
+        vision: PickUpVision,
     ):
         super().__init__()
         self.addRequirements(drivetrain)
@@ -36,6 +28,7 @@ class GoToNote(SafeCommand):
         self.is_note_close = False
 
     def initialize(self):
+        self.noteisclose = False
         self.timer.reset()
 
     def execute(self):
@@ -59,8 +52,6 @@ class GoToNote(SafeCommand):
         else:
             self.is_note_close = False
             self.timer.start()
-
-            print("target is none")
 
     def isFinished(self) -> bool:
         return self.timer.get() >= self.delay

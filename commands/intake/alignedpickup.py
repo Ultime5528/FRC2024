@@ -5,7 +5,7 @@ from commands.intake.pickup import PickUp
 from commands.vision.gotonote import GoToNote
 from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
-from subsystems.vision2 import Vision2
+from subsystems.pickupvision import PickUpVision
 from utils.safecommand import SafeMixin
 
 
@@ -14,6 +14,6 @@ class AlignedPickUp(SafeMixin, ParallelDeadlineGroup):
         self,
         drivetrain: Drivetrain,
         intake: Intake,
-        vision: Vision2,
+        vision: PickUpVision,
     ):
         super().__init__(PickUp(intake), GoToNote(drivetrain, vision))

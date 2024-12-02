@@ -7,7 +7,7 @@ from wpimath.filter import SlewRateLimiter
 
 from commands.drivetrain.drive import apply_center_distance_deadzone, properties
 from subsystems.drivetrain import Drivetrain
-from subsystems.vision import getSpeakerTagIDFromAlliance, Vision
+from subsystems.shootervision import getSpeakerTagIDFromAlliance, ShooterVision
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
@@ -20,7 +20,7 @@ class AlignWithTag2D(SafeCommand):
     def toSpeaker(
         cls,
         drivetrain: Drivetrain,
-        vision: Vision,
+        vision: ShooterVision,
         xbox_remote: Optional[CommandXboxController] = None,
     ):
         cmd = cls(drivetrain, vision, getSpeakerTagIDFromAlliance, xbox_remote)
@@ -30,7 +30,7 @@ class AlignWithTag2D(SafeCommand):
     def __init__(
         self,
         drivetrain: Drivetrain,
-        vision: Vision,
+        vision: ShooterVision,
         tag_id: Union[int, Callable[[], int]],
         xbox_remote: Optional[CommandXboxController] = None,
     ):
