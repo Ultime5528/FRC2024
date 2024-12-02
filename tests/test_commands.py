@@ -27,6 +27,7 @@ def get_commands() -> List[Command or None]:
                 and cls.__name__ != "ConditionalCommand"
                 and cls.__name__ != "SequentialCommandGroup"
                 and cls.__name__ != "ParallelCommandGroup"
+                and cls.__name__ != "ParallelDeadlineGroup"
             ):
                 cmds.append(cls)
     return cmds
