@@ -1,6 +1,6 @@
-import rev
+from wpilib.interfaces import MotorController
 import wpilib
-from rev import SparkMaxConfig, SparkBaseConfig
+from rev import SparkMaxConfig, SparkBaseConfig, SparkMax, SparkBase
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
@@ -29,17 +29,30 @@ class Shooter(SafeSubsystem):
 
         left_config = SparkMaxConfig()
         right_config = SparkMaxConfig()
-        left_config.setIdleMode(SparkBaseConfig.IdleMode.kCoast).voltageCompensation(12.0)
-        right_config.inverted(True).setIdleMode(SparkBaseConfig.IdleMode.kCoast).voltageCompensation(12.0)
-
-        self._left_motor = rev.SparkMax(
-            ports.shooter_motor_left, rev.SparkMax.MotorType.kBrushless
+        left_config.setIdleMode(SparkBaseConfig.IdleMode.kCoast).voltageCompensation(
+            12.0
         )
-        self._right_motor = rev.SparkMax(
-            ports.shooter_motor_right, rev.SparkMax.MotorType.kBrushless
+        right_config.inverted(True).setIdleMode(
+            SparkBaseConfig.IdleMode.kCoast
+        ).voltageCompensation(12.0)
+
+        self._left_motor = SparkMax(
+            ports.shooter_motor_left, SparkMax.MotorType.kBrushless
+        )
+        self._right_motor = SparkMax(
+            ports.shooter_motor_right, SparkMax.MotorType.kBrushless
         )
 
-        self._left_motor.configure(left_config)
+        self._left_motor.configure(
+            left_config,
+            SparkBase.ResetMode.kResetSafeParameters,
+            SparkBase.PersistMode.kPersistParameters,
+        )
+        self._right_motor.configure(
+            right_config,
+            SparkBase.ResetMode.kResetSafeParameters,
+            SparkBase.PersistMode.kPersistParameters,
+        )
 
         self._encoder_left = self._left_motor.getEncoder()
         self._encoder_right = self._right_motor.getEncoder()

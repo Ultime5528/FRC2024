@@ -3,6 +3,7 @@ from enum import Enum, auto
 
 import rev
 import wpilib
+from rev import SparkMaxConfig, SparkBaseConfig
 from wpilib import RobotBase
 from wpiutil import SendableBuilder
 
@@ -10,7 +11,6 @@ import ports
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
-from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
 
 
@@ -65,7 +65,8 @@ class Climber(SafeSubsystem):
         self._motor = rev.SparkMax(
             properties.port_motor, rev.SparkMax.MotorType.kBrushless
         )
-        configureLeader(self._motor, "brake", inverted=properties.inversed)
+        config = SparkMaxConfig()
+        config.inverted(True).setIdleMode(SparkBaseConfig.IdleMode.kBrake)
         self._encoder = self._motor.getEncoder()
 
         self._ratchet_servo = wpilib.Servo(properties.port_ratchet)

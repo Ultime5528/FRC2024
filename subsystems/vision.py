@@ -3,7 +3,7 @@ from typing import Optional, List
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
-from photonlibpy.photonTrackedTarget import PhotonTrackedTarget
+from photonlibpy.targeting import PhotonTrackedTarget
 from wpilib import Timer, RobotBase
 from wpiutil import Sendable
 

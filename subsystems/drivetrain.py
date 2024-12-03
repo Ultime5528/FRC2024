@@ -197,10 +197,10 @@ class Drivetrain(SafeSubsystem):
         self.swerve_module_bl.setDesiredState(swerve_module_states[2])
         self.swerve_module_br.setDesiredState(swerve_module_states[3])
 
-    def getCommandFromPathplannerPath(self, path: PathPlannerPath) -> Command:
-        return FollowPathplannerPath(
-            path.flipPath() if should_flip_path() else path, self
-        )
+    # def getCommandFromPathplannerPath(self, path: PathPlannerPath) -> Command:
+    #     return FollowPathplannerPath(
+    #         path.flipPath() if should_flip_path() else path, self
+    #     )
 
     def driveFromRobotRelativeChassisSpeeds(
         self, chassis_speeds: ChassisSpeeds, drive_feedforwards: DriveFeedforwards

@@ -5,15 +5,16 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "BingusPath"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "print_shizzle"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BingusPath"
+                }
+              }
+            ]
           }
         }
       ]

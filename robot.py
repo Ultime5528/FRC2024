@@ -109,6 +109,7 @@ class Robot(commands2.TimedCommandRobot):
         """
         Auto
         """
+        self.setupCommandsOnPathPlanner()
         self.auto_chooser = AutoBuilder.buildAutoChooser()
         self.auto_command = Optional[Command]
 
@@ -116,18 +117,15 @@ class Robot(commands2.TimedCommandRobot):
         Setups
         """
         self.setupAuto()
-        self.setupCommandsOnPathPlanner()
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
 
     def setupCommandsOnPathPlanner(self):
         NamedCommands.registerCommand(
-            "print_shizzle", commands2.PrintCommand("shizzle")
+            "PickUp", PickUp(self.intake)
         )
-        NamedCommands.registerCommand(
-            "print_swizzle", commands2.PrintCommand("swizzle")
-        )
+
 
     def setupAuto(self):
         wpilib.SmartDashboard.putData("Autonomous mode", self.auto_chooser)
