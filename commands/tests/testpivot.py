@@ -2,7 +2,6 @@ import wpilib
 from wpilib import PowerDistribution
 
 import ports
-from commands.tests import testdrivetrain
 from subsystems.pivot import Pivot
 from utils.fault import Severity
 from utils.property import FloatProperty, autoproperty
@@ -10,6 +9,7 @@ from utils.testcommand import TestCommand
 
 
 class TestPivot(TestCommand):
+    time_window = autoproperty(0.25)
     def __init__(self, pivot: Pivot, pdp: PowerDistribution):
         super().__init__()
         self.pdp = pdp
@@ -17,7 +17,6 @@ class TestPivot(TestCommand):
         self.pivot = pivot
         self.pivot_current = ports.current_pivot_motor
         self.timer = wpilib.Timer()
-        self.time_window = testdrivetrain.TestDrivetrain.time_window
 
     def initialize(self):
         self.timer.restart()
