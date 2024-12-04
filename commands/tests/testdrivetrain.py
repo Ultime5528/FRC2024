@@ -43,7 +43,7 @@ class TestDrivetrain(TestCommand):
         }
 
     def initialize(self):
-        self.timer.start()
+        self.timer.restart()
 
         self.first_turn_current = [
             self.pdp.getCurrent(ports.current_swerve_turning_fl),
@@ -88,14 +88,14 @@ class TestDrivetrain(TestCommand):
         return self.timer.get() >= self.time_window
 
     def end(self, interrupted: bool):
-        self.swerve_property = zip(
+        swerve_property = zip(
             self.current_swerve_turn,
             self.current_swerve_motor,
             self.first_turn_current,
             self.first_motor_current,
             self.swervemotors,
         )
-        for swerves in self.swerve_property:
+        for swerves in swerve_property:
             if self.pdp.getCurrent(swerves[0]) <= swerves[2]:
                 self.drivetrain.registerFault(
                     "Swerve"

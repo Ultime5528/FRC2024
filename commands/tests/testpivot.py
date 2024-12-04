@@ -16,7 +16,7 @@ class TestPivot(TestCommand):
         self.timer = wpilib.Timer()
 
     def initialize(self):
-        self.timer.start()
+        self.timer.restart()
         self.first_current = self.pdp.getCurrent(self.pivot_current)
 
     #    def execute(self):

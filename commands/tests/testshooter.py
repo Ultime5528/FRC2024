@@ -9,6 +9,7 @@ import wpilib
 
 class TestShooter(TestCommand):
     time_window = autoproperty(0.25)
+    rpm = autoproperty(5000)
 
     def __init__(self, shooter, pdp: PowerDistribution):
         super().__init__()
@@ -17,7 +18,7 @@ class TestShooter(TestCommand):
         self.pdp = pdp
         self.left_shooter_current = ports.current_shooter_motor_gauche
         self.right_shooter_current = ports.current_shooter_motor_droite
-        self.timer = wpilib.Timer
+        self.timer = wpilib.Timer()
 
     def initialize(self):
         self.timer.restart()
@@ -29,7 +30,7 @@ class TestShooter(TestCommand):
         self.first_velocity_right = self.shooter._encoder_right.getVelocity()
 
     def execute(self):
-        self.shooter.shoot()
+        self.shooter.shoot(rpm=self.rpm)
 
     def isFinished(self) -> bool:
         return self.timer.get() >= self.time_window
