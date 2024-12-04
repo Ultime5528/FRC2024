@@ -10,6 +10,7 @@ from utils.testcommand import TestCommand
 
 class TestPivot(TestCommand):
     time_window = autoproperty(0.25)
+
     def __init__(self, pivot: Pivot, pdp: PowerDistribution):
         super().__init__()
         self.pdp = pdp
@@ -38,6 +39,8 @@ class TestPivot(TestCommand):
                 "Pivot motor timed out. Check for connections", Severity.ERROR
             )
         if self.pivot._encoder.get() <= self.first_pivot_velocity:
-            self.pivot.registerFault("Pivot encoder timed out. Check for connections", Severity.ERROR)
+            self.pivot.registerFault(
+                "Pivot encoder timed out. Check for connections", Severity.ERROR
+            )
 
         self.pivot.stop()

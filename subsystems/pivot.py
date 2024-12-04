@@ -34,6 +34,7 @@ class Pivot(SafeSubsystem):
     def __init__(self, pdp: PowerDistribution):
         super().__init__()
         from commands.tests.testpivot import TestPivot
+
         self.setTestCommand(TestPivot(self, pdp))
         self._switch_up = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_up)
         self._switch_down = Switch(Switch.Type.NormallyClosed, ports.pivot_switch_down)
