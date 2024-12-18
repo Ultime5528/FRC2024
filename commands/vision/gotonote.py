@@ -28,7 +28,7 @@ class GoToNote(SafeCommand):
         self.is_note_close = False
 
     def initialize(self):
-        self.noteisclose = False
+        self.is_note_close = False
         self.timer.reset()
 
     def execute(self):
