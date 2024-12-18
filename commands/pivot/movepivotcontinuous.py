@@ -1,7 +1,7 @@
 import wpilib
 
 from subsystems.pivot import Pivot
-from subsystems.vision import Vision, getSpeakerTagIDFromAlliance
+from subsystems.shootervision import ShooterVision, getSpeakerTagIDFromAlliance
 from utils.property import autoproperty
 from utils.safecommand import SafeCommand
 
@@ -9,7 +9,7 @@ from utils.safecommand import SafeCommand
 class MovePivotContinuous(SafeCommand):
     threshold = autoproperty(1.0)
 
-    def __init__(self, pivot: Pivot, vision: Vision):
+    def __init__(self, pivot: Pivot, vision: ShooterVision):
         super().__init__()
         self.pivot = pivot
         self.vision = vision
