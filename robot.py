@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
+import sys
 from typing import Optional
 
 import commands2.button
 import wpilib
 from commands2.cmd import sequence
-from ntcore import NetworkTableInstance
-from wpilib import DriverStation, Timer
+from ntcore import NetworkTableInstance, NetworkTableType
+from ntcore.util import ntproperty
+from wpilib import DriverStation, Timer, RobotController
 from wpimath.geometry import Pose2d, Rotation2d
 
 from commands.aligneverything import AlignEverything
@@ -58,6 +60,7 @@ from commands.shooter.shoot import (
     ShootAndMovePivotLoading,
     Shoot,
 )
+from commands.tests.testclimber import TestClimber
 from commands.vibratenote import VibrateNote
 from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.climber import Climber
@@ -71,6 +74,9 @@ from subsystems.shooter import Shooter
 from subsystems.shootervision import ShooterVision
 from subsystems.pickupvision import PickUpVision
 from utils.axistrigger import AxisTrigger
+from utils.safesubsystem import SafeSubsystem
+from wpilib import PowerDistribution
+
 
 loop_delay = 30.0
 entry_name_check_time = "/CheckSaveLoop/time"
@@ -97,19 +103,24 @@ class Robot(commands2.TimedCommandRobot):
         self.panel_1 = commands2.button.CommandJoystick(1)
         self.panel_2 = commands2.button.CommandJoystick(2)
 
+        self.pdp = wpilib.PowerDistribution()
+
         """
         Subsystems
         """
-        self.drivetrain = Drivetrain(self.getPeriod())
+        self.drivetrain = Drivetrain(self.getPeriod(), self.pdp)
         self.climber_left = Climber(climber_left_properties)
         self.climber_right = Climber(climber_right_properties)
-        self.intake = Intake()
-        self.pivot = Pivot()
-        self.shooter = Shooter()
+        self.intake = Intake(self.pdp)
+        self.pivot = Pivot(self.pdp)
+        self.shooter = Shooter(self.pdp)
         self.vision_shooter = ShooterVision()
         self.vision_pick_up = PickUpVision()
         self.led = LEDController(self)
         self.controller = Controller(self.xbox_controller.getHID())
+
+        self.climber_left.setTestCommand(TestClimber(self.climber_left))
+        self.climber_right.setTestCommand(TestClimber(self.climber_right))
 
         """
         Default subsystem commands
@@ -129,6 +140,21 @@ class Robot(commands2.TimedCommandRobot):
         self.timer_check = Timer()
         self.timer_check.start()
 
+        self.batteryVoltageHistory = []
+        self.batteryVoltageHistory_prop = ntproperty(
+            "/Diagnostics/BatteryVoltage",
+            [],
+            type=NetworkTableType.kDoubleArray,
+            persistent=False,
+        )
+
+        self.is_in_test_mode = ntproperty(
+            "/Diagnostics/IsInTest",
+            False,
+            type=NetworkTableType.kBoolean,
+            persistent=False,
+        )
+
         """
         Setups
         """
@@ -136,6 +162,7 @@ class Robot(commands2.TimedCommandRobot):
         self.setupButtons()
         # self.setupSubsystemOnDashboard()
         self.setupCommandsOnDashboard()
+        SafeSubsystem.setupDiagnostics()
 
     def setupAuto(self):
         self.auto_chooser.setDefaultOption("Nothing", ResetGyro(self.drivetrain))
@@ -466,6 +493,12 @@ class Robot(commands2.TimedCommandRobot):
             ),
         )
 
+    def disabledPeriodic(self):
+        self.is_in_test_mode.fset(None, True)
+
+    def disabledExit(self):
+        self.is_in_test_mode.fset(None, False)
+
     def autonomousInit(self):
         self.auto_command: commands2.Command = self.auto_chooser.getSelected()
         if self.auto_command:
@@ -479,6 +512,15 @@ class Robot(commands2.TimedCommandRobot):
 
     def robotPeriodic(self):
         self.checkPropertiesSaveLoop()
+
+        voltage = RobotController.getBatteryVoltage()
+        self.batteryVoltageHistory.append(voltage)
+        if len(self.batteryVoltageHistory) > 100:
+            self.batteryVoltageHistory.pop(0)
+
+        if self.is_in_test_mode.fget(None) == True:
+            self.batteryVoltageHistory_prop.fset(None, self.batteryVoltageHistory)
+
         super().robotPeriodic()
         self.vision_shooter.periodic()
         self.vision_pick_up.periodic()

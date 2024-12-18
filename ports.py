@@ -42,3 +42,19 @@ pivot_encoder_a: Final = 5
 pivot_encoder_b: Final = 6
 climber_left_switch_down: Final = 8
 climber_right_switch_down: Final = 9
+
+# PDP
+current_swerve_turning_fl = 0
+current_swerve_motor_fl = 1
+current_pivot_motor = 2
+current_grimpeur_gauche = 3
+current_grimpeur_droite = 4
+current_intake_motor = 5
+current_shooter_motor_gauche = 6
+current_shooter_motor_droite = 7
+current_swerve_motor_bl = 8
+current_swerve_turning_bl = 9
+current_swerve_turning_br = 10
+current_swerve_motor_br = 11
+current_swerve_turning_fr = 12
+current_swerve_motor_fr = 13

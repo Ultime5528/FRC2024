@@ -2,7 +2,7 @@ import math
 
 import wpilib
 from photonlibpy.photonCamera import PhotonCamera
-from wpilib import RobotBase
+from wpilib import RobotBase, PowerDistribution
 from wpimath.estimator import SwerveDrive4PoseEstimator
 from wpimath.geometry import Pose2d, Translation2d, Rotation2d, Twist2d
 from wpimath.kinematics import (
@@ -28,8 +28,10 @@ class Drivetrain(SafeSubsystem):
     angular_offset_bl = autoproperty(3.14)
     angular_offset_br = autoproperty(1.57)
 
-    def __init__(self, period: float) -> None:
+    def __init__(self, period: float, pdp: PowerDistribution) -> None:
         super().__init__()
+        from commands.tests.testdrivetrain import TestDrivetrain
+
         self.period_seconds = period
 
         # Swerve Module motor positions
@@ -93,6 +95,8 @@ class Drivetrain(SafeSubsystem):
 
         if RobotBase.isSimulation():
             self.sim_yaw = 0
+
+        self.setTestCommand(TestDrivetrain(self, pdp))
 
     def drive(
         self,

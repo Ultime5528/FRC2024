@@ -14,6 +14,11 @@ from utils.sparkmaxutils import configureLeader
 from utils.switch import Switch
 
 
+class ClimberSide(Enum):
+    Left = "ClimberLeft"
+    Right = "ClimberRight"
+
+
 class ClimberProperties(ABC):
     @property
     @abstractmethod
@@ -43,6 +48,10 @@ class ClimberProperties(ABC):
     @abstractmethod
     def inversed(self) -> bool: ...
 
+    @property
+    @abstractmethod
+    def side(self) -> ClimberSide: ...
+
 
 class RatchetState(Enum):
     Unknown = auto()
@@ -62,6 +71,7 @@ class Climber(SafeSubsystem):
 
     def __init__(self, properties: ClimberProperties):
         super().__init__()
+        self.setName(properties.side.value)
         self._motor = rev.CANSparkMax(
             properties.port_motor, rev.CANSparkMax.MotorType.kBrushless
         )
@@ -186,6 +196,7 @@ class ClimberLeftProperties(ClimberProperties):
     height_max = autoproperty(222.0, subtable="ClimberLeft")
     height_min = autoproperty(20, subtable="ClimberLeft")
     inversed = False
+    side = ClimberSide.Left
 
 
 climber_left_properties = ClimberLeftProperties()
@@ -201,6 +212,7 @@ class ClimberRightProperties(ClimberProperties):
     height_max = autoproperty(222.0, subtable="ClimberRight")
     height_min = autoproperty(20, subtable="ClimberRight")
     inversed = True
+    side = ClimberSide.Right
 
 
 climber_right_properties = ClimberRightProperties()

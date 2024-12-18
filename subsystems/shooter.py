@@ -1,9 +1,10 @@
 import rev
 import wpilib
-from wpilib import RobotBase
+from wpilib import RobotBase, PowerDistribution
 from wpiutil import SendableBuilder
 
 import ports
+from commands.tests.testshooter import TestShooter
 from utils.property import autoproperty
 from utils.safesubsystem import SafeSubsystem
 from utils.sparkmaxsim import SparkMaxSim
@@ -23,9 +24,9 @@ class Shooter(SafeSubsystem):
 
     delay_shoot = autoproperty(0.75)
 
-    def __init__(self):
+    def __init__(self, pdp: PowerDistribution):
         super().__init__()
-
+        self.setTestCommand(TestShooter(self, pdp))
         self._left_motor = rev.CANSparkMax(
             ports.shooter_motor_left, rev.CANSparkMax.MotorType.kBrushless
         )
