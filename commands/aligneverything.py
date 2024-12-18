@@ -7,7 +7,7 @@ from commands.vision.alignwithtag2d import AlignWithTag2D
 from subsystems.drivetrain import Drivetrain
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
-from subsystems.vision import Vision
+from subsystems.shootervision import ShooterVision
 from utils.safecommand import SafeMixin
 
 
@@ -17,7 +17,7 @@ class AlignEverything(SafeMixin, ParallelCommandGroup):
         drivetrain: Drivetrain,
         pivot: Pivot,
         shooter: Shooter,
-        vision: Vision,
+        vision: ShooterVision,
         xbox_remote: CommandXboxController,
     ):
         super().__init__(

@@ -8,7 +8,7 @@ from subsystems.drivetrain import Drivetrain
 from subsystems.intake import Intake
 from subsystems.pivot import Pivot
 from subsystems.shooter import Shooter
-from subsystems.vision import Vision
+from subsystems.shootervision import ShooterVision
 from utils.safecommand import SafeMixin
 
 
@@ -19,7 +19,7 @@ class SourceSideShootGoFar(SafeMixin, commands2.SequentialCommandGroup):
         shooter: Shooter,
         pivot: Pivot,
         intake: Intake,
-        vision: Vision,
+        vision: ShooterVision,
     ):
         super().__init__(
             SourceSideShoot(drivetrain, shooter, pivot, intake, vision),
